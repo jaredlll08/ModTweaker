@@ -11,6 +11,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker.util.BaseMapRemoval;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -22,6 +23,7 @@ public class Sawmill {
     public static void addRecipe(IItemStack input, IItemStack output1, @Optional IItemStack output2, @Optional double chance) {
         ChanceOutput chanceOutput = new ChanceOutput(toStack(output1), toStack(output2), chance);
         MineTweakerAPI.apply(new AddMekanismRecipe("PRECISION_SAWMILL", Recipe.PRECISION_SAWMILL.get(), toStack(input), chanceOutput));
+        Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
     }
 
     @ZenMethod

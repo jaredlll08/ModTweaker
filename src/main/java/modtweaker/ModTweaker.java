@@ -1,5 +1,7 @@
 package modtweaker;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
+
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
@@ -9,7 +11,6 @@ import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker.mods.factorization.Factorization;
 import modtweaker.mods.fsp.Steamcraft;
-import modtweaker.mods.hee.HardcoreEnderExpansion;
 import modtweaker.mods.mariculture.Mariculture;
 import modtweaker.mods.mekanism.Mekanism;
 import modtweaker.mods.mekanism.gas.GasLogger;
@@ -22,6 +23,7 @@ import modtweaker.mods.thaumcraft.Thaumcraft;
 import modtweaker.mods.thaumcraft.research.ResearchLogger;
 import modtweaker.mods.thermalexpansion.ThermalExpansion;
 import modtweaker.util.TweakerPlugin;
+import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -39,7 +41,7 @@ public class ModTweaker {
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
 		TweakerPlugin.register("factorization", Factorization.class);
-		TweakerPlugin.register("HardcoreEnderExpansion", HardcoreEnderExpansion.class);
+//		TweakerPlugin.register("HardcoreEnderExpansion", HardcoreEnderExpansion.class);
 		TweakerPlugin.register("Mariculture", Mariculture.class);
 		TweakerPlugin.register("Mekanism", Mekanism.class);
 		TweakerPlugin.register("Metallurgy", Metallurgy.class);
