@@ -10,7 +10,9 @@ import modtweaker.mods.botania.Botania;
 import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker.mods.factorization.Factorization;
+import modtweaker.mods.forestry.Forestry;
 import modtweaker.mods.fsp.Steamcraft;
+import modtweaker.mods.hee.HardcoreEnderExpansion;
 import modtweaker.mods.mariculture.Mariculture;
 import modtweaker.mods.mekanism.Mekanism;
 import modtweaker.mods.mekanism.gas.GasLogger;
@@ -41,7 +43,7 @@ public class ModTweaker {
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
 		TweakerPlugin.register("factorization", Factorization.class);
-//		TweakerPlugin.register("HardcoreEnderExpansion", HardcoreEnderExpansion.class);
+		TweakerPlugin.register("HardcoreEnderExpansion", HardcoreEnderExpansion.class);
 		TweakerPlugin.register("Mariculture", Mariculture.class);
 		TweakerPlugin.register("Mekanism", Mekanism.class);
 		TweakerPlugin.register("Metallurgy", Metallurgy.class);
@@ -51,6 +53,7 @@ public class ModTweaker {
 		TweakerPlugin.register("TConstruct", TConstruct.class);
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
+		TweakerPlugin.register("Forestry", Forestry.class);
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
