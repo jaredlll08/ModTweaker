@@ -1,11 +1,8 @@
 package modtweaker;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
-
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
-import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
@@ -25,14 +22,16 @@ import modtweaker.mods.thaumcraft.Thaumcraft;
 import modtweaker.mods.thaumcraft.research.ResearchLogger;
 import modtweaker.mods.thermalexpansion.ThermalExpansion;
 import modtweaker.util.TweakerPlugin;
-import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.common.MinecraftForge;
+import pneumaticCraft.common.thirdparty.bloodmagic.BloodMagic;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
+import forestry.factory.gadgets.MachineFermenter;
+import static modtweaker.helpers.LogHelper.print;
 
 @Mod(modid = ModProps.modid, name = ModProps.name, dependencies = ModProps.dependencies)
 public class ModTweaker {
@@ -54,6 +53,7 @@ public class ModTweaker {
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
+		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}

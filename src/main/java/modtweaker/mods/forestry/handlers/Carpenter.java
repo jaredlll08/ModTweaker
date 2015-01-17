@@ -3,6 +3,7 @@ package modtweaker.mods.forestry.handlers;
 import static modtweaker.helpers.InputHelper.toStack;
 import static modtweaker.helpers.InputHelper.toFluid;
 import static modtweaker.helpers.InputHelper.toStacks;
+import static modtweaker.helpers.LogHelper.print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,10 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.RecipeManagers;
+import forestry.apiculture.FlowerProviderCacti;
 import forestry.core.utils.ShapedRecipeCustom;
 import forestry.factory.gadgets.MachineCarpenter;
+import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineCarpenter.Recipe;
 import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
 
@@ -29,7 +32,7 @@ import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
 public class Carpenter {
 
 	@ZenMethod
-	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack box, IItemStack[] ingredients, IItemStack product) {
+	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack product, IItemStack[] ingredients, IItemStack ingredient) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		for (ItemStack stack : toStacks(ingredients)) {
 			if (stack != null) {
@@ -40,11 +43,11 @@ public class Carpenter {
 			}
 
 		}
-		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(liquid), toStack(box), new ShapedRecipeCustom(3, 3, toStacks(ingredients), toStack(product)))));
+		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(liquid), toStack(ingredient), new ShapedRecipeCustom(3, 3, toStacks(ingredients), toStack(product)))));
 	}
 
 	public ShapedRecipeCustom convertToRecipeCustom() {
-		
+
 		return null;
 	}
 

@@ -40,7 +40,8 @@ public abstract class BaseListRemoval implements IUndoableAction {
         this(description, list, null, null);
     }
 
-    @Override
+
+	@Override
     public boolean canUndo() {
         return list != null;
     }
