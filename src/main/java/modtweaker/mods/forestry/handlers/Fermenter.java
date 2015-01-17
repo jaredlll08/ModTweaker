@@ -18,6 +18,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.Forestry;
 import forestry.api.core.ForestryAPI;
+import forestry.api.recipes.RecipeManagers;
 import forestry.core.utils.LiquidHelper;
 import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineFermenter.Recipe;
@@ -31,7 +32,6 @@ public class Fermenter {
 		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), fermentationValue, modifier, toFluid(output), toFluid(liquid))));
 		MachineFermenter.RecipeManager.recipeFluidInputs.add(getFluid(liquid));
 		MachineFermenter.RecipeManager.recipeFluidOutputs.add(getFluid(output));
-
 	}
 
 	private static class Add extends BaseListAddition {

@@ -19,7 +19,7 @@ import forestry.factory.gadgets.MachineMoistener.RecipeManager;
 public class Moistener {
 
 	@ZenMethod
-	public static void addRecipe(IItemStack resource, IItemStack product, int timePerItem) {
+	public static void addRecipe(int timePerItem, IItemStack resource, IItemStack product) {
 		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), toStack(product), timePerItem)));
 
 	}

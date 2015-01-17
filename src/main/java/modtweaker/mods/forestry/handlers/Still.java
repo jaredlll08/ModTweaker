@@ -46,14 +46,14 @@ public class Still {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(ILiquidStack output) {
-		MineTweakerAPI.apply(new Remove(MachineStill.RecipeManager.recipes, toFluid(output)));
+	public static void removeRecipe(ILiquidStack output, ILiquidStack input) {
+		MineTweakerAPI.apply(new Remove(MachineStill.RecipeManager.recipes, toFluid(input)));
 	}
 
 	private static class Remove extends BaseListRemoval {
 
-		public Remove(List list, FluidStack stack) {
-			super(list, stack);
+		public Remove(List list, FluidStack input) {
+			super(list, input);
 
 		}
 
