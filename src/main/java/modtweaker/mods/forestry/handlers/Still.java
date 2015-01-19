@@ -6,6 +6,9 @@ import static modtweaker.helpers.InputHelper.getFluid;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry.EntityRegistration;
+import cpw.mods.fml.common.registry.GameRegistry;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
@@ -19,6 +22,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.Forestry;
 import forestry.api.core.ForestryAPI;
 import forestry.core.utils.LiquidHelper;
+import forestry.core.utils.RecipeUtil;
 import forestry.factory.gadgets.MachineSqueezer;
 import forestry.factory.gadgets.MachineStill;
 import forestry.factory.gadgets.MachineStill.Recipe;
@@ -29,6 +33,9 @@ public class Still {
 
 	@ZenMethod
 	public static void addRecipe(int timePerUnit, ILiquidStack input, ILiquidStack output) {
+		output.amount(output.getAmount() / 100);
+		input.amount(input.getAmount() / 100);
+		
 		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(input), toFluid(output))));
 		MachineStill.RecipeManager.recipeFluidInputs.add(getFluid(input));
 		MachineStill.RecipeManager.recipeFluidOutputs.add(getFluid(output));
