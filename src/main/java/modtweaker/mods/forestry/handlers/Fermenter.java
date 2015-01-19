@@ -1,25 +1,19 @@
 package modtweaker.mods.forestry.handlers;
 
-import static modtweaker.helpers.InputHelper.toStack;
-import static modtweaker.helpers.InputHelper.toFluid;
 import static modtweaker.helpers.InputHelper.getFluid;
+import static modtweaker.helpers.InputHelper.toFluid;
+import static modtweaker.helpers.InputHelper.toStack;
 
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker.helpers.InputHelper;
 import modtweaker.util.BaseListAddition;
 import modtweaker.util.BaseListRemoval;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.Forestry;
-import forestry.api.core.ForestryAPI;
-import forestry.api.recipes.RecipeManagers;
-import forestry.core.utils.LiquidHelper;
 import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineFermenter.Recipe;
 import forestry.factory.gadgets.MachineFermenter.RecipeManager;
@@ -46,13 +40,13 @@ public class Fermenter {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(ILiquidStack output) {
-		MineTweakerAPI.apply(new Remove(MachineFermenter.RecipeManager.recipes, toFluid(output)));
+	public static void removeRecipe(IItemStack input) {
+		MineTweakerAPI.apply(new Remove(MachineFermenter.RecipeManager.recipes, toStack(input)));
 	}
 
 	private static class Remove extends BaseListRemoval {
 
-		public Remove(List list, FluidStack stack) {
+		public Remove(List list, ItemStack stack) {
 			super(list, stack);
 
 		}
@@ -60,7 +54,7 @@ public class Fermenter {
 		@Override
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
-				if (r.output != null && r.output.isFluidEqual(fluid)) {
+				if (r.resource != null && r.resource.isItemEqual(stack)) {
 					recipe = r;
 					break;
 				}

@@ -181,10 +181,10 @@ public class Smeltery {
             TConstructHelper.renderIndex.remove(in);
         }
 
-        //Readds the Melting recipe
+        //Reads the Melting recipe
         @Override
         public void undo() {
-            tconstruct.library.crafting.Smeltery.instance.addMelting(input, Block.getBlockFromItem(renderer.getItem()), renderer.getItemDamage(), temp, fluid);
+//            tconstruct.library.crafting.Smeltery.instance.addMelting(input, Block.getBlockFromItem(renderer.getItem()), renderer.getItemDamage(), temp, fluid);
         }
 
         @Override
