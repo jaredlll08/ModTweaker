@@ -55,11 +55,6 @@ public class Carpenter {
 		public Add(Recipe recipe) {
 			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
 		}
-
-		@Override
-		public String getRecipeInfo() {
-			return ((Recipe) recipe).getCraftingResult().getDisplayName();
-		}
 	}
 
 	@ZenMethod
@@ -70,7 +65,7 @@ public class Carpenter {
 	private static class Remove extends BaseListRemoval {
 
 		public Remove(List list, ItemStack stack) {
-			super(list, stack);
+			super("Forestry Carpenter", list, stack);
 
 		}
 

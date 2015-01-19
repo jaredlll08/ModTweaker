@@ -26,21 +26,17 @@ import modtweaker.mods.thaumcraft.research.ResearchLogger;
 import modtweaker.mods.thermalexpansion.ThermalExpansion;
 import modtweaker.util.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
-import pneumaticCraft.common.thirdparty.bloodmagic.BloodMagic;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
-import forestry.factory.gadgets.MachineFermenter;
-import static modtweaker.helpers.LogHelper.print;
 
 @Mod(modid = ModProps.modid, name = ModProps.name, dependencies = ModProps.dependencies)
 public class ModTweaker {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		TweakerPlugin.register("AWWayofTime", BloodMagic.class);
 		TweakerPlugin.register("Botania", Botania.class);
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
