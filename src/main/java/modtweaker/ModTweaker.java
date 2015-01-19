@@ -4,6 +4,9 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker.mods.botania.Botania;
+import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
+import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
+import modtweaker.mods.botania.lexicon.commands.LexiconPageLogger;
 import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker.mods.factorization.Factorization;
@@ -79,5 +82,12 @@ public class ModTweaker {
 		if (TweakerPlugin.isLoaded("TConstruct")) {
 			MineTweakerAPI.server.addMineTweakerCommand("materials", new String[] { "/minetweaker materials", "    Outputs a list of all Tinker's Construct material names in the game to the minetweaker log" }, new MaterialLogger());
 		}
+
+		if (TweakerPlugin.isLoaded("Botania")) {
+			MineTweakerAPI.server.addMineTweakerCommand("lexiconCategories", new String[] { "/minetweaker lexiconCategories", "    Outputs a list of lexicon categories" }, new LexiconCategoryLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("lexiconEntries", new String[] { "/minetweaker lexiconEntries", "/minetweaker lexiconEntries [CATEGORY]", "    Outputs a list of lexicon entries" }, new LexiconEntryLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
+		}
+
 	}
 }

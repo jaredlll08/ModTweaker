@@ -3,6 +3,7 @@ package modtweaker.mods.botania;
 import minetweaker.MineTweakerAPI;
 import modtweaker.mods.botania.handlers.Apothecary;
 import modtweaker.mods.botania.handlers.ElvenTrade;
+import modtweaker.mods.botania.handlers.Lexicon;
 import modtweaker.mods.botania.handlers.ManaInfusion;
 import modtweaker.mods.botania.handlers.Orechid;
 import modtweaker.mods.botania.handlers.RuneAltar;
@@ -16,6 +17,7 @@ public class Botania {
         MineTweakerAPI.registerClass(ManaInfusion.class);
         MineTweakerAPI.registerClass(Orechid.class);
         MineTweakerAPI.registerClass(RuneAltar.class);
+        MineTweakerAPI.registerClass(Lexicon.class);
     }
 
     public static boolean isSubtile(ItemStack stack) {
