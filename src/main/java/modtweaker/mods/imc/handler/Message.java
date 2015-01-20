@@ -38,7 +38,6 @@ public class Message {
 
 						String[] input = command.split(",");
 						FMLInterModComms.sendMessage(input[0], input[1], input[2]);
-						System.out.println(input[0] + ", " + input[1] + ", " + input[2]);
 					}
 				}
 			}

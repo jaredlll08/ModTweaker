@@ -1,8 +1,12 @@
 package modtweaker;
 
+import java.io.File;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
+import minetweaker.mc1710.MineTweakerMod;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
@@ -39,11 +43,17 @@ import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModProps.modid, name = ModProps.name, dependencies = ModProps.dependencies)
 public class ModTweaker {
-	
+
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		new Message(event.getModConfigurationDirectory().getPath() + "/modtweaker/");
+	public void preInit(FMLPreInitializationEvent event) {
+		File file = new File("scripts");
+
+		if (!file.exists()) {
+			file.mkdir();
+		}
+		new Message(file.getPath());
 	}
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TweakerPlugin.register("Botania", Botania.class);
@@ -61,7 +71,7 @@ public class ModTweaker {
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
-		
+
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
