@@ -22,7 +22,7 @@ import forestry.factory.gadgets.MachineFermenter.RecipeManager;
 public class Fermenter {
 
 	@ZenMethod
-	public static void addRecipe(IItemStack resource, int fermentationValue, float modifier, ILiquidStack output, ILiquidStack liquid) {
+	public static void addRecipe(IItemStack resource, ILiquidStack liquid, int fermentationValue, float modifier, ILiquidStack output) {
 		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), fermentationValue, modifier, toFluid(output), toFluid(liquid))));
 		MachineFermenter.RecipeManager.recipeFluidInputs.add(getFluid(liquid));
 		MachineFermenter.RecipeManager.recipeFluidOutputs.add(getFluid(output));

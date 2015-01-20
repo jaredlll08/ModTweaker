@@ -22,7 +22,7 @@ import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
 public class Centrifuge {
 
 	@ZenMethod
-	public static void addRecipe(IItemStack[] output, int[] chances, int timePerItem, IItemStack itemInput) {
+	public static void addRecipe(int timePerItem, IItemStack itemInput, int[] chances, IItemStack[] output) {
 		HashMap<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
 		// products.put(toStack(output[0]), chances[0]);
 		int i = 0;

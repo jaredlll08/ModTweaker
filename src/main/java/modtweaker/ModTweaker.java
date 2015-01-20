@@ -13,6 +13,7 @@ import modtweaker.mods.factorization.Factorization;
 import modtweaker.mods.forestry.Forestry;
 import modtweaker.mods.fsp.Steamcraft;
 import modtweaker.mods.hee.HardcoreEnderExpansion;
+import modtweaker.mods.imc.handler.Message;
 import modtweaker.mods.mariculture.Mariculture;
 import modtweaker.mods.mekanism.Mekanism;
 import modtweaker.mods.mekanism.gas.GasLogger;
@@ -30,11 +31,19 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModProps.modid, name = ModProps.name, dependencies = ModProps.dependencies)
 public class ModTweaker {
+	
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event){
+		new Message(event.getModConfigurationDirectory().getPath() + "/modtweaker/");
+	}
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TweakerPlugin.register("Botania", Botania.class);

@@ -40,14 +40,14 @@ public class Squeezer {
 	}
 
 	@ZenMethod
-	public static void removeRecipe(ILiquidStack output) {
-		MineTweakerAPI.apply(new Remove(MachineSqueezer.RecipeManager.recipes, toFluid(output)));
+	public static void removeRecipe(ILiquidStack liquid) {
+		MineTweakerAPI.apply(new Remove(MachineSqueezer.RecipeManager.recipes, toFluid(liquid)));
 	}
 
 	private static class Remove extends BaseListRemoval {
 
-		public Remove(List list, FluidStack stack) {
-			super(list, stack);
+		public Remove(List list, FluidStack liquid) {
+			super(list, liquid);
 
 		}
 

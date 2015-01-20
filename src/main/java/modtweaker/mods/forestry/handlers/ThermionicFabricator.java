@@ -29,7 +29,7 @@ public class ThermionicFabricator {
 	
 	//first production step: smelting item into liquid
 	@ZenMethod
-	public static void addSmelting(IItemStack itemInput, int fluidOutput, int meltingPoint) {
+	public static void addSmelting(IItemStack itemInput, int meltingPoint, int fluidOutput) {
 		//The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass 
 		MineTweakerAPI.apply(new Add(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
 	}

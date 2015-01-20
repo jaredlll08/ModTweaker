@@ -32,7 +32,7 @@ import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
 public class Carpenter {
 
 	@ZenMethod
-	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack product, IItemStack[] ingredients, IItemStack ingredient) {
+	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 		for (ItemStack stack : toStacks(ingredients)) {
 			if (stack != null) {
