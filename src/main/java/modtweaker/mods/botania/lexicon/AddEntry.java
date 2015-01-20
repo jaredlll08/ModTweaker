@@ -36,6 +36,7 @@ public class AddEntry implements IUndoableAction {
 	@Override
 	public void undo() {
 		Entry.category.entries.remove(Entry);
+		BotaniaAPI.getAllEntries().remove(Entry);
 	}
 	
 	@Override

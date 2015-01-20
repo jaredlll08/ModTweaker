@@ -16,6 +16,7 @@ public class RemoveEntry implements IUndoableAction {
     @Override
 	public void apply() {
 		Entry.category.entries.remove(Entry);
+		BotaniaAPI.getAllEntries().remove(Entry);
 	}
 
 	@Override
