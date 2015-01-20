@@ -27,9 +27,9 @@ public class Message {
 				return false;
 			}
 		});
+		try {
+			for (File file : files) {
 
-		for (File file : files) {
-			try {
 				this.fileReader = new Scanner(file);
 				while (fileReader.hasNextLine()) {
 					String command = fileReader.nextLine().trim();
@@ -41,10 +41,10 @@ public class Message {
 						System.out.println(input[0] + ", " + input[1] + ", " + input[2]);
 					}
 				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			}
-
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
+
 	}
 }
