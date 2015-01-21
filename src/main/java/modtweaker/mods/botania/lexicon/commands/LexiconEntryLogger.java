@@ -18,7 +18,14 @@ public class LexiconEntryLogger implements ICommandFunction{
     public void execute(String[] arguments, IPlayer player) {
     	LexiconCategory category=null;
     	if(arguments.length>0)
+    	{
     		category=BotaniaHelper.findCatagory(arguments[0]);
+    		if(category==null)
+    		{
+    			MineTweakerAPI.getLogger().logError("Category not found (" + arguments[0]+")");
+    			return;
+    		}
+    	}
     	List<LexiconEntry> entries=BotaniaAPI.getAllEntries();
         System.out.println("Entries: " + entries.size());
         for (LexiconEntry entry : entries) {

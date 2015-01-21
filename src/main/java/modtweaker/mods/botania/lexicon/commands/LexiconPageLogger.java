@@ -1,5 +1,6 @@
 package modtweaker.mods.botania.lexicon.commands;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,9 +20,23 @@ public class LexiconPageLogger implements ICommandFunction{
     public void execute(String[] arguments, IPlayer player) {
     	LexiconEntry entry=null;
     	if(arguments.length>0)
+    	{
     		entry=BotaniaHelper.findEntry(arguments[0]);
-    	List<LexiconPage> pages=entry.pages;
+    		if(entry==null)
+    		{
+    			MineTweakerAPI.getLogger().logError("Entry not found (" + arguments[0]+")");
+    			return;
+    		}
+    	}
+    	List<LexiconEntry> entries;
+    	List<LexiconPage> pages=new ArrayList();
+    	if(entry!=null)
+        	pages.addAll(entry.pages);
+    	else
+    		for (LexiconEntry current_Entry : BotaniaAPI.getAllEntries())
+            	pages.addAll(current_Entry.pages);
         System.out.println("Pages: " + pages.size());
+        
         for (LexiconPage page : pages) {
        		System.out.println("Page " + page.getUnlocalizedName() + " (" + page.getClass() + ")");
        		MineTweakerAPI.logCommand(page.getUnlocalizedName() + " (" + page.getClass() + ")");

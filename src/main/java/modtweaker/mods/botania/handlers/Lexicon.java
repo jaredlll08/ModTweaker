@@ -64,8 +64,16 @@ public class Lexicon {
     @ZenMethod
     public static void addCraftingPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[][][] inputs) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<IRecipe> recipes=new ArrayList<IRecipe>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -78,8 +86,16 @@ public class Lexicon {
     @ZenMethod
     public static void addElvenPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[][] inputs) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipeElvenTrade> recipes=new ArrayList<RecipeElvenTrade>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -92,6 +108,11 @@ public class Lexicon {
     @ZenMethod
     public static void addEntityPage(String name, String entry, int page_number, String entity, int size) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageEntity(entity, entity, size);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -99,6 +120,11 @@ public class Lexicon {
     @ZenMethod
     public static void addImagePage(String name, String entry, int page_number, String resource) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageImage(name, resource);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -106,6 +132,11 @@ public class Lexicon {
     @ZenMethod
     public static void addLorePage(String name, String entry, int page_number) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageLoreText(name);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -113,8 +144,16 @@ public class Lexicon {
     @ZenMethod
     public static void addInfusionPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[] inputs, int[] mana) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipeManaInfusion> recipes=new ArrayList<RecipeManaInfusion>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -127,8 +166,16 @@ public class Lexicon {
     @ZenMethod
     public static void addAlchemyPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[] inputs, int[] mana) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipeManaInfusion> recipes=new ArrayList<RecipeManaInfusion>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -143,8 +190,16 @@ public class Lexicon {
     @ZenMethod
     public static void addConjurationPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[] inputs, int[] mana) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipeManaInfusion> recipes=new ArrayList<RecipeManaInfusion>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -159,8 +214,16 @@ public class Lexicon {
     @ZenMethod
     public static void addPetalPage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[][] inputs) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipePetals> recipes=new ArrayList<RecipePetals>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -173,8 +236,16 @@ public class Lexicon {
     @ZenMethod
     public static void addRunePage(String name, String entry, int page_number, IItemStack[] outputs, IIngredient[][] inputs, int[] mana) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
-    		throw new IllegalArgumentException("Length of input and output must match");
+    	{
+    		MineTweakerAPI.getLogger().logError("Length of input and output must match");
+    		return;
+    	}
     	List<RecipeRuneAltar> recipes=new ArrayList<RecipeRuneAltar>();
     	for(int i=0;i<outputs.length;i++)
     	{
@@ -187,6 +258,11 @@ public class Lexicon {
     @ZenMethod
     public static void addTextPage(String name, String entry, int page_number) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageText(name);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -194,13 +270,23 @@ public class Lexicon {
     @ZenMethod
     public static void removePage(String entry, int page_number) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
         MineTweakerAPI.apply(new RemovePage(lexiconEntry,page_number));
     }
 
     @ZenMethod
     public static void addEntry(String entry, String catagory) {
-    	LexiconCategory lexiconCatagory=BotaniaHelper.findCatagory(catagory);
-    	LexiconEntry lexiconEntry=new LexiconEntry(entry,lexiconCatagory);
+    	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(catagory);
+    	if(lexiconCategory==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon category "+catagory);
+    		return;
+    	}
+    	LexiconEntry lexiconEntry=new LexiconEntry(entry,lexiconCategory);
         MineTweakerAPI.apply(new AddEntry(lexiconEntry));
     }
 
@@ -213,6 +299,11 @@ public class Lexicon {
     @ZenMethod
     public static void setEntryKnowledgeType(String entry, String knowledgeType) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
     	KnowledgeType type=BotaniaHelper.findKnowledgeType(knowledgeType);
         MineTweakerAPI.apply(new SetEntryKnowledgeType(lexiconEntry,type));
     }
@@ -225,20 +316,35 @@ public class Lexicon {
     
     @ZenMethod
     public static void removeCategory(String name) {
-    	LexiconCategory lexiconCatagory=BotaniaHelper.findCatagory(name);
-        MineTweakerAPI.apply(new RemoveCategory(lexiconCatagory));
+    	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
+    	if(lexiconCategory==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon category "+name);
+    		return;
+    	}
+        MineTweakerAPI.apply(new RemoveCategory(lexiconCategory));
     }
 
     @ZenMethod
     public static void setCategoryPriority(String name, int priority) {
-    	LexiconCategory lexiconCatagory=BotaniaHelper.findCatagory(name);
-        MineTweakerAPI.apply(new SetCategoryPriority(lexiconCatagory,priority));
+    	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
+    	if(lexiconCategory==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon category "+name);
+    		return;
+    	}
+        MineTweakerAPI.apply(new SetCategoryPriority(lexiconCategory,priority));
     }
     
     @ZenMethod
     public static void setCategoryIcon(String name, String icon) {
-    	LexiconCategory lexiconCatagory=BotaniaHelper.findCatagory(name);
-        MineTweakerAPI.apply(new SetCategoryIcon(lexiconCatagory,icon));
+    	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
+    	if(lexiconCategory==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon category "+name);
+    		return;
+    	}
+        MineTweakerAPI.apply(new SetCategoryIcon(lexiconCategory,icon));
     }
 
 }
