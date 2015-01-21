@@ -117,7 +117,7 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
-    	if(EntityList.stringToClassMapping.containsKey(entity))
+    	if(!EntityList.stringToClassMapping.containsKey(entity))
     	{
     		MineTweakerAPI.getLogger().logError("No such entity "+entity);
     		return;
