@@ -16,14 +16,17 @@ import modtweaker.mods.botania.BotaniaHelper;
 import modtweaker.mods.botania.lexicon.AddCategory;
 import modtweaker.mods.botania.lexicon.AddEntry;
 import modtweaker.mods.botania.lexicon.AddPage;
+import modtweaker.mods.botania.lexicon.AddRecipeMapping;
 import modtweaker.mods.botania.lexicon.RemoveCategory;
 import modtweaker.mods.botania.lexicon.RemoveEntry;
 import modtweaker.mods.botania.lexicon.RemovePage;
+import modtweaker.mods.botania.lexicon.RemoveRecipeMapping;
 import modtweaker.mods.botania.lexicon.SetCategoryIcon;
 import modtweaker.mods.botania.lexicon.SetCategoryPriority;
 import modtweaker.mods.botania.lexicon.SetEntryKnowledgeType;
 import modtweaker.util.BaseListAddition;
 import modtweaker.util.BaseListRemoval;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +37,7 @@ import vazkii.botania.api.lexicon.KnowledgeType;
 import vazkii.botania.api.lexicon.LexiconCategory;
 import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.api.lexicon.LexiconPage;
+import vazkii.botania.api.lexicon.LexiconRecipeMappings;
 import vazkii.botania.api.recipe.RecipeBrew;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
 import vazkii.botania.api.recipe.RecipeManaInfusion;
@@ -111,6 +115,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(EntityList.stringToClassMapping.containsKey(entity))
+    	{
+    		MineTweakerAPI.getLogger().logError("No such entity "+entity);
     		return;
     	}
     	LexiconPage page=new PageEntity(entity, entity, size);
@@ -347,4 +356,34 @@ public class Lexicon {
         MineTweakerAPI.apply(new SetCategoryIcon(lexiconCategory,icon));
     }
 
+    @ZenMethod
+    public static void addRecipeMapping(IItemStack stack, String Entry, int page) {
+    	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(Entry);
+    	if(LexiconRecipeMappings.getDataForStack(toStack(stack))!=null)
+    	{
+    		MineTweakerAPI.getLogger().logError("There is already a recipe mapping for "+stack);
+    		return;
+    	}
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+Entry);
+    		return;
+    	}
+    	if(lexiconEntry.pages.size()<page)
+    	{
+    		MineTweakerAPI.getLogger().logError("Not enough pages in "+Entry);
+    		return;
+    	}
+        MineTweakerAPI.apply(new AddRecipeMapping(toStack(stack),lexiconEntry,page));
+    }
+
+    @ZenMethod
+    public static void removeRecipeMapping(IItemStack stack) {
+    	if(LexiconRecipeMappings.getDataForStack(toStack(stack))==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("There isn't a recipe mapping for "+stack);
+    		return;
+    	}
+        MineTweakerAPI.apply(new RemoveRecipeMapping(toStack(stack)));
+    }
 }

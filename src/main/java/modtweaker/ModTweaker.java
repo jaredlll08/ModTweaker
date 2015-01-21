@@ -7,9 +7,12 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import minetweaker.mc1710.MineTweakerMod;
+import modtweaker.commands.MobMappingLogger;
 import modtweaker.mods.botania.Botania;
+import modtweaker.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
+import modtweaker.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconPageLogger;
 import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
@@ -86,6 +89,8 @@ public class ModTweaker {
 			}
 		});
 
+		MineTweakerAPI.server.addMineTweakerCommand("mobs", new String[] { "/minetweaker mobs", "    Outputs a list of mob class mapping keys" }, new MobMappingLogger());
+
 		if (TweakerPlugin.isLoaded("Mekanism")) {
 			MineTweakerAPI.server.addMineTweakerCommand("gases", new String[] { "/minetweaker gases", "    Outputs a list of all gas names in the game to the minetweaker log" }, new GasLogger());
 		}
@@ -102,6 +107,8 @@ public class ModTweaker {
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconCategories", new String[] { "/minetweaker lexiconCategories", "    Outputs a list of lexicon categories" }, new LexiconCategoryLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconEntries", new String[] { "/minetweaker lexiconEntries", "/minetweaker lexiconEntries [CATEGORY]", "    Outputs a list of lexicon entries" }, new LexiconEntryLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
 		}
 
 	}
