@@ -60,7 +60,17 @@ public class Lexicon {
     @ZenMethod
     public static void addBrewPage(String name, String entry, int page_number, String brew, IIngredient[] recipe, String bottomText) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
-    	RecipeBrew page_recipe=new RecipeBrew(BotaniaAPI.getBrewFromKey(brew),(Object[])recipe);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(BotaniaAPI.getBrewFromKey(brew)==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find brew "+brew);
+    		return;
+    	}
+    	RecipeBrew page_recipe=new RecipeBrew(BotaniaAPI.getBrewFromKey(brew),toObjects(recipe));
     	LexiconPage page=new PageBrew(page_recipe,name,bottomText);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
