@@ -10,6 +10,7 @@ import com.cricketcraft.chisel.api.carving.CarvingUtils;
 import com.cricketcraft.chisel.api.carving.ICarvingGroup;
 import com.cricketcraft.chisel.api.carving.ICarvingVariation;
 import com.cricketcraft.chisel.carving.Carving;
+import com.cricketcraft.chisel.carving.CarvingVariation;
 
 public class ChiselHelper {
 
@@ -26,6 +27,11 @@ public class ChiselHelper {
 	public static ICarvingVariation getVariation(IItemStack stack)
 	{
 		return Carving.chisel.getVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage());
+	}
+
+	public static ICarvingVariation makeVariation(IItemStack stack)
+	{
+		return new CarvingVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage(),99);
 	}
 
 	public static boolean groupContainsVariation(ICarvingGroup group, ICarvingVariation variation)

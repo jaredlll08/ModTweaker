@@ -21,7 +21,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.chisel.Groups")
 public class Groups {
     @ZenMethod
-    public static void addTransformation(String groupName, IItemStack stack) {
+    public static void addVariation(String groupName, IItemStack stack) {
     	ICarvingGroup group=ChiselHelper.getGroup(groupName);
     	ICarvingVariation variation=ChiselHelper.getVariation(stack);
     	if(group==null)
@@ -82,7 +82,7 @@ public class Groups {
 
 
     @ZenMethod
-    public static void removeTransformation(String groupName, IItemStack stack) {
+    public static void removeVariation(String groupName, IItemStack stack) {
     	ICarvingGroup group=ChiselHelper.getGroup(groupName);
     	ICarvingVariation variation=ChiselHelper.getVariation(stack);
     	if(group==null)
@@ -92,7 +92,7 @@ public class Groups {
     	}
     	if(variation==null)
     	{
-    		MineTweakerAPI.getLogger().logError("Can't create variation from " + stack);
+    		MineTweakerAPI.getLogger().logError("Can't find variation from " + stack);
     		return;
     	}
     	if(!ChiselHelper.groupContainsVariation(group, variation))
