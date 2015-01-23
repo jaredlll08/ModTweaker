@@ -112,34 +112,34 @@ public class Aspects {
 
     /** Add/Remove/Set Aspects for entities **/
     @ZenMethod
-    public static void addForEntity(String entityName, String aspects) {
+    public static void addEntity(String entityName, String aspects) {
     	if(!EntityList.stringToClassMapping.containsKey(entityName))
     	{
     		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
     		return;
     	}
-        MineTweakerAPI.apply(new AddForEntity(entityName, aspects, false));
+        MineTweakerAPI.apply(new AddEntity(entityName, aspects, false));
     }
 
     @ZenMethod
-    public static void setForEntity(String entityName, String aspects) {
+    public static void setEntity(String entityName, String aspects) {
     	if(!EntityList.stringToClassMapping.containsKey(entityName))
     	{
     		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
     		return;
     	}
-        MineTweakerAPI.apply(new AddForEntity(entityName, aspects, true));
+        MineTweakerAPI.apply(new AddEntity(entityName, aspects, true));
     }
 
     //Adds or sets Aspects
-    private static class AddForEntity extends BaseDescriptionAddition {
+    private static class AddEntity extends BaseDescriptionAddition {
         private final String entityName;
         private final String aspects;
         private final boolean replace;
         private AspectList oldList;
         private AspectList newList;
 
-        public AddForEntity(String entityName, String aspects, boolean replace) {
+        public AddEntity(String entityName, String aspects, boolean replace) {
             super("Aspects");
             this.entityName = entityName;
             this.aspects = aspects;
@@ -171,22 +171,22 @@ public class Aspects {
     //////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void removeForEntity(String entityName, String aspects) {
+    public static void removeEntity(String entityName, String aspects) {
     	if(!EntityList.stringToClassMapping.containsKey(entityName))
     	{
     		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
     		return;
     	}
-        MineTweakerAPI.apply(new RemoveForEntity(entityName, aspects));
+        MineTweakerAPI.apply(new RemoveEntity(entityName, aspects));
     }
 
-    private static class RemoveForEntity extends BaseDescriptionRemoval {
+    private static class RemoveEntity extends BaseDescriptionRemoval {
         private final String entityName;
         private final String aspects;
         private AspectList oldList;
         private AspectList newList;
 
-        public RemoveForEntity(String entityName, String aspects) {
+        public RemoveEntity(String entityName, String aspects) {
             super("Aspects");
             this.entityName = entityName;
             this.aspects = aspects;
