@@ -9,8 +9,6 @@ import minetweaker.api.item.IItemStack;
 import com.cricketcraft.chisel.api.carving.CarvingUtils;
 import com.cricketcraft.chisel.api.carving.ICarvingGroup;
 import com.cricketcraft.chisel.api.carving.ICarvingVariation;
-import com.cricketcraft.chisel.carving.Carving;
-import com.cricketcraft.chisel.carving.CarvingVariation;
 
 public class ChiselHelper {
 
@@ -26,12 +24,20 @@ public class ChiselHelper {
 	
 	public static ICarvingVariation getVariation(IItemStack stack)
 	{
-		return Carving.chisel.getVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage());
+		ICarvingGroup g = getGroup(stack);
+		if (g != null) {
+			for (ICarvingVariation v : g.getVariations()) {
+				if (v.getBlock() == Block.getBlockFromItem(toStack(stack).getItem()) && v.getBlockMeta() == stack.getDamage()) {
+					return v;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static ICarvingVariation makeVariation(IItemStack stack)
 	{
-		return new CarvingVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage(),99);
+		return new CarvingVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage());
 	}
 
 	public static boolean groupContainsVariation(ICarvingGroup group, ICarvingVariation variation)
@@ -42,5 +48,37 @@ public class ChiselHelper {
 				return true;
 		}
 		return false;
+	}
+	
+	static class CarvingVariation implements ICarvingVariation
+	{
+		Block block;
+		int meta;
+		
+		public CarvingVariation(Block block, int meta)
+		{
+			this.block=block;
+			this.meta=meta;
+		}
+		
+		@Override
+		public Block getBlock() {
+			return block;
+		}
+
+		@Override
+		public int getBlockMeta() {
+			return meta;
+		}
+
+		@Override
+		public int getItemMeta() {
+			return meta;
+		}
+
+		@Override
+		public int getOrder() {
+			return 99;
+		}
 	}
 }
