@@ -198,7 +198,7 @@ public class Aspects {
             if (oldList != null) {
                 newList = ThaumcraftHelper.removeAspects(oldList, aspects);
                 ThaumcraftHelper.removeEntityAspects(entityName);
-            ThaumcraftApi.registerEntityTag(entityName, newList);
+                ThaumcraftApi.registerEntityTag(entityName, newList);
             }
         }
 

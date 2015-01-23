@@ -29,29 +29,34 @@ public class ThaumcraftHelper {
     }
 
     public static AspectList parseAspects(AspectList list, String str) {
-        if (list == null) list = new AspectList();
+    	AspectList output=new AspectList();
+        if (list != null)
+        	output.add(list);
         if (str == null || str.equals("")) return list;
         String[] aspects = str.split(",");
         for (String aspect : aspects) {
             if (aspect.startsWith(" ")) aspect = aspect.replaceFirst(" ", "");
             String[] aspct = aspect.split("\\s+");
-            if (aspct.length == 2) list.add(Aspect.aspects.get(aspct[0]), Integer.parseInt(aspct[1]));
+            if (aspct.length == 2) output.add(Aspect.aspects.get(aspct[0]), Integer.parseInt(aspct[1]));
         }
 
-        return list;
+        return output;
     }
 
     public static AspectList removeAspects(AspectList list, String str) {
+    	AspectList output=new AspectList();
+        if (list != null)
+        	output.add(list);
         String[] aspects = str.split(",");
         for (String aspect : aspects) {
             if (aspect.startsWith(" ")) aspect = aspect.replaceFirst(" ", "");
             String[] aspct = aspect.split("\\s+");
             if (aspct.length == 2) {
-                list.remove(Aspect.aspects.get(aspct[0]), Integer.parseInt(aspct[1]));
+            	output.remove(Aspect.aspects.get(aspct[0]), Integer.parseInt(aspct[1]));
             }
         }
 
-        return list;
+        return output;
     }
 
     public static String getResearchTab(String key) {
