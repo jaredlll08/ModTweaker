@@ -49,8 +49,8 @@ public class ChiselVariationLogger implements ICommandFunction{
         	String stringedVariation=entry.getKey().getBlock().getUnlocalizedName()+" "+entry.getKey().getBlockMeta();
         	if(arguments.length==0)
         		stringedVariation+=" "+entry.getValue().getName();
-            System.out.println("Chisel Variation " + variations);
-            MineTweakerAPI.logCommand(stringedVariation.toString());
+            System.out.println("Chisel Variation " + stringedVariation);
+            MineTweakerAPI.logCommand(stringedVariation);
         }
 
         if (player != null) {
