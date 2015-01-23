@@ -6,7 +6,6 @@ import minetweaker.IUndoableAction;
 
 public class RemovePage implements IUndoableAction {
 	
-	String Name;
 	int page_number;
 	LexiconEntry Entry;
 	LexiconPage page;
@@ -19,23 +18,22 @@ public class RemovePage implements IUndoableAction {
     @Override
 	public void apply() {
         this.page=Entry.pages.get(page_number);
-        this.Name=this.page.getUnlocalizedName();
-    	Entry.pages.remove(page_number);
+    	Entry.pages.remove(page);
 	}
 
 	@Override
 	public boolean canUndo() {
-        return Name != null && Entry != null && page != null;
+        return Entry != null && page != null;
 	}
 	
 	@Override
 	public String describe() {
-        return "Adding Lexicon Page: " + Name;
+        return "Removing Lexicon Page: " + Entry.pages.get(page_number).getUnlocalizedName();
 	}
 	
 	@Override
 	public String describeUndo() {
-        return "Removing Lexicon Page: " + Name;
+        return "Adding Lexicon Page: " + page.getUnlocalizedName();
 	}
 	
 	@Override

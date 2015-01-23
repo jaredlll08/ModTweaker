@@ -65,6 +65,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	if(BotaniaAPI.getBrewFromKey(brew)==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find brew "+brew);
@@ -81,6 +86,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
     		return;
     	}
     	if(outputs.length!=inputs.length)
@@ -105,6 +115,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length)
     	{
     		MineTweakerAPI.getLogger().logError("Length of input and output must match");
@@ -127,6 +142,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	if(!EntityList.stringToClassMapping.containsKey(entity))
     	{
     		MineTweakerAPI.getLogger().logError("No such entity "+entity);
@@ -144,6 +164,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageImage(name, resource);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -156,6 +181,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageLoreText(name);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -166,6 +196,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
     		return;
     	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
@@ -188,6 +223,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
     		return;
     	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
@@ -214,6 +254,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
     	{
     		MineTweakerAPI.getLogger().logError("Length of input and output must match");
@@ -238,6 +283,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	if(outputs.length!=inputs.length)
     	{
     		MineTweakerAPI.getLogger().logError("Length of input and output must match");
@@ -258,6 +308,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
     		return;
     	}
     	if(outputs.length!=inputs.length || outputs.length!=mana.length)
@@ -282,6 +337,11 @@ public class Lexicon {
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
+    	if(page_number>lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
+    		return;
+    	}
     	LexiconPage page=new PageText(name);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));
     }
@@ -292,6 +352,11 @@ public class Lexicon {
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
+    	if(page_number>=lexiconEntry.pages.size())
+    	{
+    		MineTweakerAPI.getLogger().logError("Page Number " + page_number + " out of bounds for "+entry);
     		return;
     	}
         MineTweakerAPI.apply(new RemovePage(lexiconEntry,page_number));
@@ -312,18 +377,28 @@ public class Lexicon {
     @ZenMethod
     public static void removeEntry(String entry) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	if(lexiconEntry==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
+    		return;
+    	}
         MineTweakerAPI.apply(new RemoveEntry(lexiconEntry));
     }
     
     @ZenMethod
     public static void setEntryKnowledgeType(String entry, String knowledgeType) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
+    	KnowledgeType type=BotaniaHelper.findKnowledgeType(knowledgeType);
     	if(lexiconEntry==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find lexicon entry "+entry);
     		return;
     	}
-    	KnowledgeType type=BotaniaHelper.findKnowledgeType(knowledgeType);
+    	if(type==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Cannot find knowledge type "+knowledgeType);
+    		return;
+    	}
         MineTweakerAPI.apply(new SetEntryKnowledgeType(lexiconEntry,type));
     }
     

@@ -20,8 +20,6 @@ public class AddPage implements IUndoableAction {
 
     @Override
 	public void apply() {
-    	if(Entry==null)
-    		throw new NullPointerException("Entry not found");
     	Entry.pages.add(page_number, page);
 	}
 
