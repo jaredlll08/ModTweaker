@@ -92,7 +92,7 @@ public class Groups {
     	}
     	if(variation==null)
     	{
-    		MineTweakerAPI.getLogger().logError("Can create variation from " + stack);
+    		MineTweakerAPI.getLogger().logError("Can't create variation from " + stack);
     		return;
     	}
     	if(!ChiselHelper.groupContainsVariation(group, variation))
