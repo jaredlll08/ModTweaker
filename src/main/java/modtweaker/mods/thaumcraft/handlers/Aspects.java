@@ -9,6 +9,7 @@ import minetweaker.api.item.IItemStack;
 import modtweaker.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker.util.BaseDescriptionAddition;
 import modtweaker.util.BaseDescriptionRemoval;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -108,4 +109,114 @@ public class Aspects {
             return stack.getDisplayName();
         }
     }
+
+    /** Add/Remove/Set Aspects for entities **/
+    @ZenMethod
+    public static void addForEntity(String entityName, String aspects) {
+    	if(!EntityList.stringToClassMapping.containsKey(entityName))
+    	{
+    		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
+    		return;
+    	}
+        MineTweakerAPI.apply(new AddForEntity(entityName, aspects, false));
+    }
+
+    @ZenMethod
+    public static void setForEntity(String entityName, String aspects) {
+    	if(!EntityList.stringToClassMapping.containsKey(entityName))
+    	{
+    		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
+    		return;
+    	}
+        MineTweakerAPI.apply(new AddForEntity(entityName, aspects, true));
+    }
+
+    //Adds or sets Aspects
+    private static class AddForEntity extends BaseDescriptionAddition {
+        private final String entityName;
+        private final String aspects;
+        private final boolean replace;
+        private AspectList oldList;
+        private AspectList newList;
+
+        public AddForEntity(String entityName, String aspects, boolean replace) {
+            super("Aspects");
+            this.entityName = entityName;
+            this.aspects = aspects;
+            this.replace = replace;
+        }
+
+        @Override
+        public void apply() {
+            oldList = ThaumcraftHelper.getEntityAspects(entityName);
+            if (!replace) newList = ThaumcraftHelper.parseAspects(oldList, aspects);
+            else newList = ThaumcraftHelper.parseAspects(aspects);
+            ThaumcraftHelper.removeEntityAspects(entityName);
+            ThaumcraftApi.registerEntityTag(entityName, newList);
+        }
+
+        @Override
+        public void undo() {
+            ThaumcraftHelper.removeEntityAspects(entityName);
+            if (oldList != null)
+            	ThaumcraftApi.registerEntityTag(entityName, oldList);
+        }
+
+        @Override
+        public String getRecipeInfo() {
+            return entityName;
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+
+    @ZenMethod
+    public static void removeForEntity(String entityName, String aspects) {
+    	if(!EntityList.stringToClassMapping.containsKey(entityName))
+    	{
+    		MineTweakerAPI.getLogger().logError("No such entity "+entityName);
+    		return;
+    	}
+        MineTweakerAPI.apply(new RemoveForEntity(entityName, aspects));
+    }
+
+    private static class RemoveForEntity extends BaseDescriptionRemoval {
+        private final String entityName;
+        private final String aspects;
+        private AspectList oldList;
+        private AspectList newList;
+
+        public RemoveForEntity(String entityName, String aspects) {
+            super("Aspects");
+            this.entityName = entityName;
+            this.aspects = aspects;
+        }
+
+        @Override
+        public void apply() {
+            oldList = ThaumcraftHelper.getEntityAspects(entityName);
+            if (oldList != null) {
+                newList = ThaumcraftHelper.removeAspects(oldList, aspects);
+                ThaumcraftHelper.removeEntityAspects(entityName);
+            ThaumcraftApi.registerEntityTag(entityName, newList);
+            }
+        }
+
+        @Override
+        public boolean canUndo() {
+            return oldList != null;
+        }
+
+        @Override
+        public void undo() {
+            ThaumcraftHelper.removeEntityAspects(entityName);
+            ThaumcraftApi.registerEntityTag(entityName, oldList);
+        }
+
+        @Override
+        public String getRecipeInfo() {
+            return entityName;
+        }
+    }
+    
 }

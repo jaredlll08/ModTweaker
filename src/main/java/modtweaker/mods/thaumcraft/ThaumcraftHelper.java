@@ -2,9 +2,11 @@ package modtweaker.mods.thaumcraft;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import modtweaker.helpers.ReflectionHelper;
 import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApi.EntityTags;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
@@ -60,4 +62,23 @@ public class ThaumcraftHelper {
         }
         return null;
     }
+
+	public static AspectList getEntityAspects(String name) {
+		for(EntityTags tag : ThaumcraftApi.scanEntities)
+		{
+			if(tag.entityName==name && tag.nbts.length==0)
+				return tag.aspects;
+		}
+		return null;
+	}
+
+	public static void removeEntityAspects(String name) {
+		List<EntityTags> tags = ThaumcraftApi.scanEntities;
+		for(EntityTags tag : tags)
+		{
+			if(tag.entityName==name && tag.nbts.length==0)
+				ThaumcraftApi.scanEntities.remove(tag);
+		}
+	}
+
 }
