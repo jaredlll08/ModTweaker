@@ -7,7 +7,7 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import minetweaker.mc1710.MineTweakerMod;
-import modtweaker.commands.MobMappingLogger;
+import modtweaker.commands.EntityMappingLogger;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
@@ -93,7 +93,7 @@ public class ModTweaker {
 			}
 		});
 
-		MineTweakerAPI.server.addMineTweakerCommand("mobs", new String[] { "/minetweaker mobs", "    Outputs a list of mob class mapping keys" }, new MobMappingLogger());
+		MineTweakerAPI.server.addMineTweakerCommand("entities", new String[] { "/minetweaker entities", "    Outputs a list of entities class mapping keys" }, new EntityMappingLogger());
 
 		if (TweakerPlugin.isLoaded("Mekanism")) {
 			MineTweakerAPI.server.addMineTweakerCommand("gases", new String[] { "/minetweaker gases", "    Outputs a list of all gas names in the game to the minetweaker log" }, new GasLogger());

@@ -12,7 +12,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 
-public class MobMappingLogger implements ICommandFunction{
+public class EntityMappingLogger implements ICommandFunction{
 
     @Override
     public void execute(String[] arguments, IPlayer player) {
