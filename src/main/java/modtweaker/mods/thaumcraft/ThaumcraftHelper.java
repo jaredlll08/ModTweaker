@@ -31,7 +31,11 @@ public class ThaumcraftHelper {
     public static AspectList parseAspects(AspectList list, String str) {
     	AspectList output=new AspectList();
         if (list != null)
-        	output.add(list);
+        	for(Aspect aspect : list.getAspectsSortedAmount())
+        	{
+        		if(aspect!=null)
+        			output.add(aspect, list.getAmount(aspect));
+        	}
         if (str == null || str.equals("")) return list;
         String[] aspects = str.split(",");
         for (String aspect : aspects) {
@@ -46,7 +50,11 @@ public class ThaumcraftHelper {
     public static AspectList removeAspects(AspectList list, String str) {
     	AspectList output=new AspectList();
         if (list != null)
-        	output.add(list);
+        	for(Aspect aspect : list.getAspectsSortedAmount())
+        	{
+        		if(aspect!=null)
+        			output.add(aspect, list.getAmount(aspect));
+        	}
         String[] aspects = str.split(",");
         for (String aspect : aspects) {
             if (aspect.startsWith(" ")) aspect = aspect.replaceFirst(" ", "");
