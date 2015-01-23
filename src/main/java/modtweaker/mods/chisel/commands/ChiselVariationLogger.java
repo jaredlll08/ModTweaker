@@ -13,6 +13,7 @@ import com.cricketcraft.chisel.api.carving.ICarvingGroup;
 import com.cricketcraft.chisel.api.carving.ICarvingVariation;
 
 import net.minecraft.entity.EntityList;
+import net.minecraft.item.Item;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
@@ -46,7 +47,7 @@ public class ChiselVariationLogger implements ICommandFunction{
    		}
         System.out.println("Chisel Variations: " + variations.size());
         for (Entry<ICarvingVariation, ICarvingGroup>  entry: variations.entrySet()) {
-        	String stringedVariation=entry.getKey().getBlock().getUnlocalizedName()+" "+entry.getKey().getBlockMeta();
+        	String stringedVariation="<"+Item.itemRegistry.getNameForObject(Item.getItemFromBlock(entry.getKey().getBlock()))+":"+entry.getKey().getBlockMeta()+">";
         	if(arguments.length==0)
         		stringedVariation+=" "+entry.getValue().getName();
             System.out.println("Chisel Variation " + stringedVariation);

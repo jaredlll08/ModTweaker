@@ -17,12 +17,24 @@ public class ChiselHelper {
 	{
 		return CarvingUtils.getChiselRegistry().getGroup(name);
 	}
+	
 	public static ICarvingGroup getGroup(IItemStack stack)
 	{
 		return CarvingUtils.getChiselRegistry().getGroup(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage());
 	}
+	
 	public static ICarvingVariation getVariation(IItemStack stack)
 	{
 		return Carving.chisel.getVariation(Block.getBlockFromItem(toStack(stack).getItem()), stack.getDamage());
+	}
+
+	public static boolean groupContainsVariation(ICarvingGroup group, ICarvingVariation variation)
+	{
+		for(ICarvingVariation otherVariation : group.getVariations())
+		{
+			if(otherVariation.getBlock()==variation.getBlock() && otherVariation.getBlockMeta()==variation.getBlockMeta())
+				return true;
+		}
+		return false;
 	}
 }

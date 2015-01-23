@@ -30,7 +30,7 @@ public class AspectLogger implements ICommandFunction{
     		{
     			Item item=(Item)entry.getKey().get(i);
     			
-    			itemList.add("<"+item.itemRegistry.getNameForObject(item)+":"+entry.getKey().get(i+1)+">");
+    			itemList.add("<"+Item.itemRegistry.getNameForObject(item)+":"+entry.getKey().get(i+1)+">");
     		}
     		lines.add(itemList.toString()+": "+ThaumcraftHelper.aspectsToString(entry.getValue()));
     	}
