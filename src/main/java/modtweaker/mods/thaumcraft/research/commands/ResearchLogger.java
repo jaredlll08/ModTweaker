@@ -1,4 +1,4 @@
-package modtweaker.mods.thaumcraft.research;
+package modtweaker.mods.thaumcraft.research.commands;
 
 import static modtweaker.helpers.LogHelper.log;
 import static modtweaker.helpers.LogHelper.logPrinted;

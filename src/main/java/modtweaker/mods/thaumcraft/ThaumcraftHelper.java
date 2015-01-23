@@ -85,5 +85,16 @@ public class ThaumcraftHelper {
 				ThaumcraftApi.scanEntities.remove(tag);
 		}
 	}
-
+	
+	public static String aspectsToString(AspectList aspects)
+	{
+		System.out.println(aspects);
+		String output="";
+		for(Aspect aspect : aspects.getAspectsSortedAmount())
+		{
+			if(aspect!=null)
+				output+=aspect.getName()+" "+aspects.getAmount(aspect)+",";
+		}
+		return output;
+	}
 }
