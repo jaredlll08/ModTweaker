@@ -73,7 +73,7 @@ public class ThaumcraftHelper {
 	}
 
 	public static void removeEntityAspects(String name) {
-		List<EntityTags> tags = ThaumcraftApi.scanEntities;
+		List<EntityTags> tags = new ArrayList(ThaumcraftApi.scanEntities);
 		for(EntityTags tag : tags)
 		{
 			if(tag.entityName==name && tag.nbts.length==0)
