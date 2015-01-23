@@ -14,6 +14,9 @@ import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconPageLogger;
+import modtweaker.mods.chisel.Chisel;
+import modtweaker.mods.chisel.commands.ChiselGroupLogger;
+import modtweaker.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker.mods.exnihilo.ExNihilo;
 import modtweaker.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker.mods.factorization.Factorization;
@@ -74,6 +77,7 @@ public class ModTweaker {
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
+		TweakerPlugin.register("chisel", Chisel.class);
 
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
@@ -109,6 +113,12 @@ public class ModTweaker {
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
+		}
+
+
+		if (TweakerPlugin.isLoaded("chisel")) {
+			MineTweakerAPI.server.addMineTweakerCommand("chiselGroups", new String[] { "/minetweaker chiselGroups", "    Outputs a list of chisel groups" }, new ChiselGroupLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("chiselVariations", new String[] { "/minetweaker chiselVariations", "/minetweaker chiselVariations [GROUP]", "    Outputs a list of chisel variations" }, new ChiselVariationLogger());
 		}
 
 	}
