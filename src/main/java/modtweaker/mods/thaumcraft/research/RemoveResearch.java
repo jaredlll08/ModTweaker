@@ -35,7 +35,7 @@ public class RemoveResearch implements IUndoableAction {
 
     @Override
     public void undo() {
-        ResearchCategories.researchCategories.get(tab).research.put(tab, removed);
+        ResearchCategories.researchCategories.get(tab).research.put(key, removed);
     }
 
     @Override
