@@ -4,6 +4,7 @@ import static modtweaker.helpers.InputHelper.toObjects;
 import static modtweaker.helpers.InputHelper.toStack;
 import static modtweaker.helpers.StackHelper.areEqual;
 
+import com.cricketcraft.chisel.api.carving.CarvingUtils;
 import com.cricketcraft.chisel.api.carving.ICarvingGroup;
 import com.cricketcraft.chisel.api.carving.ICarvingVariation;
 
@@ -34,7 +35,7 @@ public class Groups {
     		MineTweakerAPI.getLogger().logError("Can't create variation from " + stack);
     		return;
     	}
-    	MineTweakerAPI.apply(new AddVariation(group,variation, stack.getDisplayName()));
+    	MineTweakerAPI.apply(new AddVariation(group,variation, stack.toString()));
     }
     
     static class AddVariation implements IUndoableAction {
@@ -51,7 +52,7 @@ public class Groups {
 
         @Override
     	public void apply() {
-        	group.addVariation(variation);
+        	CarvingUtils.getChiselRegistry().addVariation(group.getName(),variation);
     	}
 
     	@Override
@@ -71,7 +72,7 @@ public class Groups {
     	
     	@Override
     	public void undo() {
-    		group.removeVariation(variation.getBlock(),variation.getBlockMeta());
+    		CarvingUtils.getChiselRegistry().removeVariation(variation.getBlock(),variation.getBlockMeta());
     	}
     	
     	@Override
@@ -82,48 +83,37 @@ public class Groups {
 
 
     @ZenMethod
-    public static void removeVariation(String groupName, IItemStack stack) {
-    	ICarvingGroup group=ChiselHelper.getGroup(groupName);
+    public static void removeVariation(IItemStack stack) {
     	ICarvingVariation variation=ChiselHelper.getVariation(stack);
-    	if(group==null)
-    	{
-    		MineTweakerAPI.getLogger().logError("Cannot find group " + groupName);
-    		return;
-    	}
     	if(variation==null)
     	{
     		MineTweakerAPI.getLogger().logError("Can't find variation from " + stack);
     		return;
     	}
-    	if(!ChiselHelper.groupContainsVariation(group, variation))
-    	{
-    		MineTweakerAPI.getLogger().logError("Variation doesn't exist in group " + groupName);
-    		return;
-    	}
-    	MineTweakerAPI.apply(new RemoveVariation(group,variation, stack.getDisplayName()));
+    	MineTweakerAPI.apply(new RemoveVariation(variation, stack.toString()));
     }
     
     
     static class RemoveVariation implements IUndoableAction {
     	
-    	ICarvingGroup group;
     	ICarvingVariation variation;
     	String variationName;
+    	ICarvingGroup group;
 
-        public RemoveVariation(ICarvingGroup group,ICarvingVariation variation, String variationName) {
-            this.group=group;
+        public RemoveVariation(ICarvingVariation variation, String variationName) {
             this.variation=variation;
             this.variationName=variationName;
         }
 
         @Override
     	public void apply() {
-    		group.removeVariation(variation.getBlock(),variation.getBlockMeta());
+        	group=CarvingUtils.getChiselRegistry().getGroup(variation.getBlock(),variation.getBlockMeta());
+        	CarvingUtils.getChiselRegistry().removeVariation(variation.getBlock(),variation.getBlockMeta());
     	}
 
     	@Override
     	public boolean canUndo() {
-            return group != null && variation != null;
+            return group!= null && variation != null;
     	}
     	
     	@Override
@@ -138,7 +128,7 @@ public class Groups {
     	
     	@Override
     	public void undo() {
-        	group.addVariation(variation);
+    		CarvingUtils.getChiselRegistry().addVariation(group.getName(),variation);
     	}
     	
     	@Override
