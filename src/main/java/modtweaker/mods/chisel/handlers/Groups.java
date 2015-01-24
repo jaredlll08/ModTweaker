@@ -137,5 +137,105 @@ public class Groups {
     	}
     }
 
+    @ZenMethod
+    public static void addGroup(String groupName) {
+    	ICarvingGroup group=ChiselHelper.getGroup(groupName);
+    	if(group!=null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Group already exists " + groupName);
+    		return;
+    	}
+    	group=ChiselHelper.makeGroup(groupName);
+    	MineTweakerAPI.apply(new AddGroup(group));
+    }
+    
+    static class AddGroup implements IUndoableAction {
+    	
+    	ICarvingGroup group;
+
+        public AddGroup(ICarvingGroup group) {
+            this.group=group;
+        }
+
+        @Override
+    	public void apply() {
+        	CarvingUtils.getChiselRegistry().addGroup(group);
+    	}
+
+    	@Override
+    	public boolean canUndo() {
+            return group != null;
+    	}
+    	
+    	@Override
+    	public String describe() {
+            return "Adding Group: " + group.getName();
+    	}
+    	
+    	@Override
+    	public String describeUndo() {
+            return "Removing Group: " + group.getName();
+    	}
+    	
+    	@Override
+    	public void undo() {
+    		CarvingUtils.getChiselRegistry().removeGroup(group.getName());
+    	}
+    	
+    	@Override
+    	public Object getOverrideKey() {
+    		return null;
+    	}
+    }
+    
+    @ZenMethod
+    public static void removeGroup(String groupName) {
+    	ICarvingGroup group=ChiselHelper.getGroup(groupName);
+    	if(group==null)
+    	{
+    		MineTweakerAPI.getLogger().logError("Could not find group " + groupName);
+    		return;
+    	}
+    	MineTweakerAPI.apply(new RemoveGroup(group));
+    }
+    
+    static class RemoveGroup implements IUndoableAction {
+    	
+    	ICarvingGroup group;
+
+        public RemoveGroup(ICarvingGroup group) {
+            this.group=group;
+        }
+
+        @Override
+    	public void apply() {
+        	CarvingUtils.getChiselRegistry().removeGroup(group.getName());
+    	}
+
+    	@Override
+    	public boolean canUndo() {
+            return group != null;
+    	}
+    	
+    	@Override
+    	public String describe() {
+            return "Removing Group: " + group.getName();
+    	}
+    	
+    	@Override
+    	public String describeUndo() {
+            return "Adding Group: " + group.getName();
+    	}
+    	
+    	@Override
+    	public void undo() {
+    		CarvingUtils.getChiselRegistry().addGroup(group);
+    	}
+    	
+    	@Override
+    	public Object getOverrideKey() {
+    		return null;
+    	}
+    }
     
 }
