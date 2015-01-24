@@ -23,7 +23,7 @@ public class Groups {
     @ZenMethod
     public static void addVariation(String groupName, IItemStack stack) {
     	ICarvingGroup group=ChiselHelper.getGroup(groupName);
-    	ICarvingVariation variation=ChiselHelper.getVariation(stack);
+    	ICarvingVariation variation=ChiselHelper.makeVariation(stack);
     	if(group==null)
     	{
     		MineTweakerAPI.getLogger().logError("Cannot find group " + groupName);
@@ -31,7 +31,7 @@ public class Groups {
     	}
     	if(variation==null)
     	{
-    		MineTweakerAPI.getLogger().logError("Can create variation from " + stack);
+    		MineTweakerAPI.getLogger().logError("Can't create variation from " + stack);
     		return;
     	}
     	MineTweakerAPI.apply(new AddVariation(group,variation, stack.getDisplayName()));
