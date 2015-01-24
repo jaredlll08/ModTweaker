@@ -12,11 +12,11 @@ public class RemoveResearch implements IUndoableAction {
 
     public RemoveResearch(String victim) {
         key = victim;
-        tab = ThaumcraftHelper.getResearchTab(key);
     }
 
     @Override
     public void apply() {
+        tab = ThaumcraftHelper.getResearchTab(key);
         if (tab != null) {
             removed = ResearchCategories.researchCategories.get(tab).research.get(key);
             ResearchCategories.researchCategories.get(tab).research.remove(key);
