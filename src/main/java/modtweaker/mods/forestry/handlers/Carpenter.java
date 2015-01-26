@@ -54,6 +54,7 @@ public class Carpenter {
 	private static class Add extends BaseListAddition {
 		public Add(Recipe recipe) {
 			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
+			RecipeManager.recipeFluids.add(recipe.getLiquid().getFluid());
 		}
 	}
 
