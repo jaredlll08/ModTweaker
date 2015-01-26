@@ -28,6 +28,8 @@ import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineCarpenter.Recipe;
 import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
 
+import modtweaker.mods.forestry.ForestryHelper;
+
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {
 
@@ -52,9 +54,13 @@ public class Carpenter {
 	}
 
 	private static class Add extends BaseListAddition {
+
 		public Add(Recipe recipe) {
 			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
-			RecipeManager.recipeFluids.add(recipe.getLiquid().getFluid());
+			
+			//The Carpenter has a list of valid Fluids, access them via Relfection because of private
+			if (recipe.getLiquid() != null)
+				ForestryHelper.addCarpenterRecipeFluids(recipe.getLiquid().getFluid());
 		}
 	}
 
