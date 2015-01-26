@@ -3,7 +3,6 @@ package modtweaker.mods.forestry.handlers;
 import static modtweaker.helpers.InputHelper.toStack;
 import static modtweaker.helpers.InputHelper.toFluid;
 import static modtweaker.helpers.InputHelper.toStacks;
-import static modtweaker.helpers.LogHelper.print;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.recipes.ShapedRecipe;
 import minetweaker.mc1710.recipes.RecipeConverter;
-import modtweaker.helpers.InputHelper;
 import modtweaker.util.BaseListAddition;
 import modtweaker.util.BaseListRemoval;
 import net.minecraft.init.Blocks;
@@ -21,12 +19,12 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.RecipeManagers;
-import forestry.apiculture.FlowerProviderCacti;
 import forestry.core.utils.ShapedRecipeCustom;
 import forestry.factory.gadgets.MachineCarpenter;
-import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineCarpenter.Recipe;
 import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
+
+import modtweaker.mods.forestry.ForestryHelper;
 
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {
@@ -52,8 +50,13 @@ public class Carpenter {
 	}
 
 	private static class Add extends BaseListAddition {
+
 		public Add(Recipe recipe) {
 			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
+
+			//The Carpenter has a list of valid Fluids, access them via Relfection because of private
+			if (recipe.getLiquid() != null)
+				ForestryHelper.addCarpenterRecipeFluids(recipe.getLiquid().getFluid());
 		}
 	}
 
@@ -78,7 +81,6 @@ public class Carpenter {
 				}
 			}
 			RecipeManager.recipes.remove(recipe);
-
 		}
 
 	}
