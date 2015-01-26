@@ -53,6 +53,11 @@ public class ThermionicFabricator {
 	}
 
 	@ZenMethod
+	public static void removeCast(IItemStack product) {
+		MineTweakerAPI.apply(new RemoveCastings(toStack(product)));
+	}
+
+	@ZenMethod
 	public static void removeCasts(IItemStack product) {
 		MineTweakerAPI.apply(new RemoveCastings(toStack(product)));
 	}
