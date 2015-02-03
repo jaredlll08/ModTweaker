@@ -30,7 +30,6 @@ public class Orechid {
 
         @Override
         public void apply() {
-
             BotaniaAPI.addOreWeight(oreDict, weight);
         }
 

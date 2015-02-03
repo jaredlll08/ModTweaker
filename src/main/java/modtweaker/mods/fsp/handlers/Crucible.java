@@ -76,6 +76,11 @@ public class Crucible {
             super("FSP Crucible Melting", SteamcraftRegistry.smeltThings, key);
             this.stack = stack;
         }
+        
+        public void apply(){
+        	SteamcraftRegistry.smeltThings.remove(stack);
+        	MutablePair<String, Integer> pair;
+        }
 
         @Override
         public String getRecipeInfo() {

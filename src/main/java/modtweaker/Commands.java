@@ -5,6 +5,7 @@ import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker.commands.EntityMappingLogger;
 import modtweaker.mods.botania.commands.BotaniaBrewLogger;
+import modtweaker.mods.botania.commands.BotaniaOrchidLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
@@ -26,8 +27,8 @@ public class Commands {
 			}
 		});
 
-		MineTweakerAPI.server.addMineTweakerCommand("entities", new String[] { "/minetweaker entities", "    Outputs a list of entities class mapping keys" }, new EntityMappingLogger());
-
+		MineTweakerAPI.server.addMineTweakerCommand("entities", new String[] { "/minetweaker entities", "    Outputs a list of entities class mapping keys and the entity IDs" }, new EntityMappingLogger());
+		
 		if (TweakerPlugin.isLoaded("Mekanism")) {
 			MineTweakerAPI.server.addMineTweakerCommand("gases", new String[] { "/minetweaker gases", "    Outputs a list of all gas names in the game to the minetweaker log" }, new GasLogger());
 		}
@@ -47,6 +48,7 @@ public class Commands {
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("botaniaOrchids", new String[] { "/minetweaker botaniaOrchids", "    Outputs a list of keys for botania orchid weights" }, new BotaniaOrchidLogger());
 		}
 
 

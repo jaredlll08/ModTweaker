@@ -18,12 +18,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import forestry.Forestry;
+import forestry.api.core.ForestryAPI;
 import forestry.api.recipes.RecipeManagers;
+import forestry.core.utils.RecipeUtil;
 import forestry.core.utils.ShapedRecipeCustom;
 import forestry.factory.gadgets.MachineCarpenter;
 import forestry.factory.gadgets.MachineCarpenter.Recipe;
 import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
-
 import modtweaker.mods.forestry.ForestryHelper;
 
 @ZenClass("mods.forestry.Carpenter")
