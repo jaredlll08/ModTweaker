@@ -14,11 +14,11 @@ public class ForestryHelper {
 		Class clazz;
 		try {
 			clazz = Class.forName("forestry.factory.gadgets.MachineCarpenter$RecipeManager");
-			Field field_box = clazz.getDeclaredField("list");
+			Field field_box = clazz.getDeclaredField("box");
 			field_box.setAccessible(true);
 
-			ArrayList<ItemStack> recipeFluids = (ArrayList<ItemStack>) field_box.get(clazz);
-			recipeFluids.add(box);
+			ArrayList<ItemStack> recipeBoxes = (ArrayList<ItemStack>) field_box.get(clazz);
+			recipeBoxes.add(box);
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
