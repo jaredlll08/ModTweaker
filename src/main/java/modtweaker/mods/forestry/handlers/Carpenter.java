@@ -56,10 +56,20 @@ public class Carpenter {
 		public Add(Recipe recipe) {
 			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
 
-			//The Carpenter has a list of valid Fluids, access them via Relfection because of private
+			// The Carpenter has a list of valid Fluids, access them via
+			// Relfection because of private
 			if (recipe.getLiquid() != null)
 				ForestryHelper.addCarpenterRecipeFluids(recipe.getLiquid().getFluid());
+
+			if(!RecipeManager.isBox(recipe.getBox())){
+				ForestryHelper.addCarpenterRecipeBox(recipe.getBox());
+			}
 		}
+
+		public void apply() {
+			Recipe r = (MachineCarpenter.Recipe)recipe;
+		}
+
 	}
 
 	@ZenMethod

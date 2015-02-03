@@ -11,15 +11,15 @@ import minetweaker.api.server.ICommandFunction;
 import modtweaker.mods.botania.BotaniaHelper;
 import net.minecraft.entity.EntityList;
 
-public class BotaniaOrchidLogger implements ICommandFunction {
+public class BotaniaOrechidLogger implements ICommandFunction {
 
 	@Override
 	public void execute(String[] arguments, IPlayer player) {
 
 		Set<String> keys = BotaniaAPI.oreWeights.keySet();
-		System.out.println("Orchid Keys: " + keys.size());
+		System.out.println("Orechid Keys: " + keys.size());
 		for (String str : BotaniaAPI.oreWeights.keySet()) {
-			System.out.println("Orchid Key: " + str);
+			System.out.println("Orechid Key: " + str);
 			MineTweakerAPI.logCommand(str + ": " + BotaniaAPI.oreWeights.get(str) + "\n");
 		}
 

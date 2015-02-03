@@ -5,7 +5,7 @@ import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker.commands.EntityMappingLogger;
 import modtweaker.mods.botania.commands.BotaniaBrewLogger;
-import modtweaker.mods.botania.commands.BotaniaOrchidLogger;
+import modtweaker.mods.botania.commands.BotaniaOrechidLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconEntryLogger;
 import modtweaker.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
@@ -48,7 +48,7 @@ public class Commands {
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
 			MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
-			MineTweakerAPI.server.addMineTweakerCommand("botaniaOrchid", new String[] { "/minetweaker botaniaOrchid", "    Outputs a list of keys for botania orchid weights" }, new BotaniaOrchidLogger());
+			MineTweakerAPI.server.addMineTweakerCommand("botaniaOrchid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
 		}
 
 
