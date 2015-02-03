@@ -63,11 +63,13 @@ public class Hammer {
 			boolean found = false;
 			Iterator<Smashable> smashables = HammerRegistry.rewards.iterator();
 			while (!found && smashables.hasNext()) {
+
 				Smashable reward = smashables.next();
-				if (reward.source == Block.getBlockFromItem(stack.getItem())) {
-					reward.source = Blocks.air;
-					found = true;
-				}
+				if (reward != null && reward.source != null && Block.getBlockFromItem(stack.getItem()) != null)
+					if (reward.source == Block.getBlockFromItem(stack.getItem())) {
+						reward.source = Blocks.air;
+						found = true;
+					}
 			}
 
 			// for (Smashable r : HammerRegistry.rewards.) {
