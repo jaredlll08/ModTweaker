@@ -14,7 +14,7 @@ public class ForestryHelper {
 		Class clazz;
 		try {
 			clazz = Class.forName("forestry.factory.gadgets.MachineCarpenter$RecipeManager");
-			Field field_box = clazz.getDeclaredField("box");
+			Field field_box = clazz.getDeclaredField("boxes");
 			field_box.setAccessible(true);
 
 			ArrayList<ItemStack> recipeBoxes = (ArrayList<ItemStack>) field_box.get(clazz);
