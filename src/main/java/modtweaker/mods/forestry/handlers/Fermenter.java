@@ -56,7 +56,7 @@ public class Fermenter {
 		public void apply() {
 			ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 			for (Recipe r : RecipeManager.recipes) {
-				if (r.resource != null && r.resource.isItemEqual(stack)) {
+				if (r != null && r.resource != null && r.resource.isItemEqual(stack)) {
 					recipes.add(r);
 
 				}
