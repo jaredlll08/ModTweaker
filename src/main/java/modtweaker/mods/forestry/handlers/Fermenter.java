@@ -4,6 +4,7 @@ import static modtweaker.helpers.InputHelper.getFluid;
 import static modtweaker.helpers.InputHelper.toFluid;
 import static modtweaker.helpers.InputHelper.toStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
@@ -53,13 +54,13 @@ public class Fermenter {
 
 		@Override
 		public void apply() {
-			for (Recipe r : RecipeManager.recipes) {
+			ArrayList<Recipe> recipes = RecipeManager.recipes;
+			for (Recipe r : recipes) {
 				if (r.resource != null && r.resource.isItemEqual(stack)) {
 					recipe = r;
-					break;
+					RecipeManager.recipes.remove(recipe);
 				}
 			}
-			RecipeManager.recipes.remove(recipe);
 
 		}
 
