@@ -66,10 +66,10 @@ public class Carpenter {
 			}
 		}
 
-		public void apply() {
-			Recipe r = (MachineCarpenter.Recipe)recipe;
+		@Override
+		public String getRecipeInfo(){
+			return ((MachineCarpenter.Recipe) recipe).getCraftingResult().getDisplayName();
 		}
-
 	}
 
 	@ZenMethod
@@ -95,5 +95,9 @@ public class Carpenter {
 			RecipeManager.recipes.remove(recipe);
 		}
 
+		@Override
+		public String getRecipeInfo(){
+			return ((MachineCarpenter.Recipe) recipe).getCraftingResult().getDisplayName();
+		}
 	}
 }
