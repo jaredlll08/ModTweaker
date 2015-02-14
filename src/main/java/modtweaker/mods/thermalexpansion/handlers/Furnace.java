@@ -30,11 +30,11 @@ public class Furnace {
         }
 
         public void apply() {
-            applied = FurnaceManager.addRecipe(energy, input, output, false);
+            FurnaceManager.addRecipe(energy, input, output, false);
         }
 
         public boolean canUndo() {
-            return input != null && applied;
+            return input != null;
         }
 
         public String describe() {
@@ -69,7 +69,6 @@ public class Furnace {
         public Remove(ItemStack inp) {
             input = inp;
         }
-
         public void apply() {
             removed = FurnaceManager.getRecipe(input);
             FurnaceManager.removeRecipe(input);
