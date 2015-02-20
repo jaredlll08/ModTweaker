@@ -98,11 +98,12 @@ public class Vat {
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
 	private static class Remove extends BaseListRemoval {
-		private final FluidStack fluid;
+		private FluidStack fluid = null;
 
 		public Remove(ItemStack stack, FluidStack fluid) {
 			super("Mariculture Vat", MaricultureHandlers.vat.getRecipes(), stack);
-			this.fluid = fluid;
+			if (fluid != null)
+				this.fluid = fluid;
 		}
 
 		// Loops through the registry, to find the item that matches, saves that

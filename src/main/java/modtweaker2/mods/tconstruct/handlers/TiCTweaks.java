@@ -20,17 +20,6 @@ import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.tconstruct.Tweaks")
 public class TiCTweaks {
-	// Set the maximum RF
-	@ZenMethod
-	public static void setRFCapacity(String tool, int capacity) {
-		MineTweakerAPI.apply(new AdjustRF(tool, capacity));
-	}
-
-	private static class AdjustRF extends BaseSetVar {
-		public AdjustRF(String tool, int newValue) {
-			super("RF Maximum for Tinkers Tools", ToolCore.class, ReflectionHelper.getStaticObject(TinkerTools.class, tool), "capacity", 400000, newValue);
-		}
-	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
