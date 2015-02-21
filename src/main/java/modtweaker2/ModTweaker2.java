@@ -2,7 +2,6 @@ package modtweaker2;
 
 import java.io.File;
 
-import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.botania.Botania;
 import modtweaker2.mods.chisel.Chisel;
