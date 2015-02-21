@@ -2,6 +2,9 @@ package modtweaker2;
 
 import java.io.File;
 
+import minetweaker.MineTweakerImplementationAPI;
+import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
+import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.botania.Botania;
 import modtweaker2.mods.chisel.Chisel;
@@ -76,6 +79,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
+		MinecraftForge.EVENT_BUS.register(new modtweaker2.EventHandler());
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
@@ -92,5 +96,12 @@ public class ModTweaker2 {
 	public void serverStart(FMLServerStartingEvent event) {
 		logger.info("Starting ServerStart for " + ModProps.modid);
 		Commands.registerCommands();
+		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
+
+			@Override
+			public void handle(ReloadEvent arg0) {
+				Commands.registerCommands();
+			}
+		});
 	}
 }

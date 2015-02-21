@@ -2,9 +2,12 @@ package modtweaker2;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import minetweaker.MineTweakerAPI;
+import minetweaker.MineTweakerImplementationAPI;
+import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import minetweaker.mc1710.MineTweakerMod;
+import minetweaker.util.IEventHandler;
 import modtweaker2.commands.EntityMappingLogger;
 import modtweaker2.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;
@@ -21,9 +24,8 @@ import modtweaker2.mods.thaumcraft.research.commands.ResearchLogger;
 import modtweaker2.util.TweakerPlugin;
 
 public class Commands {
-	
+
 	public static void registerCommands() {
-		
 		registerMineTweakerCommand("tooltips", new String[] { "/minetweaker tooltips", "    Adds tooltips to all items ingame with their mt script name, press ctrl on an item to print to the log" }, new ICommandFunction() {
 			@Override
 			public void execute(String[] arguments, IPlayer player) {
