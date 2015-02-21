@@ -77,7 +77,6 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
-		MinecraftForge.EVENT_BUS.register(new TweakEventHandler());
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
