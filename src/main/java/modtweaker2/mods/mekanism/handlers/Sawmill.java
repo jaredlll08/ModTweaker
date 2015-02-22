@@ -23,7 +23,6 @@ public class Sawmill {
     public static void addRecipe(IItemStack input, IItemStack output1, @Optional IItemStack output2, @Optional double chance) {
         ChanceOutput chanceOutput = new ChanceOutput(toStack(output1), toStack(output2), chance);
         MineTweakerAPI.apply(new AddMekanismRecipe("PRECISION_SAWMILL", Recipe.PRECISION_SAWMILL.get(), toStack(input), chanceOutput));
-        Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
     }
 
     @ZenMethod

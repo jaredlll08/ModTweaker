@@ -19,10 +19,9 @@ public class Inscriber {
 	@ZenMethod
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, boolean usePlates) {
 		MineTweakerAPI.apply(new Add(new InscriberRecipe(toStacks(imprintable), toStack(plateA), toStack(plateB), toStack(out), usePlates)));
-		Inscribe.inputs.add(toStack(imprintable[0]));
-		Inscribe.inputs.add(toStack(imprintable[1]));
-		Inscribe.inputs.add(toStack(plateA));
-		Inscribe.inputs.add(toStack(plateB));
+		for (IItemStack stack : imprintable) {
+			Inscribe.inputs.add(toStack(stack));
+		}
 		Inscribe.plates.add(toStack(plateA));
 		Inscribe.plates.add(toStack(plateB));
 	}
