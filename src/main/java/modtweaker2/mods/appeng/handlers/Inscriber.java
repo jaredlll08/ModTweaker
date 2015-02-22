@@ -54,7 +54,7 @@ public class Inscriber {
 		public void apply() {
 			ArrayList<InscriberRecipe> recipesToRemove = new ArrayList<Inscribe.InscriberRecipe>();
 			for (InscriberRecipe recipe : Inscribe.recipes) {
-				if (recipe.output.isItemEqual(stack)) {
+				if (recipe !=null && recipe.output !=null && recipe.output.isItemEqual(stack)) {
 					recipesToRemove.add(recipe);
 				}
 			}
