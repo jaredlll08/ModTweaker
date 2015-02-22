@@ -62,6 +62,8 @@ public class ModTweaker2 {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		logger.info("Starting Initialization for " + ModProps.modid);
+		
+		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
 		TweakerPlugin.register("Botania", Botania.class);
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
@@ -78,7 +80,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
-		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
+		
 		MinecraftForge.EVENT_BUS.register(new modtweaker2.EventHandler());
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
