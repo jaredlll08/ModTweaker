@@ -1,16 +1,18 @@
 package modtweaker2.mods.thermalexpansion;
 
+import static modtweaker2.helpers.ReflectionHelper.getConstructor;
+import static modtweaker2.helpers.ReflectionHelper.getStaticObject;
+
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static modtweaker2.helpers.ReflectionHelper.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
-import thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
+import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
 public class ThermalHelper {
     private static Map<List, RecipeSmelter> smelter;

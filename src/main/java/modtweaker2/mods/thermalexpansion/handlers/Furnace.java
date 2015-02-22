@@ -1,15 +1,14 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import thermalexpansion.util.crafting.FurnaceManager;
-import thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
+import cofh.thermalexpansion.util.crafting.FurnaceManager;
+import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
 @ZenClass("mods.thermalexpansion.Furnace")
 public class Furnace {

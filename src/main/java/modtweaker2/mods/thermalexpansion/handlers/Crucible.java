@@ -1,5 +1,7 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.mods.thermalexpansion.ThermalHelper.removeCrucibleRecipe;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
@@ -9,10 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import thermalexpansion.util.crafting.CrucibleManager;
-import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
+import cofh.thermalexpansion.util.crafting.CrucibleManager;
+import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 
 @ZenClass("mods.thermalexpansion.Crucible")
 public class Crucible {

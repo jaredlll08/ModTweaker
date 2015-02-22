@@ -1,5 +1,7 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +14,8 @@ import modtweaker2.util.BaseDescriptionRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cofh.lib.inventory.ComparableItemStackSafe;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
+import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 @ZenClass("mods.thermalexpansion.Smelter")
 public class Smelter {

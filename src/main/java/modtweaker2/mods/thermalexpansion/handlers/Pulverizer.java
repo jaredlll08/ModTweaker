@@ -1,15 +1,14 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import thermalexpansion.util.crafting.PulverizerManager;
-import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
+import cofh.thermalexpansion.util.crafting.PulverizerManager;
+import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
 @ZenClass("mods.thermalexpansion.Pulverizer")
 public class Pulverizer {
