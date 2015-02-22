@@ -13,7 +13,7 @@ import vazkii.botania.api.recipe.RecipeRuneAltar;
 import static modtweaker2.helpers.InputHelper.*;
 import static modtweaker2.helpers.StackHelper.*;
 
-@ZenClass("")
+@ZenClass("mods.botania.RuneAlter")
 public class RuneAltar {
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient[] input, int mana) {

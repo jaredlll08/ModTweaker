@@ -13,7 +13,7 @@ import appeng.recipes.handlers.Inscribe;
 import appeng.recipes.handlers.Inscribe.InscriberRecipe;
 import static modtweaker2.helpers.InputHelper.*;
 
-@ZenClass("mods.appeng.inscriber")
+@ZenClass("mods.appeng.Inscriber")
 public class Inscriber {
 
 	@ZenMethod
