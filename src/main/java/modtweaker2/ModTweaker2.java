@@ -6,6 +6,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
+import modtweaker2.mods.auracascade.AuraCascade;
 import modtweaker2.mods.botania.Botania;
 import modtweaker2.mods.chisel.Chisel;
 import modtweaker2.mods.exnihilo.ExNihilo;
@@ -80,6 +81,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
+		TweakerPlugin.register("aura", AuraCascade.class);
 		
 		MinecraftForge.EVENT_BUS.register(new modtweaker2.EventHandler());
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {

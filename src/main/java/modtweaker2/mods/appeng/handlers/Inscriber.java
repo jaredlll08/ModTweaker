@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.mods.auracascade.aura.IAuraStack;
 import modtweaker2.util.BaseListAddition;
 import modtweaker2.util.BaseListRemoval;
 import net.minecraft.item.ItemStack;
