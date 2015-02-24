@@ -96,7 +96,7 @@ public class Crusher {
         ItemStack[] inputList = MetallurgyHelper.crusherInputList.get(output.getUnlocalizedName());
         ItemStack[] newList = new ItemStack[inputList.length - 1];
         if (newList.length >= 1) {
-            for (int i = 0; i < inputList.length; i++) {
+            for (int i = 0; i < newList.length; i++) {
                 if (switched || (areEqual(inputList[i], input))) {
                     switched = true;
                     newList[i] = inputList[i + 1];

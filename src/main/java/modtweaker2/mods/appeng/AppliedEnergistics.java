@@ -7,6 +7,6 @@ public class AppliedEnergistics {
 
 	public AppliedEnergistics() {
 		MineTweakerAPI.registerClass(Inscriber.class);
-	}
+		}
 
 }

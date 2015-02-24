@@ -9,6 +9,7 @@ import minetweaker.api.server.ICommandFunction;
 import minetweaker.mc1710.MineTweakerMod;
 import minetweaker.util.IEventHandler;
 import modtweaker2.commands.EntityMappingLogger;
+import modtweaker2.mods.auracascade.aura.AuraLogger;
 import modtweaker2.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconCategoryLogger;
@@ -61,11 +62,14 @@ public class Commands {
 			registerMineTweakerCommand("chiselGroups", new String[] { "/minetweaker chiselGroups", "    Outputs a list of chisel groups" }, new ChiselGroupLogger());
 			registerMineTweakerCommand("chiselVariations", new String[] { "/minetweaker chiselVariations", "/minetweaker chiselVariations [GROUP]", "    Outputs a list of chisel variations" }, new ChiselVariationLogger());
 		}
+		if(TweakerPlugin.isLoaded("aura")){
+			registerMineTweakerCommand("auras", new String[]{"/minetweaker auras", "Outputs a list of Aura Types"}, new AuraLogger());
+		}
 
 	}
 
 	private static void registerMineTweakerCommand(String commandName, String[] usages, ICommandFunction commandFunction) {
 		MineTweakerAPI.server.addMineTweakerCommand(commandName, usages, commandFunction);
-		ModTweaker2.logger.info("Registering command " + commandName + ".");
+		ModTweaker2.logger.info("\nRegistering command " + commandName + ".");
 	}
 }

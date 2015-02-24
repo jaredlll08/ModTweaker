@@ -1,5 +1,7 @@
 package modtweaker2.mods.thaumcraft.handlers;
 
+import java.util.ArrayList;
+
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -57,13 +59,17 @@ public class Arcane {
 
 		@Override
 		public void apply() {
+			ArrayList<IArcaneRecipe> recipesToRemove = new ArrayList<IArcaneRecipe>();
 			for (Object o : ThaumcraftApi.getCraftingRecipes()) {
-				if (o instanceof IArcaneRecipe) {
+				if (o != null && o instanceof IArcaneRecipe) {
 					IArcaneRecipe r = (IArcaneRecipe) o;
 					if (r.getRecipeOutput() != null && r.getRecipeOutput().isItemEqual(stack)) {
-						ThaumcraftApi.getCraftingRecipes().remove(r);
+						recipesToRemove.add(r);
 					}
 				}
+			}
+			for (IArcaneRecipe r : recipesToRemove) {
+				ThaumcraftApi.getCraftingRecipes().remove(r);
 			}
 
 		}
