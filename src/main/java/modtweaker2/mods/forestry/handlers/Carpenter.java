@@ -89,7 +89,7 @@ public class Carpenter {
 
 		@Override
 		public String getRecipeInfo(){
-			return ((MachineCarpenter.Recipe) recipe).getCraftingResult().getDisplayName();
+			return "Removed recipe for: " + stack.getDisplayName();
 		}
 	}
 }

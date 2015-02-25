@@ -1,5 +1,7 @@
 package modtweaker2.mods.railcraft.handlers;
 
+import appeng.recipes.game.ShapedRecipe;
+import appeng.recipes.game.ShapelessRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -7,7 +9,10 @@ import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.util.BaseCraftingAddition;
 import modtweaker2.util.BaseCraftingRemoval;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import static modtweaker2.helpers.InputHelper.*;
@@ -32,12 +37,14 @@ public class RollingMachine {
 
         @Override
         public void applyShaped() {
-            RailcraftCraftingManager.rollingMachine.addRecipe(output, recipe);
+//            RailcraftCraftingManager.rollingMachine.addRecipe(output, recipe);
+            RailcraftHelper.rolling.add(new ShapedRecipe(output, recipe));
         }
 
         @Override
         public void applyShapeless() {
-            RailcraftCraftingManager.rollingMachine.addShapelessRecipe(output, recipe);
+//            RailcraftCraftingManager.rollingMachine.addShapelessRecipe(output, recipe);
+           RailcraftHelper.rolling.add(new ShapelessRecipe(output, recipe));
         }
     }
 

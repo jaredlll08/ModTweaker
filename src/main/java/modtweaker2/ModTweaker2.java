@@ -83,11 +83,10 @@ public class ModTweaker2 {
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
 		
-		MinecraftForge.EVENT_BUS.register(new modtweaker2.EventHandler());
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
-
+		
 	}
 
 	@EventHandler

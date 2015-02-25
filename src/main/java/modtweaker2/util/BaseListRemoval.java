@@ -2,6 +2,7 @@ package modtweaker2.util;
 
 import java.util.List;
 
+import stanhebben.zenscript.annotations.ZenMethod;
 import minetweaker.IUndoableAction;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,15 +10,19 @@ import net.minecraftforge.fluids.FluidStack;
 public abstract class BaseListRemoval implements IUndoableAction {
     protected final String description;
     protected final List list;
-    protected final FluidStack fluid;
+
+	protected final FluidStack fluid;
     protected final ItemStack stack;
     protected Object recipe;
+    
+    public static List listToRemove;
 
     public BaseListRemoval(String description, List list, ItemStack stack, FluidStack fluid) {
         this.list = list;
         this.stack = stack;
         this.description = description;
         this.fluid = fluid;
+        listToRemove = list;
     }
 
     public BaseListRemoval(String description, List list, ItemStack stack) {
@@ -39,7 +44,7 @@ public abstract class BaseListRemoval implements IUndoableAction {
     public BaseListRemoval(String description, List list) {
         this(description, list, null, null);
     }
-
+    
 
 	@Override
     public boolean canUndo() {
