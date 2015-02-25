@@ -21,21 +21,21 @@ public class Inscriber {
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, boolean usePlates) {
 		MineTweakerAPI.apply(new Add(new InscriberRecipe(toStacks(imprintable), toStack(plateA), toStack(plateB), toStack(out), usePlates)));
 		for (IItemStack stack : imprintable) {
-			Inscribe.inputs.add(toStack(stack));
+			Inscribe.INPUTS.add(toStack(stack));
 		}
-		Inscribe.plates.add(toStack(plateA));
-		Inscribe.plates.add(toStack(plateB));
+		Inscribe.PLATES.add(toStack(plateA));
+		Inscribe.PLATES.add(toStack(plateB));
 	}
 
 	public static class Add extends BaseListAddition {
 
 		public Add(InscriberRecipe recipe) {
-			super(recipe.toString(), Inscribe.recipes, recipe);
+			super(recipe.toString(), Inscribe.RECIPES, recipe);
 		}
 
 		@Override
 		public void apply() {
-			Inscribe.recipes.add((InscriberRecipe) recipe);
+			Inscribe.RECIPES.add((InscriberRecipe) recipe);
 		}
 
 	}
@@ -49,19 +49,19 @@ public class Inscriber {
 
 		public Remove(ItemStack stack) {
 
-			super(stack.getUnlocalizedName(), Inscribe.recipes, stack);
+			super(stack.getUnlocalizedName(), Inscribe.RECIPES, stack);
 		}
 
 		@Override
 		public void apply() {
 			ArrayList<InscriberRecipe> recipesToRemove = new ArrayList<Inscribe.InscriberRecipe>();
-			for (InscriberRecipe recipe : Inscribe.recipes) {
+			for (InscriberRecipe recipe : Inscribe.RECIPES) {
 				if (recipe != null && recipe.output != null && recipe.output.isItemEqual(stack)) {
 					recipesToRemove.add(recipe);
 				}
 			}
 			for (InscriberRecipe recipe : recipesToRemove) {
-				Inscribe.recipes.remove(recipe);
+				Inscribe.RECIPES.remove(recipe);
 			}
 		}
 
