@@ -15,14 +15,11 @@ public abstract class BaseListRemoval implements IUndoableAction {
     protected final ItemStack stack;
     protected Object recipe;
     
-    public static List listToRemove;
-
     public BaseListRemoval(String description, List list, ItemStack stack, FluidStack fluid) {
         this.list = list;
         this.stack = stack;
         this.description = description;
         this.fluid = fluid;
-        listToRemove = list;
     }
 
     public BaseListRemoval(String description, List list, ItemStack stack) {

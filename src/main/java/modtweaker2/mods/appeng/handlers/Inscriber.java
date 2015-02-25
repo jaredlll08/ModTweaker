@@ -4,7 +4,6 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -17,7 +16,7 @@ import appeng.recipes.handlers.Inscribe;
 import appeng.recipes.handlers.Inscribe.InscriberRecipe;
 
 @ZenClass("mods.appeng.Inscriber")
-public class Inscriber{
+public class Inscriber {
 	@ZenMethod
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, boolean usePlates) {
 		MineTweakerAPI.apply(new Add(new InscriberRecipe(toStacks(imprintable), toStack(plateA), toStack(plateB), toStack(out), usePlates)));
@@ -49,16 +48,15 @@ public class Inscriber{
 	public static class Remove extends BaseListRemoval {
 
 		public Remove(ItemStack stack) {
-			
+
 			super(stack.getUnlocalizedName(), Inscribe.recipes, stack);
-			listToRemove = list;
 		}
 
 		@Override
 		public void apply() {
 			ArrayList<InscriberRecipe> recipesToRemove = new ArrayList<Inscribe.InscriberRecipe>();
 			for (InscriberRecipe recipe : Inscribe.recipes) {
-				if (recipe !=null && recipe.output !=null && recipe.output.isItemEqual(stack)) {
+				if (recipe != null && recipe.output != null && recipe.output.isItemEqual(stack)) {
 					recipesToRemove.add(recipe);
 				}
 			}
@@ -66,8 +64,6 @@ public class Inscriber{
 				Inscribe.recipes.remove(recipe);
 			}
 		}
-
-		
 
 	}
 
