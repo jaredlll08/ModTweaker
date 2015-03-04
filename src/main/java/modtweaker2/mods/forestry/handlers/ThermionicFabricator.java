@@ -112,10 +112,10 @@ public class ThermionicFabricator {
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.asIRecipe().getRecipeOutput() != null && r.asIRecipe().getRecipeOutput().isItemEqual(stack)) {
-					RecipeManager.recipes.remove(r);
 					recipe = r;
 				}
 			}
+			RecipeManager.recipes.remove(recipe);
 		}
 
 		@Override
