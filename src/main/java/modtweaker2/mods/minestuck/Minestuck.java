@@ -6,6 +6,6 @@ import modtweaker2.mods.minestuck.handlers.*;
 public class Minestuck {
 	public Minestuck() {
 		MineTweakerAPI.registerClass(Alchemy.class);
-//		MineTweakerAPI.registerClass(Combinations.class);
+		MineTweakerAPI.registerClass(Combinations.class);
 	}
 }
