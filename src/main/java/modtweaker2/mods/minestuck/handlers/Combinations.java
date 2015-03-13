@@ -18,38 +18,38 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Combinations {
 	
 	@ZenMethod
-	public void addRecipe(IItemStack input1, boolean useDamage1, IItemStack input2, boolean useDamage2, boolean mode, IItemStack output) {
+	public static void addRecipe(IItemStack input1, IItemStack input2, boolean mode, IItemStack output) {
 		ItemStack stack1 = InputHelper.toStack(input1);
 		ItemStack stack2 = InputHelper.toStack(input2);
-		MineTweakerAPI.apply(new SetRecipe(stack1.getItem(), useDamage1 ? stack1.getItemDamage() : OreDictionary.WILDCARD_VALUE, stack2.getItem(), useDamage2 ? stack2.getItemDamage() : OreDictionary.WILDCARD_VALUE, mode, InputHelper.toStack(output)));
+		MineTweakerAPI.apply(new SetRecipe(stack1.getItem(), stack1.getItemDamage(), stack2.getItem(), stack2.getItemDamage(), mode, InputHelper.toStack(output)));
 	}
 	
 	@ZenMethod
-	public void addOreDictRecipe(IItemStack input1, boolean useDamage, String input2, boolean mode, IItemStack output) {
+	public static void addOreDictRecipe(IItemStack input1, String input2, boolean mode, IItemStack output) {
 		ItemStack stack = InputHelper.toStack(input1);
-		MineTweakerAPI.apply(new SetRecipe(stack.getItem(), useDamage ? stack.getItemDamage() : OreDictionary.WILDCARD_VALUE, input2, OreDictionary.WILDCARD_VALUE, mode, InputHelper.toStack(output)));
+		MineTweakerAPI.apply(new SetRecipe(stack.getItem(), stack.getItemDamage(), input2, OreDictionary.WILDCARD_VALUE, mode, InputHelper.toStack(output)));
 	}
 	
 	@ZenMethod
-	public void addFullOreDictRecipe(String input1, String input2, boolean mode, IItemStack output) {
+	public static void addFullOreDictRecipe(String input1, String input2, boolean mode, IItemStack output) {
 		MineTweakerAPI.apply(new SetRecipe(input1, OreDictionary.WILDCARD_VALUE, input2, OreDictionary.WILDCARD_VALUE, mode, InputHelper.toStack(output)));
 	}
 	
 	@ZenMethod
-	public void removeRecipe(IItemStack input1, boolean useDamage1, IItemStack input2, boolean useDamage2, boolean mode) {
+	public static void removeRecipe(IItemStack input1, IItemStack input2,  boolean mode) {
 		ItemStack stack1 = InputHelper.toStack(input1);
 		ItemStack stack2 = InputHelper.toStack(input2);
-		MineTweakerAPI.apply(new SetRecipe(stack1.getItem(), useDamage1 ? stack1.getItemDamage() : OreDictionary.WILDCARD_VALUE, stack2.getItem(), useDamage2 ? stack2.getItemDamage() : OreDictionary.WILDCARD_VALUE, mode, null));
+		MineTweakerAPI.apply(new SetRecipe(stack1.getItem(), stack1.getItemDamage(), stack2.getItem(), stack2.getItemDamage(), mode, null));
 	}
 	
 	@ZenMethod
-	public void removeOreDictRecipe(IItemStack input1, boolean useDamage, String input2, boolean mode) {
+	public static void removeOreDictRecipe(IItemStack input1, String input2, boolean mode) {
 		ItemStack stack = InputHelper.toStack(input1);
-		MineTweakerAPI.apply(new SetRecipe(stack.getItem(), useDamage ? stack.getItemDamage() : OreDictionary.WILDCARD_VALUE, input2, OreDictionary.WILDCARD_VALUE, mode, null));
+		MineTweakerAPI.apply(new SetRecipe(stack.getItem(), stack.getItemDamage(), input2, OreDictionary.WILDCARD_VALUE, mode, null));
 	}
 	
 	@ZenMethod
-	public void removeFullOreDictRecipe(String input1, String input2, boolean mode) {
+	public static void removeFullOreDictRecipe(String input1, String input2, boolean mode) {
 		MineTweakerAPI.apply(new SetRecipe(input1, OreDictionary.WILDCARD_VALUE, input2, OreDictionary.WILDCARD_VALUE, mode, null));
 	}
 	
@@ -82,6 +82,12 @@ public class Combinations {
 			if(outputOld == null)
 				CombinationRegistry.getAllConversions().remove(inputs);
 			else CombinationRegistry.getAllConversions().put(inputs, outputOld);
+		}
+		
+		@Override
+		public String getRecipeInfo()
+		{
+			return output.getDisplayName();
 		}
 		
 	}

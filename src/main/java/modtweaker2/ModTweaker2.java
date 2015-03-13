@@ -19,6 +19,7 @@ import modtweaker2.mods.imc.handler.Message;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.metallurgy.Metallurgy;
+import modtweaker2.mods.minestuck.Minestuck;
 import modtweaker2.mods.pneumaticcraft.PneumaticCraft;
 import modtweaker2.mods.railcraft.Railcraft;
 import modtweaker2.mods.tconstruct.TConstruct;
@@ -29,8 +30,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.mraof.minestuck.Minestuck;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

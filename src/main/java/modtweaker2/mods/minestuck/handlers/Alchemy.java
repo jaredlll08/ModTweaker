@@ -3,7 +3,9 @@ package modtweaker2.mods.minestuck.handlers;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.mraof.minestuck.util.GristRegistry;
@@ -21,24 +23,24 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Alchemy {
 	
 	@ZenMethod
-	public void setCost(IItemStack iStack, boolean useMeta, String cost) {
+	public static void setCost(IItemStack iStack, String cost) {
 		ItemStack stack = InputHelper.toStack(iStack);
-		MineTweakerAPI.apply(new SetCost(stack.getItem(), useMeta ? stack.getItemDamage() : OreDictionary.WILDCARD_VALUE, cost));
+		MineTweakerAPI.apply(new SetCost(stack.getItem(), stack.getItemDamage(), cost));
 	}
 	
 	@ZenMethod
-	public void setOreDictCost(String name, String cost) {
+	public static void setOreDictCost(String name, String cost) {
 		MineTweakerAPI.apply(new SetCost(name, OreDictionary.WILDCARD_VALUE, cost));
 	}
 	
 	@ZenMethod
-	public void removeCost(IItemStack iStack, boolean useMeta) {
+	public static void removeCost(IItemStack iStack) {
 		ItemStack stack = InputHelper.toStack(iStack);
-		MineTweakerAPI.apply(new SetCost(stack.getItem(), useMeta ? stack.getItemDamage() : OreDictionary.WILDCARD_VALUE, null));
+		MineTweakerAPI.apply(new SetCost(stack.getItem(), stack.getItemDamage(), null));
 	}
 	
 	@ZenMethod
-	public void removeOreDictCost(String name) {
+	public static void removeOreDictCost(String name) {
 		MineTweakerAPI.apply(new SetCost(name, OreDictionary.WILDCARD_VALUE, null));
 	}
 	
@@ -66,6 +68,17 @@ public class Alchemy {
 			if(costOld == null)
 				GristRegistry.getAllConversions().remove(items);
 			else GristRegistry.getAllConversions().put(items, costOld);
+		}
+		
+		@Override
+		public String getRecipeInfo()
+		{
+			if(items.get(0) instanceof String)
+				return items.get(0).toString();
+			else if(items.get(1).equals(OreDictionary.WILDCARD_VALUE))
+				return StatCollector.translateToLocal(((Item) items.get(0)).getUnlocalizedName());
+			ItemStack stack = new ItemStack((Item) items.get(0), 1, (Integer) items.get(1));
+			return stack.getDisplayName();
 		}
 		
 		private static GristSet getGrist(String str)
