@@ -19,6 +19,7 @@ import modtweaker2.mods.imc.handler.Message;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.metallurgy.Metallurgy;
+import modtweaker2.mods.minestuck.Minestuck;
 import modtweaker2.mods.pneumaticcraft.PneumaticCraft;
 import modtweaker2.mods.railcraft.Railcraft;
 import modtweaker2.mods.tconstruct.TConstruct;
@@ -82,6 +83,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
+		TweakerPlugin.register("Minestuck", Minestuck.class);
 		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
