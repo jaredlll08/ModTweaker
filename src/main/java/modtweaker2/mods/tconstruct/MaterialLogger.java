@@ -1,5 +1,7 @@
 package modtweaker2.mods.tconstruct;
 
+import static modtweaker2.helpers.LogHelper.logPrinted;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -9,7 +11,6 @@ import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
-import static modtweaker2.helpers.LogHelper.*;
 
 public class MaterialLogger implements ICommandFunction {
 	private static ArrayList<String> materials = new ArrayList();

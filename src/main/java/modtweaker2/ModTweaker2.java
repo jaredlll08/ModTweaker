@@ -24,7 +24,7 @@ import modtweaker2.mods.railcraft.Railcraft;
 import modtweaker2.mods.tconstruct.TConstruct;
 import modtweaker2.mods.thaumcraft.Thaumcraft;
 import modtweaker2.mods.thermalexpansion.ThermalExpansion;
-import modtweaker2.util.TweakerPlugin;
+import modtweaker2.utils.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,19 +51,11 @@ public class ModTweaker2 {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger.info("Starting PreInitialization for " + ModProps.modid);
-		File file = new File("scripts");
-
-		if (!file.exists()) {
-			file.mkdir();
-		}
-		new Message(file.getPath());
-
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		logger.info("Starting Initialization for " + ModProps.modid);
-		
 		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
 		TweakerPlugin.register("Botania", Botania.class);
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
@@ -82,11 +74,17 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
-		
+
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
-		
+//		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
+//
+//			@Override
+//			public void handle(ReloadEvent event) {
+//				Commands.registerCommands();
+//			}
+//		});
 	}
 
 	@EventHandler
@@ -99,12 +97,6 @@ public class ModTweaker2 {
 	public void serverStart(FMLServerStartingEvent event) {
 		logger.info("Starting ServerStart for " + ModProps.modid);
 		Commands.registerCommands();
-		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
 
-			@Override
-			public void handle(ReloadEvent arg0) {
-				Commands.registerCommands();
-			}
-		});
 	}
 }

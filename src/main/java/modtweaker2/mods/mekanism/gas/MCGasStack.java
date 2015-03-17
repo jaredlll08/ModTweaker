@@ -1,8 +1,6 @@
 package modtweaker2.mods.mekanism.gas;
 
 import mekanism.api.gas.GasStack;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 
 public class MCGasStack implements IGasStack {

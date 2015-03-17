@@ -1,5 +1,9 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.InputHelper.toStacks;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +11,8 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.forestry.ForestryHelper;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -17,8 +21,6 @@ import forestry.core.utils.ShapedRecipeCustom;
 import forestry.factory.gadgets.MachineCarpenter;
 import forestry.factory.gadgets.MachineCarpenter.Recipe;
 import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {

@@ -1,7 +1,9 @@
 package modtweaker2.mods.tconstruct.handlers;
 
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
+import static modtweaker2.helpers.InputHelper.isABlock;
+import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toFluids;
+import static modtweaker2.helpers.InputHelper.toStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,10 +15,10 @@ import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
 import modtweaker2.mods.tconstruct.TConstructHelper;
-import modtweaker2.util.BaseDescriptionAddition;
-import modtweaker2.util.BaseDescriptionRemoval;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseDescriptionAddition;
+import modtweaker2.utils.BaseDescriptionRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;

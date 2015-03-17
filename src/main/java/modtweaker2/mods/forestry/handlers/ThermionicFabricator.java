@@ -1,10 +1,12 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -13,9 +15,6 @@ import forestry.core.utils.ShapedRecipeCustom;
 import forestry.factory.gadgets.MachineFabricator.Recipe;
 import forestry.factory.gadgets.MachineFabricator.RecipeManager;
 import forestry.factory.gadgets.MachineFabricator.Smelting;
-
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
 public class ThermionicFabricator {

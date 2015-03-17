@@ -1,13 +1,17 @@
 package modtweaker2.mods.thaumcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toObjects;
+import static modtweaker2.helpers.InputHelper.toShapedObjects;
+import static modtweaker2.helpers.InputHelper.toStack;
+
 import java.util.ArrayList;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,8 +19,6 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.thaumcraft.Arcane")
 public class Arcane {

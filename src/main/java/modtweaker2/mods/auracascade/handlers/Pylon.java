@@ -1,17 +1,16 @@
 package modtweaker2.mods.auracascade.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
+import static modtweaker2.helpers.InputHelper.toStack;
 
-import net.minecraft.item.ItemStack;
+import java.util.ArrayList;
+
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import static modtweaker2.helpers.InputHelper.*;
-import modtweaker2.mods.appeng.handlers.Inscriber.Add;
 import modtweaker2.mods.auracascade.AuraCascadeHelper;
 import modtweaker2.mods.auracascade.aura.IAuraStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
+import net.minecraft.item.ItemStack;
 import pixlepix.auracascade.data.recipe.PylonRecipe;
 import pixlepix.auracascade.data.recipe.PylonRecipeComponent;
 import pixlepix.auracascade.data.recipe.PylonRecipeRegistry;

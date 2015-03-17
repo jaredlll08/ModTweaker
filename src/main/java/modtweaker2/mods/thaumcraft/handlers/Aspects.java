@@ -1,12 +1,14 @@
 package modtweaker2.mods.thaumcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+
 import java.util.Arrays;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
-import modtweaker2.util.BaseDescriptionAddition;
-import modtweaker2.util.BaseDescriptionRemoval;
+import modtweaker2.utils.BaseDescriptionAddition;
+import modtweaker2.utils.BaseDescriptionRemoval;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -14,8 +16,6 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.thaumcraft.Aspects")
 public class Aspects {

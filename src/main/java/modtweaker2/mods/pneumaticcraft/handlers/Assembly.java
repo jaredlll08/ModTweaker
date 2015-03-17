@@ -1,17 +1,18 @@
 package modtweaker2.mods.pneumaticcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
+
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import pneumaticCraft.api.recipe.AssemblyRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.pneumaticcraft.Assembly")
 public class Assembly {

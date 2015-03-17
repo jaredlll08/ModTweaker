@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

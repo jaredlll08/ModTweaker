@@ -1,5 +1,7 @@
 package modtweaker2.mods.mekanism.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
 
 import java.util.Iterator;
@@ -19,8 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.mekanism.chemical.Dissolution")
 public class ChemicalDissolution {

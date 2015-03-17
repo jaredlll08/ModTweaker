@@ -1,11 +1,15 @@
 package modtweaker2.mods.extendedworkbench.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.InputHelper.toStacks;
+import static modtweaker2.helpers.StackHelper.areEqual;
+
 import java.util.Arrays;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import naruto1310.extendedWorkbench.crafting.ExtendedCraftingManager;
 import naruto1310.extendedWorkbench.crafting.ExtendedShapedRecipes;
 import naruto1310.extendedWorkbench.crafting.ExtendedShapelessRecipes;
@@ -13,8 +17,6 @@ import naruto1310.extendedWorkbench.crafting.IExtendedRecipe;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.extendedworkbench")
 public class ExtendedCrafting {

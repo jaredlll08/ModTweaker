@@ -1,23 +1,18 @@
 package modtweaker2.mods.railcraft.handlers;
 
-import appeng.recipes.game.ShapedRecipe;
-import appeng.recipes.game.ShapelessRecipe;
+import static modtweaker2.helpers.InputHelper.toObjects;
+import static modtweaker2.helpers.InputHelper.toShapedObjects;
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
-import modtweaker2.util.BaseCraftingAddition;
-import modtweaker2.util.BaseCraftingRemoval;
-import net.minecraft.inventory.InventoryCrafting;
+import modtweaker2.utils.BaseCraftingAddition;
+import modtweaker2.utils.BaseCraftingRemoval;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.railcraft.Rolling")
 public class RollingMachine {

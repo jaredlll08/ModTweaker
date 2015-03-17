@@ -7,7 +7,7 @@ import mekanism.api.ChemicalPair;
 import mekanism.api.PressurizedReactants;
 import mekanism.api.gas.GasStack;
 import mekanism.api.infuse.InfusionOutput;
-import modtweaker2.util.BaseMapAddition;
+import modtweaker2.utils.BaseMapAddition;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

@@ -1,15 +1,15 @@
 package modtweaker2.mods.metallurgy.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.metallurgy.MetallurgyHelper;
-import modtweaker2.util.BaseMapAddition;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.metallurgy.Crusher")
 public class Crusher {

@@ -16,7 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ChemicalInjection {
     @ZenMethod
     public static void addRecipe(IItemStack input, IGasStack gas, IItemStack output) {
-        AdvancedInput aInput = new AdvancedInput(toStack(input), toGas(gas).getGas());
+    	AdvancedInput aInput = new AdvancedInput(toStack(input), toGas(gas).getGas());
         MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INJECTION_CHAMBER", Recipe.CHEMICAL_INJECTION_CHAMBER.get(), aInput, toStack(output)));
     }
 

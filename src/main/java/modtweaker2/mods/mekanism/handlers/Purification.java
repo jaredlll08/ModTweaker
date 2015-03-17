@@ -11,7 +11,7 @@ import mekanism.common.recipe.RecipeHandler.Recipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

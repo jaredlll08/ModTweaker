@@ -1,10 +1,11 @@
 package modtweaker2.mods.factorization;
 
+import static modtweaker2.helpers.ReflectionHelper.getStaticObject;
+
 import java.lang.reflect.Constructor;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import static modtweaker2.helpers.ReflectionHelper.*;
 
 public class FactorizationHelper {
     public static List lacerator = null;

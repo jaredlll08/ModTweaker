@@ -1,20 +1,23 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.getFluid;
+import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.InputHelper.toStacks;
+
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.factory.gadgets.MachineSqueezer;
 import forestry.factory.gadgets.MachineSqueezer.Recipe;
 import forestry.factory.gadgets.MachineSqueezer.RecipeManager;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.forestry.Squeezer")
 public class Squeezer {

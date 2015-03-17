@@ -1,20 +1,18 @@
 package modtweaker2.helpers;
 
-import java.util.ArrayList;
-
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
@@ -25,11 +23,25 @@ public class InputHelper {
 			return true;
 	}
 
+	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
+		ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();
+		for (IIngredient ing : iIngredient) {
+			for (IItemStack stack : ing.getItems()) {
+				stacks.add(stack);
+			}
+		}
+		IItemStack[] returnArray = new IItemStack[stacks.size()];
+			for(int i = 0; i < returnArray.length;i++){
+				returnArray[i] = stacks.get(i);
+			}
+		return returnArray;
+	}
+
 	public static boolean isABlock(ItemStack block) {
 		return block.getItem() instanceof ItemBlock;
 	}
-	
-	public static Entity toEntity(){
+
+	public static Entity toEntity() {
 		return null;
 	}
 
@@ -96,7 +108,7 @@ public class InputHelper {
 			prep.add("abc");
 			prep.add("def");
 			prep.add("ghi");
-			char[][] map = new char[][] { { 'a', 'b', 'c' }, { 'd', 'e', 'f' }, { 'g', 'h', 'i' } };
+			char[][] map = new char[][]{{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
 			for (int x = 0; x < ingredients.length; x++) {
 				if (ingredients[x] != null) {
 					for (int y = 0; y < ingredients[x].length; y++) {

@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "0.7.b${System.getenv().BUILD_NUMBER}"
+version = "0.7.5"
 group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ModTweaker 2"
 

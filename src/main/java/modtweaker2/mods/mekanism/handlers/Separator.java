@@ -11,7 +11,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

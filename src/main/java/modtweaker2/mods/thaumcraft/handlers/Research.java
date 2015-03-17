@@ -1,5 +1,6 @@
 package modtweaker2.mods.thaumcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.player.IPlayer;
@@ -28,8 +29,6 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage.PageType;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.thaumcraft.Research")
 public class Research {

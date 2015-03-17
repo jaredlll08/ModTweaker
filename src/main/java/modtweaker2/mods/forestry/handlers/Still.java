@@ -1,19 +1,20 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.getFluid;
+import static modtweaker2.helpers.InputHelper.toFluid;
+
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.factory.gadgets.MachineStill;
 import forestry.factory.gadgets.MachineStill.Recipe;
 import forestry.factory.gadgets.MachineStill.RecipeManager;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.forestry.Still")
 public class Still {

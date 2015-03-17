@@ -1,11 +1,12 @@
 package modtweaker2.mods.fsp.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.mods.fsp.FSPHelper.getLiquid;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.util.BaseListAddition;
-import modtweaker2.util.BaseMapAddition;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -16,8 +17,6 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.fsp.Crucible")
 public class Crucible {

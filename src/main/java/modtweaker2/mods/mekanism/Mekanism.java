@@ -17,7 +17,7 @@ import modtweaker2.mods.mekanism.handlers.Purification;
 import modtweaker2.mods.mekanism.handlers.Reaction;
 import modtweaker2.mods.mekanism.handlers.Sawmill;
 import modtweaker2.mods.mekanism.handlers.Separator;
-import modtweaker2.util.TweakerPlugin;
+import modtweaker2.utils.TweakerPlugin;
 
 public class Mekanism extends TweakerPlugin {
     public Mekanism() {

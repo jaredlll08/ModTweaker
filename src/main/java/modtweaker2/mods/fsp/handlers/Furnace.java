@@ -1,9 +1,10 @@
 package modtweaker2.mods.fsp.handlers;
 
+import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.util.BaseMapAddition;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -11,8 +12,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.StackHelper.*;
 
 @ZenClass("mods.fsp.Furnace")
 public class Furnace {

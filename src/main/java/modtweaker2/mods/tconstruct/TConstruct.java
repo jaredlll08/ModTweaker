@@ -1,10 +1,5 @@
 package modtweaker2.mods.tconstruct;
 
-import net.minecraft.item.ItemStack;
-import tconstruct.library.crafting.PatternBuilder;
-import tconstruct.library.crafting.PatternBuilder.MaterialSet;
-import tconstruct.library.util.IPattern;
-import tconstruct.tools.logic.PartBuilderLogic;
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.tconstruct.handlers.Casting;
 import modtweaker2.mods.tconstruct.handlers.Drying;

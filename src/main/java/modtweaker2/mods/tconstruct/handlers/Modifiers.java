@@ -4,7 +4,7 @@ import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.tconstruct.TConstructHelper;
-import modtweaker2.util.BaseListRemoval;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import tconstruct.library.modifier.ItemModifier;

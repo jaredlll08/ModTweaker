@@ -12,7 +12,7 @@ import mekanism.api.PressurizedReactants;
 import mekanism.api.PressurizedRecipe;
 import mekanism.api.gas.GasStack;
 import mekanism.api.infuse.InfusionOutput;
-import modtweaker2.util.BaseMapRemoval;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 

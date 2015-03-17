@@ -1,4 +1,4 @@
-package modtweaker2.util;
+package modtweaker2.utils;
 
 import java.util.ArrayList;
 
@@ -12,4 +12,6 @@ public class ArrayUtils {
 		}
 		return list;
 	}
+
+
 }
