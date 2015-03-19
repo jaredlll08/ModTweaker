@@ -7,10 +7,13 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
+import modtweaker2.helpers.InputHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseCraftingAddition;
 import modtweaker2.utils.BaseCraftingRemoval;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -33,12 +36,12 @@ public class RollingMachine {
 
         @Override
         public void applyShaped() {
-            RailcraftCraftingManager.rollingMachine.addRecipe(output, recipe);
+            RailcraftHelper.rolling.add(new ShapedOreRecipe(output, recipe));
         }
 
         @Override
         public void applyShapeless() {
-            RailcraftCraftingManager.rollingMachine.addShapelessRecipe(output, recipe);
+            RailcraftHelper.rolling.add(new ShapelessOreRecipe(output, recipe));
         }
     }
 
