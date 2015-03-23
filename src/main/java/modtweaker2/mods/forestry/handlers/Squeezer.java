@@ -5,6 +5,7 @@ import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
 
+import java.util.Arrays;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
@@ -26,6 +27,7 @@ public class Squeezer {
 	public static void addRecipe(int timePerItem, IItemStack[] resources, ILiquidStack liquid, IItemStack remnants, int chance) {
 		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStacks(resources), toFluid(liquid), toStack(remnants), chance)));
 		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(liquid));
+		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(resources)));
 	}
 
 	private static class Add extends BaseListAddition {
