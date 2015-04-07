@@ -1,10 +1,5 @@
 package modtweaker2;
 
-import java.io.File;
-
-import minetweaker.MineTweakerImplementationAPI;
-import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
-import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.auracascade.AuraCascade;
 import modtweaker2.mods.botania.Botania;
@@ -15,7 +10,6 @@ import modtweaker2.mods.factorization.Factorization;
 import modtweaker2.mods.forestry.Forestry;
 import modtweaker2.mods.fsp.Steamcraft;
 import modtweaker2.mods.hee.HardcoreEnderExpansion;
-import modtweaker2.mods.imc.handler.Message;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.metallurgy.Metallurgy;

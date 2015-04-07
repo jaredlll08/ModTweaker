@@ -7,7 +7,9 @@ import java.util.Map;
 
 import mekanism.api.gas.GasStack;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.machines.WasherRecipe;
 import minetweaker.MineTweakerAPI;
+import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker2.mods.mekanism.util.RemoveMekanismRecipe;
@@ -18,11 +20,20 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class ChemicalWasher {
     @ZenMethod
     public static void addRecipe(IGasStack input, IGasStack output) {
-        MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_WASHER", Recipe.CHEMICAL_WASHER.get(), toGas(input), toGas(output)));
+        if (Mekanism.v7)
+        {
+            MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_WASHER", Recipe.CHEMICAL_WASHER.get(), toGas(input), toGas(output)));
+        }
+        else
+        {
+            WasherRecipe recipe = new WasherRecipe(toGas(input), toGas(output));
+            MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_WASHER", Recipe.CHEMICAL_WASHER.get(), recipe.getInput(), recipe));
+        }
     }
 
     @ZenMethod
     public static void removeRecipe(IGasStack output) {
+        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
         MineTweakerAPI.apply(new Remove("CHEMICAL_WASHER", Recipe.CHEMICAL_WASHER.get(), toGas(output)));
     }
 

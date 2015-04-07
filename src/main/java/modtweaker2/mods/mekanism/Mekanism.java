@@ -1,5 +1,7 @@
 package modtweaker2.mods.mekanism;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.mekanism.gas.GasBracketHandler;
 import modtweaker2.mods.mekanism.handlers.ChemicalCrystallizer;
@@ -19,7 +21,10 @@ import modtweaker2.mods.mekanism.handlers.Sawmill;
 import modtweaker2.mods.mekanism.handlers.Separator;
 import modtweaker2.utils.TweakerPlugin;
 
+import java.util.regex.Pattern;
+
 public class Mekanism extends TweakerPlugin {
+    public static final boolean v7 = isV7();
     public Mekanism() {
         MineTweakerAPI.registerBracketHandler(new GasBracketHandler());
         MineTweakerAPI.registerClass(Combiner.class);
@@ -37,5 +42,14 @@ public class Mekanism extends TweakerPlugin {
         MineTweakerAPI.registerClass(ChemicalInjection.class);
         MineTweakerAPI.registerClass(ChemicalOxidizer.class);
         MineTweakerAPI.registerClass(ChemicalWasher.class);
+    }
+
+    public static boolean isV7(){
+        Pattern version = Pattern.compile("7.*");
+        for (ModContainer loadedMod : Loader.instance().getActiveModList())
+        {
+            if (loadedMod.getModId().equals("Mekanism") && version.matcher(loadedMod.getVersion()).find()) return true;
+        }
+        return false;
     }
 }
