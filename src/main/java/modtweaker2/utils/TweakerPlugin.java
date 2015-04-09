@@ -9,12 +9,16 @@ public class TweakerPlugin {
 
     public static void register(String mod, Class clazz) {
         if (Loader.isModLoaded(mod)) {
-            try {
-            	clazz.newInstance();
-                isLoaded.add(mod);
-            } catch (Exception e) {
-                isLoaded.remove(mod);
-            }
+            load(mod, clazz);
+        }
+    }
+
+    public static void load(String mod, Class clazz) {
+        try {
+            clazz.newInstance();
+            isLoaded.add(mod);
+        } catch (Exception e) {
+            isLoaded.remove(mod);
         }
     }
 

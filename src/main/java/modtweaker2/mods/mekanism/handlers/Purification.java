@@ -8,8 +8,10 @@ import java.util.Map;
 import mekanism.api.AdvancedInput;
 import mekanism.api.gas.GasRegistry;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.machines.PurificationRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
@@ -20,12 +22,21 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Purification {
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output) {
-        AdvancedInput aInput = new AdvancedInput(toStack(input), GasRegistry.getGas("oxygen"));
-        MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), aInput, toStack(output)));
+        if (Mekanism.v7)
+        {
+            AdvancedInput aInput = new AdvancedInput(toStack(input), GasRegistry.getGas("oxygen"));
+            MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), aInput, toStack(output)));
+        }
+        else
+        {
+            PurificationRecipe recipe = new PurificationRecipe(toStack(input), toStack(output));
+            MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), recipe.getInput(), recipe));
+        }
     }
 
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
+        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
         MineTweakerAPI.apply(new Remove(toStack(output)));
     }
 

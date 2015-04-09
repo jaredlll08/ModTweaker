@@ -4,8 +4,10 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import mekanism.api.AdvancedInput;
 import mekanism.api.gas.GasRegistry;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.machines.CombinerRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker2.mods.mekanism.util.RemoveMekanismRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -16,11 +18,18 @@ public class Combiner {
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output) {
         AdvancedInput aInput = new AdvancedInput(toStack(input), GasRegistry.getGas("liquidStone"));
-        MineTweakerAPI.apply(new AddMekanismRecipe("COMBINER", Recipe.COMBINER.get(), aInput, toStack(output)));
+        if (Mekanism.v7)
+            MineTweakerAPI.apply(new AddMekanismRecipe("COMBINER", Recipe.COMBINER.get(), aInput, toStack(output)));
+        else
+        {
+            CombinerRecipe recipe = new CombinerRecipe(toStack(input), toStack(output));
+            MineTweakerAPI.apply(new AddMekanismRecipe("COMBINER", Recipe.COMBINER.get(), recipe.getInput(), recipe));
+        }
     }
 
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
+        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
         MineTweakerAPI.apply(new RemoveMekanismRecipe("COMBINER", Recipe.COMBINER.get(), toStack(output)));
     }
 }

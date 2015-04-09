@@ -7,8 +7,10 @@ import java.util.Map;
 
 import mekanism.api.ChemicalPair;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.machines.SeparatorRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker2.utils.BaseMapRemoval;
@@ -20,12 +22,31 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Separator {
     @ZenMethod
     public static void addRecipe(ILiquidStack input, IGasStack gas1, IGasStack gas2) {
-        ChemicalPair pair = new ChemicalPair(toGas(gas1), toGas(gas2));
-        MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), toFluid(input), pair));
+        if (Mekanism.v7)
+        {
+            ChemicalPair pair = new ChemicalPair(toGas(gas1), toGas(gas2));
+            MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), toFluid(input), pair));
+        } else
+        {
+            throw new UnsupportedOperationException("Syntax for v8 is: Fluid, Energy, Gas, Gas");
+        }
+    }
+
+    @ZenMethod
+    public static void addRecipe(ILiquidStack input, double energy, IGasStack gas1, IGasStack gas2) {
+        if (Mekanism.v7)
+        {
+            throw new UnsupportedOperationException("Syntax for v7 is: Fluid, Gas, Gas");
+        } else
+        {
+            SeparatorRecipe recipe = new SeparatorRecipe(toFluid(input), energy, toGas(gas1), toGas(gas2));
+            MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), recipe.getInput(), recipe));
+        }
     }
 
     @ZenMethod
     public static void removeRecipe(ILiquidStack input) {
+        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
         MineTweakerAPI.apply(new Remove(toFluid(input)));
     }
 
