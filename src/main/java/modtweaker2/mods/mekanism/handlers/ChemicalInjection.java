@@ -2,8 +2,8 @@ package modtweaker2.mods.mekanism.handlers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
-import mekanism.api.AdvancedInput;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.inputs.AdvancedMachineInput;
 import mekanism.common.recipe.machines.InjectionRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -20,7 +20,7 @@ public class ChemicalInjection {
     public static void addRecipe(IItemStack input, IGasStack gas, IItemStack output) {
         if (Mekanism.v7)
         {
-            AdvancedInput aInput = new AdvancedInput(toStack(input), toGas(gas).getGas());
+            AdvancedMachineInput aInput = new AdvancedMachineInput(toStack(input), toGas(gas).getGas());
             MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INJECTION_CHAMBER", Recipe.CHEMICAL_INJECTION_CHAMBER.get(), aInput, toStack(output)));
         }
         else

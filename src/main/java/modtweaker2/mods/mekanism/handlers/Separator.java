@@ -5,9 +5,10 @@ import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
 
 import java.util.Map;
 
-import mekanism.api.ChemicalPair;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.inputs.ChemicalPairInput;
 import mekanism.common.recipe.machines.SeparatorRecipe;
+import mekanism.common.recipe.outputs.ChemicalPairOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.mekanism.Mekanism;
@@ -24,7 +25,7 @@ public class Separator {
     public static void addRecipe(ILiquidStack input, IGasStack gas1, IGasStack gas2) {
         if (Mekanism.v7)
         {
-            ChemicalPair pair = new ChemicalPair(toGas(gas1), toGas(gas2));
+            ChemicalPairInput pair = new ChemicalPairInput(toGas(gas1), toGas(gas2));
             MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), toFluid(input), pair));
         } else
         {
@@ -58,7 +59,7 @@ public class Separator {
         //We must search through the recipe entries so that we can assign the correct key for removal
         @Override
         public void apply() {
-            for (Map.Entry<FluidStack, ChemicalPair> entry : ((Map<FluidStack, ChemicalPair>) map).entrySet()) {
+            for (Map.Entry<FluidStack, ChemicalPairOutput> entry : ((Map<FluidStack, ChemicalPairOutput>) map).entrySet()) {
                 if (entry.getKey() != null && entry.getKey().isFluidEqual((FluidStack) stack)) {
                     key = entry.getKey();
                     break;

@@ -5,10 +5,11 @@ import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.Map;
 
-import mekanism.api.AdvancedInput;
 import mekanism.api.gas.GasRegistry;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.inputs.AdvancedMachineInput;
 import mekanism.common.recipe.machines.PurificationRecipe;
+import mekanism.common.recipe.outputs.MachineOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.mekanism.Mekanism;
@@ -24,7 +25,7 @@ public class Purification {
     public static void addRecipe(IItemStack input, IItemStack output) {
         if (Mekanism.v7)
         {
-            AdvancedInput aInput = new AdvancedInput(toStack(input), GasRegistry.getGas("oxygen"));
+            AdvancedMachineInput aInput = new AdvancedMachineInput(toStack(input), GasRegistry.getGas("oxygen"));
             MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), aInput, toStack(output)));
         }
         else
@@ -48,7 +49,7 @@ public class Purification {
         //We must search through the recipe entries so that we can assign the correct key for removal
         @Override
         public void apply() {
-            for (Map.Entry<AdvancedInput, ItemStack> entry : ((Map<AdvancedInput, ItemStack>) map).entrySet()) {
+            for (Map.Entry<MachineOutput, ItemStack> entry : ((Map<MachineOutput, ItemStack>) map).entrySet()) {
                 if (entry.getValue() != null && areEqual(entry.getValue(), (ItemStack) stack)) {
                     key = entry.getKey();
                     break;

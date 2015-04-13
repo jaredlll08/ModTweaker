@@ -5,9 +5,9 @@ import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.Map;
 
-import mekanism.api.ChanceOutput;
 import mekanism.common.recipe.RecipeHandler.Recipe;
 import mekanism.common.recipe.machines.SawmillRecipe;
+import mekanism.common.recipe.outputs.ChanceOutput;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.mekanism.Mekanism;

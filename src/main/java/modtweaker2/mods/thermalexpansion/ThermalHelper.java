@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import appeng.api.AEApi;
-import appeng.core.Registration;
-import appeng.core.features.registries.InscriberRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import cofh.lib.inventory.ComparableItemStackSafe;

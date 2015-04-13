@@ -5,13 +5,13 @@ import static modtweaker2.helpers.StackHelper.areEqual;
 import java.util.Iterator;
 import java.util.Map;
 
-import mekanism.api.ChanceOutput;
-import mekanism.api.ChemicalPair;
-import mekanism.api.PressurizedProducts;
-import mekanism.api.PressurizedReactants;
-import mekanism.api.PressurizedRecipe;
 import mekanism.api.gas.GasStack;
-import mekanism.api.infuse.InfusionOutput;
+import mekanism.common.recipe.inputs.InfusionInput;
+import mekanism.common.recipe.inputs.PressurizedInput;
+import mekanism.common.recipe.machines.PressurizedRecipe;
+import mekanism.common.recipe.outputs.ChanceOutput;
+import mekanism.common.recipe.outputs.ChemicalPairOutput;
+import mekanism.common.recipe.outputs.PressurizedOutput;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,16 +55,16 @@ public class RemoveMekanismRecipe extends BaseMapRemoval {
 							}
 						}
 
-						if (tmp instanceof ItemStack && value instanceof InfusionOutput) {
-							if (areEqual(((ItemStack) tmp), ((InfusionOutput) value).resource)) {
+						if (tmp instanceof ItemStack && value instanceof InfusionInput) {
+							if (areEqual(((ItemStack) tmp), ((InfusionInput) value).inputStack)) {
 								key = pairs.getKey();
 								break;
 							}
 						}
 
-						if (tmp instanceof ChemicalPair && value instanceof ChemicalPair) {
-							ChemicalPair par1 = (ChemicalPair) tmp;
-							ChemicalPair par2 = (ChemicalPair) value;
+						if (tmp instanceof ChemicalPairOutput && value instanceof ChemicalPairOutput) {
+							ChemicalPairOutput par1 = (ChemicalPairOutput) tmp;
+							ChemicalPairOutput par2 = (ChemicalPairOutput) value;
 							if (par1.leftGas.isGasEqual(par2.leftGas) && par1.rightGas.isGasEqual(par2.rightGas)) {
 								key = pairs.getKey();
 								break;
@@ -82,9 +82,9 @@ public class RemoveMekanismRecipe extends BaseMapRemoval {
 							}
 						}
 
-						if (tmp instanceof PressurizedProducts && value instanceof PressurizedRecipe) {
-							PressurizedProducts par1 = (PressurizedProducts) tmp;
-							PressurizedProducts par2 = ((PressurizedRecipe) value).products;
+						if (tmp instanceof PressurizedOutput && value instanceof PressurizedRecipe) {
+							PressurizedOutput par1 = (PressurizedOutput) tmp;
+							PressurizedOutput par2 = ((PressurizedRecipe) value).recipeOutput;
 							if (areEqual(par1.getItemOutput(), (par2.getItemOutput()))) {
 								if (par1.getGasOutput().isGasEqual(par2.getGasOutput())) {
 									key = pairs.getKey();
@@ -114,16 +114,16 @@ public class RemoveMekanismRecipe extends BaseMapRemoval {
 			return "Removing " + description + " Recipe for : " + ((ItemStack) tmp).getDisplayName();
 		else if (tmp instanceof FluidStack)
 			return "Removing " + description + " Recipe for : " + ((FluidStack) tmp).getFluid().getLocalizedName();
-		else if (tmp instanceof ChemicalPair)
-			return "Removing " + description + " Recipe for : " + ((ChemicalPair) tmp).leftGas.getGas().getLocalizedName();
+		else if (tmp instanceof ChemicalPairOutput)
+			return "Removing " + description + " Recipe for : " + ((ChemicalPairOutput) tmp).leftGas.getGas().getLocalizedName();
 		else if (tmp instanceof ChanceOutput)
 			return "Removing " + description + " Recipe for : " + ((ChanceOutput) tmp).primaryOutput.getDisplayName();
 		else if (tmp instanceof GasStack)
 			return "Removing " + description + " Recipe for : " + ((GasStack) tmp).getGas().getLocalizedName();
-		else if (tmp instanceof PressurizedReactants)
-			return "Removing " + description + " Recipe for : " + ((PressurizedReactants) tmp).getSolid().getDisplayName();
-		else if (tmp instanceof InfusionOutput)
-			return "Removing " + description + " Recipe for : " + ((InfusionOutput) tmp).resource.getDisplayName();
+		else if (tmp instanceof PressurizedInput)
+			return "Removing " + description + " Recipe for : " + ((PressurizedInput) tmp).getSolid().getDisplayName();
+		else if (tmp instanceof InfusionInput)
+			return "Removing " + description + " Recipe for : " + ((InfusionInput) tmp).inputStack.getDisplayName();
 		else
 			return super.getRecipeInfo();
 	}
@@ -134,16 +134,16 @@ public class RemoveMekanismRecipe extends BaseMapRemoval {
 			return "Restoring " + description + " Recipe for : " + ((ItemStack) tmp).getDisplayName();
 		else if (tmp instanceof FluidStack)
 			return "Restoring " + description + " Recipe for : " + ((FluidStack) tmp).getFluid().getLocalizedName();
-		else if (tmp instanceof ChemicalPair)
-			return "Restoring " + description + " Recipe for : " + ((ChemicalPair) tmp).leftGas.getGas().getLocalizedName();
+		else if (tmp instanceof ChemicalPairOutput)
+			return "Restoring " + description + " Recipe for : " + ((ChemicalPairOutput) tmp).leftGas.getGas().getLocalizedName();
 		else if (tmp instanceof ChanceOutput)
 			return "Restoring " + description + " Recipe for : " + ((ChanceOutput) tmp).primaryOutput.getDisplayName();
 		else if (tmp instanceof GasStack)
 			return "Restoring " + description + " Recipe for : " + ((GasStack) tmp).getGas().getLocalizedName();
-		else if (tmp instanceof PressurizedReactants)
-			return "Restoring " + description + " Recipe for : " + ((PressurizedReactants) tmp).getSolid().getDisplayName();
-		else if (tmp instanceof InfusionOutput)
-			return "Restoring " + description + " Recipe for : " + ((InfusionOutput) tmp).resource.getDisplayName();
+		else if (tmp instanceof PressurizedInput)
+			return "Restoring " + description + " Recipe for : " + ((PressurizedInput) tmp).getSolid().getDisplayName();
+		else if (tmp instanceof InfusionInput)
+			return "Restoring " + description + " Recipe for : " + ((InfusionInput) tmp).inputStack.getDisplayName();
 		else
 			return super.getRecipeInfo();
 	}

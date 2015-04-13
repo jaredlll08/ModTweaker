@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import exnihilo.ExNihilo;
 import exnihilo.registries.SieveRegistry;
 import exnihilo.registries.helpers.SiftReward;
 

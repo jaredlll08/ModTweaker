@@ -1,7 +1,7 @@
 package modtweaker2.mods.mekanism;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+import java.util.regex.Pattern;
+
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.mekanism.gas.GasBracketHandler;
 import modtweaker2.mods.mekanism.handlers.ChemicalCrystallizer;
@@ -14,14 +14,13 @@ import modtweaker2.mods.mekanism.handlers.Combiner;
 import modtweaker2.mods.mekanism.handlers.Compressor;
 import modtweaker2.mods.mekanism.handlers.Crusher;
 import modtweaker2.mods.mekanism.handlers.Enrichment;
-import modtweaker2.mods.mekanism.handlers.Infuser;
 import modtweaker2.mods.mekanism.handlers.Purification;
 import modtweaker2.mods.mekanism.handlers.Reaction;
 import modtweaker2.mods.mekanism.handlers.Sawmill;
 import modtweaker2.mods.mekanism.handlers.Separator;
 import modtweaker2.utils.TweakerPlugin;
-
-import java.util.regex.Pattern;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 
 public class Mekanism extends TweakerPlugin {
     public static final boolean v7 = isV7();
@@ -31,7 +30,7 @@ public class Mekanism extends TweakerPlugin {
         MineTweakerAPI.registerClass(Compressor.class);
         MineTweakerAPI.registerClass(Crusher.class);
         MineTweakerAPI.registerClass(Enrichment.class);
-        MineTweakerAPI.registerClass(Infuser.class);
+//        MineTweakerAPI.registerClass(Infuser.class);
         MineTweakerAPI.registerClass(Purification.class);
         MineTweakerAPI.registerClass(Reaction.class);
         MineTweakerAPI.registerClass(Sawmill.class);

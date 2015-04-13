@@ -1,8 +1,8 @@
 package modtweaker2.mods.mekanism.handlers;
 
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
-import mekanism.api.ChemicalPair;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.inputs.ChemicalPairInput;
 import mekanism.common.recipe.machines.ChemicalInfuserRecipe;
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.mekanism.Mekanism;
@@ -18,7 +18,7 @@ public class ChemicalInfuser {
     public static void addRecipe(IGasStack left, IGasStack right, IGasStack out) {
         if (Mekanism.v7)
         {
-            ChemicalPair pair = new ChemicalPair(toGas(left), toGas(right));
+            ChemicalPairInput pair = new ChemicalPairInput(toGas(left), toGas(right));
             MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), pair, toGas(out)));
         }
         else

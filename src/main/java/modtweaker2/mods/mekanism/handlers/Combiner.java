@@ -1,9 +1,9 @@
 package modtweaker2.mods.mekanism.handlers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
-import mekanism.api.AdvancedInput;
 import mekanism.api.gas.GasRegistry;
 import mekanism.common.recipe.RecipeHandler.Recipe;
+import mekanism.common.recipe.inputs.AdvancedMachineInput;
 import mekanism.common.recipe.machines.CombinerRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -17,7 +17,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Combiner {
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output) {
-        AdvancedInput aInput = new AdvancedInput(toStack(input), GasRegistry.getGas("liquidStone"));
+        AdvancedMachineInput aInput = new AdvancedMachineInput(toStack(input), GasRegistry.getGas("liquidStone"));
         if (Mekanism.v7)
             MineTweakerAPI.apply(new AddMekanismRecipe("COMBINER", Recipe.COMBINER.get(), aInput, toStack(output)));
         else
