@@ -7,35 +7,44 @@ import java.util.ArrayList;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.utils.ArrayUtils;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import appeng.api.AEApi;
+import appeng.api.features.IInscriberRecipe;
+import appeng.api.features.InscriberProcessType;
+import appeng.core.features.registries.entries.InscriberRecipe;
 import appeng.recipes.handlers.Inscribe;
-import appeng.recipes.handlers.Inscribe.InscriberRecipe;
 
 @ZenClass("mods.appeng.Inscriber")
 public class Inscriber {
 	@ZenMethod
-	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, boolean usePlates) {
-		MineTweakerAPI.apply(new Add(new InscriberRecipe(toStacks(imprintable), toStack(plateA), toStack(plateB), toStack(out), usePlates)));
+	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, String type) {
+		MineTweakerAPI.apply(new Add(new InscriberRecipe(ArrayUtils.toArrayList(toStacks(imprintable)), toStack(out), toStack(plateA), toStack(plateB), InscriberProcessType.valueOf(type))));
 		for (IItemStack stack : imprintable) {
-			Inscribe.INPUTS.add(toStack(stack));
+			AEApi.instance().registries().inscriber().getInputs().add(toStack(stack));
+			
 		}
-		Inscribe.PLATES.add(toStack(plateA));
-		Inscribe.PLATES.add(toStack(plateB));
+		if (plateA != null)
+			AEApi.instance().registries().inscriber().getOptionals().add(toStack(plateA));
+
+		if (plateB != null)
+			AEApi.instance().registries().inscriber().getOptionals().add(toStack(plateB));
+		
 	}
 
 	public static class Add extends BaseListAddition {
 
-		public Add(InscriberRecipe recipe) {
-			super(recipe.toString(), Inscribe.RECIPES, recipe);
+		public Add(IInscriberRecipe recipe) {
+			super(recipe.toString(), AEApi.instance().registries().inscriber().getRecipes(), recipe);
 		}
 
 		@Override
 		public void apply() {
-			Inscribe.RECIPES.add((InscriberRecipe) recipe);
+			AEApi.instance().registries().inscriber().addRecipe((IInscriberRecipe) recipe);
 		}
 
 	}
@@ -49,19 +58,19 @@ public class Inscriber {
 
 		public Remove(ItemStack stack) {
 
-			super(stack.getUnlocalizedName(), Inscribe.RECIPES, stack);
+			super(stack.getUnlocalizedName(), AEApi.instance().registries().inscriber().getRecipes(), stack);
 		}
 
 		@Override
 		public void apply() {
-			ArrayList<InscriberRecipe> recipesToRemove = new ArrayList<Inscribe.InscriberRecipe>();
-			for (InscriberRecipe recipe : Inscribe.RECIPES) {
-				if (recipe != null && recipe.output != null && recipe.output.isItemEqual(stack)) {
+			ArrayList<IInscriberRecipe> recipesToRemove = new ArrayList<IInscriberRecipe>();
+			for (IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
+				if (recipe != null && recipe.getOutput() != null && recipe.getOutput().isItemEqual(stack)) {
 					recipesToRemove.add(recipe);
 				}
 			}
-			for (InscriberRecipe recipe : recipesToRemove) {
-				Inscribe.RECIPES.remove(recipe);
+			for (IInscriberRecipe recipe : recipesToRemove) {
+				AEApi.instance().registries().inscriber().removeRecipe(recipe);
 			}
 		}
 

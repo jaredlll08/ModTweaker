@@ -3,7 +3,6 @@ package modtweaker2.mods.mekanism.handlers;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
 import mekanism.common.recipe.RecipeHandler.Recipe;
-import mekanism.common.recipe.machines.CrystallizerRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.mekanism.Mekanism;

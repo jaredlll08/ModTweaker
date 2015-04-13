@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import appeng.api.AEApi;
+import appeng.core.Registration;
+import appeng.core.features.registries.InscriberRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import cofh.lib.inventory.ComparableItemStackSafe;
@@ -27,7 +30,7 @@ public class ThermalHelper {
     public static Constructor transposerRecipe;
 
     static {
-        try {
+    	try {
             smelterRecipe = getConstructor("cofh.thermalexpansion.util.crafting.SmelterManager$RecipeSmelter", ItemStack.class, ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
             transposerRecipe = getConstructor("cofh.thermalexpansion.util.crafting.TransposerManager$RecipeTransposer", ItemStack.class, ItemStack.class, FluidStack.class, int.class, int.class);
         } catch (Exception e) {}
