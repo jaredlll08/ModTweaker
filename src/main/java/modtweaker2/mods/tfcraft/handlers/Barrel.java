@@ -23,9 +23,9 @@ import com.bioxx.tfc.api.Crafting.BarrelRecipe;
 public class Barrel {
 	
 	/**
-	 * Note: by default the parameter <code>sealed</code> should be <code>true</code>, which is used by all TFCraft recipe.
-	 * <p>And, the parameter <code>time</code> uses the unit of "hour" in TFCraft.
-	 * @param techLv Set to 1 if you want vessel to be able to use your new recipe, otherwise you will set to 0.
+	 * Note: by default the parameter <code>sealed</code> should be <code>true</code>
+	 * <p>And, the parameter <code>time</code> uses the unit of "hour" in TFCraft
+	 * @param techLv Set to 0 if you want vessel to be able to use your new recipe, otherwise you will set to 1
 	 */
 	@ZenMethod
 	public static void add(IItemStack inputItem, ILiquidStack inputFluid, IItemStack outputItem, ILiquidStack outputFluid, int time, int techLv, boolean sealed){
