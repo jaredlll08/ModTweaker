@@ -1,5 +1,6 @@
 package modtweaker2.mods.tfcraft.handlers;
 
+import static modtweaker2.helpers.StackHelper.areEqual;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static com.bioxx.tfc.api.Crafting.AnvilReq.getReqFromInt;
 
@@ -66,7 +67,7 @@ public class Anvil {
 		public void apply() {
 			ArrayList<AnvilRecipe> toRemove = new ArrayList<AnvilRecipe>();
 			for (AnvilRecipe recipe : AnvilManager.getInstance().getRecipeList()){
-				if (recipe.getCraftingResult() != null && recipe.getCraftingResult() == stack){
+				if (recipe.getCraftingResult() != null && areEqual(recipe.getCraftingResult(), stack)){
 					toRemove.add(recipe);
 				}
 			}

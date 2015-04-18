@@ -1,6 +1,7 @@
 package modtweaker2.mods.tfcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class Quern {
 		public void apply() {
 			ArrayList<QuernRecipe> toRemove = new ArrayList<QuernRecipe>();
 			for (QuernRecipe recipe : QuernManager.getInstance().getRecipes()){
-				if (recipe.getResult() !=null && recipe.getResult() == stack){
+				if (recipe.getResult() !=null && areEqual(recipe.getResult(), stack)){
 					toRemove.add(recipe);
 				}
 			}

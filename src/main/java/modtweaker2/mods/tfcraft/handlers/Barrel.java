@@ -2,6 +2,7 @@ package modtweaker2.mods.tfcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.ArrayList;
 
@@ -81,12 +82,12 @@ public class Barrel {
 		public void apply() {
 			ArrayList<BarrelRecipe> toRemove = new ArrayList<BarrelRecipe>();
 			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
-				if (recipe.getRecipeOutIS() != null && recipe.getRecipeOutIS() == stack){
+				if (recipe.getRecipeOutIS() != null && areEqual(recipe.getRecipeOutIS(), stack)){
 					toRemove.add(recipe);
 				}
 			}
 			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
-				if (recipe.getRecipeOutFluid() != null && recipe.getRecipeOutFluid() == fluid){
+				if (recipe.getRecipeOutFluid() != null && recipe.getRecipeOutFluid().isFluidEqual(fluid)){
 					toRemove.add(recipe);
 				}
 			}
