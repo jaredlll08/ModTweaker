@@ -47,20 +47,17 @@ public class Sieve {
 
 		public void apply() {
 			SieveRegistry.register(source, sourceMeta, output, outputMeta, rarity);
-
 		}
 
 		public boolean canUndo() {
-			return source != null && output != null;
+			return false;
 		}
 
 		public String describe() {
 			return "Adding ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-
 		}
 
-		public String describeUndo() 
-		{
+		public String describeUndo() {
 			return "Removing ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
 		}
 
@@ -69,8 +66,6 @@ public class Sieve {
 		}
 
 		public void undo() {
-			if(this.canUndo())
-				SieveRegistry.unregisterReward(this.source, this.sourceMeta, this.output, this.outputMeta);
 		}
 	}
 
@@ -79,7 +74,7 @@ public class Sieve {
 	//Removing a Ex Nihilo Sieve recipe
 	@ZenMethod
 	public static void removeRecipe(IItemStack input, IItemStack output) {
-		if (isABlock(input)) 
+		if (isABlock(input))
 		{
 			Block theBlock = Block.getBlockFromItem(toStack(input).getItem());
 			int theMeta = toStack(input).getItemDamage();
@@ -129,12 +124,11 @@ public class Sieve {
 		}
 
 		public boolean canUndo() {
-			return false;
+			return true;
 		}
 
 		public String describe() {
 			return "Removing ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-
 		}
 
 		public String describeUndo() {

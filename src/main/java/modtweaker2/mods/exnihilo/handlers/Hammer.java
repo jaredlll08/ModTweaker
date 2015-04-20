@@ -3,14 +3,13 @@ package modtweaker2.mods.exnihilo.handlers;
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toStack;
 
-import java.util.Iterator;
+import java.util.List;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -25,19 +24,50 @@ public class Hammer {
 		if (isABlock(input)) {
 			Block theBlock = Block.getBlockFromItem(toStack(input).getItem());
 			int theMeta = toStack(input).getItemDamage();
-			MineTweakerAPI.apply(new Add(new Smashable(theBlock, theMeta, toStack(output).getItem(), toStack(output).getItemDamage(), (float) chance, (float) luck)));
+			MineTweakerAPI.apply(new Add(theBlock, theMeta, toStack(output).getItem(), toStack(output).getItemDamage(), (float) chance, (float) luck));
 		}
 	}
 
 	// Passes the list to the base list implementation, and adds the recipe
-	private static class Add extends BaseListAddition {
-		public Add(Smashable recipe) {
-			super("ExNihilo Hammer", HammerRegistry.rewards, recipe);
+	private static class Add implements IUndoableAction {
+		
+		Block block;
+		int blockMeta;
+		Item output;
+		int outputMeta;
+		float chance;
+		float luck;
+		
+		public Add(Block block, int blockMeta, Item output, int outputMeta, float chance, float luck) {
+			this.block = block;
+			this.blockMeta = blockMeta;
+			this.output = output;
+			this.outputMeta = outputMeta;
+			this.chance = chance;
+			this.luck = luck;
 		}
 
-		@Override
-		public String getRecipeInfo() {
-			return new ItemStack(((Smashable) recipe).source, 1, ((Smashable) recipe).sourceMeta).getDisplayName();
+		public void apply() {
+			HammerRegistry.register(block, blockMeta, output, outputMeta, chance, luck);
+		}
+
+		public boolean canUndo() {
+			return false;
+		}
+
+		public String describe() {
+			return "Adding ExNihilo Hammer recipe by mining " + block.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
+		}
+
+		public String describeUndo() {
+			return "";
+		}
+
+		public Object getOverrideKey() {
+			return null;
+		}
+
+		public void undo() {		
 		}
 	}
 
@@ -51,40 +81,44 @@ public class Hammer {
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class Remove extends BaseListRemoval {
+	private static class Remove implements IUndoableAction {
+		ItemStack stack;
+		
 		public Remove(ItemStack stack) {
-			super("ExNihilo Hammer", HammerRegistry.rewards, stack);
+			this.stack = stack;
 		}
 
 		// Loops through the registry, to find the item that matches, saves that
 		// recipe then removes it
-		@Override
-		public void apply() {
-			boolean found = false;
-			Iterator<Smashable> smashables = HammerRegistry.rewards.iterator();
-			while (!found && smashables.hasNext()) {
-
-				Smashable reward = smashables.next();
-				if (reward != null && reward.source != null && Block.getBlockFromItem(stack.getItem()) != null)
-					if (reward.source == Block.getBlockFromItem(stack.getItem())) {
-						reward.source = Blocks.air;
-						found = true;
+		public void apply(){
+			List<Smashable> smashables = HammerRegistry.rewards;
+			for(int i = 0; i < smashables.size(); i++){
+				Smashable smash = smashables.get(i);
+				if (smash != null && smash.source != null && Block.getBlockFromItem(stack.getItem()) != null)
+					if (smash.source == Block.getBlockFromItem(stack.getItem())){
+						HammerRegistry.rewards.remove(smash);
+						return;
 					}
 			}
-
-			// for (Smashable r : HammerRegistry.rewards.) {
-			// ItemStack check = new ItemStack(r.item, 1, r.meta);
-			// if (check != null && areEqual(check, stack)) {
-			// recipe = r;
-			// break;
-			// }
-			// }
-
 		}
 
-		@Override
-		public String getRecipeInfo() {
-			return stack.getDisplayName();
+		public boolean canUndo() {
+			return false;
+		}
+
+		public String describe() {
+			return "Removing ExNihilo Hammer recipe of obtaining " + stack.getUnlocalizedName();
+		}
+
+		public String describeUndo() {
+			return null;
+		}
+
+		public Object getOverrideKey() {
+			return null;
+		}
+
+		public void undo() {
 		}
 	}
 }
