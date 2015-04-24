@@ -1,5 +1,12 @@
 package modtweaker2;
 
+import java.util.Iterator;
+
+import minetweaker.MineTweakerImplementationAPI;
+import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
+import minetweaker.runtime.IScriptIterator;
+import minetweaker.runtime.IScriptProvider;
+import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.auracascade.AuraCascade;
 import modtweaker2.mods.botania.Botania;
@@ -9,7 +16,6 @@ import modtweaker2.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker2.mods.factorization.Factorization;
 import modtweaker2.mods.forestry.Forestry;
 import modtweaker2.mods.fsp.Steamcraft;
-import modtweaker2.mods.hee.HardcoreEnderExpansion;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.metallurgy.Metallurgy;
@@ -19,6 +25,7 @@ import modtweaker2.mods.tconstruct.TConstruct;
 import modtweaker2.mods.tfcraft.TerraFirmaCraft;
 import modtweaker2.mods.thaumcraft.Thaumcraft;
 import modtweaker2.mods.thermalexpansion.ThermalExpansion;
+import modtweaker2.proxy.CommonProxy;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -29,10 +36,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModProps.modid, version = ModProps.version, dependencies = ModProps.dependencies)
@@ -47,7 +56,10 @@ public class ModTweaker2 {
 	public void preInit(FMLPreInitializationEvent event) {
 		logger.info("Starting PreInitialization for " + ModProps.modid);
 	}
-
+	
+	@SidedProxy(clientSide = "modtweaker2.proxy.ClientProxy", serverSide = "modtweaker2.proxy.CommonProxy")
+	public static CommonProxy proxy;
+	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		logger.info("Starting Initialization for " + ModProps.modid);
@@ -56,7 +68,6 @@ public class ModTweaker2 {
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
 		TweakerPlugin.register("factorization", Factorization.class);
-		TweakerPlugin.register("HardcoreEnderExpansion", HardcoreEnderExpansion.class);
 		TweakerPlugin.register("Mariculture", Mariculture.class);
 		TweakerPlugin.register("Mekanism", Mekanism.class);
 		TweakerPlugin.register("Metallurgy", Metallurgy.class);
@@ -74,14 +85,18 @@ public class ModTweaker2 {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
-//		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
-//
-//			@Override
-//			public void handle(ReloadEvent event) {
-//				Commands.registerCommands();
-//			}
-//		});
+		
+		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
+
+			@Override
+			public void handle(ReloadEvent event) {
+				proxy.registerCommands();
+				
+			}
+		});
+		TweakerPlugin.hasInit = true;
 	}
+	
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
@@ -92,7 +107,7 @@ public class ModTweaker2 {
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent event) {
 		logger.info("Starting ServerStart for " + ModProps.modid);
-		Commands.registerCommands();
+		proxy.registerCommands();
 
 	}
 }

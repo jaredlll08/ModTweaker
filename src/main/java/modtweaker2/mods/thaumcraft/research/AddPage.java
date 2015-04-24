@@ -1,6 +1,5 @@
 package modtweaker2.mods.thaumcraft.research;
 
-import static modtweaker2.helpers.StackHelper.areEqual;
 import minetweaker.IUndoableAction;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import net.minecraft.enchantment.Enchantment;
@@ -15,6 +14,8 @@ import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.research.ResearchPage.PageType;
+import static modtweaker2.helpers.InputHelper.*;
+import static modtweaker2.helpers.StackHelper.*;
 
 public class AddPage implements IUndoableAction {
     String key;

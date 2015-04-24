@@ -4,6 +4,7 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -12,121 +13,125 @@ import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
 @ZenClass("mods.thermalexpansion.Furnace")
 public class Furnace {
-    @ZenMethod
-    public static void addRecipe(int energy, IItemStack input, IItemStack output) {
-        MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output)));
-    }
+	@ZenMethod
+	public static void addRecipe(int energy, IItemStack input, IItemStack output) {
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output)));
+	}
 
-    private static class Add implements IUndoableAction {
-        ItemStack input;
-        ItemStack output;
-        int energy;
-        boolean applied = false;
+	private static class Add implements IUndoableAction {
+		ItemStack input;
+		ItemStack output;
+		int energy;
+		boolean applied = false;
 
-        public Add(int rf, ItemStack inp, ItemStack out) {
-            energy = rf;
-            input = inp;
-            output = out;
-        }
+		public Add(int rf, ItemStack inp, ItemStack out) {
+			energy = rf;
+			input = inp;
+			output = out;
+		}
 
-        public void apply() {
-            FurnaceManager.addRecipe(energy, input, output, false);
-        }
+		public void apply() {
+			FurnaceManager.addRecipe(energy, input, output, false);
+		}
 
-        public boolean canUndo() {
-            return input != null;
-        }
+		public boolean canUndo() {
+			return input != null;
+		}
 
-        public String describe() {
-            return "Adding Redstone Furnace Recipe using " + input.getDisplayName();
-        }
+		public String describe() {
+			return "Adding Redstone Furnace Recipe using " + input.getDisplayName();
+		}
 
-        public void undo() {
-            FurnaceManager.removeRecipe(input);
-        }
+		public void undo() {
+			FurnaceManager.removeRecipe(input);
+		}
 
-        public String describeUndo() {
-            return "Removing Redstone Furnace Recipe using " + input.getDisplayName();
-        }
+		public String describeUndo() {
+			return "Removing Redstone Furnace Recipe using " + input.getDisplayName();
+		}
 
-        public Object getOverrideKey() {
-            return null;
-        }
+		public Object getOverrideKey() {
+			return null;
+		}
 
-    }
+	}
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @ZenMethod
-    public static void removeRecipe(IItemStack input) {
-        MineTweakerAPI.apply(new Remove(toStack(input)));
-    }
+	@ZenMethod
+	public static void removeRecipe(IItemStack input) {
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Remove(toStack(input)));
+	}
 
-    private static class Remove implements IUndoableAction {
-        ItemStack input;
-        RecipeFurnace removed;
+	private static class Remove implements IUndoableAction {
+		ItemStack input;
+		RecipeFurnace removed;
 
-        public Remove(ItemStack inp) {
-            input = inp;
-        }
-        public void apply() {
-            removed = FurnaceManager.getRecipe(input);
-            FurnaceManager.removeRecipe(input);
-        }
+		public Remove(ItemStack inp) {
+			input = inp;
+		}
 
-        public boolean canUndo() {
-            return removed != null;
-        }
+		public void apply() {
+			removed = FurnaceManager.getRecipe(input);
+			FurnaceManager.removeRecipe(input);
+		}
 
-        public String describe() {
-            return "Removing Redstone Furnace Recipe using " + input.getDisplayName();
-        }
+		public boolean canUndo() {
+			return removed != null;
+		}
 
-        public void undo() {
-            FurnaceManager.addRecipe(removed.getEnergy(), removed.getInput(), removed.getOutput(), false);
-        }
+		public String describe() {
+			return "Removing Redstone Furnace Recipe using " + input.getDisplayName();
+		}
 
-        public String describeUndo() {
-            return "Restoring Redstone Furnace Recipe using " + input.getDisplayName();
-        }
+		public void undo() {
+			FurnaceManager.addRecipe(removed.getEnergy(), removed.getInput(), removed.getOutput(), false);
+		}
 
-        public Object getOverrideKey() {
-            return null;
-        }
+		public String describeUndo() {
+			return "Restoring Redstone Furnace Recipe using " + input.getDisplayName();
+		}
 
-    }
+		public Object getOverrideKey() {
+			return null;
+		}
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
 
-    @ZenMethod
-    public static void refreshRecipes() {
-        MineTweakerAPI.apply(new Refresh());
-    }
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static class Refresh implements IUndoableAction {
+	@ZenMethod
+	public static void refreshRecipes() {
+		MineTweakerAPI.apply(new Refresh());
+	}
 
-        public void apply() {
-            FurnaceManager.loadRecipes();
-        }
+	private static class Refresh implements IUndoableAction {
 
-        public boolean canUndo() {
-            return false;
-        }
+		public void apply() {
+			FurnaceManager.loadRecipes();
+		}
 
-        public String describe() {
-            return "Refreshing Redstone Furnace Recipes";
-        }
+		public boolean canUndo() {
+			return false;
+		}
 
-        public void undo() {}
+		public String describe() {
+			return "Refreshing Redstone Furnace Recipes";
+		}
 
-        public String describeUndo() {
-            return "Can't Undo Redstone Furnace Refresh";
-        }
+		public void undo() {
+		}
 
-        public Object getOverrideKey() {
-            return null;
-        }
+		public String describeUndo() {
+			return "Can't Undo Redstone Furnace Refresh";
+		}
 
-    }
+		public Object getOverrideKey() {
+			return null;
+		}
+
+	}
 
 }
