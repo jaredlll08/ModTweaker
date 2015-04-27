@@ -12,6 +12,7 @@ import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -24,12 +25,14 @@ import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 public class Arcane {
 	@ZenMethod
 	public static void addShaped(String key, IItemStack output, String aspects, IIngredient[][] ingredients) {
-		MineTweakerAPI.apply(new Add(new ShapedArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toShapedObjects(ingredients))));
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Add(new ShapedArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toShapedObjects(ingredients))));
 	}
 
 	@ZenMethod
 	public static void addShapeless(String key, IItemStack output, String aspects, IIngredient[] ingredients) {
-		MineTweakerAPI.apply(new Add(new ShapelessArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toObjects(ingredients))));
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Add(new ShapelessArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toObjects(ingredients))));
 	}
 
 	private static class Add extends BaseListAddition {
@@ -51,7 +54,8 @@ public class Arcane {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(toStack(output)));
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Remove(toStack(output)));
 	}
 
 	private static class Remove extends BaseListRemoval {

@@ -14,23 +14,23 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.mekanism.chemical.Infuser")
 public class ChemicalInfuser {
-    @ZenMethod
-    public static void addRecipe(IGasStack left, IGasStack right, IGasStack out) {
-        if (Mekanism.v7)
-        {
-            ChemicalPairInput pair = new ChemicalPairInput(toGas(left), toGas(right));
-            MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), pair, toGas(out)));
-        }
-        else
-        {
-            ChemicalInfuserRecipe recipe = new ChemicalInfuserRecipe(toGas(left),toGas(right), toGas(out));
-            MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), recipe.getInput(), recipe));
-        }
-    }
+	@ZenMethod
+	public static void addRecipe(IGasStack left, IGasStack right, IGasStack out) {
+		if (Mekanism.v7) {
+			ChemicalPairInput pair = new ChemicalPairInput(toGas(left), toGas(right));
+			MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), pair, toGas(out)));
+		} else {
+			ChemicalInfuserRecipe recipe = new ChemicalInfuserRecipe(toGas(left), toGas(right), toGas(out));
+			MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), recipe.getInput(), recipe));
+		}
+	}
 
-    @ZenMethod
-    public static void removeRecipe(IGasStack output) {
-        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
-        MineTweakerAPI.apply(new RemoveMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), toGas(output)));
-    }
+	@ZenMethod
+	public static void removeRecipe(IGasStack output) {
+		if (!Mekanism.v7)
+			throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
+		MineTweakerAPI.apply(new RemoveMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), toGas(output)));
+		
+		
+	}
 }

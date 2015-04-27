@@ -11,6 +11,7 @@ import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseDescriptionAddition;
 import modtweaker2.utils.BaseDescriptionRemoval;
+import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -47,7 +48,8 @@ public class Smelter {
 		ItemStack out1 = toStack(output);
 		ItemStack out2 = toStack(output2);
 		RecipeSmelter recipe = (RecipeSmelter) ThermalHelper.getTERecipe(ThermalHelper.smelterRecipe, in1, in2, out1, out2, chance, energy);
-		MineTweakerAPI.apply(new Add(in1, in2, recipe));
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Add(in1, in2, recipe));
 	}
 
 	private static class Add extends BaseDescriptionAddition {
@@ -93,7 +95,8 @@ public class Smelter {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input, IItemStack input2) {
-		MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
+		if (!TweakerPlugin.hasInit())
+			MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
 	}
 
 	private static class Remove extends BaseDescriptionRemoval {
