@@ -1,11 +1,7 @@
 package modtweaker2;
 
-import java.util.Iterator;
-
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
-import minetweaker.runtime.IScriptIterator;
-import minetweaker.runtime.IScriptProvider;
 import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.auracascade.AuraCascade;
@@ -41,7 +37,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModProps.modid, version = ModProps.version, dependencies = ModProps.dependencies)
@@ -81,7 +76,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
-
+		
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}

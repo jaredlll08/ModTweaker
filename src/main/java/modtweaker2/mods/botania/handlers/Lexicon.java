@@ -369,7 +369,6 @@ public class Lexicon {
     	LexiconEntry lexiconEntry=new LexiconEntry(entry,lexiconCategory);
         MineTweakerAPI.apply(new AddEntry(lexiconEntry));
     }
-
     @ZenMethod
     public static void removeEntry(String entry) {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);

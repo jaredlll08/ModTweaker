@@ -1,6 +1,9 @@
 package modtweaker2.helpers;
 
+import java.util.ArrayList;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
@@ -11,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
@@ -41,7 +42,7 @@ public class InputHelper {
 		return block.getItem() instanceof ItemBlock;
 	}
 
-	public static Entity toEntity() {
+	public static Entity toEntity(IEntity iEntity) {
 		return null;
 	}
 
