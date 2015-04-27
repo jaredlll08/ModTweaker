@@ -83,15 +83,26 @@ public class Sieve {
 		}
 	}
 
-	// TODO: Add other 2 remove methods that exNihilo provided
 
-	/*
-	 * @ZenMethod public static void removeFirst(IItemStack output) {
-	 * MineTweakerAPI.apply(new Remove(toStack(output), Position.FIRST)); }
-	 * 
-	 * @ZenMethod public static void removeLast(IItemStack output) {
-	 * MineTweakerAPI.apply(new Remove(toStack(output), Position.LAST)); }
-	 */
+	@ZenMethod 
+	public static void removeRewardFromAllBlocks(IItemStack output) 
+	{
+		Item theItem = toStack(output).getItem();
+		int theMeta = toStack(output).getItemDamage();
+		MineTweakerAPI.apply(new RemoveRewardFromAllBlocks(theItem, theMeta)); 		
+	}
+
+	@ZenMethod 
+	public static void removeAllRewardsFromBlock(IItemStack output) 
+	{
+		if (isABlock(output)) {
+			Block theBlock = Block.getBlockFromItem(toStack(output).getItem());
+			int theMeta = toStack(output).getItemDamage();
+			MineTweakerAPI.apply(new RemoveAllRewardsFromBlock(theBlock, theMeta)); 		
+		}
+	}
+
+
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
@@ -100,7 +111,6 @@ public class Sieve {
 		int sourceMeta;
 		Item output;
 		int outputMeta;
-
 		int rarity;
 
 		public Remove(Block source, int sourceMeta, Item output, int outputMeta) {
@@ -141,6 +151,74 @@ public class Sieve {
 		public void undo() {
 			if (this.canUndo())
 				SieveRegistry.register(this.source, this.sourceMeta, this.output, this.outputMeta, rarity);
+		}
+	}
+
+	private static class RemoveAllRewardsFromBlock implements IUndoableAction {
+		Block block;
+		int blockMeta;
+
+		public RemoveAllRewardsFromBlock(Block block, int blockMeta) {
+			this.block = block;
+			this.blockMeta = blockMeta;
+		}
+
+		public void apply() {
+			SieveRegistry.unregisterAllRewardsFromBlock(block, blockMeta);
+		}
+
+		public boolean canUndo() {
+			return false;
+		}
+
+		public String describe() {
+			return "Removing All ExNihilo Sieve rewards from " + block.getLocalizedName();
+
+		}
+
+		public String describeUndo() {
+			return "";
+		}
+
+		public Object getOverrideKey() {
+			return null;
+		}
+
+		public void undo() {
+		}
+	}
+
+	private static class RemoveRewardFromAllBlocks implements IUndoableAction {
+		Item reward;
+		int rewardMeta;
+
+		public RemoveRewardFromAllBlocks(Item reward, int rewardMeta) {
+			this.reward = reward;
+			this.rewardMeta = rewardMeta;
+		}
+
+		public void apply() {
+			SieveRegistry.unregisterRewardFromAllBlocks(reward, rewardMeta);
+		}
+
+		public boolean canUndo() {
+			return false;
+		}
+
+		public String describe() {
+			return "Removing ExNihilo Sieve reward of " + reward.getUnlocalizedName() + " from all Blocks";
+
+		}
+
+		public String describeUndo() {
+			return "";
+		}
+
+		public Object getOverrideKey() {
+			return null;
+		}
+
+		public void undo() {
 		}
 	}
 }
