@@ -51,10 +51,10 @@ public class ModTweaker2 {
 	public void preInit(FMLPreInitializationEvent event) {
 		logger.info("Starting PreInitialization for " + ModProps.modid);
 	}
-	
+
 	@SidedProxy(clientSide = "modtweaker2.proxy.ClientProxy", serverSide = "modtweaker2.proxy.CommonProxy")
 	public static CommonProxy proxy;
-	
+
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		logger.info("Starting Initialization for " + ModProps.modid);
@@ -76,22 +76,21 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
-		
+
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		}
-		
+
 		MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
 
 			@Override
 			public void handle(ReloadEvent event) {
 				proxy.registerCommands();
-				
+
 			}
 		});
-		
+
 	}
-	
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
@@ -103,6 +102,7 @@ public class ModTweaker2 {
 	public void serverStart(FMLServerStartingEvent event) {
 		logger.info("Starting ServerStart for " + ModProps.modid);
 		proxy.registerCommands();
+		TweakerPlugin.hasInit = true;
 
 	}
 }
