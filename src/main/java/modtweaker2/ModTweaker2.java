@@ -95,7 +95,6 @@ public class ModTweaker2 {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		logger.info("Starting PostInitialization for " + ModProps.modid);
-		TweakerPlugin.hasInit = true;
 	}
 
 	@EventHandler
