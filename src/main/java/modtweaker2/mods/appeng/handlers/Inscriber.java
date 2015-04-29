@@ -2,10 +2,10 @@ package modtweaker2.mods.appeng.handlers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
-import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.utils.ArrayUtils;
+import modtweaker2.utils.BaseUndoable;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import appeng.api.AEApi;
@@ -21,37 +21,23 @@ public class Inscriber {
 		
 	}
 
-	public static class Add implements IUndoableAction {
+	public static class Add extends BaseUndoable {
 
 		IInscriberRecipe recipe;
 		
 		public Add(IInscriberRecipe recipe) {
+			super("Applied Energistics Inscriber", true);
 			this.recipe = recipe;
+		}
+		
+		@Override
+		public String getRecipeInfo(){
+			return recipe.getOutput().toString();
 		}
 
 		@Override
 		public void apply() {
 			AEApi.instance().registries().inscriber().addRecipe(recipe);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return recipe != null;
-		}
-
-		@Override
-		public String describe() {
-			return "Added Applied Energistics Inscriber recipe to get " + recipe.getOutput().toString();
-		}
-
-		@Override
-		public String describeUndo() {
-			return "Undoing Applied Energistics Inscriber recipe to get " + recipe.getOutput().toString();
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
 		}
 
 		@Override
@@ -66,44 +52,28 @@ public class Inscriber {
 		MineTweakerAPI.apply(new Remove(new InscriberRecipe(ArrayUtils.toArrayList(toStacks(imprintable)), toStack(out), toStack(plateA), toStack(plateB), InscriberProcessType.valueOf(type))));
 	}
 
-	public static class Remove implements IUndoableAction {
+	public static class Remove extends BaseUndoable {
 
 		IInscriberRecipe recipe;
 		
 		public Remove(IInscriberRecipe recipe) {
+			super("Applied Energistics Inscriber", false);
 			this.recipe = recipe;
 		}
 
 		@Override
+		public String getRecipeInfo(){
+			return recipe.getOutput().toString();
+		}
+
+		
 		public void apply() {
 			AEApi.instance().registries().inscriber().removeRecipe(recipe);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return recipe != null;
-		}
-
-		@Override
-		public String describe() {
-			return "Remove Applied Energistics Inscriber recipe to get " + recipe.getOutput().toString();
-		}
-
-		@Override
-		public String describeUndo() {
-			return "Undid the removing of Applied Energistics Inscriber recipe to get " + recipe.getOutput().toString();
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
 		}
 
 		@Override
 		public void undo() {
 			AEApi.instance().registries().inscriber().addRecipe(recipe);
 		}
-
 	}
-
 }

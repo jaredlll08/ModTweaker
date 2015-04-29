@@ -5,9 +5,9 @@ import static modtweaker2.helpers.InputHelper.toStack;
 
 import java.util.ArrayList;
 
-import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -28,7 +28,7 @@ public class Sieve {
 	}
 
 	// Passes the list to the base list implementation, and adds the recipe
-	private static class Add implements IUndoableAction {
+	private static class Add extends BaseUndoable {
 		Block source;
 		int sourceMeta;
 		Item output;
@@ -36,6 +36,7 @@ public class Sieve {
 		int rarity;
 
 		public Add(Block source, int sourceMeta, Item output, int outputMeta, int rarity) {
+			super("ExNihilo Sieve", true);
 			this.source = source;
 			this.sourceMeta = sourceMeta;
 			this.output = output;
@@ -48,26 +49,13 @@ public class Sieve {
 
 		}
 
-		public boolean canUndo() {
-			return source != null && output != null;
-		}
-
-		public String describe() {
-			return "Adding ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-
-		}
-
-		public String describeUndo() {
-			return "Removing ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
-			if (this.canUndo())
-				SieveRegistry.unregisterReward(this.source, this.sourceMeta, this.output, this.outputMeta);
+			SieveRegistry.unregisterReward(this.source, this.sourceMeta, this.output, this.outputMeta);
+		}
+
+		@Override
+		public String getRecipeInfo() {
+			return this.output.getUnlocalizedName() + " from " + this.source.getUnlocalizedName();
 		}
 	}
 
@@ -106,7 +94,7 @@ public class Sieve {
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class Remove implements IUndoableAction {
+	private static class Remove extends BaseUndoable {
 		Block source;
 		int sourceMeta;
 		Item output;
@@ -114,6 +102,7 @@ public class Sieve {
 		int rarity;
 
 		public Remove(Block source, int sourceMeta, Item output, int outputMeta) {
+			super("ExNihilo Sieve", false);
 			this.source = source;
 			this.sourceMeta = sourceMeta;
 			this.output = output;
@@ -131,34 +120,23 @@ public class Sieve {
 			SieveRegistry.unregisterReward(source, sourceMeta, output, outputMeta);
 		}
 
-		public boolean canUndo() {
-			return output != null && source != null;
-		}
-
-		public String describe() {
-			return "Removing ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-
-		}
-
-		public String describeUndo() {
-			return "Restoring ExNihilo Sieve Recipe using " + source.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
 			if (this.canUndo())
 				SieveRegistry.register(this.source, this.sourceMeta, this.output, this.outputMeta, rarity);
 		}
+
+		@Override
+		public String getRecipeInfo() {
+			return this.output.getUnlocalizedName() + " from " + this.source.getUnlocalizedName();
+		}
 	}
 
-	private static class RemoveAllRewardsFromBlock implements IUndoableAction {
+	private static class RemoveAllRewardsFromBlock extends BaseUndoable{
 		Block block;
 		int blockMeta;
 
 		public RemoveAllRewardsFromBlock(Block block, int blockMeta) {
+			super("All ExNihilo Sieve", false);
 			this.block = block;
 			this.blockMeta = blockMeta;
 		}
@@ -171,28 +149,21 @@ public class Sieve {
 			return false;
 		}
 
-		public String describe() {
-			return "Removing All ExNihilo Sieve rewards from " + block.getLocalizedName();
-
-		}
-
-		public String describeUndo() {
-			return "";
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
+		}
+
+		@Override
+		public String getRecipeInfo() {
+			return "any recipe from "+ block.getUnlocalizedName();
 		}
 	}
 
-	private static class RemoveRewardFromAllBlocks implements IUndoableAction {
+	private static class RemoveRewardFromAllBlocks extends BaseUndoable {
 		Item reward;
 		int rewardMeta;
 
 		public RemoveRewardFromAllBlocks(Item reward, int rewardMeta) {
+			super("ExNihilo Sieve", false);
 			this.reward = reward;
 			this.rewardMeta = rewardMeta;
 		}
@@ -205,20 +176,12 @@ public class Sieve {
 			return false;
 		}
 
-		public String describe() {
-			return "Removing ExNihilo Sieve reward of " + reward.getUnlocalizedName() + " from all Blocks";
-
-		}
-
-		public String describeUndo() {
-			return "";
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
+		}
+		
+		@Override
+		public String getRecipeInfo() {
+			return reward.getUnlocalizedName();
 		}
 	}
 }

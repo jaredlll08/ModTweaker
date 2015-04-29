@@ -3,12 +3,12 @@ package modtweaker2.mods.exnihilo.handlers;
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toStack;
-import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -77,13 +77,14 @@ public class Crucible {
     }
 
     //Passes the list to the base map implementation, and adds the recipe
-    private static class AddHeatSource implements IUndoableAction 
+    private static class AddHeatSource extends BaseUndoable
 	{
 		Block source;
 		int sourceMeta;
 		float value;
 
 		public AddHeatSource(Block source, int sourceMeta, float value) {
+			super("ExNihilo Heat Source", true);
 			this.source = source;
 			this.sourceMeta = sourceMeta;
 			this.value = value;
@@ -97,19 +98,12 @@ public class Crucible {
 			return false;
 		}
 
-		public String describe() {
-			return "Adding ExNihilo Heat source of " + source.getLocalizedName();
-		}
-
-		public String describeUndo() {
-			return null;
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
+		}
+
+		@Override
+		public String getRecipeInfo() {
+			return "" + value + " of heat from " + source.getUnlocalizedName();
 		}
 	}
 
@@ -126,11 +120,12 @@ public class Crucible {
     }
 
     //Removes a recipe, will always remove the key, so all should be good
-    private static class RemoveHeatSource implements IUndoableAction 
+    private static class RemoveHeatSource extends BaseUndoable
 	{
     	Block block;
 
         public RemoveHeatSource(Block block) {
+        	super("ExNihilo Heat Source", false);
         	this.block = block;
         }
 
@@ -142,19 +137,12 @@ public class Crucible {
 			return false;
 		}
 
-		public String describe() {
-			return "Removing ExNihilo Heat source of " + block.getLocalizedName();
-		}
-
-		public String describeUndo() {
-			return null;
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
+		}
+
+		@Override
+		public String getRecipeInfo() {
+			return "heat from " + block.getUnlocalizedName();
 		}
 	}
 }

@@ -1,14 +1,13 @@
 package modtweaker2.mods.appeng.handlers;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import appeng.api.AEApi;
