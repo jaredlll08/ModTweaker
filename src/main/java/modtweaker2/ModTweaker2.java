@@ -89,14 +89,14 @@ public class ModTweaker2 {
 				
 			}
 		});
-		TweakerPlugin.hasInit = true;
+		
 	}
 	
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		logger.info("Starting PostInitialization for " + ModProps.modid);
-
+		TweakerPlugin.hasInit = true;
 	}
 
 	@EventHandler
