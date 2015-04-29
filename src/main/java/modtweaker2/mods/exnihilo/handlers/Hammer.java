@@ -5,9 +5,9 @@ import static modtweaker2.helpers.InputHelper.toStack;
 
 import java.util.List;
 
-import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class Hammer {
 	}
 
 	// Passes the list to the base list implementation, and adds the recipe
-	private static class Add implements IUndoableAction {
+	private static class Add extends BaseUndoable {
 		
 		Block block;
 		int blockMeta;
@@ -39,6 +39,7 @@ public class Hammer {
 		float luck;
 		
 		public Add(Block block, int blockMeta, Item output, int outputMeta, float chance, float luck) {
+			super("ExNihilo Hammer", true);
 			this.block = block;
 			this.blockMeta = blockMeta;
 			this.output = output;
@@ -51,23 +52,21 @@ public class Hammer {
 			HammerRegistry.register(block, blockMeta, output, outputMeta, chance, luck);
 		}
 
-		public boolean canUndo() {
-			return false;
+		public void undo() {
+			List<Smashable> smashables = HammerRegistry.rewards;
+			for(int i = 0; i < smashables.size(); i++){
+				Smashable smash = smashables.get(i);
+				if (smash != null && smash.source != null)
+					if (smash.source == block){
+						HammerRegistry.rewards.remove(smash);
+						return;
+					}
+			}
 		}
 
-		public String describe() {
-			return "Adding ExNihilo Hammer recipe by mining " + block.getLocalizedName() + " to get the result of " + output.getUnlocalizedName();
-		}
-
-		public String describeUndo() {
-			return "";
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		public void undo() {		
+		@Override
+		public String getRecipeInfo() {
+			return output.getUnlocalizedName() + " from " + block.getUnlocalizedName();
 		}
 	}
 
@@ -81,10 +80,11 @@ public class Hammer {
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class Remove implements IUndoableAction {
+	private static class Remove extends BaseUndoable {
 		ItemStack stack;
 		
 		public Remove(ItemStack stack) {
+			super("ExNihilo Hammer", false);
 			this.stack = stack;
 		}
 
@@ -106,19 +106,12 @@ public class Hammer {
 			return false;
 		}
 
-		public String describe() {
-			return "Removing ExNihilo Hammer recipe of obtaining " + stack.getUnlocalizedName();
-		}
-
-		public String describeUndo() {
-			return null;
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 		public void undo() {
+		}
+
+		@Override
+		public String getRecipeInfo() {
+			return stack.getUnlocalizedName();
 		}
 	}
 }
