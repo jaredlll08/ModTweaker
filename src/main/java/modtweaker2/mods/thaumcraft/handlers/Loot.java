@@ -85,6 +85,22 @@ public class Loot {
 			}
 			loot.remove(remove);
 		}
+		
+		
+		public static class RemoveAll extends BaseListRemoval {
+
+		public Remove(List list) {
+			super(list);
+		}
+
+		@Override
+		public void apply() {
+			List<WeightedRandomLoot> loot = (List<WeightedRandomLoot>) list;
+			WeightedRandomLoot remove = null;
+				}
+			}
+			loot.remove(remove);
+		}
 
 	}
 }
