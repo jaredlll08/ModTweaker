@@ -51,21 +51,6 @@ public class Loot {
 	public static void removeRareLoot(IItemStack stack) {
 		MineTweakerAPI.apply(new Remove(WeightedRandomLoot.lootBagRare, InputHelper.toStack(stack)));
 	}
-	
-		@ZenMethod
-	public static void removeAllCommonLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new RemoveAll(WeightedRandomLoot.lootBagCommon));
-	}
-
-	@ZenMethod
-	public static void removeAllUncommonLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new RemoveAll(WeightedRandomLoot.lootBagUncommon));
-	}
-
-	@ZenMethod
-	public static void removeAllRareLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new RemoveAll(WeightedRandomLoot.lootBagRare));
-	}
 
 	public static class Remove extends BaseListRemoval {
 
