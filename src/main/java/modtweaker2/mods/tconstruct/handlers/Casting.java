@@ -131,4 +131,46 @@ public class Casting {
             return stack.getDisplayName();
         }
     }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Removing TConstruct recipes for a cast
+    @ZenMethod
+    public static void removeCastRecipes(IItemStack cast) {
+        MineTweakerAPI.apply(new RemoveCastRecipies((toStack(cast)), TConstructHelper.tableCasting));
+    }
+    
+    private static class RemoveCastRecipies extends BaseListRemoval {
+        protected final LinkedList<CastingRecipe> removedRecipes;
+        
+        public RemoveCastRecipies(ItemStack cast, ArrayList list) {
+            super("TConstruct Casting", list, cast);
+            removedRecipes = new LinkedList<CastingRecipe>();
+        }
+
+        // Loops through the registry, to find all recipies for a cast, then removes them
+        @Override
+        public void apply() {
+            for (Iterator<CastingRecipe> iterator = ((ArrayList<CastingRecipe>)list).iterator(); iterator.hasNext();) {
+                CastingRecipe r = iterator.next();
+                if (r.cast != null && areEqual(r.cast, stack)) {
+                     iterator.remove();
+                     removedRecipes.add(r);
+                }
+            }
+        }
+        
+        @Override
+        public void undo() {
+            for(CastingRecipe recipe : removedRecipes) {
+                this.list.add(recipe);
+            }
+            removedRecipes.clear();
+        }
+
+        @Override
+        public String getRecipeInfo() {
+            return stack.getDisplayName();
+        }
+    }
 }
