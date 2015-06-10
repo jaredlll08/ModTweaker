@@ -15,6 +15,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import exnihilo.registries.HammerRegistry;
 import exnihilo.registries.helpers.Smashable;
+import exnihilo.utils.ItemInfo;
 
 @ZenClass("mods.exnihilo.Hammer")
 public class Hammer {
@@ -30,14 +31,14 @@ public class Hammer {
 
 	// Passes the list to the base list implementation, and adds the recipe
 	private static class Add implements IUndoableAction {
-		
+
 		Block block;
 		int blockMeta;
 		Item output;
 		int outputMeta;
 		float chance;
 		float luck;
-		
+
 		public Add(Block block, int blockMeta, Item output, int outputMeta, float chance, float luck) {
 			this.block = block;
 			this.blockMeta = blockMeta;
@@ -67,7 +68,7 @@ public class Hammer {
 			return null;
 		}
 
-		public void undo() {		
+		public void undo() {
 		}
 	}
 
@@ -75,31 +76,30 @@ public class Hammer {
 
 	// Removing a Ex Nihilo Hammer recipe
 	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(toStack(output)));
+	public static void removeRecipe(IItemStack inputBlock, int inputBlockMeta, IItemStack outputItem, int outputItemMeta) {
+		MineTweakerAPI.apply(new Remove(Block.getBlockFromItem(toStack(inputBlock).getItem()), inputBlockMeta, toStack(outputItem).getItem(), outputItemMeta));
 	}
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
 	private static class Remove implements IUndoableAction {
-		ItemStack stack;
-		
-		public Remove(ItemStack stack) {
-			this.stack = stack;
+		Block block;
+		int inputBlockMeta;
+		Item output;
+		int outputItemMeta;
+			
+
+		public Remove(Block block, int inputBlockMeta, Item output, int outputItemMeta) {
+			this.block = block;
+			this.inputBlockMeta = inputBlockMeta;
+			this.output = output;
+			this.outputItemMeta = outputItemMeta;
 		}
 
 		// Loops through the registry, to find the item that matches, saves that
 		// recipe then removes it
-		public void apply(){
-			List<Smashable> smashables = HammerRegistry.rewards;
-			for(int i = 0; i < smashables.size(); i++){
-				Smashable smash = smashables.get(i);
-				if (smash != null && smash.source != null && Block.getBlockFromItem(stack.getItem()) != null)
-					if (smash.source == Block.getBlockFromItem(stack.getItem())){
-						HammerRegistry.rewards.remove(smash);
-						return;
-					}
-			}
+		public void apply() {
+			HammerRegistry.remove(block, inputBlockMeta, output, outputItemMeta);
 		}
 
 		public boolean canUndo() {
@@ -107,7 +107,7 @@ public class Hammer {
 		}
 
 		public String describe() {
-			return "Removing ExNihilo Hammer recipe of obtaining " + stack.getUnlocalizedName();
+			return "Removing ExNihilo Hammer recipe";
 		}
 
 		public String describeUndo() {

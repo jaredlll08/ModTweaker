@@ -17,9 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "0.8.1"
+version = "0.8.3b5"
 group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ModTweaker 2"
+archivesBaseName = "ModTweaker~2"
 
 minecraft {
     version = "${mc_version}-${forge_version}"
