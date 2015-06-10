@@ -52,11 +52,6 @@ public class Casting {
     public static void removeBasinRecipe(IItemStack output) {
         MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.basinCasting));
     }
-    
-    @ZenMethod
-    public static void removeBasinRecipes(IItemStack output) {
-        MineTweakerAPI.apply(new RemoveAll((toStack(output)), TConstructHelper.basinCasting));
-    }
 
     @ZenMethod
     public static void removeTableRecipe(IItemStack output) {
