@@ -5,6 +5,8 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -50,10 +52,20 @@ public class Casting {
     public static void removeBasinRecipe(IItemStack output) {
         MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.basinCasting));
     }
+    
+    @ZenMethod
+    public static void removeBasinRecipes(IItemStack output) {
+        MineTweakerAPI.apply(new RemoveAll((toStack(output)), TConstructHelper.basinCasting));
+    }
 
     @ZenMethod
     public static void removeTableRecipe(IItemStack output) {
         MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.tableCasting));
+    }
+    
+    @ZenMethod
+    public static void removeTableRecipes(IItemStack output) {
+        MineTweakerAPI.apply(new RemoveAll((toStack(output)), TConstructHelper.tableCasting));
     }
 
     //Removes a recipe, apply is never the same for anything, so will always need to override it
@@ -65,14 +77,53 @@ public class Casting {
         //Loops through the registry, to find the item that matches, saves that recipe then removes it
         @Override
         public void apply() {
+            recipe = null;
+            
             for (CastingRecipe r : (ArrayList<CastingRecipe>) list) {
                 if (r.output != null && areEqual(r.output, stack)) {
                     recipe = r;
                     break;
                 }
             }
+            
+            if (recipe != null) {
+                list.remove(recipe);
+            }
+        }
 
-            list.remove(recipe);
+        @Override
+        public String getRecipeInfo() {
+            return stack.getDisplayName();
+        }
+    }
+    
+    // Removes all matching recipes, apply is never the same for anything, so will always need to override it
+    private static class RemoveAll extends BaseListRemoval {
+        protected final LinkedList<CastingRecipe> removedRecipes;
+        
+        public RemoveAll(ItemStack output, ArrayList list) {
+            super("TConstruct Casting", list, output);
+            removedRecipes = new LinkedList<CastingRecipe>();
+        }
+
+        // Loops through the registry, to find all items that matches, then removes them
+        @Override
+        public void apply() {
+            for (Iterator<CastingRecipe> iterator = ((ArrayList<CastingRecipe>)list).iterator(); iterator.hasNext();) {
+                CastingRecipe r = iterator.next();
+                if (r.output != null && areEqual(r.output, stack)) {
+                     iterator.remove();
+                     removedRecipes.add(r);
+                }
+            }
+        }
+        
+        @Override
+        public void undo() {
+            for(CastingRecipe recipe : removedRecipes) {
+                this.list.add(recipe);
+            }
+            removedRecipes.clear();
         }
 
         @Override
