@@ -5,6 +5,8 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -13,6 +15,7 @@ import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -48,36 +51,104 @@ public class Casting {
     //Removing a TConstruct Casting recipe
     @ZenMethod
     public static void removeBasinRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.basinCasting));
+        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.basinCasting, RecipeComponent.Output));
     }
 
     @ZenMethod
     public static void removeTableRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.tableCasting));
+        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.tableCasting, RecipeComponent.Output));
+    }
+    
+    @ZenMethod
+    public static void removeBasinMaterial(ILiquidStack fluid) {
+        MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.basinCasting));
     }
 
-    //Removes a recipe, apply is never the same for anything, so will always need to override it
+    @ZenMethod
+    public static void removeTableMaterial(ILiquidStack fluid) {
+        MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.tableCasting));
+    }
+
+    @ZenMethod
+    public static void removeCastRecipes(IItemStack cast) {
+        MineTweakerAPI.apply(new Remove((toStack(cast)), TConstructHelper.tableCasting, RecipeComponent.Cast));
+    }
+
+    // Removes all matching recipes, apply is never the same for anything, so will always need to override it
     private static class Remove extends BaseListRemoval {
-        public Remove(ItemStack output, ArrayList list) {
-            super("TConstruct Casting", list, output);
+        protected final LinkedList<CastingRecipe> removedRecipes;
+        protected final RecipeComponent component;
+        
+        public Remove(ItemStack item, ArrayList list, RecipeComponent component) {
+            super("TConstruct Casting", list, item);
+            this.removedRecipes = new LinkedList<CastingRecipe>();
+            this.component = component;
+        }
+        
+        public Remove(FluidStack fluid, ArrayList list) {
+            super("TConstruct Casting", list, fluid);
+            this.removedRecipes = new LinkedList<CastingRecipe>();
+            this.component = RecipeComponent.Material;
         }
 
-        //Loops through the registry, to find the item that matches, saves that recipe then removes it
+        // Loops through the registry, to find all items that matches, then removes them
         @Override
         public void apply() {
-            for (CastingRecipe r : (ArrayList<CastingRecipe>) list) {
-                if (r.output != null && areEqual(r.output, stack)) {
-                    recipe = r;
-                    break;
+            for (Iterator<CastingRecipe> iterator = ((ArrayList<CastingRecipe>)list).iterator(); iterator.hasNext();) {
+                CastingRecipe r = iterator.next();
+                boolean removeRecipie = false;
+                
+                switch(component)
+                {
+                    case Cast:
+                        if (r.cast != null && areEqual(r.cast, stack)) {
+                            removeRecipie = true;
+                        }
+
+                        break;
+                        
+                    case Material:
+                        if (r.castingMetal != null && r.castingMetal.isFluidEqual(fluid)) {
+                            removeRecipie = true;
+                        }
+
+                        break;
+                        
+                    case Output:
+                        if (r.output != null && areEqual(r.output, stack)) {
+                            removeRecipie = true;
+                        }
+
+                        break;
+                }
+
+                if(removeRecipie) {
+                    iterator.remove();
+                    removedRecipes.add(r);
                 }
             }
-
-            list.remove(recipe);
+        }
+        
+        @Override
+        public void undo() {
+            for(CastingRecipe recipe : removedRecipes) {
+                this.list.add(recipe);
+            }
+            removedRecipes.clear();
         }
 
         @Override
         public String getRecipeInfo() {
-            return stack.getDisplayName();
+            if(component == RecipeComponent.Material)
+                return fluid.getLocalizedName();
+            else
+                return stack.getDisplayName();
         }
+    }
+
+    public enum RecipeComponent {
+        Output,
+        Cast,
+        Material
     }
 }
