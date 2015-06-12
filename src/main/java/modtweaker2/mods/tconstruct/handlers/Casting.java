@@ -60,12 +60,12 @@ public class Casting {
     }
     
     @ZenMethod
-    public static void removeBasinLiquid(ILiquidStack fluid) {
+    public static void removeBasinMaterial(ILiquidStack fluid) {
         MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.basinCasting));
     }
 
     @ZenMethod
-    public static void removeTableLiquid(ILiquidStack fluid) {
+    public static void removeTableMaterial(ILiquidStack fluid) {
         MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.tableCasting));
     }
 
