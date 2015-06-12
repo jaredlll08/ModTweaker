@@ -79,16 +79,16 @@ public class Casting {
         protected final LinkedList<CastingRecipe> removedRecipes;
         protected final RecipeComponent component;
         
-        public Remove(ItemStack output, ArrayList list, RecipeComponent component) {
-            super("TConstruct Casting", list, output);
+        public Remove(ItemStack item, ArrayList list, RecipeComponent component) {
+            super("TConstruct Casting", list, item);
             this.removedRecipes = new LinkedList<CastingRecipe>();
             this.component = component;
         }
         
-        public Remove(FluidStack output, ArrayList list) {
-        	super("TConstruct Casting", list, output);
-        	this.removedRecipes = new LinkedList<CastingRecipe>();
-        	this.component = RecipeComponent.Material;
+        public Remove(FluidStack fluid, ArrayList list) {
+            super("TConstruct Casting", list, fluid);
+            this.removedRecipes = new LinkedList<CastingRecipe>();
+            this.component = RecipeComponent.Material;
         }
 
         // Loops through the registry, to find all items that matches, then removes them
@@ -100,31 +100,31 @@ public class Casting {
                 
                 switch(component)
                 {
-                	case Cast:
-                		if (r.cast != null && areEqual(r.cast, stack)) {
-                			removeRecipie = true;
+                    case Cast:
+                        if (r.cast != null && areEqual(r.cast, stack)) {
+                            removeRecipie = true;
                         }
 
-                		break;
-                		
-                	case Material:
+                        break;
+                        
+                    case Material:
                         if (r.castingMetal != null && r.castingMetal.isFluidEqual(fluid)) {
-                        	removeRecipie = true;
+                            removeRecipie = true;
                         }
 
-                		break;
-                		
-                	case Output:
-                		if (r.output != null && areEqual(r.output, stack)) {
-                			removeRecipie = true;
+                        break;
+                        
+                    case Output:
+                        if (r.output != null && areEqual(r.output, stack)) {
+                            removeRecipie = true;
                         }
 
-                		break;
+                        break;
                 }
 
                 if(removeRecipie) {
-                	iterator.remove();
-                	removedRecipes.add(r);
+                    iterator.remove();
+                    removedRecipes.add(r);
                 }
             }
         }
@@ -139,13 +139,16 @@ public class Casting {
 
         @Override
         public String getRecipeInfo() {
-            return stack.getDisplayName();
+            if(component == RecipeComponent.Material)
+                return fluid.getLocalizedName();
+            else
+                return stack.getDisplayName();
         }
     }
 
     public enum RecipeComponent {
-    	Output,
-    	Cast,
-    	Material
+        Output,
+        Cast,
+        Material
     }
 }
