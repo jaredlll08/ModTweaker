@@ -46,14 +46,13 @@ public class BlastFurnace {
 
 		@Override
 		public void apply() {
-			ArrayList<IBlastFurnaceRecipe> recipesToRemove = new ArrayList<IBlastFurnaceRecipe>();
 			for (IBlastFurnaceRecipe r : RailcraftHelper.furnace) {
 					if (r.getOutput() != null && stack.isItemEqual(r.getOutput())) {
-						recipesToRemove.add(r);
+						recipes.add(r);
 					}
 			}
-			for (IBlastFurnaceRecipe r : recipesToRemove)
-				RailcraftCraftingManager.blastFurnace.getRecipes().remove(r);
+			
+			super.apply();
 		}
 
 		@Override

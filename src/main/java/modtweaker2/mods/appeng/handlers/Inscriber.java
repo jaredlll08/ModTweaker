@@ -63,15 +63,12 @@ public class Inscriber {
 
 		@Override
 		public void apply() {
-			ArrayList<IInscriberRecipe> recipesToRemove = new ArrayList<IInscriberRecipe>();
 			for (IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
 				if (recipe != null && recipe.getOutput() != null && recipe.getOutput().isItemEqual(stack)) {
-					recipesToRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
-			for (IInscriberRecipe recipe : recipesToRemove) {
-				AEApi.instance().registries().inscriber().removeRecipe(recipe);
-			}
+			super.apply();
 		}
 
 	}

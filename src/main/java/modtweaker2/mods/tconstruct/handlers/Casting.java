@@ -76,18 +76,15 @@ public class Casting {
 
     // Removes all matching recipes, apply is never the same for anything, so will always need to override it
     private static class Remove extends BaseListRemoval {
-        protected final LinkedList<CastingRecipe> removedRecipes;
         protected final RecipeComponent component;
         
         public Remove(ItemStack item, ArrayList list, RecipeComponent component) {
             super("TConstruct Casting", list, item);
-            this.removedRecipes = new LinkedList<CastingRecipe>();
             this.component = component;
         }
         
         public Remove(FluidStack fluid, ArrayList list) {
             super("TConstruct Casting", list, fluid);
-            this.removedRecipes = new LinkedList<CastingRecipe>();
             this.component = RecipeComponent.Material;
         }
 
@@ -96,45 +93,32 @@ public class Casting {
         public void apply() {
             for (Iterator<CastingRecipe> iterator = ((ArrayList<CastingRecipe>)list).iterator(); iterator.hasNext();) {
                 CastingRecipe r = iterator.next();
-                boolean removeRecipie = false;
                 
                 switch(component)
                 {
                     case Cast:
                         if (r.cast != null && areEqual(r.cast, stack)) {
-                            removeRecipie = true;
+                            recipes.add(r);
                         }
 
                         break;
                         
                     case Material:
                         if (r.castingMetal != null && r.castingMetal.isFluidEqual(fluid)) {
-                            removeRecipie = true;
+                            recipes.add(r);
                         }
 
                         break;
                         
                     case Output:
                         if (r.output != null && areEqual(r.output, stack)) {
-                            removeRecipie = true;
+                            recipes.add(r);
                         }
 
                         break;
                 }
-
-                if(removeRecipie) {
-                    iterator.remove();
-                    removedRecipes.add(r);
-                }
             }
-        }
-        
-        @Override
-        public void undo() {
-            for(CastingRecipe recipe : removedRecipes) {
-                this.list.add(recipe);
-            }
-            removedRecipes.clear();
+            super.apply();
         }
 
         @Override

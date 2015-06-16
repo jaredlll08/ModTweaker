@@ -54,13 +54,11 @@ public class Crucible {
 				if (o instanceof CrucibleRecipe) {
 					CrucibleRecipe r = (CrucibleRecipe) o;
 					if (r.getRecipeOutput() != null && areEqual(r.getRecipeOutput(), stack)) {
-						recipe = r;
-						break;
+						recipes.add(r);
 					}
 				}
 			}
-
-			ThaumcraftApi.getCraftingRecipes().remove(recipe);
+			super.apply();
 		}
 
 		@Override

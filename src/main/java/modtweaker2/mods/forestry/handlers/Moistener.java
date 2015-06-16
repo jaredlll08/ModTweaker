@@ -51,13 +51,10 @@ public class Moistener {
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.product != null && r.product.isItemEqual(stack)) {
-					recipe = r;
-					break;
+					recipes.add(r);
 				}
 			}
-			RecipeManager.recipes.remove(recipe);
-
+			super.apply();
 		}
-
 	}
 }

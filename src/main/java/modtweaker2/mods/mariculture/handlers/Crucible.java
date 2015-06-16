@@ -62,17 +62,14 @@ public class Crucible {
 		// recipe then removes it
 		@Override
 		public void apply() {
-
 			for (RecipeSmelter r : MaricultureHandlers.crucible.getRecipes()) {
 				if (r != null) {
 					if (r.input != null && stack != null && areEqual(r.input, stack)) {
-						recipe = r;
-						break;
+						recipes.add(r);
 					}
 				}
 			}
-			if (recipe != null)
-				MaricultureHandlers.crucible.getRecipes().remove(recipe);
+			super.apply();
 		}
 
 		@Override

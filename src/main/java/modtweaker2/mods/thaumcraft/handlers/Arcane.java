@@ -65,19 +65,15 @@ public class Arcane {
 
 		@Override
 		public void apply() {
-			ArrayList<IArcaneRecipe> recipesToRemove = new ArrayList<IArcaneRecipe>();
 			for (Object o : ThaumcraftApi.getCraftingRecipes()) {
 				if (o != null && o instanceof IArcaneRecipe) {
 					IArcaneRecipe r = (IArcaneRecipe) o;
 					if (r.getRecipeOutput() != null && r.getRecipeOutput().isItemEqual(stack)) {
-						recipesToRemove.add(r);
+						recipes.add(r);
 					}
 				}
 			}
-			for (IArcaneRecipe r : recipesToRemove) {
-				ThaumcraftApi.getCraftingRecipes().remove(r);
-			}
-
+			super.apply();
 		}
 
 		@Override

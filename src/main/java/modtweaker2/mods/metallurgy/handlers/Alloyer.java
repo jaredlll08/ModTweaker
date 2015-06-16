@@ -52,12 +52,10 @@ public class Alloyer {
         public void apply() {
             for (AlloyRecipe r : MetallurgyHelper.alloyerRecipes) {
                 if (r.getCraftingResult() != null && areEqual(r.getCraftingResult(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            MetallurgyHelper.alloyerRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override

@@ -58,13 +58,11 @@ public class Crystallizer {
                 if (r != null) {
                     ItemStack output = getOutput(r);
                     if (output != null && areEqual(output, stack)) {
-                        recipe = r;
-                        break;
+                        recipes.add(r);
                     }
                 }
             }
-
-            list.remove(recipe);
+            super.apply();
         }
 
         @Override

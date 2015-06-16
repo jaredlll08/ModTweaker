@@ -16,12 +16,10 @@ public class BaseCraftingRemoval extends BaseListRemoval {
 	public void apply() {
 		for (IRecipe r : (List<IRecipe>) list) {
 			if (r.getRecipeOutput() != null && r.getRecipeOutput() instanceof ItemStack && areEqual(r.getRecipeOutput(), stack)) {
-				recipe = r;
-				break;
+				recipes.add(r);
 			}
 		}
-
-		list.remove(recipe);
+		super.apply();
 	}
 
 	@Override

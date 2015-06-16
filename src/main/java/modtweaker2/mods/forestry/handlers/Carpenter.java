@@ -75,18 +75,16 @@ public class Carpenter {
 
 		public Remove(List list, ItemStack stack) {
 			super("Forestry Carpenter", list, stack);
-
 		}
 
 		@Override
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.getCraftingResult() != null && r.getCraftingResult().isItemEqual(stack)) {
-					recipe = r;
-					break;
+					recipes.add(r);
 				}
 			}
-			RecipeManager.recipes.remove(recipe);
+			super.apply();
 		}
 
 		@Override

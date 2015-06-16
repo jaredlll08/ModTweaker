@@ -53,23 +53,18 @@ public class Loot {
 	}
 
 	public static class Remove extends BaseListRemoval {
-
 		public Remove(List list, ItemStack stack) {
 			super(list, stack);
 		}
 
 		@Override
 		public void apply() {
-			List<WeightedRandomLoot> loot = (List<WeightedRandomLoot>) list;
-			WeightedRandomLoot remove = null;
-			for (WeightedRandomLoot stack : loot) {
+			for (WeightedRandomLoot stack : (List<WeightedRandomLoot>) list) {
 				if (stack.item.isItemEqual(this.stack)) {
-					remove = stack;
-					break;
+					recipes.add(stack);
 				}
 			}
-			loot.remove(remove);
+			super.apply();
 		}
-
 	}
 }

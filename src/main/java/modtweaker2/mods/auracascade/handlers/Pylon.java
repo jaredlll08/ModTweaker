@@ -44,8 +44,6 @@ public class Pylon {
 	}
 
 	private static class Remove extends BaseListRemoval {
-		ArrayList<PylonRecipe> recipesToRemove = new ArrayList<PylonRecipe>();
-
 		public Remove(ItemStack stack) {
 			super(PylonRecipeRegistry.recipes, stack);
 		}
@@ -54,13 +52,11 @@ public class Pylon {
 		public void apply() {
 			for (PylonRecipe r : PylonRecipeRegistry.recipes) {
 				if (r.result.isItemEqual(stack)) {
-					recipesToRemove.add(r);
+					recipes.add(r);
 				}
 			}
 
-			for (PylonRecipe r : recipesToRemove) {
-				recipesToRemove.remove(r);
-			}
+			super.apply();
 		}
 
 	}

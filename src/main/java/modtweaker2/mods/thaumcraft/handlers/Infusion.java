@@ -119,13 +119,11 @@ public class Infusion {
 				if (o instanceof InfusionRecipe) {
 					InfusionRecipe r = (InfusionRecipe) o;
 					if (r.getRecipeOutput() != null && r.getRecipeOutput() instanceof ItemStack && areEqual((ItemStack) r.getRecipeOutput(), stack)) {
-						recipe = r;
-						break;
+						recipes.add(r);
 					}
 				}
 			}
-
-			ThaumcraftApi.getCraftingRecipes().remove(recipe);
+			super.apply();
 		}
 
 		@Override
@@ -134,25 +132,25 @@ public class Infusion {
 		}
 	}
 
-	private static class RemoveEnchant implements IUndoableAction {
+	private static class RemoveEnchant extends BaseListRemoval {
 		Enchantment enchant;
-		InfusionEnchantmentRecipe removed;
 
 		public RemoveEnchant(Enchantment ench) {
+		    super("Thaumcraft Infusion Enchantment", ThaumcraftApi.getCraftingRecipes());
 			enchant = ench;
 		}
 
 		@Override
 		public void apply() {
-			for (Object recipe : ThaumcraftApi.getCraftingRecipes()) {
+			for (Object recipe : list) {
 				if (recipe instanceof InfusionEnchantmentRecipe) {
 					InfusionEnchantmentRecipe enchRecipe = (InfusionEnchantmentRecipe) recipe;
 					if (enchRecipe.getEnchantment() == enchant) {
-						removed = enchRecipe;
-						ThaumcraftApi.getCraftingRecipes().remove(enchRecipe);
+						recipes.add(enchRecipe);
 					}
 				}
 			}
+			super.apply();
 		}
 
 		@Override
@@ -161,23 +159,8 @@ public class Infusion {
 		}
 
 		@Override
-		public boolean canUndo() {
-			return removed != null;
-		}
-
-		@Override
-		public void undo() {
-			ThaumcraftApi.getCraftingRecipes().add(removed);
-		}
-
-		@Override
 		public String describeUndo() {
 			return "Restoring Infusion Enchantment Recipe: " + enchant.getName();
-		}
-
-		@Override
-		public String getOverrideKey() {
-			return null;
 		}
 	}
 }

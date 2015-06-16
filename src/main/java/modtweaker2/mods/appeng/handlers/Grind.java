@@ -48,17 +48,12 @@ public class Grind {
 
 		@Override
 		public void apply() {
-			ArrayList<IGrinderEntry> toRemove = new ArrayList<IGrinderEntry>();
-
 			for (IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
 				if (r.getOutput().isItemEqual(stack)) {
-					toRemove.add(r);
+					recipes.add(r);
 				}
 			}
-			for (IGrinderEntry r : toRemove) {
-				AEApi.instance().registries().grinder().getRecipes().remove(r);
-			}
-
+			super.apply();
 		}
 
 	}

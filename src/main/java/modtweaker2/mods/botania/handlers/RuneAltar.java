@@ -48,12 +48,10 @@ public class RuneAltar {
         public void apply() {
             for (RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
                 if (r.getOutput() != null && areEqual(r.getOutput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            BotaniaAPI.runeAltarRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override

@@ -59,12 +59,10 @@ public class Apothecary {
         public void apply() {
             for (RecipePetals r : BotaniaAPI.petalRecipes) {
                 if (areEqual(r.getOutput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            BotaniaAPI.petalRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override
