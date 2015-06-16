@@ -41,9 +41,8 @@ public class Grind {
 	}
 
 	private static class Remove extends BaseListRemoval {
-
 		public Remove(ItemStack stack) {
-			super(AEApi.instance().registries().grinder().getRecipes(), stack);
+			super("Applied Energistics 2 Grinder", AEApi.instance().registries().grinder().getRecipes(), stack);
 		}
 
 		@Override
@@ -54,6 +53,11 @@ public class Grind {
 				}
 			}
 			super.apply();
+		}
+		
+		@Override
+		public String getRecipeInfo() {
+		    return stack.getDisplayName();
 		}
 
 	}
