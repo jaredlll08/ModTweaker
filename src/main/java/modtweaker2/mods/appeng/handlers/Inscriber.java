@@ -55,10 +55,8 @@ public class Inscriber {
 	}
 
 	public static class Remove extends BaseListRemoval {
-
 		public Remove(ItemStack stack) {
-
-			super(stack.getUnlocalizedName(), AEApi.instance().registries().inscriber().getRecipes(), stack);
+			super("Applied Energistics 2 Inscriber", AEApi.instance().registries().inscriber().getRecipes(), stack);
 		}
 
 		@Override
@@ -70,7 +68,10 @@ public class Inscriber {
 			}
 			super.apply();
 		}
-
+		
+		@Override
+		public String getRecipeInfo() {
+		    return stack.getUnlocalizedName();
+		}
 	}
-
 }
