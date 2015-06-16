@@ -71,7 +71,7 @@ public class Inscriber {
 		
 		@Override
 		public String getRecipeInfo() {
-		    return stack.getUnlocalizedName();
+		    return stack.getDisplayName();
 		}
 	}
 }
