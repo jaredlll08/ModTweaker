@@ -1,6 +1,8 @@
 package modtweaker2.utils;
 
 import minetweaker.IUndoableAction;
+import minetweaker.MineTweakerAPI;
+import modtweaker2.helpers.LogHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,6 +46,11 @@ public abstract class BaseListRemoval implements IUndoableAction {
 	
 	@Override
 	public void apply() {
+	    if(recipes.size() == 0) {
+	        MineTweakerAPI.logWarning(String.format("No %s Recipes to remove for: %s", this.description, getRecipeInfo()));
+	        return;
+	    }
+	    
 	    for(Object recipe : recipes) {
 	        list.remove(recipe);
 	    }
@@ -67,20 +74,20 @@ public abstract class BaseListRemoval implements IUndoableAction {
 
 	@Override
 	public String describe() {
-		if (recipes.getFirst() instanceof ItemStack)
-			return "Removing " + description + " Recipe(s) for :" + getItemStackNames(recipes);
-		else if (recipes.getFirst() instanceof FluidStack)
-			return "Removing " + description + " Recipe(s) for :" + getFluidStackNames(recipes);
-		else return "Removing " + description + " Recipe for :" + getRecipeInfo();
+	    if(recipes.size() > 0) {
+            return String.format("Removing %d %s Recipe(s) for: %s", recipes.size(), this.description, getRecipeNames(recipes));
+	    } else {
+	        return String.format("Removing %s Recipe(s) for: %s", this.description, getRecipeInfo());
+	    }
 	}
 
 	@Override
 	public String describeUndo() {
-		if (recipes.getFirst() instanceof ItemStack)
-			return "Restoring " + description + " Recipe(s) for :" + getItemStackNames(recipes);
-		else if (recipes.getFirst() instanceof FluidStack)
-			return "Restoring " + description + " Recipe(s) for :" + getFluidStackNames(recipes);
-		else return "Restoring " + description + " Recipe for :" + getRecipeInfo();
+        if(recipes.size() > 0) {
+            return String.format("Restoring %d %s Recipe(s) for: %s", recipes.size(), this.description, getRecipeNames(recipes));
+        } else {
+            return String.format("No %s Recipes found to restore for: %s", this.description, getRecipeInfo());
+        }
 	}
 
 	@Override
@@ -88,33 +95,39 @@ public abstract class BaseListRemoval implements IUndoableAction {
 		return null;
 	}
 	
-    private String getItemStackNames(LinkedList list) {
-        if(list.size() == 1)
-            return ((ItemStack)list.getFirst()).getDisplayName();
-
-        StringBuilder sb = new StringBuilder();
-        
-        for(Object entry : list) {
-            sb.append(((ItemStack)entry).getDisplayName()).append(", ");
-        }
-        
-        sb.setLength(sb.length() - 2);
-        
-        return sb.toString();
-    }
-    
-    private String getFluidStackNames(LinkedList list) {
-        if(list.size() == 1)
-            return ((FluidStack)list.getFirst()).getFluid().getLocalizedName();
-
-        StringBuilder sb = new StringBuilder();
-        
-        for(Object entry : list) {
-            sb.append(((FluidStack)entry).getFluid().getLocalizedName()).append(", ");
-        }
-        
-        sb.setLength(sb.length() - 2);
-        
-        return sb.toString();
-    }
+	/***
+	 * Returns the names of the recipes inside the list
+	 * @param list which holds the recipes
+	 * @return name or list of names describing the recipe
+	 */
+	private String getRecipeNames(LinkedList list) {
+	    if(list.size() == 0)
+	        return getRecipeInfo();
+	    
+	    if(list.size() == 1) {
+	        if(recipes.getFirst() instanceof ItemStack)
+	            return ((ItemStack)list.getFirst()).getDisplayName();
+	        else if (recipes.getFirst() instanceof FluidStack)
+	            return ((FluidStack)list.getFirst()).getFluid().getLocalizedName();
+	        else
+	            return getRecipeInfo();
+	    }
+	    
+	    StringBuilder sb = new StringBuilder();
+	    
+	    if(recipes.getFirst() instanceof ItemStack) {
+	        for(ItemStack itemStack : (List<ItemStack>)list) {
+	            sb.append(itemStack.getDisplayName()).append(", ");
+	        }
+	    } else if (recipes.getFirst() instanceof FluidStack) {
+	        for(FluidStack fluidStack : (List<FluidStack>)list) {
+	            sb.append(fluidStack.getFluid().getLocalizedName()).append(", ");
+	        }
+	    } else {
+	        sb.append(getRecipeInfo()).append(", ");
+	    }
+	    
+	    sb.setLength(sb.length() - 2);
+	    return sb.toString();
+	}
 }

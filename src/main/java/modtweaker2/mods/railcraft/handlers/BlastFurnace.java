@@ -51,7 +51,6 @@ public class BlastFurnace {
 						recipes.add(r);
 					}
 			}
-			
 			super.apply();
 		}
 
