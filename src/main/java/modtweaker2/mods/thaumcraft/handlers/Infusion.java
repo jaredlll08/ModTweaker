@@ -152,15 +152,10 @@ public class Infusion {
 			}
 			super.apply();
 		}
-
-		@Override
-		public String describe() {
-			return "Removing Infusion Enchantment Recipe: " + enchant.getName();
-		}
-
-		@Override
-		public String describeUndo() {
-			return "Restoring Infusion Enchantment Recipe: " + enchant.getName();
-		}
+		
+        @Override
+        public String getRecipeInfo() {
+            return enchant.getName();
+        }
 	}
 }
