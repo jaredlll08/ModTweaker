@@ -58,7 +58,7 @@ public abstract class BaseListRemoval implements IUndoableAction {
 
 	@Override
 	public boolean canUndo() {
-		return list.size() > 0;
+		return recipes.size() > 0;
 	}
 
 	@Override
