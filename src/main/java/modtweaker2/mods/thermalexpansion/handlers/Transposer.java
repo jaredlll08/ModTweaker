@@ -61,7 +61,7 @@ public class Transposer {
 		ItemStack out = toStack(output);
 		FluidStack fluid = toFluid(liquid);
 		RecipeTransposer recipe = (RecipeTransposer) ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, in, out, fluid, energy, chance);
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(in, fluid, recipe, isFillRecipe));
 	}
 
@@ -128,7 +128,7 @@ public class Transposer {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input, ILiquidStack liquid, boolean isFillRecipe) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input), toFluid(liquid), isFillRecipe));
 	}
 

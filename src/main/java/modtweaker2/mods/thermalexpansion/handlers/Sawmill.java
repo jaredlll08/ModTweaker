@@ -69,7 +69,7 @@ public class Sawmill {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input)));
 	}
 

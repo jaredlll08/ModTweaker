@@ -21,13 +21,11 @@ public class Warp {
 
 	@ZenMethod
 	public static void addToResearch(String key, int warp) {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new Add(key, warp));
 	}
 
 	@ZenMethod
 	public static void addToItem(IItemStack stack, int warp) {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new Add(toStack(stack), warp));
 	}
 
@@ -86,31 +84,26 @@ public class Warp {
 
 	@ZenMethod
 	public static void removeFromResearch(String key) {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new Remove(key));
 	}
 
 	@ZenMethod
 	public static void removeFromItem(IItemStack stack) {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new Remove(toStack(stack)));
 	}
 
 	@ZenMethod
 	public static void removeAll() {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new MassRemove(RemoveType.BOTH));
 	}
 
 	@ZenMethod
 	public static void removeAllResearch() {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new MassRemove(RemoveType.RESEARCH));
 	}
 
 	@ZenMethod
 	public static void removeAllItems() {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new MassRemove(RemoveType.ITEMS));
 	}
 

@@ -7,7 +7,6 @@ import cpw.mods.fml.common.Loader;
 public class TweakerPlugin {
     private static ArrayList<String> isLoaded = new ArrayList();
     
-    public static boolean hasInit = false;
 
     public static void register(String mod, Class clazz) {
         if (Loader.isModLoaded(mod)) {
@@ -28,7 +27,4 @@ public class TweakerPlugin {
         return isLoaded.contains(string);
     }
     
-    public static boolean hasInit(){
-    	return hasInit;
-    }
 }

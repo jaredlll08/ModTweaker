@@ -23,13 +23,13 @@ public class Aspects {
 	/** Add/Remove/Set Aspects for items **/
 	@ZenMethod
 	public static void add(IItemStack stack, String aspects) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(toStack(stack), aspects, false));
 	}
 
 	@ZenMethod
 	public static void set(IItemStack stack, String aspects) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(toStack(stack), aspects, true));
 	}
 
@@ -76,7 +76,7 @@ public class Aspects {
 
 	@ZenMethod
 	public static void remove(IItemStack stack, String aspects) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(stack), aspects));
 	}
 
@@ -124,7 +124,7 @@ public class Aspects {
 			MineTweakerAPI.getLogger().logError("No such entity " + entityName);
 			return;
 		}
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddEntity(entityName, aspects, false));
 	}
 
@@ -134,7 +134,7 @@ public class Aspects {
 			MineTweakerAPI.getLogger().logError("No such entity " + entityName);
 			return;
 		}
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddEntity(entityName, aspects, true));
 	}
 
@@ -185,7 +185,7 @@ public class Aspects {
 			MineTweakerAPI.getLogger().logError("No such entity " + entityName);
 			return;
 		}
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new RemoveEntity(entityName, aspects));
 	}
 

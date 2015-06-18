@@ -23,7 +23,7 @@ import thaumcraft.api.crafting.InfusionRecipe;
 public class Infusion {
 	@ZenMethod
 	public static void addRecipe(String key, IItemStack input, IItemStack[] recipe, String aspects, IItemStack result, int instability) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(new InfusionRecipe(key, toStack(result), instability, ThaumcraftHelper.parseAspects(aspects), toStack(input), toStacks(recipe))));
 	}
 
@@ -31,13 +31,13 @@ public class Infusion {
 	// fuzzy or not
 	@ZenMethod
 	public static void addRecipe(String key, IItemStack input, IItemStack[] recipe, String aspects, IItemStack result, int instability, boolean fuzzyCentre, boolean[] fuzzyRecipe) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(new MTInfusionRecipe(key, toStack(result), instability, ThaumcraftHelper.parseAspects(aspects), toStack(input), toStacks(recipe), fuzzyCentre, fuzzyRecipe)));
 	}
 
 	@ZenMethod
 	public static void addEnchantment(String key, int enchantID, int instability, String aspects, IItemStack[] recipe) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddEnchant(new InfusionEnchantmentRecipe(key, Enchantment.enchantmentsList[enchantID], instability, ThaumcraftHelper.parseAspects(aspects), toStacks(recipe))));
 	}
 
@@ -98,13 +98,13 @@ public class Infusion {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack output) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(output)));
 	}
 
 	@ZenMethod
 	public static void removeEnchant(int id) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new RemoveEnchant(Enchantment.enchantmentsList[id]));
 	}
 

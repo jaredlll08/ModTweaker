@@ -15,13 +15,13 @@ import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 public class Pulverizer {
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack output) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output), null, 0));
 	}
 
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack output, IItemStack secondary, int secondaryChance) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output), toStack(secondary), secondaryChance));
 	}
 
@@ -71,7 +71,7 @@ public class Pulverizer {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input)));
 	}
 

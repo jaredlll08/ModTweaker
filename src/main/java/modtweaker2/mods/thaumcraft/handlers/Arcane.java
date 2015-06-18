@@ -25,13 +25,13 @@ import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 public class Arcane {
 	@ZenMethod
 	public static void addShaped(String key, IItemStack output, String aspects, IIngredient[][] ingredients) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(new ShapedArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toShapedObjects(ingredients))));
 	}
 
 	@ZenMethod
 	public static void addShapeless(String key, IItemStack output, String aspects, IIngredient[] ingredients) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(new ShapelessArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toObjects(ingredients))));
 	}
 
@@ -54,7 +54,6 @@ public class Arcane {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack output) {
-		if (!TweakerPlugin.hasInit())
 			MineTweakerAPI.apply(new Remove(toStack(output)));
 	}
 

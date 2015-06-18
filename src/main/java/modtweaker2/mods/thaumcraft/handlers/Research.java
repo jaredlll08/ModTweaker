@@ -52,170 +52,170 @@ public class Research {
 	}
 
 	private static void addTab(String key, ResourceLocation icon, ResourceLocation background) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddTab(key, icon, background));
 	}
 
 	@ZenMethod
 	public static void removeTab(String tab) {
 
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new RemoveTab(tab));
 	}
 
 	@ZenMethod
 	public static void removeResearch(String research) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new RemoveResearch(research));
 	}
 
 	@ZenMethod
 	public static void orphanResearch(String research) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new OrphanResearch(research));
 	}
 
 	@ZenMethod
 	public static void addResearch(String key, String tab, @Optional String aspects, int x, int y, int difficulty, String domain, String path) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, new ResourceLocation(domain, path))));
 	}
 
 	@ZenMethod
 	public static void addResearch(String key, String tab, @Optional String aspects, int x, int y, int difficulty, IItemStack item) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, toStack(item))));
 	}
 
 	@ZenMethod
 	public static void addPage(String key, String unlocalized) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.TEXT, unlocalized));
 	}
 
 	@ZenMethod
 	public static void addCraftingPage(String key, IItemStack item) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.NORMAL_CRAFTING, toStack(item)));
 	}
 
 	@ZenMethod
 	public static void addCruciblePage(String key, IItemStack item) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.CRUCIBLE_CRAFTING, toStack(item)));
 	}
 
 	@ZenMethod
 	public static void addArcanePage(String key, IItemStack item) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.ARCANE_CRAFTING, toStack(item)));
 	}
 
 	@ZenMethod
 	public static void addInfusionPage(String key, IItemStack item) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.INFUSION_CRAFTING, toStack(item)));
 	}
 
 	@ZenMethod
 	public static void addEnchantmentPage(String key, int i) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPage(key, PageType.INFUSION_ENCHANTMENT, Enchantment.enchantmentsList[i]));
 	}
 
 	@ZenMethod
 	public static void clearPages(String key) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new ClearPages(key));
 	}
 
 	@ZenMethod
 	public static void addPrereq(String key, String req, @Optional boolean hidden) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddPrereq(key, req, hidden));
 	}
 
 	@ZenMethod
 	public static void clearPrereqs(String key) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new ClearPrereqs(key));
 	}
 
 	@ZenMethod
 	public static void addSibling(String key, String sibling) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new AddSibling(key, sibling));
 	}
 
 	@ZenMethod
 	public static void clearSiblings(String key) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new ClearSiblings(key));
 	}
 
 	@ZenMethod
 	public static void setRound(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.ROUND));
 	}
 
 	@ZenMethod
 	public static void setSpikey(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.SPIKE));
 	}
 
 	@ZenMethod
 	public static void setStub(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.STUB));
 	}
 
 	@ZenMethod
 	public static void setSecondary(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.SECONDARY));
 	}
 
 	@ZenMethod
 	public static void setVirtual(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.VIRTUAL));
 	}
 
 	@ZenMethod
 	public static void setAutoUnlock(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.AUTO));
 	}
 
 	@ZenMethod
 	public static void setConcealed(String key, boolean flag) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetResearch(key, flag, SetType.CONCEAL));
 	}
 
 	@ZenMethod
 	public static void setAspects(String key, String aspects) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new SetAspects(key, ThaumcraftHelper.parseAspects(aspects)));
 	}
 
 	@ZenMethod
 	public static void setComplexity(String key, int complexity) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Difficulty(key, complexity));
 	}
 
 	@ZenMethod
 	public static void refreshResearchRecipe(String key) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new RefreshResearch(key));
 	}
 
 	@ZenMethod
 	public static void moveResearch(String key, String destination, int x, int y) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new MoveResearch(key, destination, x, y));
 	}
 

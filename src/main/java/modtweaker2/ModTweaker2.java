@@ -101,7 +101,6 @@ public class ModTweaker2 {
 	public void serverStart(FMLServerStartingEvent event) {
 		logger.info("Starting ServerStart for " + ModProps.modid);
 		proxy.registerCommands();
-		TweakerPlugin.hasInit = true;
 
 	}
 }

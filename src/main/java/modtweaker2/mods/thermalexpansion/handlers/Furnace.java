@@ -15,7 +15,7 @@ import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 public class Furnace {
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack output) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output)));
 	}
 
@@ -61,7 +61,7 @@ public class Furnace {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input)));
 	}
 

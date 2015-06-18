@@ -20,7 +20,7 @@ import thaumcraft.api.crafting.CrucibleRecipe;
 public class Crucible {
 	@ZenMethod
 	public static void addRecipe(String key, IItemStack result, IIngredient catalyst, String aspects) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(new CrucibleRecipe(key, toStack(result), toObject(catalyst), ThaumcraftHelper.parseAspects(aspects))));
 	}
 
@@ -39,7 +39,7 @@ public class Crucible {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack output) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(output)));
 	}
 

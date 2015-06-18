@@ -48,7 +48,7 @@ public class Smelter {
 		ItemStack out1 = toStack(output);
 		ItemStack out2 = toStack(output2);
 		RecipeSmelter recipe = (RecipeSmelter) ThermalHelper.getTERecipe(ThermalHelper.smelterRecipe, in1, in2, out1, out2, chance, energy);
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(in1, in2, recipe));
 	}
 
@@ -95,7 +95,7 @@ public class Smelter {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input, IItemStack input2) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
 	}
 

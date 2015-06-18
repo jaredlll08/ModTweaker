@@ -19,7 +19,7 @@ import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 public class Crucible {
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, ILiquidStack output) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Add(energy, toStack(input), toFluid(output)));
 	}
 
@@ -65,7 +65,7 @@ public class Crucible {
 
 	@ZenMethod
 	public static void removeRecipe(IItemStack input) {
-		if (!TweakerPlugin.hasInit())
+		
 			MineTweakerAPI.apply(new Remove(toStack(input)));
 	}
 
