@@ -115,18 +115,18 @@ public class Vat {
 				if (r != null)
 					if (r.outputItem != null && stack != null && areEqual(r.outputItem, stack)) {
 						if (r.outputFluid == null || (fluid != null && r.outputFluid.isFluidStackIdentical(fluid))) {
-							recipe = r;
+							recipes.add(r);
 							break;
 						}
 					}
 
 				if ((r.outputFluid != null && fluid != null && r.outputFluid.isFluidStackIdentical(fluid))) {
-					recipe = r;
+					recipes.add(r);
 					break;
 				}
 			}
-			if (recipe != null)
-				MaricultureHandlers.vat.getRecipes().remove(recipe);
+			
+			super.apply();
 		}
 
 		@Override

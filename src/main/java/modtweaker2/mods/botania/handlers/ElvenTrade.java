@@ -48,12 +48,10 @@ public class ElvenTrade {
         public void apply() {
             for (RecipeElvenTrade r : BotaniaAPI.elvenTradeRecipes) {
                 if (r.getOutput() != null && areEqual(r.getOutput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            BotaniaAPI.elvenTradeRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override

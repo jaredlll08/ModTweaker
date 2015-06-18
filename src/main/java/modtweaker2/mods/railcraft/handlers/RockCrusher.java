@@ -49,12 +49,10 @@ public class RockCrusher {
         public void apply() {
             for (IRockCrusherRecipe r : RailcraftHelper.crusher) {
                 if (r.getInput() != null && areEqual(r.getInput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            RailcraftHelper.crusher.remove(recipe);
+            super.apply();
         }
 
         @Override

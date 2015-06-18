@@ -29,12 +29,10 @@ public class Modifiers {
         public void apply() {
             for (ItemModifier m : (List<ItemModifier>) list) {
                 if (m.key.equals(check)) {
-                    recipe = m;
-                    break;
+                    recipes. add(m);
                 }
             }
-
-            list.remove(recipe);
+            super.apply();
         }
     }
 }

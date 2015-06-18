@@ -54,16 +54,13 @@ public class Fermenter {
 
 		@Override
 		public void apply() {
-			ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 			for (Recipe r : RecipeManager.recipes) {
 				if (r != null && r.resource != null && r.resource.isItemEqual(stack)) {
 					recipes.add(r);
 
 				}
 			}
-			for (Recipe r : recipes) {
-				RecipeManager.recipes.remove(r);
-			}
+			super.apply();
 		}
 
 	}

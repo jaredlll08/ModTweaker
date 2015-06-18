@@ -65,15 +65,12 @@ public class Anvil {
 
 		@Override
 		public void apply() {
-			ArrayList<AnvilRecipe> toRemove = new ArrayList<AnvilRecipe>();
 			for (AnvilRecipe recipe : AnvilManager.getInstance().getRecipeList()){
 				if (recipe.getCraftingResult() != null && areEqual(recipe.getCraftingResult(), stack)){
-					toRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
-			for (AnvilRecipe aRecipe : toRemove){
-				TFCHelper.anvilRecipes.remove(aRecipe);
-			}
+			super.apply();
 		}
 	}
 	
@@ -84,16 +81,12 @@ public class Anvil {
 		
 		@Override
 		public void apply() {
-			ArrayList<AnvilRecipe> toRemove = new ArrayList<AnvilRecipe>();
 			for (AnvilRecipe recipe : AnvilManager.getInstance().getRecipeList()){
 				if (recipe.getCraftingResult() != null && recipe.getCraftingResult() == stack){
-					toRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
-			for (AnvilRecipe aRecipe : toRemove){
-				TFCHelper.anvilWeldRecipes.remove(aRecipe);
-			}
+			super.apply();
 		}
 	}
-
 }

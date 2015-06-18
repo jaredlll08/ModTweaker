@@ -45,17 +45,14 @@ public class Kiln {
 			super("Kiln-Remove", TFCHelper.kilnRecipes, out);
 		}
 
-		@Override
+        @Override
 		public void apply() {
-			ArrayList<KilnRecipe> toRemove = new ArrayList<KilnRecipe>();
 			for (KilnRecipe recipe : KilnCraftingManager.getInstance().getRecipeList()){
 				if (recipe.getCraftingResult() != null && areEqual(recipe.getCraftingResult(), stack)){
-					toRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
-			for (KilnRecipe aRecipe : toRemove){
-				TFCHelper.kilnRecipes.remove(aRecipe);
-			}
+			super.apply();
 		}
 	}
 		

@@ -98,13 +98,11 @@ public class TiCTweaks {
 				ItemStack clone = new ItemStack(r.item, 1, r.damage);
 				if ((material != null && material.equalsIgnoreCase(r.key)) || (material == null)) {
 					if (clone.isItemEqual(stack)) {
-						recipe = r;
-						break;
+						recipes.add(r);
 					}
 				}
 			}
-
-			PatternBuilder.instance.materials.remove(recipe);
+			super.apply();
 		}
 
 		@Override

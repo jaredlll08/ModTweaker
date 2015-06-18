@@ -57,12 +57,10 @@ public class Squeezer {
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.liquid != null && r.liquid.isFluidEqual(fluid)) {
-					recipe = r;
-					break;
+					recipes.add(r);
 				}
 			}
-			RecipeManager.recipes.remove(recipe);
-
+			super.apply();
 		}
 
 	}

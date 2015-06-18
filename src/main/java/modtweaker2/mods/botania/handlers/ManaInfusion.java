@@ -63,12 +63,10 @@ public class ManaInfusion {
         public void apply() {
             for (RecipeManaInfusion r : BotaniaAPI.manaInfusionRecipes) {
                 if (r.getOutput() != null && areEqual(r.getOutput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            BotaniaAPI.manaInfusionRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override

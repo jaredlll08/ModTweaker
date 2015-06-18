@@ -55,12 +55,10 @@ public class Drying {
         public void apply() {
             for (DryingRecipe r : (ArrayList<DryingRecipe>) list) {
                 if (r.result != null && areEqual(r.result, stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            list.remove(recipe);
+            super.apply();
         }
 
         @Override

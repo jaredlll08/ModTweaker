@@ -41,24 +41,23 @@ public class Grind {
 	}
 
 	private static class Remove extends BaseListRemoval {
-
 		public Remove(ItemStack stack) {
-			super(AEApi.instance().registries().grinder().getRecipes(), stack);
+			super("Applied Energistics 2 Grinder", AEApi.instance().registries().grinder().getRecipes(), stack);
 		}
 
 		@Override
 		public void apply() {
-			ArrayList<IGrinderEntry> toRemove = new ArrayList<IGrinderEntry>();
-
 			for (IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
 				if (r.getOutput().isItemEqual(stack)) {
-					toRemove.add(r);
+					recipes.add(r);
 				}
 			}
-			for (IGrinderEntry r : toRemove) {
-				AEApi.instance().registries().grinder().getRecipes().remove(r);
-			}
-
+			super.apply();
+		}
+		
+		@Override
+		public String getRecipeInfo() {
+		    return stack.getDisplayName();
 		}
 
 	}

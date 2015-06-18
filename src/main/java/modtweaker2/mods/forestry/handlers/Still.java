@@ -56,13 +56,10 @@ public class Still {
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.output != null && r.output.isFluidEqual(fluid)) {
-					recipe = r;
-					break;
+					recipes.add(r);
 				}
 			}
-			RecipeManager.recipes.remove(recipe);
-
+			super.apply();
 		}
-
 	}
 }

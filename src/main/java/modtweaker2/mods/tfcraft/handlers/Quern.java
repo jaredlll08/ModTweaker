@@ -44,17 +44,27 @@ public class Quern {
 
 		@Override
 		public void apply() {
-			ArrayList<QuernRecipe> toRemove = new ArrayList<QuernRecipe>();
 			for (QuernRecipe recipe : QuernManager.getInstance().getRecipes()){
 				if (recipe.getResult() !=null && areEqual(recipe.getResult(), stack)){
-					toRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
-			for (QuernRecipe aRecipe : toRemove){
-				TFCHelper.quernRecipes.remove(aRecipe);
-				TFCHelper.quernVaildItems.remove(aRecipe.getInItem());
+			
+			for (Object aRecipe : recipes){
+			    TFCHelper.quernVaildItems.remove(((QuernRecipe)aRecipe).getInItem());
 			}
+			
+			super.apply();
 		}
+		
+        @Override
+        public void undo() {
+            for (Object aRecipe : recipes){
+                TFCHelper.quernVaildItems.add(((QuernRecipe)aRecipe).getInItem());
+            }
+            
+            super.undo();
+        }
 	}
 	
 }

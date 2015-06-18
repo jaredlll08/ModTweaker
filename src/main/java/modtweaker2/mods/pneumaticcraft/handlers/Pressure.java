@@ -52,19 +52,17 @@ public class Pressure {
             for (PressureChamberRecipe r : PressureChamberRecipe.chamberRecipes) {
                 boolean matches = true;
                 for (int i = 0; i < stacks.length; i++) {
-                    if (!areEqual(stacks[i], r.output[i])) {
+                    if (!areEqual(stacks[i], r.output[i])) {    // possible IndexOutOfBoundsException on r.output[i]
                         matches = false;
                         break;
                     }
                 }
 
                 if (matches) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            PressureChamberRecipe.chamberRecipes.remove(recipe);
+            super.apply();
         }
 
         @Override

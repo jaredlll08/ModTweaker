@@ -68,12 +68,11 @@ public class Assembly {
         public void apply() {
             for (AssemblyRecipe r : (List<AssemblyRecipe>) list) {
                 if (r.getOutput() != null && areEqual(r.getOutput(), stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
 
-            list.remove(recipe);
+            super.apply();
         }
 
         @Override

@@ -72,13 +72,10 @@ public class Smeltery {
 		public void apply() {
 			for (AlloyMix r : TConstructHelper.alloys) {
 					if (r.result != null && fluid != null && r.result.getFluid() == fluid.getFluid()) {
-						recipe = r;
-						break;
+						recipes.add(r);
 					}
 			}
-			if (recipe != null)
-				TConstructHelper.alloys.remove(recipe);
-
+			super.apply();
 		}
 
 		@Override

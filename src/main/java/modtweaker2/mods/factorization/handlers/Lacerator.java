@@ -56,12 +56,10 @@ public class Lacerator {
             for (Object r : list) {
                 ItemStack output = getOutput(r);
                 if (output != null && areEqual(output, stack)) {
-                    recipe = r;
-                    break;
+                    recipes.add(r);
                 }
             }
-
-            list.remove(recipe);
+            super.apply();
         }
 
         @Override

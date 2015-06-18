@@ -86,13 +86,11 @@ public class ExtendedCrafting {
                 if (o instanceof IExtendedRecipe) {
                     IExtendedRecipe r = (IExtendedRecipe) o;
                     if (r.getRecipeOutput() != null && areEqual((ItemStack) r.getRecipeOutput(), stack)) {
-                        recipe = r;
-                        break;
+                        recipes.add(r);
                     }
                 }
             }
-
-            ExtendedCraftingManager.getInstance().getRecipeList().remove(recipe);
+            super.apply();
         }
 
         @Override

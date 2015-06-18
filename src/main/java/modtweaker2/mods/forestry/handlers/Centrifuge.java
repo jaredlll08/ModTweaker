@@ -63,11 +63,10 @@ public class Centrifuge {
 		public void apply() {
 			for (Recipe r : RecipeManager.recipes) {
 				if (r.matches(stack)) {
-					recipe = r;
-					RecipeManager.recipes.remove(r);
-					break;
+					recipes.add(r);
 				}
 			}
+			super.apply();
 		}
 
 		@Override

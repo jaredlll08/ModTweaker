@@ -80,20 +80,17 @@ public class Barrel {
 
 		@Override
 		public void apply() {
-			ArrayList<BarrelRecipe> toRemove = new ArrayList<BarrelRecipe>();
 			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
 				if (recipe.getRecipeOutIS() != null && areEqual(recipe.getRecipeOutIS(), stack)){
-					toRemove.add(recipe);
+					recipes.add(recipe);
 				}
 			}
 			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
 				if (recipe.getRecipeOutFluid() != null && recipe.getRecipeOutFluid().isFluidEqual(fluid)){
-					toRemove.add(recipe);
+				    recipes.add(recipe);
 				}
 			}
-			for (BarrelRecipe aRecipe : toRemove){
-				TFCHelper.barrelRecipes.remove(aRecipe);
-			}
+			super.apply();
 		}
 	}
 }
