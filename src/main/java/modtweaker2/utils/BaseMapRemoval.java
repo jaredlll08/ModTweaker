@@ -1,10 +1,10 @@
 package modtweaker2.utils;
 
+import java.util.Map;
+
 import minetweaker.IUndoableAction;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import java.util.Map;
 
 public abstract class BaseMapRemoval implements IUndoableAction {
 	protected final Map map;
@@ -26,6 +26,9 @@ public abstract class BaseMapRemoval implements IUndoableAction {
 		this.map = map;
 		this.key = key;
 		this.description = description;
+		if(map.get(key) instanceof ItemStack){
+			TweakerPlugin.changed.add(((ItemStack) map.get(key)));
+		}
 	}
 
 	@Override

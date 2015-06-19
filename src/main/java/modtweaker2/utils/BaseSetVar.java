@@ -1,5 +1,6 @@
 package modtweaker2.utils;
 
+import net.minecraft.item.ItemStack;
 import minetweaker.IUndoableAction;
 import modtweaker2.helpers.ReflectionHelper;
 

@@ -19,6 +19,7 @@ public abstract class BaseCraftingAddition extends BaseDescriptionAddition {
 		this.output = output;
 		this.recipe = recipe;
 		this.list = list;
+		TweakerPlugin.changed.add(output);
 	}
 
 	@Override

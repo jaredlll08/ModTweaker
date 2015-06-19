@@ -34,7 +34,7 @@ public abstract class BaseMultipleListRemoval implements IUndoableAction {
 				}
 
 				recipes.add(o);
-
+				
 				//If we want the first position, exit the loop
 				if (pos == Position.FIRST) {
 					break;

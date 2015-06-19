@@ -21,6 +21,8 @@ public abstract class BaseMapAddition implements IUndoableAction {
 		this.key = key;
 		this.recipe = recipe;
 		this.description = description;
+		if (recipe instanceof ItemStack)
+			TweakerPlugin.changed.add(((ItemStack) recipe));
 	}
 
 	@Override
@@ -48,7 +50,8 @@ public abstract class BaseMapAddition implements IUndoableAction {
 			return "Adding " + description + " Recipe for :" + ((ItemStack) recipe).getDisplayName();
 		else if (recipe instanceof FluidStack)
 			return "Adding " + description + " Recipe for :" + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Adding " + description + " Recipe for :" + getRecipeInfo();
+		else
+			return "Adding " + description + " Recipe for :" + getRecipeInfo();
 	}
 
 	@Override
@@ -57,7 +60,8 @@ public abstract class BaseMapAddition implements IUndoableAction {
 			return "Removing " + description + " Recipe for :" + ((ItemStack) recipe).getDisplayName();
 		else if (recipe instanceof FluidStack)
 			return "Removing " + description + " Recipe for :" + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Removing " + description + " Recipe for :" + getRecipeInfo();
+		else
+			return "Removing " + description + " Recipe for :" + getRecipeInfo();
 	}
 
 	@Override
