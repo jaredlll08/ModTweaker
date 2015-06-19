@@ -94,7 +94,7 @@ public class ModTweaker2 {
 
 			}
 		});
-
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@SubscribeEvent
