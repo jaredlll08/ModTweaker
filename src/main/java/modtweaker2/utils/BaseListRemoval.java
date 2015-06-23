@@ -22,7 +22,6 @@ public abstract class BaseListRemoval implements IUndoableAction {
 		this.stack = stack;
 		this.description = description;
 		this.fluid = fluid;
-		TweakerPlugin.changed.add(stack);
 	}
 
 	public BaseListRemoval(String description, List list, ItemStack stack) {

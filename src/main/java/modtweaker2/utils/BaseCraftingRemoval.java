@@ -10,7 +10,6 @@ import static modtweaker2.helpers.StackHelper.areEqual;
 public class BaseCraftingRemoval extends BaseListRemoval {
 	public BaseCraftingRemoval(String name, List list, ItemStack stack) {
 		super(name, list, stack);
-		TweakerPlugin.changed.add(stack);
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import cpw.mods.fml.common.Loader;
 
 public class TweakerPlugin {
     private static ArrayList<String> isLoaded = new ArrayList();
-    public static List<ItemStack> changed = new ArrayList<ItemStack>();
 
     public static void register(String mod, Class clazz) {
         if (Loader.isModLoaded(mod)) {

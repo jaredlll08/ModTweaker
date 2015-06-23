@@ -21,8 +21,6 @@ public abstract class BaseMapAddition implements IUndoableAction {
 		this.key = key;
 		this.recipe = recipe;
 		this.description = description;
-		if (recipe instanceof ItemStack)
-			TweakerPlugin.changed.add(((ItemStack) recipe));
 	}
 
 	@Override

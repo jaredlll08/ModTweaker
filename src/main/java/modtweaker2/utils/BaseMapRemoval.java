@@ -26,9 +26,6 @@ public abstract class BaseMapRemoval implements IUndoableAction {
 		this.map = map;
 		this.key = key;
 		this.description = description;
-		if(map.get(key) instanceof ItemStack){
-			TweakerPlugin.changed.add(((ItemStack) map.get(key)));
-		}
 	}
 
 	@Override

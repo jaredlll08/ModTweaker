@@ -1,7 +1,5 @@
 package modtweaker2;
 
-import java.util.Random;
-
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.util.IEventHandler;
@@ -25,9 +23,7 @@ import modtweaker2.mods.thaumcraft.Thaumcraft;
 import modtweaker2.mods.thermalexpansion.ThermalExpansion;
 import modtweaker2.proxy.CommonProxy;
 import modtweaker2.utils.TweakerPlugin;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CommandEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +37,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = ModProps.modid, version = ModProps.version, dependencies = ModProps.dependencies)
@@ -95,32 +90,6 @@ public class ModTweaker2 {
 			}
 		});
 		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	@SubscribeEvent
-	public void onCommand(CommandEvent event) {
-		if ((event.command.getCommandName().equals("mt") || event.command.getCommandName().equals("minetweaker")) && event.parameters.length > 0 && "reload".equals(event.parameters[0])) {
-			event.setCanceled(true);
-			Random rand = new Random();
-			int ran = rand.nextInt(5);
-			switch (ran) {
-			case 0:
-				event.sender.addChatMessage(new ChatComponentText("<ModTweaker2> Nope! Do NOT use /mt reload, it causes errors when ModTweaker is loaded."));
-				break;
-			case 1:
-				event.sender.addChatMessage(new ChatComponentText("<ModTweaker2> No can do!"));
-				break;
-			case 2:
-				event.sender.addChatMessage(new ChatComponentText("<ModTweaker2> #stopModReloading."));
-				break;
-			case 3:
-				event.sender.addChatMessage(new ChatComponentText("<ModTweaker2> Take a look over here. http://www.reddit.com/r/feedthebeast/comments/3acdqc/psa_never_use_mt_reload_or_anything_of_the_like/"));
-				break;
-			case 4:
-				event.sender.addChatMessage(new ChatComponentText("<ModTweaker2> Stop touching me like that!"));
-				break;
-			}
-		}
 	}
 
 	@EventHandler

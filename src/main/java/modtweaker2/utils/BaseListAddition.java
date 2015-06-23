@@ -19,7 +19,6 @@ public abstract class BaseListAddition implements IUndoableAction {
 	public BaseListAddition(List list, Object recipe) {
 		this.list = list;
 		this.recipe = recipe;
-		TweakerPlugin.changed.add(((ItemStack) recipe));
 	}
 
 	@Override
