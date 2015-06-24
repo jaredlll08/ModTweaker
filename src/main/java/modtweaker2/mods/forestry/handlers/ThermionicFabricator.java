@@ -82,7 +82,7 @@ public class ThermionicFabricator {
 	    private final RecipeType type;
 		
 		public Remove(ItemStack input, List list, RecipeType type) {
-			super(String.format("Forestry Thermionic Fabricator (%s)", type.toString()), RecipeManager.smeltings, input);
+			super(String.format("Forestry Thermionic Fabricator (%s)", type.toString()), list, input);
 			this.type = type;
 		}
 
