@@ -1,7 +1,12 @@
 package modtweaker2;
 
+import java.io.File;
+
+import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
+import minetweaker.mc1710.MineTweakerMod;
+import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.auracascade.AuraCascade;
@@ -44,12 +49,17 @@ public class ModTweaker2 {
 
 	public static Logger logger = LogManager.getLogger(ModProps.modid);
 
+	public static File baseIMCFolder;
 	@Instance(ModProps.modid)
 	public ModTweaker2 instance;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger.info("Starting PreInitialization for " + ModProps.modid);
+		baseIMCFolder = new File("imcScripts");
+		if (!baseIMCFolder.exists()) {
+			baseIMCFolder.mkdir();
+		}
 	}
 
 	@SidedProxy(clientSide = "modtweaker2.proxy.ClientProxy", serverSide = "modtweaker2.proxy.CommonProxy")
@@ -89,7 +99,15 @@ public class ModTweaker2 {
 
 			}
 		});
-		MinecraftForge.EVENT_BUS.register(this);
+
+		MineTweakerImplementationAPI.setScriptProvider(new ScriptProviderDirectory(baseIMCFolder));
+		MineTweakerImplementationAPI.reload();
+
+		File scripts = new File("scripts");
+		if (!scripts.exists()) {
+			scripts.mkdir();
+		}
+		MineTweakerImplementationAPI.setScriptProvider(new ScriptProviderDirectory(scripts));
 	}
 
 	@EventHandler
