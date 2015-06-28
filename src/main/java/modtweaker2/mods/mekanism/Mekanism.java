@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.mekanism.gas.GasBracketHandler;
 import modtweaker2.mods.mekanism.handlers.v8.ChemicalInfuser;
-import modtweaker2.mods.mekanism.handlers.ChemicalInjection;
+import modtweaker2.mods.mekanism.handlers.v8.ChemicalInjection;
 import modtweaker2.mods.mekanism.handlers.ChemicalOxidizer;
 import modtweaker2.mods.mekanism.handlers.ChemicalWasher;
 import modtweaker2.mods.mekanism.handlers.Combiner;

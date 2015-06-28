@@ -8,17 +8,13 @@ import mekanism.api.gas.GasStack;
 import mekanism.common.recipe.RecipeHandler;
 import mekanism.common.recipe.RecipeHandler.Recipe;
 import mekanism.common.recipe.inputs.ChemicalPairInput;
-import mekanism.common.recipe.inputs.InfusionInput;
 import mekanism.common.recipe.machines.ChemicalInfuserRecipe;
 import mekanism.common.recipe.outputs.GasOutput;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.mods.mekanism.MekanismHelper;
 import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 

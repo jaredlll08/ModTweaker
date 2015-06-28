@@ -47,7 +47,6 @@ public class ChemicalDissolution {
 		public GasStack output;
 		public ItemStack input;
 
-		@SuppressWarnings("unused")
 		public DissolutionRecipe(GasStack output, ItemStack input) {
 			this.output = output;
 			this.input = input;

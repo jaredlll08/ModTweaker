@@ -51,7 +51,6 @@ public class Infuser {
 		public int amount;
 		public InfuseType type;
 
-		@SuppressWarnings("unused")
 		public InfuserRecipe(ItemStack output, ItemStack input, int amount, InfuseType type) {
 			this.output = output;
 			this.input = input;
