@@ -11,9 +11,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
-import modtweaker2.utils.TweakerPlugin;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -65,7 +63,7 @@ public class Transposer {
 			MineTweakerAPI.apply(new Add(in, fluid, recipe, isFillRecipe));
 	}
 
-	private static class Add extends BaseDescriptionAddition {
+	private static class Add extends BaseUndoable {
 		private List key;
 		private boolean isFillRecipe;
 		private final ComparableItemStackSafe input;
@@ -132,7 +130,7 @@ public class Transposer {
 			MineTweakerAPI.apply(new Remove(toStack(input), toFluid(liquid), isFillRecipe));
 	}
 
-	private static class Remove extends BaseDescriptionRemoval {
+	private static class Remove extends BaseUndoable {
 		private final boolean isFillRecipe;
 		private final ComparableItemStackSafe input;
 		private List key;

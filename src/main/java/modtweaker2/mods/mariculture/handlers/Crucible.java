@@ -1,14 +1,25 @@
 package modtweaker2.mods.mariculture.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import mariculture.api.core.FuelInfo;
 import mariculture.api.core.MaricultureHandlers;
 import mariculture.api.core.RecipeSmelter;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.mariculture.MaricultureHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -21,6 +32,9 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.mariculture.Crucible")
 public class Crucible {
+    
+    public static final String nameSmelting = "Mariculture Crucible (Smelting)";
+    public static final String nameFuel = "Mariculture Crucible (Fuel)";
 
 	/********************************************** Mariculture Crucible Recipes **********************************************/
 
@@ -32,14 +46,15 @@ public class Crucible {
 	}
 
 	// Passes the list to the base list implementation, and adds the recipe
-	private static class AddRecipe extends BaseListAddition {
+	private static class AddRecipe extends BaseListAddition<RecipeSmelter> {
 		public AddRecipe(RecipeSmelter recipe) {
-			super("Mariculture Crucible", MaricultureHandlers.crucible.getRecipes(), recipe);
+			super(Crucible.nameSmelting, MaricultureHandlers.crucible.getRecipes());
+			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((RecipeSmelter) recipe).input.getDisplayName();
+		public String getRecipeInfo(RecipeSmelter recipe) {
+			return InputHelper.getStackDescription(recipe.input);
 		}
 	}
 
@@ -47,35 +62,34 @@ public class Crucible {
 
 	// Removing a Mariculture Crucible recipe
 	@ZenMethod
-	public static void removeRecipe(IItemStack input) {
-		MineTweakerAPI.apply(new RemoveRecipe(toStack(input)));
+	public static void removeRecipe(IIngredient input) {
+	    List<RecipeSmelter> recipes = new LinkedList<RecipeSmelter>();
+	    
+        for (RecipeSmelter r : MaricultureHandlers.crucible.getRecipes()) {
+            if (r != null) {
+                if (r.input != null && matches(input, toIItemStack(r.input))) {
+                    recipes.add(r);
+                }
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveRecipe(recipes));            
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored", Crucible.nameSmelting, input.toString()));
+        }
+		
 	}
 
-	// Removes a recipe, apply is never the same for anything, so will always
-	// need to override it
-	private static class RemoveRecipe extends BaseListRemoval {
-		public RemoveRecipe(ItemStack stack) {
-			super("Mariculture Crucible", MaricultureHandlers.crucible.getRecipes(), stack);
+	private static class RemoveRecipe extends BaseListRemoval<RecipeSmelter> {
+		public RemoveRecipe(List<RecipeSmelter> recipes) {
+			super(Crucible.nameSmelting, MaricultureHandlers.crucible.getRecipes(), recipes);
 		}
-
-		// Loops through the registry, to find the item that matches, saves that
-		// recipe then removes it
-		@Override
-		public void apply() {
-			for (RecipeSmelter r : MaricultureHandlers.crucible.getRecipes()) {
-				if (r != null) {
-					if (r.input != null && stack != null && areEqual(r.input, stack)) {
-						recipes.add(r);
-					}
-				}
-			}
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return stack.getDisplayName();
-		}
+		
+        @Override
+        public String getRecipeInfo(RecipeSmelter recipe) {
+            return InputHelper.getStackDescription(recipe.input);
+        }
 	}
 
 	/********************************************** Crucible Fuels **********************************************/
@@ -95,42 +109,58 @@ public class Crucible {
 	}
 
 	// Passes the list to the base map implementation, and adds the recipe
-	private static class AddFuel extends BaseMapAddition {
+	private static class AddFuel extends BaseMapAddition<Object, FuelInfo> {
 		public AddFuel(Object o, FuelInfo info) {
-			super("Mariculture Crucible Fuel", MaricultureHelper.fuels, MaricultureHelper.getKey(o), info);
+			super(Crucible.nameFuel, MaricultureHelper.fuels);
+			recipes.put(MaricultureHelper.getKey(o), info);
 		}
 
-		@Override
-		public String getRecipeInfo() {
-			return (String) key;
-		}
+        @Override
+        public String getRecipeInfo(Entry<Object, FuelInfo> recipe) {
+            return (String) recipe.getKey();
+        }
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@ZenMethod
 	public static void removeFuel(IItemStack fuel) {
-		MineTweakerAPI.apply(new RemoveFuel(fuel));
+	    removeFuelEntry(fuel);
 	}
 
 	@ZenMethod
 	public static void removeFuel(ILiquidStack fuel) {
-		MineTweakerAPI.apply(new RemoveFuel(fuel));
+	    removeFuelEntry(fuel);
 	}
 
 	@ZenMethod
 	public static void removeFuel(String fuel) {
-		MineTweakerAPI.apply(new RemoveFuel(fuel));
+	    removeFuelEntry(fuel);
+	}
+	
+	public static void removeFuelEntry(Object o) {
+	    String key = MaricultureHelper.getKey(o);
+	    Map<Object, FuelInfo> recipes = new HashMap<Object, FuelInfo>();
+	    
+	    for(Entry<Object, FuelInfo> entry : MaricultureHelper.fuels.entrySet()) {
+	        if(key.matches((String)entry.getKey())) {
+	            recipes.put(key, entry.getValue());
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+	        MineTweakerAPI.apply(new RemoveFuel(recipes));
+	    }
 	}
 
 	// Removes a recipe, will always remove the key, so all should be good
-	private static class RemoveFuel extends BaseMapRemoval {
-		public RemoveFuel(Object o) {
-			super("Mariculture Crucible Fuel", MaricultureHelper.fuels, MaricultureHelper.getKey(o), null);
+	private static class RemoveFuel extends BaseMapRemoval<Object, FuelInfo> {
+		public RemoveFuel(Map<Object, FuelInfo> recipes) {
+			super(Crucible.nameFuel, MaricultureHelper.fuels, recipes);
 		}
 
-		@Override
-		public String getRecipeInfo() {
-			return (String) key;
-		}
+        @Override
+        public String getRecipeInfo(Entry<Object, FuelInfo> recipe) {
+            return (String) recipe.getKey();
+        }
 	}
 }

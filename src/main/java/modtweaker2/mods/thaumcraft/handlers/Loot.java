@@ -1,20 +1,28 @@
 package modtweaker2.mods.thaumcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.internal.WeightedRandomLoot;
 
 @ZenClass("mods.thaumcraft.Loot")
 public class Loot {
+    
+    public static final String name = "Thaumcraft LootBag";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void addCommonLoot(IItemStack stack, int weight) {
@@ -31,40 +39,59 @@ public class Loot {
 		MineTweakerAPI.apply(new Add(WeightedRandomLoot.lootBagRare, new WeightedRandomLoot(InputHelper.toStack(stack), weight)));
 	}
 
-	public static class Add extends BaseListAddition {
-		public Add(List list, WeightedRandomLoot recipe) {
-			super(list, recipe);
+	public static class Add extends BaseListAddition<WeightedRandomLoot> {
+		public Add(List<WeightedRandomLoot> list, WeightedRandomLoot recipe) {
+			super(Loot.name, list);
+			recipes.add(recipe);
 		}
+		
+        @Override
+        protected String getRecipeInfo(WeightedRandomLoot recipe) {
+            return InputHelper.getStackDescription(recipe.item);
+        }
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@ZenMethod
+	public static void removeCommonLoot(IIngredient stack) {
+	    removeLoot(WeightedRandomLoot.lootBagCommon, stack);
 	}
 
 	@ZenMethod
-	public static void removeCommonLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new Remove(WeightedRandomLoot.lootBagCommon, InputHelper.toStack(stack)));
+	public static void removeUncommonLoot(IIngredient stack) {
+	    removeLoot(WeightedRandomLoot.lootBagUncommon, stack);
 	}
 
 	@ZenMethod
-	public static void removeUncommonLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new Remove(WeightedRandomLoot.lootBagUncommon, InputHelper.toStack(stack)));
+	public static void removeRareLoot(IIngredient stack) {
+		removeLoot(WeightedRandomLoot.lootBagRare, stack);
+	}
+	
+	public static void removeLoot(List<WeightedRandomLoot> list, IIngredient ingredient) {
+	    List<WeightedRandomLoot> recipes = new LinkedList<WeightedRandomLoot>();
+	    
+	    for (WeightedRandomLoot loot : list) {
+	        if (matches(ingredient, toIItemStack(loot.item))) {
+	            recipes.add(loot);
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+	        MineTweakerAPI.apply(new Remove(list, recipes));
+	    } else {
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored.", Loot.name, ingredient.toString()));
+	    }
 	}
 
-	@ZenMethod
-	public static void removeRareLoot(IItemStack stack) {
-		MineTweakerAPI.apply(new Remove(WeightedRandomLoot.lootBagRare, InputHelper.toStack(stack)));
-	}
-
-	public static class Remove extends BaseListRemoval {
-		public Remove(List list, ItemStack stack) {
-			super(list, stack);
+	public static class Remove extends BaseListRemoval<WeightedRandomLoot> {
+		public Remove(List<WeightedRandomLoot> list, List<WeightedRandomLoot> recipes) {
+			super(Loot.name, list, recipes);
 		}
-
+		
 		@Override
-		public void apply() {
-			for (WeightedRandomLoot stack : (List<WeightedRandomLoot>) list) {
-				if (stack.item.isItemEqual(this.stack)) {
-					recipes.add(stack);
-				}
-			}
-			super.apply();
+		protected String getRecipeInfo(WeightedRandomLoot recipe) {
+		    return InputHelper.getStackDescription(recipe.item);
 		}
 	}
 }

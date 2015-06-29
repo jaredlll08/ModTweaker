@@ -9,7 +9,5 @@ public class AppliedEnergistics {
 	public AppliedEnergistics() {
 		MineTweakerAPI.registerClass(Inscriber.class);
 		MineTweakerAPI.registerClass(Grind.class);
-
 	}
-
 }

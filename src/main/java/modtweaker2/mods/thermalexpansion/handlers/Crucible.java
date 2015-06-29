@@ -7,7 +7,6 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -19,8 +18,7 @@ import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 public class Crucible {
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, ILiquidStack output) {
-		
-			MineTweakerAPI.apply(new Add(energy, toStack(input), toFluid(output)));
+	    MineTweakerAPI.apply(new Add(energy, toStack(input), toFluid(output)));
 	}
 
 	private static class Add implements IUndoableAction {

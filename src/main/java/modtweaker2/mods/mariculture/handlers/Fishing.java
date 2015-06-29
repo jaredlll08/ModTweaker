@@ -14,8 +14,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.mariculture.MaricultureHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -67,7 +66,7 @@ public class Fishing {
         }
     }
 
-    private static class AddLoot extends BaseDescriptionAddition {
+    private static class AddLoot extends BaseUndoable {
         private final Loot loot;
 
         public AddLoot(Loot loot, String description) {
@@ -80,6 +79,7 @@ public class Fishing {
             ArrayList<Loot> list = MaricultureHelper.loot.get(loot.rarity);
             list.add(loot);
             MaricultureHelper.loot.put(loot.rarity, list);
+            success = true;
         }
 
         @Override
@@ -103,7 +103,7 @@ public class Fishing {
         MineTweakerAPI.apply(new RemoveLoot(toStack(loot)));
     }
 
-    private static class RemoveLoot extends BaseDescriptionRemoval {
+    private static class RemoveLoot extends BaseUndoable {
         private HashMap<Rarity, Loot> loot;
         private final ItemStack stack;
 
@@ -119,6 +119,7 @@ public class Fishing {
             apply(Rarity.JUNK);
             apply(Rarity.GOOD);
             apply(Rarity.RARE);
+            success = true;
         }
 
         //Performs the apply function on all rarity types

@@ -3,24 +3,34 @@ package modtweaker2.mods.tconstruct.handlers;
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toFluids;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import mantle.utils.ItemMetaWrapper;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.Optional;
@@ -30,6 +40,8 @@ import tconstruct.library.crafting.AlloyMix;
 
 @ZenClass("mods.tconstruct.Smeltery")
 public class Smeltery {
+    
+    public static final String nameFuel = "TConstruct Smeltery - Fuel";
 
 	/********************************************** TConstruct Alloy Recipes **********************************************/
 
@@ -40,14 +52,15 @@ public class Smeltery {
 	}
 
 	// Passes the list to the base list implementation, and adds the recipe
-	private static class AddAlloy extends BaseListAddition {
+	private static class AddAlloy extends BaseListAddition<AlloyMix> {
 		public AddAlloy(AlloyMix recipe) {
-			super("Smeltery - Alloy", TConstructHelper.alloys, recipe);
+			super("TConstruct Smeltery - Alloy", TConstructHelper.alloys);
+			this.recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((AlloyMix) recipe).result.getFluid().getName();
+		protected String getRecipeInfo(AlloyMix recipe) {
+		    return InputHelper.getStackDescription(recipe.result);
 		}
 	}
 
@@ -61,27 +74,21 @@ public class Smeltery {
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class RemoveAlloy extends BaseListRemoval {
+	private static class RemoveAlloy extends BaseListRemoval<AlloyMix> {
 		public RemoveAlloy(FluidStack output) {
-			super("Smeltery - Alloy", TConstructHelper.alloys, output);
+			super("Smeltery - Alloy", TConstructHelper.alloys);
+			
+            for (AlloyMix r : TConstructHelper.alloys) {
+                if (r.result != null && output != null && r.result.getFluid() == output.getFluid()) {
+                    recipes.add(r);
+                }
+            }
 		}
 
-		// Loops through the registry, to find the item that matches, saves that
-		// recipe then removes it
-		@Override
-		public void apply() {
-			for (AlloyMix r : TConstructHelper.alloys) {
-					if (r.result != null && fluid != null && r.result.getFluid() == fluid.getFluid()) {
-						recipes.add(r);
-					}
-			}
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return fluid.getFluid().getName();
-		}
+        @Override
+        protected String getRecipeInfo(AlloyMix recipe) {
+            return InputHelper.getStackDescription(recipe.result);
+        }
 	}
 
 	/********************************************** TConstruct Melting Recipes **********************************************/
@@ -106,7 +113,7 @@ public class Smeltery {
 	}
 
 	// Takes all the variables and saves them in place
-	private static class AddMelting extends BaseDescriptionAddition {
+	private static class AddMelting extends BaseUndoable {
 		private final ItemStack input;
 		private final Block block;
 		private final int meta;
@@ -136,14 +143,15 @@ public class Smeltery {
 			TConstructHelper.temperatureList.remove(in);
 			TConstructHelper.renderIndex.remove(in);
 		}
-
+		
 		@Override
 		public String getRecipeInfo() {
 			return input.getDisplayName();
 		}
+		
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Removing a TConstruct Melting recipe
 	@ZenMethod
@@ -160,7 +168,7 @@ public class Smeltery {
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class RemoveMelting extends BaseDescriptionRemoval {
+	private static class RemoveMelting extends BaseUndoable {
 		private final ItemStack input;
 		private FluidStack fluid;
 		private Integer temp;
@@ -196,5 +204,59 @@ public class Smeltery {
 		public String getRecipeInfo() {
 			return input.getDisplayName();
 		}
+	}
+	
+	/********************************************** TConstruct Fuel Recipes **********************************************/
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@ZenMethod
+    public static void removFuel(IIngredient input) {
+	    Map<Fluid, Integer[]> recipes = new HashMap<Fluid, Integer[]>();
+	    
+	    for(Entry<Fluid, Integer[]> fuel : TConstructHelper.fuelList.entrySet()) {
+	        if(fuel != null && fuel.getKey() != null && matches(input, toILiquidStack(new FluidStack(fuel.getKey(), 1)))) {
+	            recipes.put(fuel.getKey(), fuel.getValue());
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+	        MineTweakerAPI.apply(new RemoveFuel(recipes));
+	    } else {
+	        LogHelper.logWarning(String.format("No %s Recipe for %s found. Command ignored!", Smeltery.nameFuel, input.toString()));
+	    }
+    }
+	
+	public static class RemoveFuel extends BaseMapRemoval<Fluid, Integer[]> {
+	    public RemoveFuel(Map<Fluid, Integer[]> recipes) {
+	        super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
+        }
+	    
+	    @Override
+	    public String getRecipeInfo(Entry<Fluid, Integer[]> recipe) {
+	        return InputHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
+	    }
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@ZenMethod
+	public static void addFuel(ILiquidStack liquid, int power, int duration) {
+	    Map<Fluid, Integer[]> recipes = new HashMap<Fluid, Integer[]>();
+	    
+	    recipes.put(toFluid(liquid).getFluid(), new Integer[] {power, duration});
+	    
+	    MineTweakerAPI.apply(new AddFuel(recipes));
+	}
+	
+	public static class AddFuel extends BaseMapAddition<Fluid, Integer[]> {
+	    public AddFuel(Map<Fluid, Integer[]> recipes) {
+	        super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
+	    }
+	    
+        @Override
+        public String getRecipeInfo(Entry<Fluid, Integer[]> recipe) {
+            return InputHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
+        }
 	}
 }

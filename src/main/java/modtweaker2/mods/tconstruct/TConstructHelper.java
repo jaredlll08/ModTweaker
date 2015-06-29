@@ -1,6 +1,7 @@
 package modtweaker2.mods.tconstruct;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import mantle.utils.ItemMetaWrapper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.AlloyMix;
@@ -16,6 +18,7 @@ import tconstruct.library.crafting.CastingRecipe;
 import tconstruct.library.crafting.DryingRackRecipes.DryingRecipe;
 import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.crafting.PatternBuilder.ItemKey;
+import tconstruct.library.crafting.Smeltery;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.ToolMaterial;
 
@@ -27,6 +30,7 @@ public class TConstructHelper {
     public static Map<ItemMetaWrapper, FluidStack> smeltingList = null;
     public static Map<ItemMetaWrapper, Integer> temperatureList = null;
     public static Map<ItemMetaWrapper, ItemStack> renderIndex = null;
+    public static Map<Fluid, Integer[]> fuelList = null;
     public static List<ItemModifier> modifiers = null;
     public static List<ItemModifier> modifiers_clone = null;
 
@@ -44,7 +48,8 @@ public class TConstructHelper {
             for (Map.Entry<Integer, ToolMaterial> entry : TConstructRegistry.toolMaterials.entrySet()) {
                 mappings.put(entry.getValue().materialName, entry.getKey());
             }
-
+            
+            fuelList = getFuelList();
         } catch (Exception e) {}
     }
 
@@ -54,6 +59,20 @@ public class TConstructHelper {
         if (!mappings.containsKey(material)) {
             return -1;
         } else return mappings.get(material);
+    }
+    
+    public static Map<Fluid, Integer[]> getFuelList() {
+        Smeltery smelteryInstance = tconstruct.library.crafting.Smeltery.instance;
+        
+        try {
+            Field smelteryFuels = Smeltery.class.getDeclaredField("smelteryFuels");
+            smelteryFuels.setAccessible(true);
+            
+            return (Map<Fluid, Integer[]>)smelteryFuels.get(smelteryInstance);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new NullPointerException("Failed to instantiate smeltery fuel map");
+        }
     }
 
     //Returns a Drying Recipe, using reflection as the constructor is not visible

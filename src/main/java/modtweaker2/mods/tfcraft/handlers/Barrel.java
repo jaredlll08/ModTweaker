@@ -1,19 +1,23 @@
 package modtweaker2.mods.tfcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -23,6 +27,10 @@ import com.bioxx.tfc.api.Crafting.BarrelRecipe;
 
 @ZenClass("mods.tfcraft.Barrel")
 public class Barrel {
+    
+    public static final String name = "TFC Barrel";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * @param outputFluid If you want this recipe consume fluid, <code>outputFluid=inputFluid</code>
@@ -53,44 +61,63 @@ public class Barrel {
 		MineTweakerAPI.apply(new AddRecipe(new BarrelLiquidToLiquidRecipe(toFluid(inputInBarrel), toFluid(input), toFluid(output))));
 	}
 	
-	@ZenMethod
-	public static void remove(IItemStack output){
-		MineTweakerAPI.apply(new RemoveRecipe(toStack(output)));
-	}
-	
-	@ZenMethod
-	public static void remove(ILiquidStack output){
-		MineTweakerAPI.apply(new RemoveRecipe(toFluid(output)));
-	}
-
-	private static class AddRecipe extends BaseListAddition{
+	private static class AddRecipe extends BaseListAddition<BarrelRecipe> {
 		public AddRecipe(BarrelRecipe recipe){
-			super("Barrel", TFCHelper.barrelRecipes, recipe);
-		}
-	}
-	
-	private static class RemoveRecipe extends BaseListRemoval{
-		public RemoveRecipe(ItemStack stack){
-			super("Barrel-Remove", TFCHelper.barrelRecipes, stack);
+			super(Barrel.name, TFCHelper.barrelRecipes);
+			recipes.add(recipe);
 		}
 		
-		public RemoveRecipe(FluidStack fluid){
-			super("Barrel-Remove", TFCHelper.barrelRecipes, fluid);
-		}
-
 		@Override
-		public void apply() {
-			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
-				if (recipe.getRecipeOutIS() != null && areEqual(recipe.getRecipeOutIS(), stack)){
-					recipes.add(recipe);
-				}
-			}
-			for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
-				if (recipe.getRecipeOutFluid() != null && recipe.getRecipeOutFluid().isFluidEqual(fluid)){
-				    recipes.add(recipe);
-				}
-			}
-			super.apply();
+		protected String getRecipeInfo(BarrelRecipe recipe) {
+		    if(recipe.getRecipeOutIS() != null)
+		        return InputHelper.getStackDescription(recipe.getRecipeOutIS());
+		    else if(recipe.getRecipeOutFluid() != null)
+		        return InputHelper.getStackDescription(recipe.getRecipeOutFluid());
+		    else
+		        return "Unknown output";
 		}
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+    @ZenMethod
+    public static void remove(IIngredient output){
+        List<BarrelRecipe> recipes = new LinkedList<BarrelRecipe>();
+        
+        // Test for item outputs
+        for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
+            if (recipe.getRecipeOutIS() != null && matches(output, toIItemStack(recipe.getRecipeOutIS()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        // Test for liquid outputs
+        for (BarrelRecipe recipe : BarrelManager.getInstance().getRecipes()){
+            if (recipe.getRecipeOutFluid() != null && matches(output, toILiquidStack(recipe.getRecipeOutFluid()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveRecipe(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Barrel.name, output.toString()));
+        }
+    }
+	
+	private static class RemoveRecipe extends BaseListRemoval<BarrelRecipe> {
+		public RemoveRecipe(List<BarrelRecipe> recipes){
+			super(Barrel.name, TFCHelper.barrelRecipes, recipes);
+		}
+		
+        @Override
+        protected String getRecipeInfo(BarrelRecipe recipe) {
+            if(recipe.getRecipeOutIS() != null)
+                return InputHelper.getStackDescription(recipe.getRecipeOutIS());
+            else if(recipe.getRecipeOutFluid() != null)
+                return InputHelper.getStackDescription(recipe.getRecipeOutFluid());
+            else
+                return "Unknown output";
+        }
 	}
 }

@@ -1,73 +1,62 @@
 package modtweaker2.utils;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
-import minetweaker.IUndoableAction;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import modtweaker2.helpers.LogHelper;
 
-public abstract class BaseMapRemoval implements IUndoableAction {
-	protected final Map map;
-	protected Object stack;
-	protected String description;
-	protected Object key;
-	protected Object recipe;
+public abstract class BaseMapRemoval<K, V> extends BaseMapModification<K, V> {
+    
+    protected BaseMapRemoval(String name, Map<K, V> map) {
+        super(name, map);
+    }
+    
+    protected BaseMapRemoval(String name, Map<K, V> map, Map<K, V> recipes) {
+        this(name, map);
+        
+        if(recipes != null) {
+            this.recipes.putAll(recipes);
+        }
+    }
 
-	public BaseMapRemoval(Object stack, Map map, Object key) {
-		this(null, map, key, stack);
-	}
+    @Override
+    public void apply() {
+        if(recipes.isEmpty())
+            return;
+        
+        for(K key : recipes.keySet()) {
+            V value = map.remove(key);
+            
+            if(value != null) {
+                successful.put(key, value);
+            } else {
+                LogHelper.logError(String.format("Error removing %s Recipe : null object", name));
+            }
+        }
+    }
+    
+    @Override
+    public void undo() {
+        if(successful.isEmpty())
+            return;
+        
+        for(Entry<K, V> entry : successful.entrySet()) {
+            if(entry != null) {
+                V value = map.put(entry.getKey(), entry.getValue());
+                if(value != null) {
+                    LogHelper.logWarning(String.format("Overwritten %s Recipe for %s while restoring.", name, getRecipeInfo(entry)));
+                }
+            }
+        }
+    }
+    
+    @Override
+    public String describe() {
+        return String.format("[ModTweaker2] Removing %d %s Recipe(s) for %d", this.recipes.size(), this.name);
+    }
 
-	public BaseMapRemoval(String description, Map map, Object stack) {
-		this(description, map, null, stack);
-	}
-
-	public BaseMapRemoval(String description, Map map, Object key, Object stack) {
-		this.stack = stack;
-		this.map = map;
-		this.key = key;
-		this.description = description;
-	}
-
-	@Override
-	public void apply() {
-		recipe = map.get(key);
-		map.remove(key);
-	}
-
-	@Override
-	public boolean canUndo() {
-		return map != null;
-	}
-
-	@Override
-	public void undo() {
-		map.put(key, recipe);
-	}
-
-	public String getRecipeInfo() {
-		return "Unknown Item";
-	}
-
-	@Override
-	public String describe() {
-		if (recipe instanceof ItemStack)
-			return "Removing " + description + " Recipe for : " + ((ItemStack) recipe).getDisplayName();
-		else if (recipe instanceof FluidStack)
-			return "Removing " + description + " Recipe for : " + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Removing " + description + " Recipe for :" + getRecipeInfo();
-	}
-
-	@Override
-	public String describeUndo() {
-		if (recipe instanceof ItemStack)
-			return "Restoring " + description + " Recipe for : " + ((ItemStack) recipe).getDisplayName();
-		else if (recipe instanceof FluidStack)
-			return "Restoring " + description + " Recipe for : " + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Restoring " + description + " Recipe for : " + getRecipeInfo();
-	}
-
-	@Override
-	public Object getOverrideKey() {
-		return null;
-	}
+    @Override
+    public String describeUndo() {
+        return String.format("[ModTweaker2] Restoring %d %s Recipe(s) for %d", this.recipes.size(), this.name);
+    }
 }

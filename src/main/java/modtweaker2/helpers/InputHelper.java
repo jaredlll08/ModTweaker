@@ -2,13 +2,16 @@ package modtweaker2.helpers;
 
 import java.util.ArrayList;
 
-import minetweaker.MineTweakerAPI;
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
+import minetweaker.mc1710.data.NBTConverter;
+import minetweaker.mc1710.item.MCItemStack;
+import minetweaker.mc1710.liquid.MCLiquidStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -18,10 +21,54 @@ import net.minecraftforge.fluids.FluidStack;
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
 		if (!(isABlock(toStack(block)))) {
-			MineTweakerAPI.getLogger().logError("Item must be a block, or you must specify a block to render as when adding a TConstruct Melting recipe");
+			LogHelper.logError("Item must be a block, or you must specify a block to render as when adding a TConstruct Melting recipe");
 			return false;
 		} else
 			return true;
+	}
+	
+	/**
+	 * Returns a string representation of the item which can also be used in scripts
+	 */
+	public static String getStackDescription(ItemStack stack) {
+	    if(stack != null) {
+    	    StringBuilder sb = new StringBuilder();
+    	    
+    	    // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
+    	    sb.append('<');
+    	    sb.append(Item.itemRegistry.getNameForObject(stack.getItem()));
+    	    if(stack.getItemDamage() == 32767) {
+    	        sb.append(":*");
+    	    } else if (stack.getItemDamage() > 0) {
+    	        sb.append(":").append(stack.getItemDamage());
+    	    }
+    	    sb.append('>');
+    	    
+    	    // Do we have a tag? (e.g. <Botania:specialFlower>.withTag({}) )
+    	    if(stack.getTagCompound() != null)
+    	    {
+    	        sb.append(".withTag(");
+    	        sb.append(NBTConverter.from(stack.getTagCompound(), true));
+    	        sb.append(')');
+    	    }
+    	    
+    	    // Do we have a stack size > 1?
+    	    if(stack.stackSize > 1) {
+    	        sb.append(" * ").append(stack.stackSize);
+    	    }
+    	    
+    	    return sb.toString();
+	    } else {
+	        return "null object";
+	    }
+	}
+	
+	public static String getStackDescription(FluidStack stack) {
+	    if(stack != null) {
+	        return "<liquid:" + stack.getFluid().getName() + ">";
+	    } else {
+	        return "null object";
+	    }
 	}
 
 	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
@@ -52,11 +99,38 @@ public class InputHelper {
 		else {
 			Object internal = iStack.getInternal();
 			if (internal == null || !(internal instanceof ItemStack)) {
-				MineTweakerAPI.getLogger().logError("Not a valid item stack: " + iStack);
+				LogHelper.logError("Not a valid item stack: " + iStack);
 			}
 
 			return (ItemStack) internal;
 		}
+	}
+	
+	public static IIngredient toIngredient(ItemStack stack) {
+        return toIItemStack(stack);
+	}
+	
+	public static IIngredient toIngredient(FluidStack stack) {
+	    if(stack == null)
+	        return null;
+	    
+	    return new MCLiquidStack(stack);
+	}
+	
+	public static IItemStack toIItemStack(ItemStack stack) {
+	    if(stack == null) {
+	        return null;
+	    }
+	    
+	    return new MCItemStack(stack);
+	}
+	
+	public static ILiquidStack toILiquidStack(FluidStack stack) {
+	    if(stack == null) {
+	        return null;
+	    }
+	    
+	    return new MCLiquidStack(stack);
 	}
 
 	public static ItemStack[] toStacks(IItemStack[] iStack) {

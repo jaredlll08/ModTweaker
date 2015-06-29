@@ -1,8 +1,15 @@
 package modtweaker2.mods.tconstruct.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.InputHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -63,51 +70,49 @@ public class TiCTweaks {
 	}
 
 	// Tweaks for setting repair materials
-	private static class Add extends BaseListAddition {
+	private static class Add extends BaseListAddition<ItemKey> {
 		public Add(ItemKey recipe) {
-			super("Repair Material", PatternBuilder.instance.materials, recipe);
+			super("Repair Material", PatternBuilder.instance.materials);
+			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return new ItemStack(((ItemKey) recipe).item, 1, ((ItemKey) recipe).damage).getDisplayName();
+		protected String getRecipeInfo(ItemKey recipe) {
+		    return InputHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
 		}
 	}
 
-	// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@ZenMethod
-	public static void removeRepairMaterial(IItemStack output, @Optional String material) {
-		MineTweakerAPI.apply(new Remove(toStack(output), material));
+	public static void removeRepairMaterial(IIngredient output, @Optional String material) {
+	    
+	    List<ItemKey> recipes = new LinkedList<ItemKey>();
+	    
+        for (ItemKey recipe : PatternBuilder.instance.materials) {
+            IItemStack clone = toIItemStack(new ItemStack(recipe.item, 1, recipe.damage));
+            if ((material != null && material.equalsIgnoreCase(recipe.key)) || (material == null)) {
+                if (output.matches(clone)) {
+                    recipes.add(recipe);
+                }
+            }
+        }
+	    
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        }
 	}
 
 	// Removes a recipe, apply is never the same for anything, so will always
 	// need to override it
-	private static class Remove extends BaseListRemoval {
-		private final String material;
-
-		public Remove(ItemStack stack, String material) {
-			super("Repair Material", PatternBuilder.instance.materials, stack);
-			this.material = material;
-		}
-
-		// Loops through the registry, to find the item that matches, saves that
-		// recipe then removes it
-		@Override
-		public void apply() {
-			for (ItemKey r : PatternBuilder.instance.materials) {
-				ItemStack clone = new ItemStack(r.item, 1, r.damage);
-				if ((material != null && material.equalsIgnoreCase(r.key)) || (material == null)) {
-					if (clone.isItemEqual(stack)) {
-						recipes.add(r);
-					}
-				}
-			}
-			super.apply();
+	private static class Remove extends BaseListRemoval<ItemKey> {
+		public Remove(List<ItemKey> recipes) {
+			super("Repair Material", PatternBuilder.instance.materials, recipes);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return stack.getDisplayName();
+		protected String getRecipeInfo(ItemKey recipe) {
+		    return InputHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
 		}
 	}
 }

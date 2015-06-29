@@ -3,10 +3,14 @@ package modtweaker2.mods.exnihilo.handlers;
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toStack;
+
+import java.util.Map.Entry;
+
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.InputHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.block.Block;
@@ -20,6 +24,7 @@ import exnihilo.registries.helpers.Meltable;
 @ZenClass("mods.exnihilo.Crucible")
 public class Crucible {
 
+
     /************************************************ Crucible Melting ************************************************/
     //Adding a Ex Nihilo Crucible recipe
     @ZenMethod
@@ -32,14 +37,15 @@ public class Crucible {
     }
 
     //Passes the list to the map list implementation, and adds the recipe
-    private static class AddRecipe extends BaseMapAddition {
+    private static class AddRecipe extends BaseMapAddition<String, Meltable> {
         public AddRecipe(Meltable recipe) {
-            super("ExNihilo Crucible", CrucibleRegistry.entries, recipe.block + ":" + recipe.meta, recipe);
+            super("ExNihilo Crucible", CrucibleRegistry.entries);
+            recipes.put(recipe.block + ":" + recipe.meta, recipe);
         }
-
+        
         @Override
-        public String getRecipeInfo() {
-            return new ItemStack(((Meltable) recipe).block, 1, ((Meltable) recipe).meta).getDisplayName();
+        protected String getRecipeInfo(Entry<String, Meltable> recipe) {
+            return InputHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
         }
     }
 
@@ -54,14 +60,21 @@ public class Crucible {
     }
 
     //Removes a recipe, will always remove the key, so all should be good
-    private static class RemoveRecipe extends BaseMapRemoval {
+    private static class RemoveRecipe extends BaseMapRemoval<String, Meltable> {
         public RemoveRecipe(ItemStack stack) {
-            super("ExNihilo Crucible", CrucibleRegistry.entries, Block.getBlockFromItem(stack.getItem()) + ":" + stack.getItemDamage(), stack);
+            super("ExNihilo Crucible", CrucibleRegistry.entries);
+            
+            String key = Block.getBlockFromItem(stack.getItem()) + ":" + stack.getItemDamage();
+            
+            for(Entry<String, Meltable> entry : map.entrySet()) {
+                if(entry.getKey().equals(key))
+                    recipes.put(entry.getKey(), entry.getValue());
+            }
         }
 
         @Override
-        public String getRecipeInfo() {
-            return ((ItemStack) stack).getDisplayName();
+        protected String getRecipeInfo(Entry<String, Meltable> recipe) {
+            return InputHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
         }
     }
 

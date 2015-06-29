@@ -1,9 +1,7 @@
 package modtweaker2.utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Loader;
 
 public class TweakerPlugin {

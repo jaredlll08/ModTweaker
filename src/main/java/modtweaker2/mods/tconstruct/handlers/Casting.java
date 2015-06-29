@@ -1,21 +1,23 @@
 package modtweaker2.mods.tconstruct.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Iterator;
+import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -23,7 +25,11 @@ import tconstruct.library.crafting.CastingRecipe;
 
 @ZenClass("mods.tconstruct.Casting")
 public class Casting {
-    //Adding a TConstruct Casting recipe
+    
+    protected static final String name = "TConstruct Casting";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @ZenMethod
     public static void addBasinRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast, @Optional boolean consume, int delay) {
         MineTweakerAPI.apply(new Add(new CastingRecipe(toStack(output), toFluid(metal), toStack(cast), consume, delay, null), TConstructHelper.basinCasting));
@@ -35,98 +41,90 @@ public class Casting {
     }
 
     //Passes the list to the base list implementation, and adds the recipe
-    private static class Add extends BaseListAddition {
-        public Add(CastingRecipe recipe, ArrayList list) {
-            super("TConstruct Casting", list, recipe);
+    private static class Add extends BaseListAddition<CastingRecipe> {
+        public Add(CastingRecipe recipe, ArrayList<CastingRecipe> list) {
+            super("TConstruct Casting", list);
+            
+            this.recipes.add(recipe);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return ((CastingRecipe) recipe).output.getDisplayName();
+        protected String getRecipeInfo(CastingRecipe recipe) {
+            return InputHelper.getStackDescription(recipe.output);
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Removing a TConstruct Casting recipe
     @ZenMethod
-    public static void removeBasinRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.basinCasting, RecipeComponent.Output));
-    }
-
-    @ZenMethod
-    public static void removeTableRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove((toStack(output)), TConstructHelper.tableCasting, RecipeComponent.Output));
+    public static void removeTableRecipe(IIngredient output) {
+        removeRecipe(output, TConstructHelper.tableCasting, RecipeComponent.Output);
     }
     
     @ZenMethod
-    public static void removeBasinMaterial(ILiquidStack fluid) {
-        MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.basinCasting));
+    public static void removeTableMaterial(IIngredient material) {
+        removeRecipe(material, TConstructHelper.tableCasting, RecipeComponent.Material);
     }
 
     @ZenMethod
-    public static void removeTableMaterial(ILiquidStack fluid) {
-        MineTweakerAPI.apply(new Remove((toFluid(fluid)), TConstructHelper.tableCasting));
+    public static void removeCastRecipes(IIngredient cast) {
+        removeRecipe(cast, TConstructHelper.tableCasting, RecipeComponent.Cast);
     }
 
     @ZenMethod
-    public static void removeCastRecipes(IItemStack cast) {
-        MineTweakerAPI.apply(new Remove((toStack(cast)), TConstructHelper.tableCasting, RecipeComponent.Cast));
+    public static void removeBasinRecipe(IIngredient output) {
+        removeRecipe(output, TConstructHelper.basinCasting, RecipeComponent.Output);
+    }
+    
+    @ZenMethod
+    public static void removeBasinMaterial(IIngredient material) {
+        removeRecipe(material, TConstructHelper.basinCasting, RecipeComponent.Material);
     }
 
-    // Removes all matching recipes, apply is never the same for anything, so will always need to override it
-    private static class Remove extends BaseListRemoval {
-        protected final RecipeComponent component;
+    
+    public static void removeRecipe(IIngredient ingredient, List<CastingRecipe> list, RecipeComponent component) {
         
-        public Remove(ItemStack item, ArrayList list, RecipeComponent component) {
-            super("TConstruct Casting", list, item);
-            this.component = component;
-        }
+        List<CastingRecipe> recipes = new LinkedList<CastingRecipe>();
         
-        public Remove(FluidStack fluid, ArrayList list) {
-            super("TConstruct Casting", list, fluid);
-            this.component = RecipeComponent.Material;
-        }
-
-        // Loops through the registry, to find all items that matches, then removes them
-        @Override
-        public void apply() {
-            for (Iterator<CastingRecipe> iterator = ((ArrayList<CastingRecipe>)list).iterator(); iterator.hasNext();) {
-                CastingRecipe r = iterator.next();
-                
-                switch(component)
-                {
+        for(CastingRecipe recipe : list) {
+            if(recipe != null) {
+                switch(component) {
                     case Cast:
-                        if (r.cast != null && areEqual(r.cast, stack)) {
-                            recipes.add(r);
+                        if(recipe.cast != null && ingredient.contains(toIItemStack(recipe.cast))) {
+                            recipes.add(recipe);
                         }
-
                         break;
-                        
-                    case Material:
-                        if (r.castingMetal != null && r.castingMetal.isFluidEqual(fluid)) {
-                            recipes.add(r);
-                        }
-
-                        break;
-                        
                     case Output:
-                        if (r.output != null && areEqual(r.output, stack)) {
-                            recipes.add(r);
+                        if (recipe.output != null && ingredient.contains(toIItemStack(recipe.output))) {
+                            recipes.add(recipe);
                         }
-
+                        break;
+                    case Material:
+                        if (recipe.castingMetal != null && ingredient.contains(toILiquidStack(recipe.castingMetal))) {
+                            // TODO: Currently broken, because MCLiquidStack equals() method always returns false
+                            recipes.add(recipe);
+                        }
                         break;
                 }
             }
-            super.apply();
         }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(list, recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Casting.name, ingredient.toString()));
+        }
+    }
+
+    // Removes all matching recipes, apply is never the same for anything, so will always need to override it
+    private static class Remove extends BaseListRemoval<CastingRecipe> {
+        public Remove(List<CastingRecipe> list, List<CastingRecipe> recipes) {
+            super(Casting.name, list, recipes);
+        }      
 
         @Override
-        public String getRecipeInfo() {
-            if(component == RecipeComponent.Material)
-                return fluid.getLocalizedName();
-            else
-                return stack.getDisplayName();
+        protected String getRecipeInfo(CastingRecipe recipe) {
+            return InputHelper.getStackDescription(recipe.output);
         }
     }
 

@@ -1,14 +1,19 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.factory.gadgets.MachineMoistener;
@@ -17,6 +22,10 @@ import forestry.factory.gadgets.MachineMoistener.RecipeManager;
 
 @ZenClass("mods.forestry.Moistener")
 public class Moistener {
+    
+    public static final String name = "Forestry Moistener";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void addRecipe(int timePerItem, IItemStack resource, IItemStack product) {
@@ -24,37 +33,45 @@ public class Moistener {
 
 	}
 
-	private static class Add extends BaseListAddition {
+	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
-			super("Forestry Moistener", MachineMoistener.RecipeManager.recipes, recipe);
+			super(Moistener.name, MachineMoistener.RecipeManager.recipes);
+			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((Recipe) recipe).product.getDisplayName();
+		public String getRecipeInfo(Recipe recipe) {
+			return InputHelper.getStackDescription(recipe.product);
 		}
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(MachineMoistener.RecipeManager.recipes, toStack(output)));
+	public static void removeRecipe(IIngredient output) {
+	    List<Recipe> recipes = new LinkedList<Recipe>();
+	    
+        for (Recipe recipe : RecipeManager.recipes) {
+            if (recipe != null && recipe.product != null && matches(output, toIItemStack(recipe.product))) {
+                recipes.add(recipe);
+            }
+        }
+	    
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Moistener.name, output.toString()));
+        }
 	}
 
-	private static class Remove extends BaseListRemoval {
-
-		public Remove(List list, ItemStack stack) {
-			super(list, stack);
-
+	private static class Remove extends BaseListRemoval<Recipe> {
+		public Remove(List<Recipe> recipes) {
+			super(Moistener.name, RecipeManager.recipes, recipes);
 		}
 
-		@Override
-		public void apply() {
-			for (Recipe r : RecipeManager.recipes) {
-				if (r.product != null && r.product.isItemEqual(stack)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
-		}
+        @Override
+        public String getRecipeInfo(Recipe recipe) {
+            return InputHelper.getStackDescription(recipe.product);
+        }
 	}
 }

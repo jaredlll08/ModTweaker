@@ -1,13 +1,19 @@
 package modtweaker2.mods.forestry.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
@@ -21,18 +27,20 @@ import forestry.factory.gadgets.MachineFabricator.Smelting;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
 public class ThermionicFabricator {
+    
+    public static final String nameSmelting = "Forestry Thermionic Fabricator (Smelting)";
+    public static final String nameCasting = "Forestry Thermionic Fabricator (Casting)";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//first production step: smelting item into liquid
 	@ZenMethod
 	public static void addSmelting(IItemStack itemInput, int meltingPoint, int fluidOutput) {
 		//The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass 
-		MineTweakerAPI.apply(new Add(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
+		MineTweakerAPI.apply(new AddSmelting(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
 	}
 
-	@ZenMethod
-	public static void removeSmelting(IItemStack itemInput) {
-		MineTweakerAPI.apply(new Remove(toStack(itemInput), RecipeManager.smeltings, RecipeType.Smelting));
-	}
+
 
 	//second step: casting liquid + objetcs + plan into result
 	@ZenMethod
@@ -44,86 +52,95 @@ public class ThermionicFabricator {
 			}
 		}
 
-		MineTweakerAPI.apply(new Add(new Recipe(toStack(plan), toFluid(fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
-	}
-
-	@ZenMethod
-	public static void removeCasts(IItemStack product) {
-		MineTweakerAPI.apply(new Remove(toStack(product), RecipeManager.recipes, RecipeType.Casting));
+		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), toFluid(fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
 	}
 
 	/*
 	Implements the actions to add a recipe
 	Since the machine has two crafting Steps, this is a constructors for both
 	*/
-	private static class Add extends BaseListAddition {
+	private static class AddSmelting extends BaseListAddition<Smelting> {
 
-		public Add(Smelting recipe) {
-			super("Forestry Thermionic Fabricator (Smelting)", RecipeManager.smeltings, recipe);
+		public AddSmelting(Smelting recipe) {
+			super(ThermionicFabricator.nameSmelting, RecipeManager.smeltings);
+			recipes.add(recipe);
 		}
 
-		public Add(Recipe recipe) {
-			super("Forestry Thermionic Fabricator (Casting)", RecipeManager.recipes, recipe);
+        @Override
+        public String getRecipeInfo(Smelting recipe) {
+            return InputHelper.getStackDescription(recipe.getResource());
+        }
+	}
+	
+    private static class AddCast extends BaseListAddition<Recipe> {
+
+        public AddCast(Recipe recipe) {
+            super(ThermionicFabricator.nameCasting, RecipeManager.recipes);
+            recipes.add(recipe);
+        }
+
+        @Override
+        public String getRecipeInfo(Recipe recipe) {
+            return InputHelper.getStackDescription(recipe.getPlan());
+        }
+    }
+
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+    @ZenMethod
+    public static void removeSmelting(IIngredient itemInput) {
+        List<Smelting> recipes = new LinkedList<Smelting>();
+        
+        for (Smelting r : RecipeManager.smeltings) {
+            if (r != null && r.getResource() != null && matches(itemInput, toIItemStack(r.getResource()))) {
+                recipes.add(r);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveSmelting(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ThermionicFabricator.nameSmelting, itemInput.toString()));
+        }
+    }
+
+    @ZenMethod
+    public static void removeCasts(IIngredient product) {
+        List<Recipe> recipes = new LinkedList<Recipe>();
+        
+        for (Recipe r : RecipeManager.recipes) {
+            if (r != null && r.asIRecipe().getRecipeOutput() != null && matches(product, toIItemStack(r.asIRecipe().getRecipeOutput()))) {
+                recipes.add(r);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveCasts(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ThermionicFabricator.nameSmelting, product.toString()));
+        }
+    }
+
+	private static class RemoveSmelting extends BaseListRemoval<Smelting> {
+		public RemoveSmelting(List<Smelting> recipes) {
+			super(ThermionicFabricator.nameSmelting, RecipeManager.smeltings, recipes);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			if (recipe instanceof Smelting)
-				return " Input:" + ((Smelting) recipe).getResource().getDisplayName();
-			else
-				return "Output: " + ((Recipe) recipe).asIRecipe().getRecipeOutput().getDisplayName();
+		public String getRecipeInfo(Smelting recipe) {
+		    return InputHelper.getStackDescription(recipe.getResource());
 		}
 	}
+	
+    private static class RemoveCasts extends BaseListRemoval<Recipe> {
+        public RemoveCasts(List<Recipe> recipes) {
+            super(ThermionicFabricator.nameCasting, RecipeManager.recipes, recipes);
+        }
 
-	/*
-	Implements the actions to remove recipes
-	*/
-	private static class Remove extends BaseListRemoval {
-	    private final RecipeType type;
-		
-		public Remove(ItemStack input, List list, RecipeType type) {
-			super(String.format("Forestry Thermionic Fabricator (%s)", type.toString()), list, input);
-			this.type = type;
-		}
-
-		@Override
-		public void apply() {
-		    switch(type) {
-		        case Smelting:
-		            for (Object r : list) {
-		                if (((Smelting)r).getResource() != null && ((Smelting)r).getResource().isItemEqual(stack)) {
-		                    recipes.add(r);
-		                }
-		            }
-		            break;
-		            
-		        case Casting:
-		            for (Object r : list) {
-		                if (((Recipe)r).asIRecipe().getRecipeOutput() != null && ((Recipe)r).asIRecipe().getRecipeOutput().isItemEqual(stack)) {
-		                    recipes.add(r);
-		                }
-		            }
-		            break;
-		    }
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo() {
-		    switch(type) {
-		        case Smelting:
-		            return " Input:" + stack.getDisplayName(); // + " -- Output:" + ((Smelting) recipe).getProduct().getLocalizedName();
-		            
-		        case Casting:
-		            return " Output:" + stack.getDisplayName(); // + " -- Output:" + ((Recipe) recipe).asIRecipe().getIngredients()[0].getDisplayName();
-		    }
-		    
-		    return stack.getDisplayName();
-		}
-	}
-
-    public enum RecipeType {
-        Smelting,
-        Casting
+        @Override
+        public String getRecipeInfo(Recipe recipe) {
+            return InputHelper.getStackDescription(recipe.getPlan());
+        }
     }
 }

@@ -1,11 +1,12 @@
 package modtweaker2.helpers;
 
+import static modtweaker2.helpers.ReflectionHelper.getFinalObject;
+import static modtweaker2.helpers.ReflectionHelper.getStaticObject;
+
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static modtweaker2.helpers.ReflectionHelper.*;
-
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;

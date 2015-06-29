@@ -2,20 +2,14 @@ package modtweaker2.mods.exnihilo.handlers;
 
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toStack;
-
-import java.util.List;
-
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import exnihilo.registries.HammerRegistry;
-import exnihilo.registries.helpers.Smashable;
-import exnihilo.utils.ItemInfo;
 
 @ZenClass("mods.exnihilo.Hammer")
 public class Hammer {

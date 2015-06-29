@@ -1,12 +1,18 @@
 package modtweaker2.mods.forestry.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
@@ -19,6 +25,10 @@ import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
 @ZenClass("mods.forestry.Centrifuge")
 public class Centrifuge {
 
+    public static final String name = "Forestry Centrifuge";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 	@ZenMethod
 	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {
 		HashMap<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
@@ -31,47 +41,47 @@ public class Centrifuge {
 		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStack(itemInput), products)));
 	}
 
-	@ZenMethod
-	public static void removeRecipe(IItemStack itemInput) {
-		MineTweakerAPI.apply(new Remove(RecipeManager.recipes, toStack(itemInput)));
+    private static class Add extends BaseListAddition<Recipe> {
+
+        public Add(Recipe recipe) {
+            super(Centrifuge.name, RecipeManager.recipes);
+            recipes.add(recipe);
+        }
+        
+        @Override
+        protected String getRecipeInfo(Recipe recipe) {
+            return InputHelper.getStackDescription(recipe.resource);
+        }
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @ZenMethod
+	public static void removeRecipe(IIngredient input) {
+        List<Recipe> recipes = new LinkedList<Recipe>();
+        
+        for(Recipe recipe : RecipeManager.recipes) {
+            if(recipe != null && matches(input, toIItemStack(recipe.resource))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));            
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Centrifuge.name, input.toString()));
+        }
 	}
 
-	/*
-	Implements the actions to add the recipe
-	*/
-	private static class Add extends BaseListAddition {
+	private static class Remove extends BaseListRemoval<Recipe> {
 
-		public Add(Recipe recipe) {
-			super("Forestry Centrifuge", RecipeManager.recipes, recipe);
-		}
-		@Override
-		public String getRecipeInfo() {
-			return " Input:" + ((Recipe) recipe).resource.getDisplayName();
-		}
-	}
-
-	/*
-	Implements the actions to remove the recipe
-	*/
-	private static class Remove extends BaseListRemoval {
-
-		public Remove(List list, ItemStack input) {
-			super("Forestry Centrifuge", RecipeManager.recipes, input);
+		public Remove(List<Recipe> recipes) {
+			super(Centrifuge.name, RecipeManager.recipes, recipes);
 		}
 
 		@Override
-		public void apply() {
-			for (Recipe r : RecipeManager.recipes) {
-				if (r.matches(stack)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return " Input:" + stack.getDisplayName();
+		protected String getRecipeInfo(Recipe recipe) {
+		    return InputHelper.getStackDescription(recipe.resource);
 		}
 	}
 }

@@ -21,4 +21,20 @@ public class LogHelper {
         System.out.println(string);
         MineTweakerAPI.logCommand(string);
     }
+    
+    public static void logError(String message) {
+        MineTweakerAPI.logError("[ModTweaker2] " + message);
+    }
+    
+    public static void logError(String message, Throwable exception) {
+        MineTweakerAPI.logError("[ModTweaker2] " + message, exception);
+    }
+    
+    public static void logWarning(String message) {
+        MineTweakerAPI.logWarning("[ModTweaker2] " + message);
+    }
+    
+    public static void logInfo(String message) {
+        MineTweakerAPI.logInfo("[ModTweaker2] " + message);
+    }
 }

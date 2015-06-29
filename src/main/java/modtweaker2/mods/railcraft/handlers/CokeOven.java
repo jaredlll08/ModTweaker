@@ -1,18 +1,22 @@
 package modtweaker2.mods.railcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.lang.reflect.Field;
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager;
-import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
@@ -22,6 +26,9 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.railcraft.CokeOven")
 public class CokeOven {
+    
+    public static final String name = "Railcraft Coke Oven";
+    
 	@ZenMethod
 	public static void addRecipe(IItemStack input, boolean matchDamage, boolean matchNBT, IItemStack output, ILiquidStack fluidOutput, int cookTime) {
 		MineTweakerAPI.apply(new Add(toStack(input), matchDamage, matchNBT, toStack(output), toFluid(fluidOutput), cookTime));
@@ -80,28 +87,30 @@ public class CokeOven {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(toStack(output)));
+	public static void removeRecipe(IIngredient output) {
+	    List<ICokeOvenRecipe> recipes = new LinkedList<ICokeOvenRecipe>();
+	    
+        for (ICokeOvenRecipe r : RailcraftHelper.oven) {
+            if (r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
+                recipes.add(r);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", CokeOven.name, output.toString()));
+        }
 	}
 
-	private static class Remove extends BaseListRemoval {
-		public Remove(ItemStack stack) {
-			super("Coke Oven", RailcraftHelper.oven, stack);
+	private static class Remove extends BaseListRemoval<ICokeOvenRecipe> {
+		public Remove(List<ICokeOvenRecipe> recipes) {
+			super("Coke Oven", (List<ICokeOvenRecipe>)RailcraftHelper.oven, recipes);
 		}
 
 		@Override
-		public void apply() {
-			for (ICokeOvenRecipe r : RailcraftHelper.oven) {
-				if (r.getOutput() != null && r.getOutput().getItem().equals(stack)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return stack.getDisplayName();
+		public String getRecipeInfo(ICokeOvenRecipe recipe) {
+			return InputHelper.getStackDescription(recipe.getOutput());
 		}
 	}
 }

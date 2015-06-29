@@ -9,9 +9,7 @@ import java.util.Map;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
-import modtweaker2.utils.TweakerPlugin;
+import modtweaker2.utils.BaseMultiModification;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -52,7 +50,7 @@ public class Smelter {
 			MineTweakerAPI.apply(new Add(in1, in2, recipe));
 	}
 
-	private static class Add extends BaseDescriptionAddition {
+	private static class Add extends BaseMultiModification {
 		private final ComparableItemStackSafe input1;
 		private final ComparableItemStackSafe input2;
 		private final List key;
@@ -99,7 +97,7 @@ public class Smelter {
 			MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
 	}
 
-	private static class Remove extends BaseDescriptionRemoval {
+	private static class Remove extends BaseMultiModification {
 		private final ComparableItemStackSafe input1;
 		private final ComparableItemStackSafe input2;
 		private final List key;

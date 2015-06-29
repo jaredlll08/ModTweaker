@@ -2,8 +2,6 @@ package modtweaker2.mods.auracascade.aura;
 
 import java.util.List;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasRegistry;
 import minetweaker.IBracketHandler;
 import minetweaker.MineTweakerAPI;
 import minetweaker.annotations.BracketHandler;
@@ -56,8 +54,8 @@ public class AuraBracketHandler implements IBracketHandler {
 	}
 
 	private IZenSymbol find(IEnvironmentGlobal environment, List<Token> tokens, int startIndex, int endIndex) {
-		StringBuilder valueBuilder = new StringBuilder();
-//		}
+		//StringBuilder valueBuilder = new StringBuilder();
+
 		for (EnumAura a : EnumAura.values()) {
 			for (int i = startIndex; i < endIndex; i++) {
 				Token token = tokens.get(i);

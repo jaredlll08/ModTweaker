@@ -1,9 +1,17 @@
 package modtweaker2.mods.factorization.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.factorization.FactorizationHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -15,59 +23,59 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.factorization.Crystallizer")
 public class Crystallizer {
+    
+    public static final String name = "Factorization Crystallizer";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output, IItemStack solution, double output_count) {
         Object recipe = FactorizationHelper.getCrystallizerRecipe(toStack(input), toStack(output), toStack(solution), (float) output_count);
-        MineTweakerAPI.apply(new Add(toStack(input), recipe));
+        MineTweakerAPI.apply(new Add(recipe));
     }
 
-    private static class Add extends BaseListAddition {
-        private final ItemStack output;
-
-        public Add(ItemStack output, Object recipe) {
-            super("Crystallizer", FactorizationHelper.crystallizer, recipe);
-            this.output = output;
+    private static class Add extends BaseListAddition<Object> {
+        public Add(Object recipe) {
+            super(Crystallizer.name, FactorizationHelper.crystallizer);
+            recipes.add(recipe);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return output.getDisplayName();
+        public String getRecipeInfo(Object recipe) {
+            return InputHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        MineTweakerAPI.apply(new Remove(toStack(output)));
-    }
-
-    private static class Remove extends BaseListRemoval {
-        public Remove(ItemStack stack) {
-            super("Crystallizer", FactorizationHelper.crystallizer, stack);
-        }
-
-        //Returns the output ItemStack
-        private ItemStack getOutput(Object o) {
-            return (ItemStack) ReflectionHelper.getObject(o, "output");
-        }
-
-        @Override
-        public void apply() {
-            for (Object r : list) {
-                if (r != null) {
-                    ItemStack output = getOutput(r);
-                    if (output != null && areEqual(output, stack)) {
-                        recipes.add(r);
-                    }
+    public static void removeRecipe(IIngredient output) {
+        List<Object> recipes = new LinkedList<Object>();
+        
+        for (Object r : FactorizationHelper.crystallizer) {
+            if (r != null) {
+                ItemStack out = (ItemStack) ReflectionHelper.getObject(r, "output");;
+                if (out != null && matches(output, toIItemStack(out))) {
+                    recipes.add(r);
                 }
             }
-            super.apply();
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Crystallizer.name, output.toString()));
+        }
+    }
+
+    private static class Remove extends BaseListRemoval<Object> {
+        public Remove(List<Object> recipes) {
+            super(Crystallizer.name, FactorizationHelper.crystallizer, recipes);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return stack.getDisplayName();
+        public String getRecipeInfo(Object recipe) {
+            return InputHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
         }
     }
 }
