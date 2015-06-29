@@ -1,9 +1,11 @@
 package modtweaker2.mods.appeng.handlers;
 
 import static modtweaker2.helpers.InputHelper.getStackDescription;
-import static modtweaker2.helpers.InputHelper.toIngredient;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
+import static modtweaker2.helpers.StackHelper.matches;
+
 
 import java.util.LinkedList;
 
@@ -98,7 +100,7 @@ public class Inscriber {
         LinkedList<IInscriberRecipe> result = new LinkedList<IInscriberRecipe>();
         
         for(IInscriberRecipe entry : AEApi.instance().registries().inscriber().getRecipes()) {
-            if(entry != null && entry.getOutput() != null && output.contains(toIngredient(entry.getOutput()))) {
+            if(entry != null && entry.getOutput() != null && matches(output, toIItemStack(entry.getOutput()))) {
                 result.add(entry);
             }
         }

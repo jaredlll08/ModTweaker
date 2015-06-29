@@ -48,8 +48,8 @@ public class StackHelper {
             return false;
         }
         
-        // Do we have a wildcard (<*>) or an actual item?
-        if(ingredient.getItems() != null) {
+        // Check for Botania special flowers
+        if(ingredient.getItems() != null && Botania.isSubtile(toStack(itemStack))) {
             for(IItemStack item : ingredient.getItems()) {
                 if(areEqual(toStack(item), toStack(itemStack))) {
                     return true;
