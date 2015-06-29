@@ -59,7 +59,7 @@ public class InputHelper {
     	    
     	    return sb.toString();
 	    } else {
-	        return "null object";
+	        return "null";
 	    }
 	}
 	
@@ -67,7 +67,7 @@ public class InputHelper {
 	    if(stack != null) {
 	        return "<liquid:" + stack.getFluid().getName() + ">";
 	    } else {
-	        return "null object";
+	        return "null";
 	    }
 	}
 

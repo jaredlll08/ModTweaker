@@ -4,6 +4,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker2.commands.EntityMappingLogger;
+import modtweaker2.mods.appeng.Commands.AppliedEnergisticsLogger;
 import modtweaker2.mods.auracascade.aura.AuraLogger;
 import modtweaker2.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;
@@ -31,6 +32,10 @@ public class Commands {
 			});
 
 			MineTweakerAPI.server.addMineTweakerCommand("entities", new String[] { "/minetweaker entities", "    Outputs a list of entities class mapping keys and the entity IDs" }, new EntityMappingLogger());
+			
+			if (TweakerPlugin.isLoaded("appliedenergistics2-core")) {
+				MineTweakerAPI.server.addMineTweakerCommand("ae2", new String[] {"/minetweaker ae2 ([Grinder/Inscriber])", "    Outputs a list of all Applied Energistics 2 recipes."}, new AppliedEnergisticsLogger());
+			}
 
 			if (TweakerPlugin.isLoaded("Mekanism")) {
 				MineTweakerAPI.server.addMineTweakerCommand("gases", new String[] { "/minetweaker gases", "    Outputs a list of all gas names in the game to the minetweaker log" }, new GasLogger());
