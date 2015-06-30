@@ -6,7 +6,6 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
 import static modtweaker2.helpers.StackHelper.matches;
 
-
 import java.util.LinkedList;
 
 import minetweaker.MineTweakerAPI;
