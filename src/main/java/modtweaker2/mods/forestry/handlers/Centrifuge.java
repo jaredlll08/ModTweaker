@@ -96,7 +96,7 @@ public class Centrifuge {
 		@Override
 		public void apply() {
 			for (ICentrifugeRecipe r : RecipeManager.recipes) {
-				if (ItemStack.areItemStacksEqual(r.getInput(), stack)) {
+				if ( stack.isItemEqual(r.getInput()) && ItemStack.areItemStackTagsEqual(r.getInput(), stack) ) {
 					recipes.add(r);
 				}
 			}
