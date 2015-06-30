@@ -92,7 +92,7 @@ public class CokeOven {
 		@Override
 		public void apply() {
 			for (ICokeOvenRecipe r : RailcraftHelper.oven) {
-				if (r.getOutput() != null && r.getOutput().getItem().equals(stack)) {
+				if (r.getOutput() != null && r.getOutput().isItemEqual(stack) && ItemStack.areItemStackTagsEqual(r.getOutput(), stack)) {
 					recipes.add(r);
 				}
 			}
