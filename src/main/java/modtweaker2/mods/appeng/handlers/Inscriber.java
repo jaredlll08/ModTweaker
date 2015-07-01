@@ -33,6 +33,11 @@ public class Inscriber {
 
 	@ZenMethod
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, String type) {
+        if(imprintable == null || out == null || (!type.equals("Press") || !type.equals("Inscribe"))) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Inscriber.name));
+            return;
+        }
+        
 	    // Create recipe
 	    IInscriberRecipe recipe = new InscriberRecipe(ArrayUtils.toArrayList(toStacks(imprintable)), toStack(out), toStack(plateA), toStack(plateB), InscriberProcessType.valueOf(type));
 	    
@@ -95,6 +100,11 @@ public class Inscriber {
 
 	@ZenMethod
 	public static void removeRecipe(IIngredient output) {
+        if(output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Inscriber.name));
+            return;
+        }
+	    
         // Get list of existing recipes, matching with parameter
         LinkedList<IInscriberRecipe> result = new LinkedList<IInscriberRecipe>();
         

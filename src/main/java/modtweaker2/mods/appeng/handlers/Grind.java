@@ -31,6 +31,11 @@ public class Grind {
     
     @ZenMethod
 	public static void addRecipe(IItemStack input, IItemStack output, int energy, @Optional IItemStack output2, @Optional float chance2, @Optional IItemStack output3, @Optional float chance3) {
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Grind.name));
+            return;
+        }
+        
         // Create recipe
         IGrinderEntry recipe;
         
@@ -75,6 +80,11 @@ public class Grind {
 
 	@ZenMethod
 	public static void removeRecipe(IIngredient output) {
+        if(output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Grind.name));
+            return;
+        }
+	    
 	    // Get list of existing recipes, matching with parameter
 	    LinkedList<IGrinderEntry> result = new LinkedList<IGrinderEntry>();
 	    
