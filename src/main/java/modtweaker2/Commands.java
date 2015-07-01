@@ -16,6 +16,7 @@ import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker2.mods.mekanism.gas.GasLogger;
 import modtweaker2.mods.tconstruct.MaterialLogger;
+import modtweaker2.mods.tconstruct.commands.TConstructLogger;
 import modtweaker2.mods.thaumcraft.commands.AspectLogger;
 import modtweaker2.mods.thaumcraft.research.commands.ResearchLogger;
 import modtweaker2.utils.TweakerPlugin;
@@ -49,6 +50,7 @@ public class Commands {
 
 			if (TweakerPlugin.isLoaded("TConstruct")) {
 				MineTweakerAPI.server.addMineTweakerCommand("materials", new String[] { "/minetweaker materials", "    Outputs a list of all Tinker's Construct material names in the game to the minetweaker log" }, new MaterialLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("tconstruct", new String[]{ "/minetweaker tconstruct [FILTER]", "    Outputs a list of all Tinkers Construct recipes."}, new TConstructLogger());
 			}
 
 			if (TweakerPlugin.isLoaded("Botania")) {

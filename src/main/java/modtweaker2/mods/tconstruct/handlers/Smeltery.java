@@ -211,7 +211,7 @@ public class Smeltery {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ZenMethod
-    public static void removFuel(IIngredient input) {
+    public static void removeFuel(IIngredient input) {
 	    Map<Fluid, Integer[]> recipes = new HashMap<Fluid, Integer[]>();
 	    
 	    for(Entry<Fluid, Integer[]> fuel : TConstructHelper.fuelList.entrySet()) {

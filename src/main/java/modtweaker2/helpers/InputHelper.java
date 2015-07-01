@@ -62,9 +62,20 @@ public class InputHelper {
     	    
     	    return sb.toString();
 	    } else if (object instanceof FluidStack) {
-	        return "<liquid:" + ((FluidStack)object).getFluid().getName() + ">";
+	        FluidStack stack = (FluidStack)object;
+	        StringBuilder sb = new StringBuilder();
+	        
+	        sb.append("<liquid:").append(stack.getFluid().getName()).append('>');
+	        
+	        if(stack.amount > 1) {
+	            sb.append(" * ").append(stack.amount);
+	        }
+	        
+	        return sb.toString();
 	    } else if (object instanceof String) {
 	        List<ItemStack> ores = OreDictionary.getOres((String)object);
+	        
+	        // Check if string specifies an oredict entry
 	        if(!ores.isEmpty()) {
 	            return "<ore:" + (String)object + ">";
 	        } else {
