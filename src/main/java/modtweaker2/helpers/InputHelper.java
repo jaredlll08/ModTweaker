@@ -1,6 +1,7 @@
 package modtweaker2.helpers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
@@ -30,8 +32,9 @@ public class InputHelper {
 	/**
 	 * Returns a string representation of the item which can also be used in scripts
 	 */
-	public static String getStackDescription(ItemStack stack) {
-	    if(stack != null) {
+	public static String getStackDescription(Object object) {
+	    if(object instanceof ItemStack) {
+	        ItemStack stack = (ItemStack)object;
     	    StringBuilder sb = new StringBuilder();
     	    
     	    // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
@@ -58,18 +61,33 @@ public class InputHelper {
     	    }
     	    
     	    return sb.toString();
+	    } else if (object instanceof FluidStack) {
+	        return "<liquid:" + ((FluidStack)object).getFluid().getName() + ">";
+	    } else if (object instanceof String) {
+	        List<ItemStack> ores = OreDictionary.getOres((String)object);
+	        if(!ores.isEmpty()) {
+	            return "<ore:" + (String)object + ">";
+	        } else {
+	            return "\"" + (String)object + "\"";
+	        }
+	    } else if (object != null) {
+	        return "\"" + object.toString() + "\"";
 	    } else {
 	        return "null";
 	    }
 	}
 	
-	public static String getStackDescription(FluidStack stack) {
-	    if(stack != null) {
-	        return "<liquid:" + stack.getFluid().getName() + ">";
-	    } else {
-	        return "null";
-	    }
-	}
+    public static String getArrayDescription(List objects) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        for(Object object : objects) {
+            sb.append(InputHelper.getStackDescription(object)).append(", ");
+        }
+        sb.setLength(sb.length() - 2);
+        sb.append(']');
+        
+        return sb.toString();
+    }
 
 	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
 		ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();

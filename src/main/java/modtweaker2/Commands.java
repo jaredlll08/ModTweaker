@@ -7,6 +7,7 @@ import modtweaker2.commands.EntityMappingLogger;
 import modtweaker2.mods.appeng.commands.AppliedEnergisticsLogger;
 import modtweaker2.mods.auracascade.aura.AuraLogger;
 import modtweaker2.mods.botania.commands.BotaniaBrewLogger;
+import modtweaker2.mods.botania.commands.BotaniaLogger;
 import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
@@ -56,6 +57,7 @@ public class Commands {
 				MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("botaniaOrchid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("botania", new String[] { "/minetweaker botania [FILTER]", "    Outputs a list of all Botania recipes." }, new BotaniaLogger());
 			}
 
 			if (TweakerPlugin.isLoaded("chisel")) {
