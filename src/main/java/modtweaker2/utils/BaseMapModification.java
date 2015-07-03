@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public abstract class BaseMapModification<K, V> extends BaseUndoable {
-    protected final Map<K, V> map;
+    protected Map<K, V> map;
     protected final HashMap<K, V> recipes;
     protected final HashMap<K, V> successful;
     

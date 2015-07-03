@@ -32,7 +32,9 @@ public class BotaniaLogger implements ICommandFunction {
         List<String> args = StringHelper.toLowerCase(Arrays.asList(arguments));
         
         if(!validArguments.containsAll(args)) {
-            player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
+            if(player != null) {
+                player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
+            }
         } else {
             if(args.isEmpty() || args.contains("apothecary")) {
                 for(RecipePetals recipe : BotaniaAPI.petalRecipes) {

@@ -19,6 +19,7 @@ import modtweaker2.mods.tconstruct.MaterialLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
 import modtweaker2.mods.thaumcraft.commands.AspectLogger;
 import modtweaker2.mods.thaumcraft.research.commands.ResearchLogger;
+import modtweaker2.mods.thermalexpansion.commands.ThermalExpansionLogger;
 import modtweaker2.utils.TweakerPlugin;
 
 public class Commands {
@@ -66,8 +67,13 @@ public class Commands {
 				MineTweakerAPI.server.addMineTweakerCommand("chiselGroups", new String[] { "/minetweaker chiselGroups", "    Outputs a list of chisel groups" }, new ChiselGroupLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("chiselVariations", new String[] { "/minetweaker chiselVariations", "/minetweaker chiselVariations [GROUP]", "    Outputs a list of chisel variations" }, new ChiselVariationLogger());
 			}
+			
 			if (TweakerPlugin.isLoaded("aura")) {
 				MineTweakerAPI.server.addMineTweakerCommand("auras", new String[] { "/minetweaker auras", "Outputs a list of Aura Types" }, new AuraLogger());
+			}
+			
+			if (TweakerPlugin.isLoaded("ThermalExpansion")) {
+			    MineTweakerAPI.server.addMineTweakerCommand("texpansion", new String[] {"/minetweaker texpansion [FILTER]", "    Outputs a list of all Thermal Expansion recipes."}, new ThermalExpansionLogger());
 			}
 		}
 

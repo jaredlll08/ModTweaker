@@ -25,10 +25,10 @@ public abstract class BaseMapRemoval<K, V> extends BaseMapModification<K, V> {
             return;
         
         for(K key : recipes.keySet()) {
-            V value = map.remove(key);
+            V oldValue = map.remove(key);
             
-            if(value != null) {
-                successful.put(key, value);
+            if(oldValue != null) {
+                successful.put(key, oldValue);
             } else {
                 LogHelper.logError(String.format("Error removing %s Recipe : null object", name));
             }
@@ -42,8 +42,8 @@ public abstract class BaseMapRemoval<K, V> extends BaseMapModification<K, V> {
         
         for(Entry<K, V> entry : successful.entrySet()) {
             if(entry != null) {
-                V value = map.put(entry.getKey(), entry.getValue());
-                if(value != null) {
+                V oldValue = map.put(entry.getKey(), entry.getValue());
+                if(oldValue != null) {
                     LogHelper.logWarning(String.format("Overwritten %s Recipe for %s while restoring.", name, getRecipeInfo(entry)));
                 }
             }
@@ -52,11 +52,11 @@ public abstract class BaseMapRemoval<K, V> extends BaseMapModification<K, V> {
     
     @Override
     public String describe() {
-        return String.format("[ModTweaker2] Removing %d %s Recipe(s) for %d", this.recipes.size(), this.name);
+        return String.format("[ModTweaker2] Removing %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 
     @Override
     public String describeUndo() {
-        return String.format("[ModTweaker2] Restoring %d %s Recipe(s) for %d", this.recipes.size(), this.name);
+        return String.format("[ModTweaker2] Restoring %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 }

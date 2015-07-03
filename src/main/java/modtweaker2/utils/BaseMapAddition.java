@@ -18,7 +18,7 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
     
     protected BaseMapAddition(String name, Map<K, V> map, Map<K, V> recipes) {
         this(name, map);
-        recipes.putAll(recipes);
+        this.recipes.putAll(recipes);
     }
 
     @Override
@@ -27,37 +27,39 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
             return;
         
         for(Entry<K, V> entry : recipes.entrySet()) {
-            V value = map.put(entry.getKey(), entry.getValue());
-            if(value != null) {
+            K key = entry.getKey();
+            V value = entry.getValue();
+            V oldValue = map.put(key, value);
+            
+            if(oldValue != null) {
                 LogHelper.logWarning(String.format("Overwritten %s Recipe for %s", name, getRecipeInfo( new AbstractMap.SimpleEntry<K, V>(entry.getKey(), value))));
-                overwritten.put(entry.getKey(), value);
+                overwritten.put(key, oldValue);
             }
-            successful.put(entry.getKey(), entry.getValue());
+            
+            successful.put(key, value);
         }
     }
 
     @Override
     public void undo() {
-        if(successful.isEmpty() || overwritten.isEmpty())
+        if(successful.isEmpty() && overwritten.isEmpty())
             return;
-        
-        for(K key : recipes.keySet()) {
-            map.remove(key);
-        }
-        
+
         for(Entry<K, V> entry : successful.entrySet()) {
-            V value = map.remove(entry.getKey());
-            
+            K key = entry.getKey();
+            V value = map.remove(key);
+
             if(value == null) {
                 LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
             }
-            
         }
         
         for(Entry<K, V> entry : overwritten.entrySet()) {
-            V value = map.put(entry.getKey(), entry.getValue());
+            K key = entry.getKey();
+            V value = entry.getValue();
+            V oldValue = map.put(key, value);
             
-            if(value != null) {
+            if(oldValue != null) {
                 LogHelper.logWarning(String.format("Overwritten %s Recipe which should not exist for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<K, V>(entry.getKey(), value))));
             }
         }
@@ -65,11 +67,11 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
 
     @Override
     public String describe() {
-        return String.format("Adding %d %s Recipe(s) for %d", recipes.size(), name, getRecipeInfo());
+        return String.format("Adding %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 
     @Override
     public String describeUndo() {
-        return String.format("Removing %d %s Recipe(s) for %d", recipes.size(), name, getRecipeInfo());
+        return String.format("Removing %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 }

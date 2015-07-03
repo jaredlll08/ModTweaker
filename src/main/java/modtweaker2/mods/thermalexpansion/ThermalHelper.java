@@ -11,15 +11,16 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.thermalexpansion.util.crafting.SmelterManager.ComparableItemStackSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
 public class ThermalHelper {
-    private static Map<List, RecipeSmelter> smelter;
-    public static Set<ComparableItemStackSafe> smelterValid;
+    private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> smelter;
+    public static Set<ComparableItemStackSmelter> smelterValid;
     private static Map crucible;
 
-    private static Map<List, RecipeTransposer> transposerFill;
+    private static Map<List<Integer>, RecipeTransposer> transposerFill;
     private static Map<ComparableItemStackSafe, RecipeTransposer> transposerEmpty;
     public static Set<ComparableItemStackSafe> transposerValid;
 
@@ -34,7 +35,7 @@ public class ThermalHelper {
     }
 
     /** Need to perform this reflection on the fly as the map is ALWAYS changing, thanks to the way that te handles stuff */
-    public static Map<List, RecipeSmelter> getSmelterMap() {
+    public static Map<List<ComparableItemStackSmelter>, RecipeSmelter> getSmelterMap() {
         try {
             smelter = getStaticObject(Class.forName("cofh.thermalexpansion.util.crafting.SmelterManager"), "recipeMap");
             smelterValid = getStaticObject(Class.forName("cofh.thermalexpansion.util.crafting.SmelterManager"), "validationSet");
@@ -43,7 +44,7 @@ public class ThermalHelper {
         return smelter;
     }
 
-    public static Map<List, RecipeTransposer> getFillMap() {
+    public static Map<List<Integer>, RecipeTransposer> getFillMap() {
         try {
             transposerFill = getStaticObject(Class.forName("cofh.thermalexpansion.util.crafting.TransposerManager"), "recipeMapFill");
             transposerValid = getStaticObject(Class.forName("cofh.thermalexpansion.util.crafting.TransposerManager"), "validationSet");

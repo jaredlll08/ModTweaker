@@ -35,7 +35,9 @@ public class TConstructLogger implements ICommandFunction {
         List<String> args = StringHelper.toLowerCase(Arrays.asList(arguments));
         
         if(!validArguments.containsAll(args)) {
-            player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
+            if(player != null) {
+                player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
+            }
         } else {
             if(args.isEmpty() || args.contains("casting")) {
                 for(CastingRecipe recipe : TConstructHelper.basinCasting) {

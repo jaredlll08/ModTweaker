@@ -88,14 +88,19 @@ public class InputHelper {
 	    }
 	}
 	
-    public static String getArrayDescription(List objects) {
+	public static String getArrayDescription(List objects) {
         StringBuilder sb = new StringBuilder();
-        sb.append('[');
-        for(Object object : objects) {
-            sb.append(InputHelper.getStackDescription(object)).append(", ");
+        
+        if(objects.isEmpty()) {
+            sb.append("[]");
+        } else {
+            sb.append('[');
+            for(Object object : objects) {
+                sb.append(InputHelper.getStackDescription(object)).append(", ");
+            }
+            sb.setLength(sb.length() - 2);
+            sb.append(']');
         }
-        sb.setLength(sb.length() - 2);
-        sb.append(']');
         
         return sb.toString();
     }

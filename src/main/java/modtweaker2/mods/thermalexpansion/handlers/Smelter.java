@@ -1,38 +1,34 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseMultiModification;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.thermalexpansion.util.crafting.SmelterManager;
+import cofh.thermalexpansion.util.crafting.SmelterManager.ComparableItemStackSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 @ZenClass("mods.thermalexpansion.Smelter")
 public class Smelter {
-	private static boolean removeValidated(ComparableItemStackSafe stack) {
-		for (Map.Entry entry : ThermalHelper.getSmelterMap().entrySet()) {
-			if (entry != null && entry.getValue() != null) {
-				RecipeSmelter recipe = (RecipeSmelter) entry.getValue();
-				if (recipe != null) {
-					if (stack.equals(new ComparableItemStackSafe(recipe.getPrimaryInput()))) {
-						return false;
-					} else if (stack.equals(new ComparableItemStackSafe(recipe.getSecondaryInput()))) {
-						return false;
-					}
-				}
-			}
-		}
-		return ThermalHelper.smelterValid.remove(stack);
-	}
+    
+    public static final String name = "Thermal Expansion Smelter";
 
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack input2, IItemStack output) {
@@ -45,94 +41,86 @@ public class Smelter {
 		ItemStack in2 = toStack(input2);
 		ItemStack out1 = toStack(output);
 		ItemStack out2 = toStack(output2);
-		RecipeSmelter recipe = (RecipeSmelter) ThermalHelper.getTERecipe(ThermalHelper.smelterRecipe, in1, in2, out1, out2, chance, energy);
 		
-			MineTweakerAPI.apply(new Add(in1, in2, recipe));
+		List<ComparableItemStackSmelter> key = Arrays.asList(new ComparableItemStackSmelter[] { new ComparableItemStackSmelter(in1), new ComparableItemStackSmelter(in2) });
+		RecipeSmelter value = (RecipeSmelter) ThermalHelper.getTERecipe(ThermalHelper.smelterRecipe, in1, in2, out1, out2, chance, energy);
+		
+		Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipes = new HashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
+		
+		recipes.put(key, value);
+		
+		MineTweakerAPI.apply(new Add(recipes));
 	}
 
-	private static class Add extends BaseMultiModification {
-		private final ComparableItemStackSafe input1;
-		private final ComparableItemStackSafe input2;
-		private final List key;
-		private final RecipeSmelter recipe;
-
-		public Add(ItemStack input1, ItemStack input2, RecipeSmelter recipe) {
-			super("Induction Smelter");
-			this.input1 = new ComparableItemStackSafe(input1);
-			this.input2 = new ComparableItemStackSafe(input2);
-			this.key = (Arrays.asList(new ComparableItemStackSafe[] { this.input1, this.input2 }));
-			this.recipe = recipe;
+	private static class Add extends BaseMapAddition<List<ComparableItemStackSmelter>, RecipeSmelter> {
+		public Add(Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipes) {
+			super(Smelter.name, ThermalHelper.getSmelterMap(), recipes);
 		}
 
 		@Override
 		public void apply() {
-			ThermalHelper.getSmelterMap().put(key, recipe);
-			ThermalHelper.smelterValid.add(input1);
-			ThermalHelper.smelterValid.add(input2);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return ThermalHelper.getSmelterMap() != null;
+            map = ThermalHelper.getSmelterMap();
+		    super.apply();
+		    SmelterManager.refreshRecipes();
 		}
 
 		@Override
 		public void undo() {
-			ThermalHelper.getSmelterMap().remove(key);
-			removeValidated(input1);
-			removeValidated(input2);
+            map = ThermalHelper.getSmelterMap();
+		    super.undo();
+		    SmelterManager.refreshRecipes();
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((RecipeSmelter) recipe).getPrimaryOutput().getDisplayName();
+		public String getRecipeInfo(Entry<List<ComparableItemStackSmelter>, RecipeSmelter> recipe) {
+		    return InputHelper.getStackDescription(recipe.getValue().getPrimaryOutput());
 		}
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input, IItemStack input2) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
+	public static void removeRecipe(IIngredient input1, IIngredient input2) {
+	    Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipes = new HashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
+	    
+        for(Entry<List<ComparableItemStackSmelter>, RecipeSmelter> entry : ThermalHelper.getSmelterMap().entrySet()) {
+            RecipeSmelter recipe = entry.getValue();
+            
+            if(recipe != null && matches(input1, toIItemStack(recipe.getPrimaryInput())) && matches(input2, toIItemStack(recipe.getSecondaryInput()))) {
+                recipes.put(entry.getKey(), entry.getValue());
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipes found for %s and %s. Command ignored!", Smelter.name, input1.toString(), input2.toString()));
+        }
 	}
 
-	private static class Remove extends BaseMultiModification {
-		private final ComparableItemStackSafe input1;
-		private final ComparableItemStackSafe input2;
-		private final List key;
-		private RecipeSmelter recipe;
+	private static class Remove extends BaseMapRemoval<List<ComparableItemStackSmelter>, RecipeSmelter> {
 
-		public Remove(ItemStack input1, ItemStack input2) {
-			super("Induction Smelter");
-			this.input1 = new ComparableItemStackSafe(input1);
-			this.input2 = new ComparableItemStackSafe(input2);
-			this.key = (Arrays.asList(new ComparableItemStackSafe[] { this.input1, this.input2 }));
+		public Remove(Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipes) {
+			super(Smelter.name, ThermalHelper.getSmelterMap(), recipes);
 		}
 
 		@Override
 		public void apply() {
-			recipe = ThermalHelper.getSmelterMap().get(key);
-			ThermalHelper.getSmelterMap().remove(key);
-			removeValidated(input1);
-			removeValidated(input2);
+		    map = ThermalHelper.getSmelterMap();
+		    super.apply();
+		    SmelterManager.refreshRecipes();
 		}
-
-		@Override
-		public boolean canUndo() {
-			return ThermalHelper.getSmelterMap() != null;
-		}
-
+		
 		@Override
 		public void undo() {
-			ThermalHelper.getSmelterMap().put(key, recipe);
-			ThermalHelper.smelterValid.add(input1);
-			ThermalHelper.smelterValid.add(input2);
+            map = ThermalHelper.getSmelterMap();
+            super.undo();
+            SmelterManager.refreshRecipes();
 		}
 
-		@Override
-		public String getRecipeInfo() {
-			return input1.toItemStack().getDisplayName() + " + " + input2.toItemStack().getDisplayName();
-		}
+        @Override
+        public String getRecipeInfo(Entry<List<ComparableItemStackSmelter>, RecipeSmelter> recipe) {
+            return InputHelper.getStackDescription(recipe.getValue().getPrimaryOutput());
+        }
 	}
 }
