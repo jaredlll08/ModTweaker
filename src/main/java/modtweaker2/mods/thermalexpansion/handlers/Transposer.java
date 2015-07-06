@@ -6,26 +6,21 @@ import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseMapAddition;
-import modtweaker2.utils.BaseMapRemoval;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
@@ -39,170 +34,185 @@ public class Transposer {
     
 	@ZenMethod
 	public static void addFillRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid) {
-	    Map<List<Integer>, RecipeTransposer> recipes = new HashMap<List<Integer>, RecipeTransposer>();
-	    ItemStack in = toStack(input);
-	    ItemStack out = toStack(output);
-	    FluidStack fluid = toFluid(liquid);
-	    List<Integer> key = Arrays.asList(new Integer[] { Integer.valueOf(new ComparableItemStackSafe(in).hashCode()), Integer.valueOf(fluid.fluidID) });
-	    RecipeTransposer value = (RecipeTransposer) ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, in, out, fluid, energy, 100);
+        if(input == null || output == null || liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFill));
+            return;
+        }
 	    
-	    recipes.put(key, value);
-	    
-	    MineTweakerAPI.apply(new AddFill(recipes));
+        if(TransposerManager.fillRecipeExists(toStack(input), toFluid(liquid))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameFill, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toFluid(liquid))));
+            return;
+        }
+        
+	    MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Fill));
 	}
 
 	@ZenMethod
 	public static void addExtractRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid, int chance) {
-        Map<ComparableItemStackSafe, RecipeTransposer> recipes = new HashMap<ComparableItemStackSafe, RecipeTransposer>();
-        ItemStack in = toStack(input);
-        ItemStack out = toStack(output);
-        FluidStack fluid = toFluid(liquid);
-        ComparableItemStackSafe key = new ComparableItemStackSafe(in);
-        RecipeTransposer value = (RecipeTransposer) ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, in, out, fluid, energy, 100);
+        if(input == null || output == null || liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameExtract));
+            return;
+        }
         
-        recipes.put(key, value);
-        
-        MineTweakerAPI.apply(new AddExtract(recipes));
+        if(TransposerManager.extractionRecipeExists(toStack(input), toFluid(liquid))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toFluid(liquid))));
+            return;
+        }
+	    
+        MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Extract));
 	}
 	
-	private static class AddFill extends BaseMapAddition<List<Integer>, RecipeTransposer> {
+	private static class Add extends BaseListAddition<RecipeTransposer> {
+	    private RecipeType type;
 
-        protected AddFill(Map<List<Integer>, RecipeTransposer> recipes) {
-            super(Transposer.nameFill, ThermalHelper.getFillMap());
-            recipes.putAll(recipes);
+        protected Add(RecipeTransposer recipe, RecipeType type) {
+            super(type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, null);
+            this.type = type;
+            recipes.add(recipe);
         }
 
         @Override
         public void apply() {
-            map = ThermalHelper.getFillMap();
-            super.apply();
-            TransposerManager.refreshRecipes();
+            for(RecipeTransposer recipe : recipes) {
+                boolean applied = false;
+                switch(type) {
+                    case Fill:
+                        applied = TransposerManager.addFillRecipe(
+                                recipe.getEnergy(),
+                                recipe.getInput(),
+                                recipe.getOutput(),
+                                recipe.getFluid(),
+                                false);
+                        break;
+                        
+                    case Extract:
+                        applied = TransposerManager.addExtractionRecipe(
+                                recipe.getEnergy(),
+                                recipe.getInput(), 
+                                recipe.getOutput(),
+                                recipe.getFluid(),
+                                recipe.getChance(),
+                                false);
+                        break;
+                }
+
+                if(applied) {
+                    successful.add(recipe);
+                }
+            }
         }
         
         @Override
         public void undo() {
-            map = ThermalHelper.getFillMap();
-            super.undo();
-            TransposerManager.refreshRecipes();
+            for(RecipeTransposer recipe : successful) {
+                switch(type)
+                {
+                    case Fill:
+                        TransposerManager.removeFillRecipe(recipe.getInput(), recipe.getFluid());
+                        break;
+                    case Extract:
+                        TransposerManager.removeExtractionRecipe(recipe.getInput());
+                        break;
+                }
+            }
         }
         
         @Override
-        protected String getRecipeInfo(Entry<List<Integer>, RecipeTransposer> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().getOutput());
+        protected String getRecipeInfo(RecipeTransposer recipe) {
+            return InputHelper.getStackDescription(recipe.getInput());
         }
 	}
-
-    private static class AddExtract extends BaseMapAddition<ComparableItemStackSafe, RecipeTransposer> {
-
-        protected AddExtract(Map<ComparableItemStackSafe, RecipeTransposer> recipes) {
-            super(Transposer.nameFill, ThermalHelper.getExtractMap());
-            recipes.putAll(recipes);
-        }
-
-        @Override
-        public void apply() {
-            map = ThermalHelper.getExtractMap();
-            super.apply();
-            TransposerManager.refreshRecipes();
-        }
-        
-        @Override
-        public void undo() {
-            map = ThermalHelper.getExtractMap();
-            super.undo();
-            TransposerManager.refreshRecipes();
-        }
-        
-        @Override
-        protected String getRecipeInfo(Entry<ComparableItemStackSafe, RecipeTransposer> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().getInput());
-        }
-    }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ZenMethod
 	public static void removeFillRecipe(IIngredient input, IIngredient liquid) {
-	    Map<List<Integer>, RecipeTransposer> recipes = new HashMap<List<Integer>, RecipeTransposer>();
-	    for(Entry<List<Integer>, RecipeTransposer> recipe : ThermalHelper.getFillMap().entrySet()) {
-	        if(recipe != null && recipe.getValue() != null && matches(input, toIItemStack(recipe.getValue().getInput())) && matches(liquid, toILiquidStack(recipe.getValue().getFluid()))) {
-	            recipes.put(recipe.getKey(), recipe.getValue());
-	        }
-	    }
+	    removeRecipe(input, liquid, RecipeType.Fill);
 	    
-	    if(!recipes.isEmpty()) {
-	        MineTweakerAPI.apply(new RemoveFill(recipes));
-	    } else {
-	        LogHelper.logWarning(String.format("No %s Recipe found for %s and %s. Command ignored!", nameFill, input.toString(), liquid.toString()));
-	    }
 	}
 
 	@ZenMethod
 	public static void removeExtractRecipe(IIngredient input) {
-	    Map<ComparableItemStackSafe, RecipeTransposer> recipes = new HashMap<ComparableItemStackSafe, RecipeTransposer>();
-	    for(Entry<ComparableItemStackSafe, RecipeTransposer> recipe : ThermalHelper.getExtractMap().entrySet()) {
-	        if(recipe != null && recipe.getValue() != null && matches(input, toIItemStack(recipe.getValue().getInput()))) {
-	            recipes.put(recipe.getKey(), recipe.getValue());
-	        }
-	    }
-	    
-        if(!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new RemoveExtract(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", nameFill, input.toString()));
-        }
-
-	}
-
-	private static class RemoveFill extends BaseMapRemoval<List<Integer>, RecipeTransposer> {
-
-        protected RemoveFill(Map<List<Integer>, RecipeTransposer> recipes) {
-            super(nameFill, ThermalHelper.getFillMap(), recipes);
-        }
-        
-        @Override
-        public void apply() {
-            map = ThermalHelper.getFillMap();
-            super.apply();
-            TransposerManager.refreshRecipes();
-        }
-        
-        @Override
-        public void undo() {
-            map = ThermalHelper.getFillMap();
-            super.undo();
-            TransposerManager.refreshRecipes();
-        }
-
-        @Override
-        protected String getRecipeInfo(Entry<List<Integer>, RecipeTransposer> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().getOutput());
-        }
+	    removeRecipe(input, IngredientAny.INSTANCE, RecipeType.Extract);
 	}
 	
-    private static class RemoveExtract extends BaseMapRemoval<ComparableItemStackSafe, RecipeTransposer> {
+	public static void removeRecipe(IIngredient input, IIngredient liquid, RecipeType type) {
+        List<RecipeTransposer> recipes = new LinkedList<RecipeTransposer>();
+        
+        for(RecipeTransposer recipe : type == RecipeType.Fill ? TransposerManager.getFillRecipeList() : TransposerManager.getExtractionRecipeList()) {
+            if(recipe != null && matches(input, toIItemStack(recipe.getInput())) && matches(liquid, toILiquidStack(recipe.getFluid()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes, type));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s and %s.", type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, input.toString(), liquid.toString()));
+        }
+	}
 
-        protected RemoveExtract(Map<ComparableItemStackSafe, RecipeTransposer> recipes) {
-            super(nameExtract, ThermalHelper.getExtractMap(), recipes);
+	private static class Remove extends BaseListRemoval<RecipeTransposer> {
+	    private RecipeType type;
+	    
+        protected Remove(List<RecipeTransposer> recipes, RecipeType type) {
+            super(type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, null, recipes);
+            this.type = type;
         }
         
         @Override
         public void apply() {
-            map = ThermalHelper.getExtractMap();
-            super.apply();
-            TransposerManager.refreshRecipes();
+            for(RecipeTransposer recipe : recipes) {
+                boolean removed = false;
+                switch(type) {
+                    case Fill:
+                        removed = TransposerManager.removeFillRecipe(recipe.getInput(), recipe.getFluid());
+                        break;
+                    case Extract:
+                        removed = TransposerManager.removeExtractionRecipe(recipe.getInput());
+                        break;
+                }
+                
+                if(removed) {
+                    successful.add(recipe);
+                }
+            }
         }
         
         @Override
         public void undo() {
-            map = ThermalHelper.getExtractMap();
-            super.undo();
-            TransposerManager.refreshRecipes();
+            for(RecipeTransposer recipe : successful) {
+                switch(type) {
+                case Fill:
+                    TransposerManager.addFillRecipe(
+                            recipe.getEnergy(),
+                            recipe.getInput(),
+                            recipe.getOutput(),
+                            recipe.getFluid(),
+                            false);
+                    break;
+                    
+                case Extract:
+                    TransposerManager.addExtractionRecipe(
+                            recipe.getEnergy(),
+                            recipe.getInput(), 
+                            recipe.getOutput(),
+                            recipe.getFluid(),
+                            recipe.getChance(),
+                            false);
+                    break;
+                }
+            }
         }
 
         @Override
-        protected String getRecipeInfo(Entry<ComparableItemStackSafe, RecipeTransposer> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().getInput());
+        protected String getRecipeInfo(RecipeTransposer recipe) {
+            return InputHelper.getStackDescription(recipe.getOutput());
         }
+	}
+    
+    protected enum RecipeType {
+        Fill,
+        Extract
     }
 }

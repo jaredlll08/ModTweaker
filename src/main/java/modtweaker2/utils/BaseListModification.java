@@ -17,7 +17,7 @@ public abstract class BaseListModification<T> extends BaseUndoable {
 	
 	@Override
     public boolean canUndo() {
-        if(list == null || recipes.isEmpty() || successful.isEmpty())
+        if(recipes.isEmpty() || successful.isEmpty())
             return false;
         
         return true;
@@ -33,7 +33,11 @@ public abstract class BaseListModification<T> extends BaseUndoable {
 	                sb.append(getRecipeInfo(recipe)).append(", ");
 	            }
 	        }
-	        sb.setLength(sb.length() - 2);
+	        
+	        if(sb.length() > 0 ) {
+	            sb.setLength(sb.length() - 2);
+	        }
+	        
 	        return sb.toString();
 	    }
 	    

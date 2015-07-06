@@ -31,7 +31,11 @@ public abstract class BaseMapModification<K, V> extends BaseUndoable {
                     sb.append(getRecipeInfo(recipe)).append(", ");
                 }
             }
-            sb.setLength(sb.length() - 2);
+            
+            if(sb.length() > 0) {
+                sb.setLength(sb.length() - 2);
+            }
+            
             return sb.toString();
         }
         
