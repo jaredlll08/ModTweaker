@@ -2,6 +2,7 @@ package modtweaker2.mods.pneumaticcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.areEqual;
 import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import net.minecraft.item.ItemStack;
 import pneumaticCraft.api.recipe.AssemblyRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -23,19 +25,39 @@ public class Assembly {
     
     public static final String name = "PneumaticCraft Assembly";
     
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @ZenMethod
     public static void addDrillRecipe(IItemStack input, IItemStack output) {
-        MineTweakerAPI.apply(new Add(new AssemblyRecipe(toStack(input), toStack(output)), AssemblyRecipe.drillRecipes));
+        addRecipe(input, output, AssemblyRecipe.drillRecipes);
     }
 
     @ZenMethod
     public static void addLaserRecipe(IItemStack input, IItemStack output) {
-        MineTweakerAPI.apply(new Add(new AssemblyRecipe(toStack(input), toStack(output)), AssemblyRecipe.laserRecipes));
+        addRecipe(input, output, AssemblyRecipe.laserRecipes);
     }
 
     @ZenMethod
     public static void addLaserDrillRecipe(IItemStack input, IItemStack output) {
-        MineTweakerAPI.apply(new Add(new AssemblyRecipe(toStack(input), toStack(output)), AssemblyRecipe.drillLaserRecipes));
+        addRecipe(input, output, AssemblyRecipe.drillLaserRecipes);
+    }
+    
+    public static void addRecipe(IItemStack input, IItemStack output, List<AssemblyRecipe> list) {
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        ItemStack in = toStack(input);
+        
+        for(AssemblyRecipe recipe : list) {
+            if(areEqual(recipe.getInput(), in)) {
+                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, InputHelper.getStackDescription(in)));
+                return;
+            }
+        }
+        
+        MineTweakerAPI.apply(new Add(new AssemblyRecipe(toStack(input), toStack(output)), list));
     }
 
     private static class Add extends BaseListAddition<AssemblyRecipe> {
@@ -79,7 +101,7 @@ public class Assembly {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(list, recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Assembly.name, output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", name, output.toString()));
         }
     }
 

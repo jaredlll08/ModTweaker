@@ -11,6 +11,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,11 @@ public class Pressure {
     
     @ZenMethod
     public static void addRecipe(IItemStack[] input, double pressure, IItemStack[] output, boolean asBlock) {
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
         MineTweakerAPI.apply(new Add(new PressureChamberRecipe(toStacks(input), (float) pressure, toStacks(output), asBlock)));
     }
 

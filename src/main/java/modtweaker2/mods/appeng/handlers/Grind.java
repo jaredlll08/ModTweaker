@@ -32,7 +32,7 @@ public class Grind {
     @ZenMethod
 	public static void addRecipe(IItemStack input, IItemStack output, int energy, @Optional IItemStack output2, @Optional float chance2, @Optional IItemStack output3, @Optional float chance3) {
         if(input == null || output == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Grind.name));
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
         
@@ -49,7 +49,7 @@ public class Grind {
         // Check if the recipe is already present, we don't want to add duplicates
         for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
             if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
-                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", Grind.name, InputHelper.getStackDescription(toStack(input))));
+                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, InputHelper.getStackDescription(toStack(input))));
                 return;
             }
         }
