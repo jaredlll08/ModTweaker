@@ -128,14 +128,13 @@ public class Transposer {
 	@ZenMethod
 	public static void removeFillRecipe(IIngredient input, IIngredient liquid) {
 	    removeRecipe(input, liquid, RecipeType.Fill);
-	    
 	}
 
 	@ZenMethod
 	public static void removeExtractRecipe(IIngredient input) {
 	    removeRecipe(input, IngredientAny.INSTANCE, RecipeType.Extract);
 	}
-	
+
 	public static void removeRecipe(IIngredient input, IIngredient liquid, RecipeType type) {
         List<RecipeTransposer> recipes = new LinkedList<RecipeTransposer>();
         

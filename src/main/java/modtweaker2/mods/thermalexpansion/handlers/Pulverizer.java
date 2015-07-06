@@ -44,7 +44,7 @@ public class Pulverizer {
             return;
         }
         
-	    MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.pulverizerRecipe, energy, toStack(input), toStack(output), toStack(secondary), secondaryChance)));
+	    MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.pulverizerRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy)));
 	}
 
 	private static class Add extends BaseListAddition<RecipePulverizer> {
