@@ -14,8 +14,6 @@ import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
-
-@SuppressWarnings("unchecked")
 public class ThermalHelper {
     public static Constructor<RecipeCrucible> crucibleRecipe;
     public static Constructor<RecipeFurnace> furanceRecipe;
@@ -26,20 +24,12 @@ public class ThermalHelper {
     
     static {
     	try {
-    	    crucibleRecipe   = getConstructor("cofh.thermalexpansion.util.crafting.CrucibleManager$RecipeCrucible", ItemStack.class, FluidStack.class, int.class);
-    	    furanceRecipe    = getConstructor("cofh.thermalexpansion.util.crafting.FurnaceManager$RecipeFurnace", ItemStack.class, ItemStack.class, int.class);
-    	    pulverizerRecipe = getConstructor("cofh.thermalexpansion.util.crafting.PulverizerManager$RecipePulverizer", ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
-    	    sawmillRecipe    = getConstructor("cofh.thermalexpansion.util.crafting.SawmillManager$RecipeSawmill", ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
-            smelterRecipe    = getConstructor("cofh.thermalexpansion.util.crafting.SmelterManager$RecipeSmelter", ItemStack.class, ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
-            transposerRecipe = getConstructor("cofh.thermalexpansion.util.crafting.TransposerManager$RecipeTransposer", ItemStack.class, ItemStack.class, FluidStack.class, int.class, int.class);
+    	    crucibleRecipe   = getConstructor(RecipeCrucible.class, ItemStack.class, FluidStack.class, int.class);
+    	    furanceRecipe    = getConstructor(RecipeFurnace.class, ItemStack.class, ItemStack.class, int.class);
+    	    pulverizerRecipe = getConstructor(RecipePulverizer.class, ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
+    	    sawmillRecipe    = getConstructor(RecipeSawmill.class, ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
+            smelterRecipe    = getConstructor(RecipeSmelter.class, ItemStack.class, ItemStack.class, ItemStack.class, ItemStack.class, int.class, int.class);
+            transposerRecipe = getConstructor(RecipeTransposer.class, ItemStack.class, ItemStack.class, FluidStack.class, int.class, int.class);
         } catch (Exception e) { LogHelper.logError("Exception getting constructor for Thermal Expansion recipes!", e); }
-    }
-
-    public static <T> T getTERecipe(Constructor<T> constructor, Object... items) {
-        try {
-            return constructor.newInstance(items);
-        } catch (Exception e) { LogHelper.logError("Exception creating instance of Thermal Expansion recipe!", e); }
-
-        return null;
     }
 }

@@ -16,6 +16,7 @@ import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -44,7 +45,7 @@ public class Transposer {
             return;
         }
         
-	    MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Fill));
+	    MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Fill));
 	}
 
 	@ZenMethod
@@ -59,7 +60,7 @@ public class Transposer {
             return;
         }
 	    
-        MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Extract));
+        MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Extract));
 	}
 	
 	private static class Add extends BaseListAddition<RecipeTransposer> {

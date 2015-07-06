@@ -5,14 +5,45 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class ReflectionHelper {
+    
+    public static <T> T getInstance(Constructor<T> constructor, Object... arguments) {
+        try {
+            return constructor.newInstance(arguments);
+        } catch (Exception e) { LogHelper.logError("Exception creating instance of " + constructor.getClass().getName(), e); }
+
+        return null;
+    }
+    
+    public static <T> T getInstance(Class<T> clazz, Object... arguments) {
+        Class[] classArray = new Class[arguments.length];
+        
+        for(int i = 0; i < arguments.length; i++) {
+            classArray[i] = arguments[i].getClass();
+        }
+        
+        Constructor<T> constructor = getConstructor(clazz, classArray);
+        
+        return getInstance(constructor, arguments);
+    }
+    
     public static Constructor getConstructor(String string, Class... types) {
         try {
             Class clazz = Class.forName(string);
             Constructor constructor = clazz.getDeclaredConstructor(types);
             constructor.setAccessible(true);
             return constructor;
-        } catch (Exception ex) {}
+        } catch (Exception ex) { LogHelper.logError("Exception creating instance of " + string, ex); }
 
+        return null;
+    }
+    
+    public static <T> Constructor<T> getConstructor(Class<T> clazz, Class... types) {
+        try {
+            Constructor<T> constructor = clazz.getDeclaredConstructor(types);
+            constructor.setAccessible(true);
+            return constructor;
+        } catch (Exception ex) { LogHelper.logError("Exception getting constructore of " + clazz.getName(), ex); }
+        
         return null;
     }
 

@@ -35,7 +35,6 @@ public class Modifiers {
         }
     }
 
-    //Searches through the modifiers and removes the first valid entry
     private static class Remove extends BaseListRemoval<ItemModifier>{
         public Remove(List<ItemModifier> recipes) {
             super(Modifiers.name, TConstructHelper.modifiers, recipes);

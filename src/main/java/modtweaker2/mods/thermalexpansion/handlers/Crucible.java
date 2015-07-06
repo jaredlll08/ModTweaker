@@ -14,6 +14,7 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -39,7 +40,7 @@ public class Crucible {
             return;
 	    }
 	    
-	    MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.crucibleRecipe, toStack(input), toFluid(output), energy)));
+	    MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.crucibleRecipe, toStack(input), toFluid(output), energy)));
 	}
 
 	private static class Add extends BaseListAddition<RecipeCrucible> {

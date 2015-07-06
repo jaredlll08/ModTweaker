@@ -12,6 +12,7 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -44,7 +45,7 @@ public class Sawmill {
             return;
         }
         
-		MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.sawmillRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy)));
+		MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.sawmillRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy)));
 	}
 
 	private static class Add extends BaseListAddition<RecipeSawmill> {

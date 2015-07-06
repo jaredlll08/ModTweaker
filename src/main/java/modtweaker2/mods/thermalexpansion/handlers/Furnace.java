@@ -13,6 +13,7 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -40,7 +41,7 @@ public class Furnace {
             return;
         }
         
-		MineTweakerAPI.apply(new Add(ThermalHelper.getTERecipe(ThermalHelper.furanceRecipe, toStack(input), toStack(output), energy)));
+		MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.furanceRecipe, toStack(input), toStack(output), energy)));
 	}
 
 	private static class Add extends BaseListAddition<RecipeFurnace> {
