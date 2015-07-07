@@ -35,6 +35,7 @@ public class Crystallizer {
     }
 
     private static class Add extends BaseListAddition<Object> {
+        @SuppressWarnings("unchecked")
         public Add(Object recipe) {
             super(Crystallizer.name, FactorizationHelper.crystallizer);
             recipes.add(recipe);
@@ -69,6 +70,7 @@ public class Crystallizer {
     }
 
     private static class Remove extends BaseListRemoval<Object> {
+        @SuppressWarnings("unchecked")
         public Remove(List<Object> recipes) {
             super(Crystallizer.name, FactorizationHelper.crystallizer, recipes);
         }

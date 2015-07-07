@@ -1,6 +1,7 @@
 package modtweaker2.mods.factorization.handlers;
 
 import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toObject;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.StackHelper.matches;
 
@@ -28,13 +29,14 @@ public class Lacerator {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @ZenMethod
-    public static void addRecipe(IItemStack input, IItemStack output, double probability) {
-        Object recipe = FactorizationHelper.getLaceratorRecipe(toStack(input), toStack(output), (float) probability);
-        MineTweakerAPI.apply(new Add(toStack(input), recipe));
+    public static void addRecipe(IIngredient input, IItemStack output, double probability) {
+        Object recipe = FactorizationHelper.getLaceratorRecipe(toObject(input), toStack(output), (float) probability);
+        MineTweakerAPI.apply(new Add(recipe));
     }
 
     private static class Add extends BaseListAddition<Object> {
-        public Add(ItemStack output, Object recipe) {
+        @SuppressWarnings("unchecked")
+        public Add(Object recipe) {
             super(Lacerator.name, FactorizationHelper.lacerator);
             recipes.add(recipe);
         }
@@ -67,6 +69,7 @@ public class Lacerator {
     }
 
     private static class Remove extends BaseListRemoval<Object> {
+        @SuppressWarnings("unchecked")
         public Remove(List<Object> recipes) {
             super(Lacerator.name, FactorizationHelper.lacerator, recipes);
         }

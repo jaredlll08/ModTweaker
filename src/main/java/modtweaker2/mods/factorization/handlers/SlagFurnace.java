@@ -34,6 +34,7 @@ public class SlagFurnace {
 	}
 
 	private static class Add extends BaseListAddition<Object> {
+	    @SuppressWarnings("unchecked")
 		public Add(ItemStack input, Object recipe) {
 			super(SlagFurnace.name, FactorizationHelper.slag);
 			recipes.add(recipe);
@@ -69,7 +70,8 @@ public class SlagFurnace {
 	}
 
 	private static class Remove extends BaseListRemoval<Object> {
-		public Remove(List<Object> recipes) {
+		@SuppressWarnings("unchecked")
+        public Remove(List<Object> recipes) {
 			super(SlagFurnace.name, FactorizationHelper.slag, recipes);
 		}
 

@@ -14,6 +14,7 @@ import modtweaker2.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconPageLogger;
 import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
+import modtweaker2.mods.factorization.commands.FactorizationLogger;
 import modtweaker2.mods.mekanism.gas.GasLogger;
 import modtweaker2.mods.tconstruct.MaterialLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
@@ -74,6 +75,10 @@ public class Commands {
 			
 			if (TweakerPlugin.isLoaded("ThermalExpansion")) {
 			    MineTweakerAPI.server.addMineTweakerCommand("texpansion", new String[] {"/minetweaker texpansion [FILTER]", "    Outputs a list of all Thermal Expansion recipes."}, new ThermalExpansionLogger());
+			}
+
+			if (TweakerPlugin.isLoaded("factorization")) {
+			    MineTweakerAPI.server.addMineTweakerCommand("factorization", new String[] {"/minetweaker factorization [FILTER]", "    Outputs a list of all Factorization recipes."}, new FactorizationLogger());
 			}
 		}
 

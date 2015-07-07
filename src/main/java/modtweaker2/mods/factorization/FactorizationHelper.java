@@ -8,8 +8,11 @@ import modtweaker2.helpers.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 
 public class FactorizationHelper {
+    @SuppressWarnings("rawtypes")
     public static List lacerator = null;
+    @SuppressWarnings("rawtypes")
     public static List slag = null;
+    @SuppressWarnings("rawtypes")
     public static List crystallizer = null;
 
     static {
@@ -22,15 +25,13 @@ public class FactorizationHelper {
 
     private FactorizationHelper() {}
 
-    @SuppressWarnings("unchecked")
-    public static Object getLaceratorRecipe(ItemStack input, ItemStack output, float probability) {
+    public static Object getLaceratorRecipe(Object input, ItemStack output, float probability) {
         return ReflectionHelper.getInstance(ReflectionHelper.getConstructor("factorization.oreprocessing.TileEntityGrinder$GrinderRecipe", Object.class, ItemStack.class, float.class),
                 input,
                 output,
                 probability);
     }
 
-    @SuppressWarnings("unchecked")
     public static Object getSlagFurnaceRecipe(ItemStack input, float chance1, ItemStack output1, float chance2, ItemStack output2) {
         return ReflectionHelper.getInstance(ReflectionHelper.getConstructor("factorization.oreprocessing.TileEntitySlagFurnace$SmeltingResult", ItemStack.class, float.class, ItemStack.class, float.class, ItemStack.class),
                 input,
@@ -40,7 +41,6 @@ public class FactorizationHelper {
                 output2);
     }
 
-    @SuppressWarnings("unchecked")
     public static Object getCrystallizerRecipe(ItemStack input, ItemStack output, ItemStack solution, float output_count) {
         return ReflectionHelper.getInstance(ReflectionHelper.getConstructor("factorization.oreprocessing.TileEntityCrystallizer$CrystalRecipe", ItemStack.class, ItemStack.class, float.class, ItemStack.class),
                 input,
