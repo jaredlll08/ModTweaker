@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import cpw.mods.fml.common.Loader;
 
 public class TweakerPlugin {
-    private static ArrayList<String> isLoaded = new ArrayList();
+    private static ArrayList<String> isLoaded = new ArrayList<String>();
 
-    public static void register(String mod, Class clazz) {
+    public static void register(String mod, Class<?> clazz) {
         if (Loader.isModLoaded(mod)) {
             load(mod, clazz);
         }
     }
 
-    public static void load(String mod, Class clazz) {
+    public static void load(String mod, Class<?> clazz) {
         try {
             clazz.newInstance();
             isLoaded.add(mod);

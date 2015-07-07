@@ -88,7 +88,7 @@ public class InputHelper {
 	    }
 	}
 	
-	public static String getArrayDescription(List objects) {
+	public static String getArrayDescription(List<?> objects) {
         StringBuilder sb = new StringBuilder();
         
         if(objects.isEmpty()) {
@@ -209,7 +209,8 @@ public class InputHelper {
 		}
 	}
 
-	public static Object[] toShapedObjects(IIngredient[][] ingredients) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Object[] toShapedObjects(IIngredient[][] ingredients) {
 		if (ingredients == null)
 			return null;
 		else {
