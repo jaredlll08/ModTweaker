@@ -5,7 +5,7 @@ import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker2.commands.EntityMappingLogger;
 import modtweaker2.mods.appeng.commands.AppliedEnergisticsLogger;
-import modtweaker2.mods.auracascade.aura.AuraLogger;
+import modtweaker2.mods.auracascade.commands.AuraLogger;
 import modtweaker2.mods.botania.commands.BotaniaBrewLogger;
 import modtweaker2.mods.botania.commands.BotaniaLogger;
 import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;

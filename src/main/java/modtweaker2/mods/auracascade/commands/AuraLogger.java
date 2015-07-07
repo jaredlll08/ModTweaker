@@ -1,4 +1,4 @@
-package modtweaker2.mods.auracascade.aura;
+package modtweaker2.mods.auracascade.commands;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
