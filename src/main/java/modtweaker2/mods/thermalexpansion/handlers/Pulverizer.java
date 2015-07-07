@@ -7,6 +7,7 @@ import static modtweaker2.helpers.StackHelper.matches;
 import java.util.LinkedList;
 import java.util.List;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -74,6 +75,11 @@ public class Pulverizer {
 		        PulverizerManager.removeRecipe(recipe.getInput());
 		    }
 		}
+		
+		@Override
+		protected boolean equals(RecipePulverizer recipe, RecipePulverizer otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
+		}
 
 		@Override
 		protected String getRecipeInfo(RecipePulverizer recipe) {
@@ -127,10 +133,48 @@ public class Pulverizer {
 		                recipe.getSecondaryOutputChance());
 		    }
 		}
+		
+        @Override
+        protected boolean equals(RecipePulverizer recipe, RecipePulverizer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
 
         @Override
         protected String getRecipeInfo(RecipePulverizer recipe) {
             return InputHelper.getStackDescription(recipe.getInput());
         }
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            PulverizerManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Pulverizer.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Pulverizer.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

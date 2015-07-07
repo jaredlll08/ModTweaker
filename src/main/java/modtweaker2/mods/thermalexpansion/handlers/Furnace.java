@@ -71,6 +71,11 @@ public class Furnace {
 		    }
 			
 		}
+		
+		@Override
+		protected boolean equals(RecipeFurnace recipe, RecipeFurnace otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
+		}
 
 		@Override
 		protected String getRecipeInfo(RecipeFurnace recipe) {
@@ -121,6 +126,11 @@ public class Furnace {
                         false);
 		    }
 		}
+		
+        @Override
+        protected boolean equals(RecipeFurnace recipe, RecipeFurnace otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
 
         @Override
         protected String getRecipeInfo(RecipeFurnace recipe) {
@@ -138,22 +148,22 @@ public class Furnace {
 	private static class Refresh implements IUndoableAction {
 
 		public void apply() {
-			FurnaceManager.loadRecipes();
+			FurnaceManager.refreshRecipes();
 		}
 
 		public boolean canUndo() {
-			return false;
+			return true;
 		}
 
 		public String describe() {
-			return "Refreshing Redstone Furnace Recipes";
+			return "Refreshing " + Furnace.name + " recipes";
 		}
 
 		public void undo() {
 		}
 
 		public String describeUndo() {
-			return "Can't Undo Redstone Furnace Refresh";
+			return "Ignoring undo of " + Furnace.name + " recipe refresh";
 		}
 
 		public Object getOverrideKey() {

@@ -9,6 +9,7 @@ import static modtweaker2.helpers.StackHelper.matches;
 import java.util.LinkedList;
 import java.util.List;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -119,6 +120,11 @@ public class Transposer {
         }
         
         @Override
+        protected boolean equals(RecipeTransposer recipe, RecipeTransposer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+        
+        @Override
         protected String getRecipeInfo(RecipeTransposer recipe) {
             return InputHelper.getStackDescription(recipe.getInput());
         }
@@ -206,6 +212,11 @@ public class Transposer {
         }
 
         @Override
+        protected boolean equals(RecipeTransposer recipe, RecipeTransposer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+        
+        @Override
         protected String getRecipeInfo(RecipeTransposer recipe) {
             return InputHelper.getStackDescription(recipe.getOutput());
         }
@@ -214,5 +225,38 @@ public class Transposer {
     protected enum RecipeType {
         Fill,
         Extract
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            TransposerManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Transposer.nameFill + " & " + Transposer.nameExtract + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Transposer.nameFill + " & " + Transposer.nameExtract + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
     }
 }

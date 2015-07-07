@@ -7,6 +7,7 @@ import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.botania.Botania;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class StackHelper {
     /**
@@ -22,6 +23,14 @@ public class StackHelper {
 		}
 	}
 	
+	public static boolean areEqual(FluidStack stack1, FluidStack stack2) {
+	    if(stack1 == null || stack2 == null) {
+	        return false;
+	    }
+	    
+	    return stack1.isFluidEqual(stack2);
+	}
+	
 	/**
 	 * Compares two ItemStack instances if they reference the same object or
 	 * are both null. If false, the method areEqual() is called to check if the
@@ -33,6 +42,15 @@ public class StackHelper {
             return true;
         }
 
+        return(areEqual(stack1, stack2));
+    }
+    
+    public static boolean areEqualOrNull(FluidStack stack1, FluidStack stack2) {
+        // Check if they reference the same object or are are both null
+        if(stack1 == stack2) {
+            return true;
+        }
+        
         return(areEqual(stack1, stack2));
     }
     

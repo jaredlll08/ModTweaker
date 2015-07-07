@@ -7,6 +7,7 @@ import static modtweaker2.helpers.StackHelper.matches;
 import java.util.LinkedList;
 import java.util.List;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -75,7 +76,11 @@ public class Sawmill {
 		    for(RecipeSawmill recipe : successful) {
 		        SawmillManager.removeRecipe(recipe.getInput());
 		    }
-			
+		}
+		
+		@Override
+		protected boolean equals(RecipeSawmill recipe, RecipeSawmill otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
 		}
 
         @Override
@@ -131,9 +136,47 @@ public class Sawmill {
 		    }
 		}
 		
+        @Override
+        protected boolean equals(RecipeSawmill recipe, RecipeSawmill otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+		
 		@Override
 		protected String getRecipeInfo(RecipeSawmill recipe) {
 		    return InputHelper.getStackDescription(recipe.getInput());
 		}
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            SawmillManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Sawmill.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Sawmill.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

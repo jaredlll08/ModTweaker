@@ -8,6 +8,7 @@ import static modtweaker2.helpers.StackHelper.matches;
 import java.util.LinkedList;
 import java.util.List;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -70,12 +71,17 @@ public class Crucible {
 		}
 		
 		@Override
+		protected boolean equals(RecipeCrucible recipe, RecipeCrucible otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
+		}
+		
+		@Override
 		protected String getRecipeInfo(RecipeCrucible recipe) {
 		    return InputHelper.getStackDescription(recipe.getInput());
 		}
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
@@ -120,8 +126,46 @@ public class Crucible {
 		}
 		
         @Override
+        protected boolean equals(RecipeCrucible recipe, RecipeCrucible otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+		
+        @Override
         protected String getRecipeInfo(RecipeCrucible recipe) {
             return InputHelper.getStackDescription(recipe.getInput());
         }
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+	
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            CrucibleManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Crucible.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Crucible.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }
