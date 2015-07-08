@@ -36,6 +36,8 @@ public class RockCrusher {
     }
 
     private static class Add extends BaseListAddition<IRockCrusherRecipe> {
+        
+        @SuppressWarnings("unchecked")
         public Add(IRockCrusherRecipe recipe) {
             super(RockCrusher.name, (List<IRockCrusherRecipe>)RailcraftHelper.crusher);
             recipes.add(recipe);
@@ -67,6 +69,8 @@ public class RockCrusher {
     }
 
     private static class Remove extends BaseListRemoval<IRockCrusherRecipe> {
+        
+        @SuppressWarnings("unchecked")
         public Remove(List<IRockCrusherRecipe> recipes) {
             super("Rock Crusher", (List<IRockCrusherRecipe>)RailcraftHelper.crusher, recipes);
         }

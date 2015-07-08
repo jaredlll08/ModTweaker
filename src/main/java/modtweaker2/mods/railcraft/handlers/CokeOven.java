@@ -85,7 +85,8 @@ public class CokeOven {
 
 	private static class Add extends BaseListAddition<ICokeOvenRecipe> {
 
-		public Add(ICokeOvenRecipe recipe) {
+		@SuppressWarnings("unchecked")
+        public Add(ICokeOvenRecipe recipe) {
 			super(CokeOven.name, (List<ICokeOvenRecipe>)RailcraftCraftingManager.cokeOven.getRecipes());
 			recipes.add(recipe);
 		}
@@ -116,6 +117,8 @@ public class CokeOven {
 	}
 
 	private static class Remove extends BaseListRemoval<ICokeOvenRecipe> {
+	    
+	    @SuppressWarnings("unchecked")
 		public Remove(List<ICokeOvenRecipe> recipes) {
 			super(CokeOven.name, (List<ICokeOvenRecipe>)RailcraftHelper.oven, recipes);
 		}

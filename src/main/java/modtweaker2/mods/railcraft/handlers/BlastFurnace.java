@@ -30,7 +30,8 @@ public class BlastFurnace {
 	}
 
 	private static class Add extends BaseListAddition<IBlastFurnaceRecipe> {
-		public Add(IBlastFurnaceRecipe recipe) {
+		@SuppressWarnings("unchecked")
+        public Add(IBlastFurnaceRecipe recipe) {
 			super(BlastFurnace.name, (List<IBlastFurnaceRecipe>)RailcraftHelper.furnace);
 			recipes.add(recipe);
 		}
@@ -59,6 +60,7 @@ public class BlastFurnace {
 	}
 
 	private static class Remove extends BaseListRemoval<IBlastFurnaceRecipe> {
+	    @SuppressWarnings("unchecked")
 		public Remove(List<IBlastFurnaceRecipe> recipes) {
 			super(BlastFurnace.name, (List<IBlastFurnaceRecipe>)RailcraftHelper.furnace, recipes);
 		}
