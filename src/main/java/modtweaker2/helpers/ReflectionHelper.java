@@ -37,7 +37,7 @@ public class ReflectionHelper {
             Constructor<?> constructor = clazz.getDeclaredConstructor(argumentTypes);
             constructor.setAccessible(true);
             return constructor;
-        } catch (Exception ex) { LogHelper.logError("Exception getting constructore of " + className, ex); }
+        } catch (Exception ex) { LogHelper.logError("Exception getting constructor of " + className, ex); }
 
         return null;
     }
@@ -76,6 +76,8 @@ public class ReflectionHelper {
             } catch (Exception ex) {}
         }
 
+        LogHelper.logError("Could not retrieve any object for the provided field names.");
+        
         return null;
     }
 
@@ -100,6 +102,8 @@ public class ReflectionHelper {
             } catch (Exception ex) {}
         }
         
+        LogHelper.logError("Could not retrieve any final object for the provided field names.");
+        
         return null;
     }
 
@@ -118,6 +122,8 @@ public class ReflectionHelper {
                 return (T) result.get(null);
             } catch (Exception e) {}
         }
+        
+        LogHelper.logError("Could not retrieve any static object for the provided field names.");
 
         return null;
     }
@@ -133,6 +139,8 @@ public class ReflectionHelper {
             Class<?> clazz = Class.forName(className);
             return getStaticObject(clazz, fieldNames);
         } catch (ClassNotFoundException e) { }
+        
+        LogHelper.logError("Could not retrieve any static object for the provided field names.");
         
         return null;
     }

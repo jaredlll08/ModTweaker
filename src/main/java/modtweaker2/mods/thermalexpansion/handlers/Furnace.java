@@ -41,7 +41,13 @@ public class Furnace {
             return;
         }
         
-		MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.furanceRecipe, toStack(input), toStack(output), energy)));
+        RecipeFurnace recipe = ReflectionHelper.getInstance(ThermalHelper.furanceRecipe, toStack(input), toStack(output), energy);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
 	private static class Add extends BaseListAddition<RecipeFurnace> {

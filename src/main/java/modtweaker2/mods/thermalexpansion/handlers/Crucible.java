@@ -41,7 +41,13 @@ public class Crucible {
             return;
 	    }
 	    
-	    MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.crucibleRecipe, toStack(input), toFluid(output), energy)));
+        RecipeCrucible recipe = ReflectionHelper.getInstance(ThermalHelper.crucibleRecipe, toStack(input), toFluid(output), energy);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
 	private static class Add extends BaseListAddition<RecipeCrucible> {

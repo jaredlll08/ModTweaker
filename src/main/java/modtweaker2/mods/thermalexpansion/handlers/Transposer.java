@@ -46,7 +46,13 @@ public class Transposer {
             return;
         }
         
-	    MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Fill));
+        RecipeTransposer recipe = ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe, RecipeType.Fill));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameFill));
+        }
 	}
 
 	@ZenMethod
@@ -60,8 +66,14 @@ public class Transposer {
             LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toFluid(liquid))));
             return;
         }
-	    
-        MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100), RecipeType.Extract));
+        
+        RecipeTransposer recipe = ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe, RecipeType.Extract));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameExtract));
+        }
 	}
 	
 	private static class Add extends BaseListAddition<RecipeTransposer> {

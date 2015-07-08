@@ -46,7 +46,13 @@ public class Pulverizer {
             return;
         }
         
-	    MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.pulverizerRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy)));
+        RecipePulverizer recipe = ReflectionHelper.getInstance(ThermalHelper.pulverizerRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy); 
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
 	private static class Add extends BaseListAddition<RecipePulverizer> {

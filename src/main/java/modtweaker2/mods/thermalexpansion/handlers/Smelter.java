@@ -46,7 +46,13 @@ public class Smelter {
             return;
         }
         
-		MineTweakerAPI.apply(new Add(ReflectionHelper.getInstance(ThermalHelper.smelterRecipe, toStack(input), toStack(input2), toStack(output), toStack(output2), chance, energy)));
+        RecipeSmelter recipe = ReflectionHelper.getInstance(ThermalHelper.smelterRecipe, toStack(input), toStack(input2), toStack(output), toStack(output2), chance, energy);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
 	private static class Add extends BaseListAddition<RecipeSmelter> {
