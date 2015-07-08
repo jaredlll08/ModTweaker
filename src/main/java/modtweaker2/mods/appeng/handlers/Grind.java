@@ -81,7 +81,7 @@ public class Grind {
 	@ZenMethod
 	public static void removeRecipe(IIngredient output) {
         if(output == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Grind.name));
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
 	    
@@ -98,7 +98,7 @@ public class Grind {
 	    if(!result.isEmpty()) {
 	        MineTweakerAPI.apply(new Remove(result));
 	    } else {
-	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Grind.name, output.toString()));
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", name, output.toString()));
 	    }
 	}
 
