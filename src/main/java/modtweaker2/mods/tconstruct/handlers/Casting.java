@@ -4,6 +4,7 @@ import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
@@ -32,18 +34,28 @@ public class Casting {
     
     @ZenMethod
     public static void addBasinRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast, @Optional boolean consume, int delay) {
+        if(metal == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
         MineTweakerAPI.apply(new Add(new CastingRecipe(toStack(output), toFluid(metal), toStack(cast), consume, delay, null), TConstructHelper.basinCasting));
     }
 
     @ZenMethod
     public static void addTableRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast, @Optional boolean consume, int delay) {
+        if(metal == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
         MineTweakerAPI.apply(new Add(new CastingRecipe(toStack(output), toFluid(metal), toStack(cast), consume, delay, null), TConstructHelper.tableCasting));
     }
 
     //Passes the list to the base list implementation, and adds the recipe
     private static class Add extends BaseListAddition<CastingRecipe> {
         public Add(CastingRecipe recipe, ArrayList<CastingRecipe> list) {
-            super("TConstruct Casting", list);
+            super(Casting.name, list);
             
             this.recipes.add(recipe);
         }
@@ -57,62 +69,49 @@ public class Casting {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void removeTableRecipe(IIngredient output) {
-        removeRecipe(output, TConstructHelper.tableCasting, RecipeComponent.Output);
+    public static void removeTableRecipe(IIngredient output, @Optional IIngredient material, @Optional IIngredient cast) {
+        removeRecipe(output, material, cast, TConstructHelper.tableCasting);
     }
     
     @ZenMethod
-    public static void removeTableMaterial(IIngredient material) {
-        removeRecipe(material, TConstructHelper.tableCasting, RecipeComponent.Material);
+    public static void removeBasinRecipe(IIngredient output, @Optional IIngredient material, @Optional IIngredient cast) {
+        removeRecipe(output, material, cast, TConstructHelper.basinCasting);
     }
+   
+    public static void removeRecipe(IIngredient output, IIngredient material, IIngredient cast, List<CastingRecipe> list) {
 
-    @ZenMethod
-    public static void removeCastRecipes(IIngredient cast) {
-        removeRecipe(cast, TConstructHelper.tableCasting, RecipeComponent.Cast);
-    }
-
-    @ZenMethod
-    public static void removeBasinRecipe(IIngredient output) {
-        removeRecipe(output, TConstructHelper.basinCasting, RecipeComponent.Output);
-    }
-    
-    @ZenMethod
-    public static void removeBasinMaterial(IIngredient material) {
-        removeRecipe(material, TConstructHelper.basinCasting, RecipeComponent.Material);
-    }
-
-    
-    public static void removeRecipe(IIngredient ingredient, List<CastingRecipe> list, RecipeComponent component) {
+        if(material == null) {
+            material = IngredientAny.INSTANCE;
+        }
+        
+        if(cast == null) {
+            cast = IngredientAny.INSTANCE;
+        }
         
         List<CastingRecipe> recipes = new LinkedList<CastingRecipe>();
         
         for(CastingRecipe recipe : list) {
             if(recipe != null) {
-                switch(component) {
-                    case Cast:
-                        if(recipe.cast != null && ingredient.contains(toIItemStack(recipe.cast))) {
-                            recipes.add(recipe);
-                        }
-                        break;
-                    case Output:
-                        if (recipe.output != null && ingredient.contains(toIItemStack(recipe.output))) {
-                            recipes.add(recipe);
-                        }
-                        break;
-                    case Material:
-                        if (recipe.castingMetal != null && ingredient.contains(toILiquidStack(recipe.castingMetal))) {
-                            // TODO: Currently broken, because MCLiquidStack equals() method always returns false
-                            recipes.add(recipe);
-                        }
-                        break;
+                if (!matches(output, toIItemStack(recipe.output))) {
+                    continue;
                 }
+                
+                if (!matches(material, toILiquidStack(recipe.castingMetal))) {
+                    continue;
+                }
+                
+                if(!matches(cast, toIItemStack(recipe.cast))) {
+                    continue;
+                }
+                
+                recipes.add(recipe);
             }
         }
         
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(list, recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Casting.name, ingredient.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s, meterial %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast.toString()));
         }
     }
 
@@ -126,11 +125,5 @@ public class Casting {
         protected String getRecipeInfo(CastingRecipe recipe) {
             return InputHelper.getStackDescription(recipe.output);
         }
-    }
-
-    public enum RecipeComponent {
-        Output,
-        Cast,
-        Material
     }
 }

@@ -28,6 +28,11 @@ public class Drying {
     
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output, int time) {
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
         MineTweakerAPI.apply(new Add(TConstructHelper.getDryingRecipe(toStack(input), time, toStack(output))));
     }
 

@@ -49,6 +49,11 @@ public class Smeltery {
 	// Adding a TConstruct Alloy recipe
 	@ZenMethod
 	public static void addAlloy(ILiquidStack output, ILiquidStack[] input) {
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameAlloy));
+            return;
+        }
+        
 		MineTweakerAPI.apply(new AddAlloy(new AlloyMix(toFluid(output), new ArrayList<FluidStack>(Arrays.asList(toFluids(input))))));
 	}
 
@@ -104,6 +109,12 @@ public class Smeltery {
 	// Adding a TConstruct Melting recipe
 	@ZenMethod
 	public static void addMelting(IIngredient input, ILiquidStack output, int temp, @Optional IItemStack block) {
+	    
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameMelting));
+            return;
+        }
+	    
 	    List<MeltingRecipe> recipes = new LinkedList<MeltingRecipe>();
 
 	    for(IItemStack in : input.getItems()) {
@@ -265,6 +276,11 @@ public class Smeltery {
 	
 	@ZenMethod
 	public static void addFuel(ILiquidStack liquid, int power, int duration) {
+        if(liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFuel));
+            return;
+        }
+        
 	    Map<Fluid, Integer[]> recipes = new HashMap<Fluid, Integer[]>();
 	    
 	    recipes.put(toFluid(liquid).getFluid(), new Integer[] {power, duration});
