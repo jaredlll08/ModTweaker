@@ -2,45 +2,69 @@ package modtweaker2.mods.exnihilo.handlers;
 
 import static modtweaker2.helpers.InputHelper.isABlock;
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.mods.exnihilo.ExNihiloHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import exnihilo.registries.CrucibleRegistry;
-import exnihilo.registries.HeatRegistry;
 import exnihilo.registries.helpers.Meltable;
+import exnihilo.utils.ItemInfo;
 
 @ZenClass("mods.exnihilo.Crucible")
 public class Crucible {
 
+    public static final String nameMelting = "ExNihilo Crucible (Melting)";
+    public static final String nameHeatSource = "ExNihilo Crucible (Heat source)";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /************************************************ Crucible Melting ************************************************/
     //Adding a Ex Nihilo Crucible recipe
     @ZenMethod
     public static void addRecipe(IItemStack input, ILiquidStack fluid) {
-        if (isABlock(input)) {
-            Block theBlock = Block.getBlockFromItem(toStack(input).getItem());
-            int theMeta = toStack(input).getItemDamage();
-            MineTweakerAPI.apply(new AddRecipe(new Meltable(theBlock, theMeta, 2000, toFluid(fluid).getFluid(), toFluid(fluid).amount, theBlock)));
+        if(input == null || fluid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s recipe.", nameMelting));
+            return;
         }
+        
+        if(!isABlock(input)) {
+            LogHelper.logError(String.format("Input item for %s recipe must be a block.", nameMelting));
+            return;
+        }
+        
+        Map<String, Meltable> recipes = new HashMap<String, Meltable>();
+        Block theBlock = Block.getBlockFromItem(toStack(input).getItem());
+        int theMeta = toStack(input).getItemDamage();
+        
+        recipes.put(
+                theBlock + ":" + theMeta,
+                new Meltable(theBlock, theMeta, 2000, toFluid(fluid).getFluid(), toFluid(fluid).amount, theBlock));
+
+        MineTweakerAPI.apply(new AddRecipe(recipes));
     }
 
     //Passes the list to the map list implementation, and adds the recipe
     private static class AddRecipe extends BaseMapAddition<String, Meltable> {
-        public AddRecipe(Meltable recipe) {
-            super("ExNihilo Crucible", CrucibleRegistry.entries);
-            recipes.put(recipe.block + ":" + recipe.meta, recipe);
+        public AddRecipe(Map<String, Meltable> recipes) {
+            super(nameMelting, CrucibleRegistry.entries, recipes);
         }
         
         @Override
@@ -53,23 +77,27 @@ public class Crucible {
 
     //Removing a Ex Nihilo Crucible recipe
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        if (isABlock(output)) {
-            MineTweakerAPI.apply(new RemoveRecipe(toStack(output)));
+    public static void removeRecipe(IIngredient output) {
+        Map<String, Meltable> recipes = new HashMap<String, Meltable>();
+        
+        for(Entry<String, Meltable> entry : CrucibleRegistry.entries.entrySet()) {
+            FluidStack fluid = new FluidStack(entry.getValue().fluid, (int)entry.getValue().fluidVolume);
+            if(matches(output, toILiquidStack(fluid))) {
+                recipes.put(entry.getKey(), entry.getValue());
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveRecipe(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", Crucible.nameMelting, output.toString()));
         }
     }
 
     //Removes a recipe, will always remove the key, so all should be good
     private static class RemoveRecipe extends BaseMapRemoval<String, Meltable> {
-        public RemoveRecipe(ItemStack stack) {
-            super("ExNihilo Crucible", CrucibleRegistry.entries);
-            
-            String key = Block.getBlockFromItem(stack.getItem()) + ":" + stack.getItemDamage();
-            
-            for(Entry<String, Meltable> entry : map.entrySet()) {
-                if(entry.getKey().equals(key))
-                    recipes.put(entry.getKey(), entry.getValue());
-            }
+        public RemoveRecipe(Map<String, Meltable> recipes) {
+            super(nameMelting, CrucibleRegistry.entries, recipes);
         }
 
         @Override
@@ -82,92 +110,67 @@ public class Crucible {
     //Adding a Ex Nihilo Crucible heat source
     @ZenMethod
     public static void addHeatSource(IItemStack input, double value) {
-        if (isABlock(input)) {
-            Block theBlock = Block.getBlockFromItem(toStack(input).getItem());
-            int theMeta = toStack(input).getItemDamage();
-            MineTweakerAPI.apply(new AddHeatSource(theBlock, theMeta, (float) value));
+        if(input == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s recipe.", nameMelting));
+            return;
+        }
+        
+        if(!isABlock(input)) {
+            LogHelper.logError(String.format("Input item for %s recipe must be a block.", nameMelting));
+            return;
+        }
+        
+        Map<ItemInfo, Float> recipes = new HashMap<ItemInfo, Float>();
+        recipes.put(new ItemInfo(toStack(input)), (float)value);
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new AddHeatSource(recipes));
         }
     }
 
     //Passes the list to the base map implementation, and adds the recipe
-    private static class AddHeatSource implements IUndoableAction 
+    private static class AddHeatSource extends BaseMapAddition<ItemInfo, Float> 
 	{
-		Block source;
-		int sourceMeta;
-		float value;
-
-		public AddHeatSource(Block source, int sourceMeta, float value) {
-			this.source = source;
-			this.sourceMeta = sourceMeta;
-			this.value = value;
+		public AddHeatSource(Map<ItemInfo, Float> recipes) {
+		    super(Crucible.nameHeatSource, ExNihiloHelper.getHeatMap(), recipes);
 		}
 
-		public void apply() {
-			HeatRegistry.register(source, sourceMeta, value);
-		}
-
-		public boolean canUndo() {
-			return false;
-		}
-
-		public String describe() {
-			return "Adding ExNihilo Heat source of " + source.getLocalizedName();
-		}
-
-		public String describeUndo() {
-			return null;
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		public void undo() {
+		@Override
+		protected String getRecipeInfo(Entry<ItemInfo, Float> recipe) {
+		    return LogHelper.getStackDescription(recipe.getKey().getStack());
 		}
 	}
-
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Removing a Ex Nihilo Crucible heat source
     @ZenMethod
-    public static void removeHeatSource(IItemStack output) {
-        if (isABlock(output)) {
-        	Block block = Block.getBlockFromItem(toStack(output).getItem());
-            MineTweakerAPI.apply(new RemoveHeatSource(block));
+    public static void removeHeatSource(IIngredient output) {
+        Map<ItemInfo, Float> recipes = new HashMap<ItemInfo, Float>();
+        
+        for(Entry<ItemInfo, Float> entry : ExNihiloHelper.getHeatMap().entrySet()) {
+            if(matches(output, toIItemStack(entry.getKey().getStack()))) {
+                recipes.put(entry.getKey(), entry.getValue());
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveHeatSource(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", Crucible.nameMelting, output.toString()));
         }
     }
 
     //Removes a recipe, will always remove the key, so all should be good
-    private static class RemoveHeatSource implements IUndoableAction 
+    private static class RemoveHeatSource extends BaseMapAddition<ItemInfo, Float> 
 	{
-    	Block block;
-
-        public RemoveHeatSource(Block block) {
-        	this.block = block;
+        public RemoveHeatSource(Map<ItemInfo, Float> recipes) {
+        	super(Crucible.nameHeatSource, ExNihiloHelper.getHeatMap(), recipes);
         }
 
-		public void apply() {
-			HeatRegistry.unregister(block);
-		}
-
-		public boolean canUndo() {
-			return false;
-		}
-
-		public String describe() {
-			return "Removing ExNihilo Heat source of " + block.getLocalizedName();
-		}
-
-		public String describeUndo() {
-			return null;
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		public void undo() {
-		}
+        @Override
+        protected String getRecipeInfo(Entry<ItemInfo, Float> recipe) {
+            return LogHelper.getStackDescription(recipe.getKey().getStack());
+        }
 	}
 }

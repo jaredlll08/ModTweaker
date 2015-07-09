@@ -14,6 +14,7 @@ import modtweaker2.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconPageLogger;
 import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
+import modtweaker2.mods.exnihilo.commands.ExNihiloLogger;
 import modtweaker2.mods.factorization.commands.FactorizationLogger;
 import modtweaker2.mods.mekanism.gas.GasLogger;
 import modtweaker2.mods.railcraft.commands.RailcraftLogger;
@@ -84,6 +85,10 @@ public class Commands {
 			
 			if (TweakerPlugin.isLoaded("Railcraft")) {
 			    MineTweakerAPI.server.addMineTweakerCommand("railcraft", new String[] {"/minetweaker railcraft [FILTER]", "    Outputs a list of all Railcraft recipes."}, new RailcraftLogger());
+			}
+			
+			if (TweakerPlugin.isLoaded("exnihilo")) {
+			    MineTweakerAPI.server.addMineTweakerCommand("exnihilo", new String[] {"/minetweaker exnihilo [FILTER]", "    Outputs a list of all ExNihilo recipes."}, new ExNihiloLogger());
 			}
 		}
 	}

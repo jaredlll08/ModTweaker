@@ -1,117 +1,92 @@
 package modtweaker2.mods.exnihilo.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import minetweaker.IUndoableAction;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.utils.BaseMapAddition;
+import modtweaker2.utils.BaseMapRemoval;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import exnihilo.registries.CompostRegistry;
 import exnihilo.registries.helpers.Color;
+import exnihilo.registries.helpers.Compostable;
+import exnihilo.utils.ItemInfo;
+
 
 @ZenClass("mods.exnihilo.Composting")
 public class Compost {
-    //Adding a Ex Nihilo Composting recipe
+    
+    public static final String name = "ExNihilo Composting";
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @ZenMethod
     public static void addRecipe(IItemStack input, double value, @Optional String hex) {
-        hex = (hex == null || hex.equals("")) ? "35A82A" : hex;
-        MineTweakerAPI.apply(new Add(toStack(input).getItem(), toStack(input).getItemDamage(), Math.min(1.0F, (float) value), new Color(hex)));
-    }
-
-    //Passes the list to the map list implementation, and adds the recipe
-    private static class Add implements IUndoableAction 
-    {
-    	private Item item;
-    	private int meta;
-    	private float value;
-    	private Color color;
-    	
-        public Add(Item item, int meta, float value, Color color) {
-        	this.item = item;
-        	this.meta = meta;
-        	this.value = value;
-        	this.color = color;
+        if(input == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
         }
-
-		@Override
-		public void apply() {
-			CompostRegistry.register(item, meta, value, color);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return false;
-		}
-
-		@Override
-		public String describe() {
-			return "Adding Composting Recipe using " + item.getUnlocalizedName();
-		}
-
-		@Override
-		public String describeUndo() {
-			return null;
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		@Override
-		public void undo() {
-			
-		}
-
+        
+        hex = (hex == null || hex.equals("")) ? "35A82A" : hex;
+        
+        Map<ItemInfo, Compostable> recipes = new HashMap<ItemInfo, Compostable>();
+        
+        recipes.put(
+                new ItemInfo(toStack(input)),
+                new Compostable(Math.min(1.0F, (float)value), new Color(hex)));
+        
+        MineTweakerAPI.apply(new Add(recipes));
+    }
+    
+    private static class Add extends BaseMapAddition<ItemInfo, Compostable> {
+        public Add(Map<ItemInfo, Compostable> recipes) {
+            super(Compost.name, CompostRegistry.entries, recipes);
+        }
+        
+        @Override
+        protected String getRecipeInfo(Entry<ItemInfo, Compostable> recipe) {
+            return LogHelper.getStackDescription(recipe.getKey().getStack());
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Removing a Ex Nihilo Composting recipe
     @ZenMethod
-    public static void removeRecipe(IItemStack input) {
-        MineTweakerAPI.apply(new Remove(toStack(input)));
-    }
-
-    //Removes a recipe, will always remove the key, so all should be good
-    private static class Remove implements IUndoableAction 
-    {
-    	private ItemStack stack;
-    	
-        public Remove(ItemStack stack) {
-        	this.stack = stack;
+    public static void removeRecipe(IIngredient input) {
+        Map<ItemInfo, Compostable> recipes = new HashMap<ItemInfo, Compostable>();
+        
+        for(Entry<ItemInfo, Compostable> recipe : CompostRegistry.entries.entrySet()) {
+            if(matches(input, toIItemStack(recipe.getKey().getStack()))) {
+                recipes.put(recipe.getKey(), recipe.getValue());
+            }
         }
-
-		@Override
-		public void apply() {
-			CompostRegistry.unregister(stack.getItem(), stack.getItemDamage());
-		}
-
-		@Override
-		public boolean canUndo() {
-			return false;
-		}
-
-		@Override
-		public String describe() {
-			return "Removing Composting Recipe using " + stack.getUnlocalizedName();
-		}
-
-		@Override
-		public String describeUndo() {
-			return null;
-		}
-
-		@Override
-		public Object getOverrideKey() {
-			return null;
-		}
-
-		@Override
-		public void undo() {
-		}
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipes found for %s. Command ignored!", Compost.name, input.toString()));
+        }
+        
+    }
+    
+    private static class Remove extends BaseMapRemoval<ItemInfo, Compostable> {
+        public Remove(Map<ItemInfo, Compostable> recipes) {
+            super(Compost.name, CompostRegistry.entries, recipes);
+        }
+        
+        @Override
+        protected String getRecipeInfo(Entry<ItemInfo, Compostable> recipe) {
+            return LogHelper.getStackDescription(recipe.getKey().getStack());
+        }
     }
 }
