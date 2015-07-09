@@ -12,7 +12,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -53,7 +52,7 @@ public class Arcane {
 		    ItemStack stack = recipe.getRecipeOutput();
 		    
 		    if(stack instanceof ItemStack)
-		        return InputHelper.getStackDescription(stack);
+		        return LogHelper.getStackDescription(stack);
 		    else
 		        return "Unknown output";
 		}
@@ -92,7 +91,7 @@ public class Arcane {
             ItemStack stack = recipe.getRecipeOutput();
             
             if(stack instanceof ItemStack)
-                return InputHelper.getStackDescription(stack);
+                return LogHelper.getStackDescription(stack);
             else
                 return "Unknown output";
         }

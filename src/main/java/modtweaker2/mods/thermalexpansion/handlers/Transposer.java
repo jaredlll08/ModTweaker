@@ -15,7 +15,6 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
@@ -42,7 +41,7 @@ public class Transposer {
         }
 	    
         if(TransposerManager.fillRecipeExists(toStack(input), toFluid(liquid))) {
-            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameFill, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toFluid(liquid))));
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameFill, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toFluid(liquid))));
             return;
         }
         
@@ -63,7 +62,7 @@ public class Transposer {
         }
         
         if(TransposerManager.extractionRecipeExists(toStack(input), toFluid(liquid))) {
-            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toFluid(liquid))));
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toFluid(liquid))));
             return;
         }
         
@@ -138,7 +137,7 @@ public class Transposer {
         
         @Override
         protected String getRecipeInfo(RecipeTransposer recipe) {
-            return InputHelper.getStackDescription(recipe.getInput());
+            return LogHelper.getStackDescription(recipe.getInput());
         }
 	}
 
@@ -230,7 +229,7 @@ public class Transposer {
         
         @Override
         protected String getRecipeInfo(RecipeTransposer recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
 	}
     

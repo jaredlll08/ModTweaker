@@ -8,7 +8,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.StringHelper;
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderEntry;
@@ -35,12 +35,12 @@ public class AppliedEnergisticsLogger implements ICommandFunction {
     		if(args.isEmpty() || args.contains("grinder")) {
     			for(IGrinderEntry recipe : AEApi.instance().registries().grinder().getRecipes()) {
     				MineTweakerAPI.logCommand(String.format("mods.appeng.Grinder.addRecipe(%s, %s, %d, %s, %s, %s, %s);", 
-    						InputHelper.getStackDescription(recipe.getInput()),
-    						InputHelper.getStackDescription(recipe.getOutput()),
+    						LogHelper.getStackDescription(recipe.getInput()),
+    						LogHelper.getStackDescription(recipe.getOutput()),
     						recipe.getEnergyCost(),
-    						InputHelper.getStackDescription(recipe.getOptionalOutput()),
+    						LogHelper.getStackDescription(recipe.getOptionalOutput()),
     						recipe.getOptionalChance(),
-    						InputHelper.getStackDescription(recipe.getSecondOptionalOutput()),
+    						LogHelper.getStackDescription(recipe.getSecondOptionalOutput()),
     						recipe.getSecondOptionalChance()));
     			}
     		}
@@ -48,10 +48,10 @@ public class AppliedEnergisticsLogger implements ICommandFunction {
     		if(args.isEmpty() || args.contains("inscriber")) {
     			for(IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
     				MineTweakerAPI.logCommand(String.format("mods.appeng.Inscriber.addRecipe(%s, %s, %s, %s, \"%s\");",
-    						InputHelper.getArrayDescription(recipe.getInputs()),
-    						InputHelper.getStackDescription(recipe.getTopOptional().orNull()),
-    						InputHelper.getStackDescription(recipe.getBottomOptional().orNull()),
-    						InputHelper.getStackDescription(recipe.getOutput()),
+    						LogHelper.getListDescription(recipe.getInputs()),
+    						LogHelper.getStackDescription(recipe.getTopOptional().orNull()),
+    						LogHelper.getStackDescription(recipe.getBottomOptional().orNull()),
+    						LogHelper.getStackDescription(recipe.getOutput()),
     						recipe.getProcessType().toString()));
     			}
     		}

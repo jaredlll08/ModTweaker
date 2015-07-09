@@ -10,7 +10,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -41,7 +40,7 @@ public class Moistener {
 
 		@Override
 		public String getRecipeInfo(Recipe recipe) {
-			return InputHelper.getStackDescription(recipe.product);
+			return LogHelper.getStackDescription(recipe.product);
 		}
 	}
 	
@@ -71,7 +70,7 @@ public class Moistener {
 
         @Override
         public String getRecipeInfo(Recipe recipe) {
-            return InputHelper.getStackDescription(recipe.product);
+            return LogHelper.getStackDescription(recipe.product);
         }
 	}
 }

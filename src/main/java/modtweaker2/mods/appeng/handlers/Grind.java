@@ -1,6 +1,5 @@
 package modtweaker2.mods.appeng.handlers;
 
-import static modtweaker2.helpers.InputHelper.getStackDescription;
 import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.StackHelper.matches;
@@ -49,7 +48,7 @@ public class Grind {
         // Check if the recipe is already present, we don't want to add duplicates
         for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
             if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
-                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, InputHelper.getStackDescription(toStack(input))));
+                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input))));
                 return;
             }
         }
@@ -66,7 +65,7 @@ public class Grind {
 
         @Override
         public String getRecipeInfo(IGrinderEntry recipe) {
-            return getStackDescription(recipe.getInput());
+            return LogHelper.getStackDescription(recipe.getInput());
         }
         
         @Override
@@ -109,7 +108,7 @@ public class Grind {
 
 		@Override
 		public String getRecipeInfo(IGrinderEntry recipe) {
-		    return getStackDescription(recipe.getInput());
+		    return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 

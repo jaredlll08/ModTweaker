@@ -13,7 +13,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -70,9 +69,9 @@ public class Barrel {
 		@Override
 		protected String getRecipeInfo(BarrelRecipe recipe) {
 		    if(recipe.getRecipeOutIS() != null)
-		        return InputHelper.getStackDescription(recipe.getRecipeOutIS());
+		        return LogHelper.getStackDescription(recipe.getRecipeOutIS());
 		    else if(recipe.getRecipeOutFluid() != null)
-		        return InputHelper.getStackDescription(recipe.getRecipeOutFluid());
+		        return LogHelper.getStackDescription(recipe.getRecipeOutFluid());
 		    else
 		        return "Unknown output";
 		}
@@ -113,9 +112,9 @@ public class Barrel {
         @Override
         protected String getRecipeInfo(BarrelRecipe recipe) {
             if(recipe.getRecipeOutIS() != null)
-                return InputHelper.getStackDescription(recipe.getRecipeOutIS());
+                return LogHelper.getStackDescription(recipe.getRecipeOutIS());
             else if(recipe.getRecipeOutFluid() != null)
-                return InputHelper.getStackDescription(recipe.getRecipeOutFluid());
+                return LogHelper.getStackDescription(recipe.getRecipeOutFluid());
             else
                 return "Unknown output";
         }

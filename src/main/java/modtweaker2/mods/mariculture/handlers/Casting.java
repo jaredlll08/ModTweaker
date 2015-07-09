@@ -17,7 +17,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.mariculture.MaricultureHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
@@ -54,7 +54,7 @@ public class Casting {
 
         @Override
         public String getRecipeInfo(Entry<String, RecipeCasting> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().output);
+            return LogHelper.getStackDescription(recipe.getValue().output);
         }
     }
 
@@ -102,7 +102,7 @@ public class Casting {
 
         @Override
         public String getRecipeInfo(Entry<String, RecipeCasting> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().output);
+            return LogHelper.getStackDescription(recipe.getValue().output);
         }
     }
 }

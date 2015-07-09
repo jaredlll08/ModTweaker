@@ -11,7 +11,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -39,7 +38,7 @@ public class Crucible {
 		
 		@Override
 		protected String getRecipeInfo(CrucibleRecipe recipe) {
-		    return InputHelper.getStackDescription(recipe.getRecipeOutput());
+		    return LogHelper.getStackDescription(recipe.getRecipeOutput());
 		}
 	}
 
@@ -72,7 +71,7 @@ public class Crucible {
 
         @Override
         protected String getRecipeInfo(CrucibleRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getRecipeOutput());
+            return LogHelper.getStackDescription(recipe.getRecipeOutput());
         }
 	}
 }

@@ -2,7 +2,7 @@ package modtweaker2.utils;
 
 import java.util.List;
 
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import net.minecraft.item.crafting.IRecipe;
 
 public abstract class BaseCraftingAddition extends BaseListAddition<IRecipe> {
@@ -17,6 +17,6 @@ public abstract class BaseCraftingAddition extends BaseListAddition<IRecipe> {
     
     @Override
     protected String getRecipeInfo(IRecipe recipe) {
-        return InputHelper.getStackDescription(recipe.getRecipeOutput());
+        return LogHelper.getStackDescription(recipe.getRecipeOutput());
     }
 }

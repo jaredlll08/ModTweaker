@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.metallurgy.MetallurgyHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
@@ -50,7 +50,7 @@ public class Crusher {
         
         @Override
         protected String getRecipeInfo(Entry<String, ItemStack> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue());
+            return LogHelper.getStackDescription(recipe.getValue());
         }
     }
 
@@ -90,7 +90,7 @@ public class Crusher {
         
         @Override
         protected String getRecipeInfo(Entry<String, ItemStack> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue());
+            return LogHelper.getStackDescription(recipe.getValue());
         }
     }
 

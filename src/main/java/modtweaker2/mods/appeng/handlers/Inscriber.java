@@ -1,6 +1,5 @@
 package modtweaker2.mods.appeng.handlers;
 
-import static modtweaker2.helpers.InputHelper.getStackDescription;
 import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
@@ -11,7 +10,6 @@ import java.util.LinkedList;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.appeng.AppliedEnergisticsHelper;
 import modtweaker2.utils.ArrayUtils;
@@ -44,7 +42,7 @@ public class Inscriber {
         // Check if the recipe is already present, we don't want to add duplicates
 	    for(IInscriberRecipe r : AEApi.instance().registries().inscriber().getRecipes()) {
 	        if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
-	            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", Inscriber.name, InputHelper.getStackDescription(toStack(out))));
+	            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", Inscriber.name, LogHelper.getStackDescription(toStack(out))));
 	            return;
 	        }
 	    }
@@ -87,7 +85,7 @@ public class Inscriber {
 	        
         @Override
         public String getRecipeInfo(IInscriberRecipe recipe) {
-            return getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
         
         @Override
@@ -156,7 +154,7 @@ public class Inscriber {
 
 	    @Override
 		public String getRecipeInfo(IInscriberRecipe recipe) {
-	        return getStackDescription(recipe.getOutput());
+	        return LogHelper.getStackDescription(recipe.getOutput());
 		}
 	}
 }

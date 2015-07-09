@@ -47,7 +47,7 @@ public class Loot {
 		
         @Override
         protected String getRecipeInfo(WeightedRandomLoot recipe) {
-            return InputHelper.getStackDescription(recipe.item);
+            return LogHelper.getStackDescription(recipe.item);
         }
 	}
 	
@@ -91,7 +91,7 @@ public class Loot {
 		
 		@Override
 		protected String getRecipeInfo(WeightedRandomLoot recipe) {
-		    return InputHelper.getStackDescription(recipe.item);
+		    return LogHelper.getStackDescription(recipe.item);
 		}
 	}
 }

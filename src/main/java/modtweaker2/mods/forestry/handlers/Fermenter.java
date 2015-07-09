@@ -14,7 +14,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -90,7 +89,7 @@ public class Fermenter {
 
 		@Override
 		public String getRecipeInfo(Recipe recipe) {
-			return InputHelper.getStackDescription(recipe.output);
+			return LogHelper.getStackDescription(recipe.output);
 		}
 	}
 	
@@ -173,7 +172,7 @@ public class Fermenter {
 		
         @Override
         public String getRecipeInfo(Recipe recipe) {
-            return InputHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.output);
         }
 	}
 }

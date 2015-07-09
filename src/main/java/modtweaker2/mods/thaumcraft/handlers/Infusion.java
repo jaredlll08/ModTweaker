@@ -11,7 +11,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.mods.thaumcraft.recipe.MTInfusionRecipe;
@@ -131,7 +130,7 @@ public class Infusion {
 		    Object o = recipe.getRecipeOutput();
 		    
 		    if(o instanceof ItemStack) {
-		        return InputHelper.getStackDescription((ItemStack)o);    
+		        return LogHelper.getStackDescription((ItemStack)o);    
 		    } else {
 		        return "Unknown Item";
 		    }

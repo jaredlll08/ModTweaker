@@ -9,7 +9,7 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -78,7 +78,7 @@ public class TiCTweaks {
 
 		@Override
 		protected String getRecipeInfo(ItemKey recipe) {
-		    return InputHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
+		    return LogHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
 		}
 	}
 
@@ -112,7 +112,7 @@ public class TiCTweaks {
 
 		@Override
 		protected String getRecipeInfo(ItemKey recipe) {
-		    return InputHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
+		    return LogHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.damage));
 		}
 	}
 }

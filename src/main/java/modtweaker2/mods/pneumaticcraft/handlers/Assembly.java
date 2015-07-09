@@ -11,7 +11,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -52,7 +51,7 @@ public class Assembly {
         
         for(AssemblyRecipe recipe : list) {
             if(areEqual(recipe.getInput(), in)) {
-                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, InputHelper.getStackDescription(in)));
+                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(in)));
                 return;
             }
         }
@@ -68,7 +67,7 @@ public class Assembly {
 
         @Override
         public String getRecipeInfo(AssemblyRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
 
@@ -112,7 +111,7 @@ public class Assembly {
 
         @Override
         public String getRecipeInfo(AssemblyRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
 }

@@ -1,24 +1,21 @@
 package modtweaker2.helpers;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
-import minetweaker.mc1710.data.NBTConverter;
 import minetweaker.mc1710.item.MCItemStack;
 import minetweaker.mc1710.liquid.MCLiquidStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
@@ -29,82 +26,20 @@ public class InputHelper {
 			return true;
 	}
 	
-	/**
-	 * Returns a string representation of the item which can also be used in scripts
-	 */
-	public static String getStackDescription(Object object) {
-	    if(object instanceof ItemStack) {
-	        ItemStack stack = (ItemStack)object;
-    	    StringBuilder sb = new StringBuilder();
-    	    
-    	    // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
-    	    sb.append('<');
-    	    sb.append(Item.itemRegistry.getNameForObject(stack.getItem()));
-    	    if(stack.getItemDamage() == 32767) {
-    	        sb.append(":*");
-    	    } else if (stack.getItemDamage() > 0) {
-    	        sb.append(":").append(stack.getItemDamage());
-    	    }
-    	    sb.append('>');
-    	    
-    	    // Do we have a tag? (e.g. <Botania:specialFlower>.withTag({}) )
-    	    if(stack.getTagCompound() != null)
-    	    {
-    	        sb.append(".withTag(");
-    	        sb.append(NBTConverter.from(stack.getTagCompound(), true));
-    	        sb.append(')');
-    	    }
-    	    
-    	    // Do we have a stack size > 1?
-    	    if(stack.stackSize > 1) {
-    	        sb.append(" * ").append(stack.stackSize);
-    	    }
-    	    
-    	    return sb.toString();
-	    } else if (object instanceof FluidStack) {
-	        FluidStack stack = (FluidStack)object;
-	        StringBuilder sb = new StringBuilder();
-	        
-	        sb.append("<liquid:").append(stack.getFluid().getName()).append('>');
-	        
-	        if(stack.amount > 1) {
-	            sb.append(" * ").append(stack.amount);
+	public static <T> T[][] getMultiDimensionalArray(Class<T> clazz, T[] array, int height, int width) {
+	    
+	    @SuppressWarnings("unchecked")
+        T[][] multiDim = (T[][])Array.newInstance(clazz, new int[] {height, width});
+	    
+	    for(int y = 0; y < height; y++) {
+	        for(int x = 0; x < width; x++) {
+	            multiDim[y][x] = array[x + (y * width)];
 	        }
-	        
-	        return sb.toString();
-	    } else if (object instanceof String) {
-	        List<ItemStack> ores = OreDictionary.getOres((String)object);
-	        
-	        // Check if string specifies an oredict entry
-	        if(!ores.isEmpty()) {
-	            return "<ore:" + (String)object + ">";
-	        } else {
-	            return "\"" + (String)object + "\"";
-	        }
-	    } else if (object != null) {
-	        return "\"" + object.toString() + "\"";
-	    } else {
-	        return "null";
 	    }
+	    
+	    return multiDim;
 	}
 	
-	public static String getArrayDescription(List<?> objects) {
-        StringBuilder sb = new StringBuilder();
-        
-        if(objects.isEmpty()) {
-            sb.append("[]");
-        } else {
-            sb.append('[');
-            for(Object object : objects) {
-                sb.append(InputHelper.getStackDescription(object)).append(", ");
-            }
-            sb.setLength(sb.length() - 2);
-            sb.append(']');
-        }
-        
-        return sb.toString();
-    }
-
 	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
 		ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();
 		for (IIngredient ing : iIngredient) {

@@ -11,7 +11,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -53,7 +52,7 @@ public class ManaInfusion {
 
         @Override
         public String getRecipeInfo(RecipeManaInfusion recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
 
@@ -85,7 +84,7 @@ public class ManaInfusion {
 
         @Override
         public String getRecipeInfo(RecipeManaInfusion recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
 }

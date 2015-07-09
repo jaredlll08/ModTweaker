@@ -10,7 +10,7 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -58,7 +58,7 @@ public class Quern {
 		
 		@Override
 		protected String getRecipeInfo(QuernRecipe recipe) {
-		    return InputHelper.getStackDescription(recipe.getResult());
+		    return LogHelper.getStackDescription(recipe.getResult());
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class Quern {
         
         @Override
         protected String getRecipeInfo(QuernRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getResult());
+            return LogHelper.getStackDescription(recipe.getResult());
         }
 	}
 	

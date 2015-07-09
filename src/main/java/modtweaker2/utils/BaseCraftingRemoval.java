@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.api.item.IIngredient;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
@@ -18,7 +18,7 @@ public class BaseCraftingRemoval extends BaseListRemoval<IRecipe> {
 	
     @Override
     public String getRecipeInfo(IRecipe recipe) {
-        return InputHelper.getStackDescription(recipe.getRecipeOutput());
+        return LogHelper.getStackDescription(recipe.getRecipeOutput());
     }
     
     public static List<IRecipe> getRecipes(List<IRecipe> list, IIngredient ingredient) {

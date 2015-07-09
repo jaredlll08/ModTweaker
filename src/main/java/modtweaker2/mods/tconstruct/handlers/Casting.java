@@ -15,7 +15,6 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -62,7 +61,7 @@ public class Casting {
 
         @Override
         protected String getRecipeInfo(CastingRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.output);
         }
     }
 
@@ -75,11 +74,16 @@ public class Casting {
     
     @ZenMethod
     public static void removeBasinRecipe(IIngredient output, @Optional IIngredient material, @Optional IIngredient cast) {
+
         removeRecipe(output, material, cast, TConstructHelper.basinCasting);
     }
    
     public static void removeRecipe(IIngredient output, IIngredient material, IIngredient cast, List<CastingRecipe> list) {
-
+        if(output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
         if(material == null) {
             material = IngredientAny.INSTANCE;
         }
@@ -111,7 +115,7 @@ public class Casting {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(list, recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for output %s, meterial %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast.toString()));
         }
     }
 
@@ -123,7 +127,7 @@ public class Casting {
 
         @Override
         protected String getRecipeInfo(CastingRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.output);
         }
     }
 }

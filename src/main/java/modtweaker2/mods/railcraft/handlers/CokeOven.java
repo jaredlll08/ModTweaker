@@ -15,7 +15,6 @@ import minetweaker.api.liquid.ILiquidStack;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -93,7 +92,7 @@ public class CokeOven {
 		
 		@Override
 		public String getRecipeInfo(ICokeOvenRecipe recipe) {
-			return InputHelper.getStackDescription(recipe.getInput());
+			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 
@@ -125,7 +124,7 @@ public class CokeOven {
 
 		@Override
 		public String getRecipeInfo(ICokeOvenRecipe recipe) {
-			return InputHelper.getStackDescription(recipe.getInput());
+			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 }

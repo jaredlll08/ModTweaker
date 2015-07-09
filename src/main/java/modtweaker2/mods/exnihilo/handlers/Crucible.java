@@ -10,7 +10,7 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
 import net.minecraft.block.Block;
@@ -45,7 +45,7 @@ public class Crucible {
         
         @Override
         protected String getRecipeInfo(Entry<String, Meltable> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
         }
     }
 
@@ -74,7 +74,7 @@ public class Crucible {
 
         @Override
         protected String getRecipeInfo(Entry<String, Meltable> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getValue().block, 1, recipe.getValue().meta));
         }
     }
 

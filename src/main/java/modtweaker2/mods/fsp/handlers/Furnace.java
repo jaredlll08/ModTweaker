@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
@@ -42,7 +41,7 @@ public class Furnace {
 
         @Override
         public String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<Item, Integer>> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 
@@ -70,7 +69,7 @@ public class Furnace {
 
         @Override
         public String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<Item, Integer>> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 }

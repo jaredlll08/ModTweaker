@@ -11,7 +11,6 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
@@ -42,7 +41,7 @@ public class Smelter {
         }
         
         if(SmelterManager.recipeExists(toStack(input), toStack(input2))) {
-            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", name, InputHelper.getStackDescription(toStack(input)), InputHelper.getStackDescription(toStack(input2))));
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toStack(input2))));
             return;
         }
         
@@ -92,7 +91,7 @@ public class Smelter {
 
 		@Override
 		public String getRecipeInfo(RecipeSmelter recipe) {
-		    return InputHelper.getStackDescription(recipe.getPrimaryOutput());
+		    return LogHelper.getStackDescription(recipe.getPrimaryOutput());
 		}
 	}
 
@@ -152,7 +151,7 @@ public class Smelter {
 
         @Override
         public String getRecipeInfo(RecipeSmelter recipe) {
-            return InputHelper.getStackDescription(recipe.getPrimaryOutput());
+            return LogHelper.getStackDescription(recipe.getPrimaryOutput());
         }
 	}
 	

@@ -11,7 +11,6 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
@@ -42,7 +41,7 @@ public class Sawmill {
         }
         
         if(SawmillManager.recipeExists(toStack(input))) {
-            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, InputHelper.getStackDescription(toStack(input))));
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input))));
             return;
         }
         
@@ -91,7 +90,7 @@ public class Sawmill {
 
         @Override
         protected String getRecipeInfo(RecipeSawmill recipe) {
-            return InputHelper.getStackDescription(recipe.getInput());
+            return LogHelper.getStackDescription(recipe.getInput());
         }
 
 	}
@@ -149,7 +148,7 @@ public class Sawmill {
 		
 		@Override
 		protected String getRecipeInfo(RecipeSawmill recipe) {
-		    return InputHelper.getStackDescription(recipe.getInput());
+		    return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 	

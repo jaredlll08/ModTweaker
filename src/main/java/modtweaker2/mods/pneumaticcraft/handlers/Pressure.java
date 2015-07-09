@@ -10,7 +10,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -42,7 +41,7 @@ public class Pressure {
 
         @Override
         public String getRecipeInfo(PressureChamberRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.output[0]);
+            return LogHelper.getStackDescription(recipe.output[0]);
         }
     }
 
@@ -80,7 +79,7 @@ public class Pressure {
         
         @Override
         public String getRecipeInfo(PressureChamberRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.output[0]);
+            return LogHelper.getStackDescription(recipe.output[0]);
         }
     }
 }

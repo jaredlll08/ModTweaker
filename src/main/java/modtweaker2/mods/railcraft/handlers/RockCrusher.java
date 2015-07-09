@@ -11,7 +11,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import mods.railcraft.api.crafting.IRockCrusherRecipe;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -45,7 +44,7 @@ public class RockCrusher {
 
         @Override
         public String getRecipeInfo(IRockCrusherRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getInput());
+            return LogHelper.getStackDescription(recipe.getInput());
         }
     }
 
@@ -77,7 +76,7 @@ public class RockCrusher {
 
         @Override
         public String getRecipeInfo(IRockCrusherRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getInput());
+            return LogHelper.getStackDescription(recipe.getInput());
         }
     }
 }

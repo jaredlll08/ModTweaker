@@ -9,7 +9,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -45,7 +44,7 @@ public class Drying {
 
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.result);
         }
     }
 
@@ -77,7 +76,7 @@ public class Drying {
 
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.result);
         }
     }
 }

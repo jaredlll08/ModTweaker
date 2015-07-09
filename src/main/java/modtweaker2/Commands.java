@@ -16,6 +16,7 @@ import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker2.mods.factorization.commands.FactorizationLogger;
 import modtweaker2.mods.mekanism.gas.GasLogger;
+import modtweaker2.mods.railcraft.commands.RailcraftLogger;
 import modtweaker2.mods.tconstruct.MaterialLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
 import modtweaker2.mods.thaumcraft.commands.AspectLogger;
@@ -80,8 +81,11 @@ public class Commands {
 			if (TweakerPlugin.isLoaded("factorization")) {
 			    MineTweakerAPI.server.addMineTweakerCommand("factorization", new String[] {"/minetweaker factorization [FILTER]", "    Outputs a list of all Factorization recipes."}, new FactorizationLogger());
 			}
+			
+			if (TweakerPlugin.isLoaded("Railcraft")) {
+			    MineTweakerAPI.server.addMineTweakerCommand("railcraft", new String[] {"/minetweaker railcraft [FILTER]", "    Outputs a list of all Railcraft recipes."}, new RailcraftLogger());
+			}
 		}
-
 	}
 
 	public static void registerMineTweakerCommand(String commandName, String[] usages, ICommandFunction commandFunction) {

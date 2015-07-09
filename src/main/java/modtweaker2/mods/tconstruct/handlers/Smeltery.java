@@ -21,7 +21,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -66,7 +65,7 @@ public class Smeltery {
 
 		@Override
 		protected String getRecipeInfo(AlloyMix recipe) {
-		    return InputHelper.getStackDescription(recipe.result);
+		    return LogHelper.getStackDescription(recipe.result);
 		}
 	}
 
@@ -100,7 +99,7 @@ public class Smeltery {
 
         @Override
         protected String getRecipeInfo(AlloyMix recipe) {
-            return InputHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.result);
         }
 	}
 
@@ -157,7 +156,7 @@ public class Smeltery {
 		
         @Override
         public String getRecipeInfo(MeltingRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.input);
+            return LogHelper.getStackDescription(recipe.input);
         }
 	}
 
@@ -212,7 +211,7 @@ public class Smeltery {
 
 		@Override
 		public String getRecipeInfo(MeltingRecipe recipe) {
-			return InputHelper.getStackDescription(recipe.input);
+			return LogHelper.getStackDescription(recipe.input);
 		}
 	}
 	
@@ -268,7 +267,7 @@ public class Smeltery {
 	    
 	    @Override
 	    public String getRecipeInfo(Entry<Fluid, Integer[]> recipe) {
-	        return InputHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
+	        return LogHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
 	    }
 	}
 	
@@ -295,7 +294,7 @@ public class Smeltery {
 	    
         @Override
         public String getRecipeInfo(Entry<Fluid, Integer[]> recipe) {
-            return InputHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
+            return LogHelper.getStackDescription(new FluidStack(recipe.getKey(), 1));
         }
 	}
 }

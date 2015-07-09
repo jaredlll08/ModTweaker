@@ -10,7 +10,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.factorization.FactorizationHelper;
@@ -43,7 +42,7 @@ public class Crystallizer {
 
         @Override
         public String getRecipeInfo(Object recipe) {
-            return InputHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
+            return LogHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
         }
     }
 
@@ -77,7 +76,7 @@ public class Crystallizer {
 
         @Override
         public String getRecipeInfo(Object recipe) {
-            return InputHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
+            return LogHelper.getStackDescription((ItemStack)ReflectionHelper.getObject(recipe, "output"));
         }
     }
 }

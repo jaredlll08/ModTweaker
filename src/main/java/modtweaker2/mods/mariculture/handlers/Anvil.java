@@ -13,7 +13,6 @@ import mariculture.api.core.MaricultureHandlers;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.mariculture.MaricultureHelper;
 import modtweaker2.utils.BaseMapAddition;
@@ -41,7 +40,7 @@ public class Anvil {
 
         @Override
         public String getRecipeInfo(Entry<String, RecipeAnvil> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().output);
+            return LogHelper.getStackDescription(recipe.getValue().output);
         }
     }
 
@@ -72,7 +71,7 @@ public class Anvil {
 
         @Override
         public String getRecipeInfo(Entry<String, RecipeAnvil> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().output);
+            return LogHelper.getStackDescription(recipe.getValue().output);
         }
     }
 }

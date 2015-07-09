@@ -18,7 +18,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.mariculture.MaricultureHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -54,7 +53,7 @@ public class Crucible {
 
 		@Override
 		public String getRecipeInfo(RecipeSmelter recipe) {
-			return InputHelper.getStackDescription(recipe.input);
+			return LogHelper.getStackDescription(recipe.input);
 		}
 	}
 
@@ -88,7 +87,7 @@ public class Crucible {
 		
         @Override
         public String getRecipeInfo(RecipeSmelter recipe) {
-            return InputHelper.getStackDescription(recipe.input);
+            return LogHelper.getStackDescription(recipe.input);
         }
 	}
 

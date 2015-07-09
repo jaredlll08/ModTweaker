@@ -9,7 +9,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.auracascade.AuraCascadeHelper;
 import modtweaker2.mods.auracascade.aura.IAuraStack;
@@ -50,7 +49,7 @@ public class Pylon {
 		
         @Override
         protected String getRecipeInfo(PylonRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.result);
         }
 	}
 	
@@ -81,7 +80,7 @@ public class Pylon {
 
         @Override
         protected String getRecipeInfo(PylonRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.result);
         }
 	}
 }

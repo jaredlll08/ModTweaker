@@ -15,7 +15,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -85,9 +84,9 @@ public class Vat {
 		@Override
 		public String getRecipeInfo(RecipeVat recipe) {
 		    if(recipe.outputItem != null) {
-		        return InputHelper.getStackDescription(recipe.outputItem);
+		        return LogHelper.getStackDescription(recipe.outputItem);
 		    } else {
-		        return InputHelper.getStackDescription(recipe.outputFluid);
+		        return LogHelper.getStackDescription(recipe.outputFluid);
 		    }
 		}
 	}
@@ -148,9 +147,9 @@ public class Vat {
         @Override
         public String getRecipeInfo(RecipeVat recipe) {
             if(recipe.outputItem != null) {
-                return InputHelper.getStackDescription(recipe.outputItem);
+                return LogHelper.getStackDescription(recipe.outputItem);
             } else {
-                return InputHelper.getStackDescription(recipe.outputFluid);
+                return LogHelper.getStackDescription(recipe.outputFluid);
             }
         }
 	}

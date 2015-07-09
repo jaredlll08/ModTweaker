@@ -11,7 +11,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -38,7 +37,7 @@ public class BlastFurnace {
 
 		@Override
 		public String getRecipeInfo(IBlastFurnaceRecipe recipe) {
-			return InputHelper.getStackDescription(recipe.getOutput());
+			return LogHelper.getStackDescription(recipe.getOutput());
 		}
 	}
 
@@ -67,7 +66,7 @@ public class BlastFurnace {
 
         @Override
         public String getRecipeInfo(IBlastFurnaceRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getOutput());
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
 	}
 }

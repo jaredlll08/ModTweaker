@@ -8,7 +8,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
-import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.helpers.StringHelper;
 import modtweaker2.mods.factorization.FactorizationHelper;
@@ -36,9 +36,9 @@ public class FactorizationLogger implements ICommandFunction {
             if(args.isEmpty() || args.contains("crystallizer")) {
                 for(Object recipe : FactorizationHelper.crystallizer) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.Crystallizer.addRecipe(%s, %s, %s, %s);",
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output")),
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "solution")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "solution")),
                             ReflectionHelper.<Float>getObject(recipe, "output_count")));
                 }
             }
@@ -47,9 +47,9 @@ public class FactorizationLogger implements ICommandFunction {
                 for(Object recipe : FactorizationHelper.lacerator) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.Lacerator.addRecipe(%s, %s, %s);",
                             ReflectionHelper.<String>getObject(recipe, "oreName") != null ? 
-                                InputHelper.getStackDescription(ReflectionHelper.<String>getObject(recipe, "oreName")) :
-                                InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "itemstack")),
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output")),
+                                LogHelper.getStackDescription(ReflectionHelper.<String>getObject(recipe, "oreName")) :
+                                LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "itemstack")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output")),
                             ReflectionHelper.<Float>getObject(recipe, "probability")));
                 }
             }
@@ -57,10 +57,10 @@ public class FactorizationLogger implements ICommandFunction {
             if(args.isEmpty() || args.contains("slagfurnace")) {
                 for(Object recipe : FactorizationHelper.slag) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.SlagFurnace.addRecipe(%s, %s, %s, %s, %s);",
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output2")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output2")),
                             ReflectionHelper.<Float>getObject(recipe, "prob2"),
-                            InputHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output1")),
+                            LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "output1")),
                             ReflectionHelper.<Float>getObject(recipe, "prob1")));
                 }
             }

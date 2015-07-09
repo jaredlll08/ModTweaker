@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseMapAddition;
@@ -75,7 +74,7 @@ public class Crucible {
 
         @Override
         protected String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 
@@ -103,7 +102,7 @@ public class Crucible {
 
         @Override
         protected String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipe) {
-            return InputHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 
@@ -124,7 +123,7 @@ public class Crucible {
 
         @Override
         public String getRecipeInfo(Entry<Tuple3, MutablePair<Integer, ItemStack>> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().right);
+            return LogHelper.getStackDescription(recipe.getValue().right);
         }
     }
 
@@ -155,7 +154,7 @@ public class Crucible {
 
         @Override
         public String getRecipeInfo(Entry<Tuple3, MutablePair<Integer, ItemStack>> recipe) {
-            return InputHelper.getStackDescription(recipe.getValue().right);
+            return LogHelper.getStackDescription(recipe.getValue().right);
         }
     }
 }

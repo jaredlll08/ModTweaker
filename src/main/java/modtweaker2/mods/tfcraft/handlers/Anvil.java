@@ -11,7 +11,6 @@ import java.util.List;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -58,7 +57,7 @@ public class Anvil {
 		
         @Override
         protected String getRecipeInfo(AnvilRecipe recipe) {
-            return InputHelper.getStackDescription(recipe.getCraftingResult());
+            return LogHelper.getStackDescription(recipe.getCraftingResult());
         }
 	}
 	
@@ -98,7 +97,7 @@ public class Anvil {
 		
 		@Override
 		protected String getRecipeInfo(AnvilRecipe recipe) {
-		    return InputHelper.getStackDescription(recipe.getCraftingResult());
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 }

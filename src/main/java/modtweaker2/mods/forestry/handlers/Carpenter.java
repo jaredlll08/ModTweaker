@@ -14,7 +14,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.forestry.ForestryHelper;
 import modtweaker2.utils.BaseListAddition;
@@ -73,7 +72,7 @@ public class Carpenter {
 		
 		@Override
 		protected String getRecipeInfo(Recipe recipe) {
-		    return InputHelper.getStackDescription(recipe.getCraftingResult());
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 	
@@ -106,7 +105,7 @@ public class Carpenter {
 		
 		@Override
 		protected String getRecipeInfo(Recipe recipe) {
-		    return InputHelper.getStackDescription(recipe.getCraftingResult());
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 }

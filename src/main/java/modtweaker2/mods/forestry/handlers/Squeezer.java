@@ -15,7 +15,6 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -47,7 +46,7 @@ public class Squeezer {
 
 		@Override
 		public String getRecipeInfo(Recipe recipe) {
-			return InputHelper.getStackDescription(recipe.liquid);
+			return LogHelper.getStackDescription(recipe.liquid);
 		}
 	}
 	
@@ -85,7 +84,7 @@ public class Squeezer {
 		
         @Override
         public String getRecipeInfo(Recipe recipe) {
-            return InputHelper.getStackDescription(recipe.liquid);
+            return LogHelper.getStackDescription(recipe.liquid);
         }
 	}
 }
