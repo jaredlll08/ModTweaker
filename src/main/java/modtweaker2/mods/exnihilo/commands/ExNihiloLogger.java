@@ -1,5 +1,6 @@
 package modtweaker2.mods.exnihilo.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import exnihilo.registries.CompostRegistry;
 import exnihilo.registries.CrucibleRegistry;
+import exnihilo.registries.HammerRegistry;
+import exnihilo.registries.SieveRegistry;
 import exnihilo.registries.helpers.Compostable;
 import exnihilo.registries.helpers.Meltable;
+import exnihilo.registries.helpers.SiftingResult;
+import exnihilo.registries.helpers.Smashable;
 import exnihilo.utils.ItemInfo;
 
 public class ExNihiloLogger implements ICommandFunction {
@@ -27,6 +32,8 @@ public class ExNihiloLogger implements ICommandFunction {
     static {
         validArguments.add("compost");
         validArguments.add("crucible");
+        validArguments.add("hammer");
+        validArguments.add("sieve");
     }
     
     @Override
@@ -58,6 +65,29 @@ public class ExNihiloLogger implements ICommandFunction {
                     MineTweakerAPI.logCommand(String.format("mods.exnihilo.Crucible.addHeatSource(%s, %s);",
                             LogHelper.getStackDescription(recipe.getKey().getStack()),
                             recipe.getValue()));
+                }
+            }
+            
+            if(args.isEmpty() || args.contains("hammer")) {
+                for(Entry<ItemInfo, ArrayList<Smashable>> entry : HammerRegistry.getRewards().entrySet()) {
+                    for(Smashable recipe : entry.getValue()) {
+                        MineTweakerAPI.logCommand(String.format("mods.exnihilo.Hammer.addRecipe(%s, %s, %s, %s);",
+                                LogHelper.getStackDescription(entry.getKey().getStack()),
+                                LogHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.meta)),
+                                recipe.chance,
+                                recipe.luckMultiplier));
+                    }
+                }
+            }
+            
+            if(args.isEmpty() || args.contains("sieve")) {
+                for(Entry<ItemInfo, ArrayList<SiftingResult>> entry : SieveRegistry.getSiftables().entrySet()) {
+                    for(SiftingResult recipe : entry.getValue()) {
+                        MineTweakerAPI.logCommand(String.format("mods.exnihilo.Sieve.addRecipe(%s, %s, %s);",
+                                LogHelper.getStackDescription(entry.getKey().getStack()),
+                                LogHelper.getStackDescription(new ItemStack(recipe.item, 1, recipe.meta)),
+                                recipe.rarity));
+                    }
                 }
             }
             
