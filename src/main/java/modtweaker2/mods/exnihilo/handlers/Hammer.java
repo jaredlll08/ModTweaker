@@ -83,7 +83,7 @@ public class Hammer {
 		    for(Entry<ItemInfo, ArrayList<Smashable>> entry : recipes.entrySet()) {
 		        if(!map.containsKey(entry.getKey())) {
 		            // no recipe for input available, add new entry
-		            map.put(entry.getKey(), entry.getValue());
+		            map.put(entry.getKey(), new ArrayList<Smashable>(entry.getValue()));
 		        } else {
 		            // recipes already available, add to present list
 		            ArrayList<Smashable> list = map.get(entry.getKey());
@@ -216,7 +216,7 @@ public class Hammer {
 		public void undo() {
 		    for(Entry<ItemInfo, ArrayList<Smashable>> entry : successful.entrySet()) {
                 if(!map.containsKey(entry.getKey())) {
-                    map.put(entry.getKey(), entry.getValue());
+                    map.put(entry.getKey(), new ArrayList<Smashable>(entry.getValue()));
                 } else {
                     map.get(entry.getKey()).addAll(entry.getValue());
                 }

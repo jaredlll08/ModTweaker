@@ -84,7 +84,7 @@ public class Sieve {
             for(Entry<ItemInfo, ArrayList<SiftingResult>> entry : recipes.entrySet()) {
                 if(!map.containsKey(entry.getKey())) {
                     // no recipe for input available, add new entry
-                    map.put(entry.getKey(), entry.getValue());
+                    map.put(entry.getKey(), new ArrayList<SiftingResult>(entry.getValue()));
                 } else {
                     // recipes already available, add to present list
                     ArrayList<SiftingResult> list = map.get(entry.getKey());
@@ -233,7 +233,7 @@ public class Sieve {
         public void undo() {
             for(Entry<ItemInfo, ArrayList<SiftingResult>> entry : successful.entrySet()) {
                 if(!map.containsKey(entry.getKey())) {
-                    map.put(entry.getKey(), entry.getValue());
+                    map.put(entry.getKey(), new ArrayList<SiftingResult>(entry.getValue()));
                 } else {
                     map.get(entry.getKey()).addAll(entry.getValue());
                 }
