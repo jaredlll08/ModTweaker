@@ -14,6 +14,8 @@ import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
+import cofh.thermalexpansion.util.crafting.InsolatorManager;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
@@ -29,6 +31,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
     static {
         validArguments.add("crucible");
         validArguments.add("furnace");
+        validArguments.add("insolator");
         validArguments.add("pulverizer");
         validArguments.add("sawmill");
         validArguments.add("smelter");
@@ -59,6 +62,26 @@ public class ThermalExpansionLogger implements ICommandFunction {
                             recipe.getEnergy(),
                             LogHelper.getStackDescription(recipe.getInput()),
                             LogHelper.getStackDescription(recipe.getOutput())));
+                }
+            }
+            
+            if(args.isEmpty() || args.contains("insolator")) {
+                for(RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
+                    if(recipe.getSecondaryOutput() != null) {
+                        MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Insolator.addRecipe(%d, %s, %s, %s, %s, %d);",
+                                recipe.getEnergy(),
+                                LogHelper.getStackDescription(recipe.getPrimaryInput()),
+                                LogHelper.getStackDescription(recipe.getSecondaryInput()),
+                                LogHelper.getStackDescription(recipe.getPrimaryOutput()),
+                                LogHelper.getStackDescription(recipe.getSecondaryOutput()),
+                                recipe.getSecondaryOutputChance()));
+                    } else {
+                        MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Insolator.addRecipe(%d, %s, %s, %s);",
+                                recipe.getEnergy(),
+                                LogHelper.getStackDescription(recipe.getPrimaryInput()),
+                                LogHelper.getStackDescription(recipe.getSecondaryInput()),
+                                LogHelper.getStackDescription(recipe.getPrimaryOutput())));                        
+                    }
                 }
             }
             
