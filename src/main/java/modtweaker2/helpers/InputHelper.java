@@ -1,13 +1,15 @@
 package modtweaker2.helpers;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import minetweaker.MineTweakerAPI;
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
+import minetweaker.mc1710.item.MCItemStack;
+import minetweaker.mc1710.liquid.MCLiquidStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -18,12 +20,26 @@ import net.minecraftforge.fluids.FluidStack;
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
 		if (!(isABlock(toStack(block)))) {
-			MineTweakerAPI.getLogger().logError("Item must be a block, or you must specify a block to render as when adding a TConstruct Melting recipe");
+			LogHelper.logError("Item must be a block, or you must specify a block to render as when adding a TConstruct Melting recipe");
 			return false;
 		} else
 			return true;
 	}
-
+	
+	public static <T> T[][] getMultiDimensionalArray(Class<T> clazz, T[] array, int height, int width) {
+	    
+	    @SuppressWarnings("unchecked")
+        T[][] multiDim = (T[][])Array.newInstance(clazz, new int[] {height, width});
+	    
+	    for(int y = 0; y < height; y++) {
+	        for(int x = 0; x < width; x++) {
+	            multiDim[y][x] = array[x + (y * width)];
+	        }
+	    }
+	    
+	    return multiDim;
+	}
+	
 	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
 		ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();
 		for (IIngredient ing : iIngredient) {
@@ -52,11 +68,38 @@ public class InputHelper {
 		else {
 			Object internal = iStack.getInternal();
 			if (internal == null || !(internal instanceof ItemStack)) {
-				MineTweakerAPI.getLogger().logError("Not a valid item stack: " + iStack);
+				LogHelper.logError("Not a valid item stack: " + iStack);
 			}
 
 			return (ItemStack) internal;
 		}
+	}
+	
+	public static IIngredient toIngredient(ItemStack stack) {
+        return toIItemStack(stack);
+	}
+	
+	public static IIngredient toIngredient(FluidStack stack) {
+	    if(stack == null)
+	        return null;
+	    
+	    return new MCLiquidStack(stack);
+	}
+	
+	public static IItemStack toIItemStack(ItemStack stack) {
+	    if(stack == null) {
+	        return null;
+	    }
+	    
+	    return new MCItemStack(stack);
+	}
+	
+	public static ILiquidStack toILiquidStack(FluidStack stack) {
+	    if(stack == null) {
+	        return null;
+	    }
+	    
+	    return new MCLiquidStack(stack);
 	}
 
 	public static ItemStack[] toStacks(IItemStack[] iStack) {
@@ -101,7 +144,8 @@ public class InputHelper {
 		}
 	}
 
-	public static Object[] toShapedObjects(IIngredient[][] ingredients) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Object[] toShapedObjects(IIngredient[][] ingredients) {
 		if (ingredients == null)
 			return null;
 		else {

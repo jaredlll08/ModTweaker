@@ -1,56 +1,22 @@
 package modtweaker2.utils;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-
 import java.util.List;
 
-import static modtweaker2.helpers.StackHelper.areEqual;
+import modtweaker2.helpers.LogHelper;
+import net.minecraft.item.crafting.IRecipe;
 
-public abstract class BaseCraftingAddition extends BaseDescriptionAddition {
-	protected final List<IRecipe> list;
-	protected final boolean shapeless;
-	protected final ItemStack output;
-	protected final Object[] recipe;
+public abstract class BaseCraftingAddition extends BaseListAddition<IRecipe> {
 
-	public BaseCraftingAddition(String name, boolean shapeless, List list, ItemStack output, Object... recipe) {
-		super(name);
-		this.shapeless = shapeless;
-		this.output = output;
-		this.recipe = recipe;
-		this.list = list;
-	}
-
-	@Override
-	public void apply() {
-		if (shapeless) applyShapeless();
-		else applyShaped();
-	}
-
-	public abstract void applyShaped();
-
-	public abstract void applyShapeless();
-
-	@Override
-	public boolean canUndo() {
-		return list != null;
-	}
-
-	@Override
-	public void undo() {
-		IRecipe remove = null;
-		for (IRecipe recipe : list) {
-			if (recipe.getRecipeOutput() != null && areEqual(recipe.getRecipeOutput(), output)) {
-				remove = recipe;
-				break;
-			}
-		}
-
-		list.remove(remove);
-	}
-
-	@Override
-	public String getRecipeInfo() {
-		return output.getDisplayName();
-	}
+    protected BaseCraftingAddition(String name, List<IRecipe> list) {
+        super(name, list);
+    }
+    
+    protected BaseCraftingAddition(String name, List<IRecipe> list, List<IRecipe> recipes) {
+        super(name, list, recipes);
+    }
+    
+    @Override
+    protected String getRecipeInfo(IRecipe recipe) {
+        return LogHelper.getStackDescription(recipe.getRecipeOutput());
+    }
 }

@@ -1,11 +1,11 @@
 package modtweaker2.mods.thaumcraft.research.commands;
 
+import static modtweaker2.helpers.LogHelper.log;
+import static modtweaker2.helpers.LogHelper.logPrinted;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import thaumcraft.api.research.ResearchCategories;
-import static modtweaker2.helpers.InputHelper.*;
-import static modtweaker2.helpers.LogHelper.*;
 
 public class ResearchLogger implements ICommandFunction {
     @Override

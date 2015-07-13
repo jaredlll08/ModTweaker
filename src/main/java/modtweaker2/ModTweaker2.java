@@ -2,10 +2,8 @@ package modtweaker2;
 
 import java.io.File;
 
-import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
-import minetweaker.mc1710.MineTweakerMod;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;

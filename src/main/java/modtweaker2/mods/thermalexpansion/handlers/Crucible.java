@@ -1,15 +1,23 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.mods.thermalexpansion.ThermalHelper.removeCrucibleRecipe;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.utils.TweakerPlugin;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
+import modtweaker2.mods.thermalexpansion.ThermalHelper;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
@@ -17,91 +25,152 @@ import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 
 @ZenClass("mods.thermalexpansion.Crucible")
 public class Crucible {
+    
+    public static final String name = "Thermal Expansion Crucible";
+    
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, ILiquidStack output) {
-		
-			MineTweakerAPI.apply(new Add(energy, toStack(input), toFluid(output)));
+        if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        if(CrucibleManager.recipeExists(toStack(input))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input))));
+            return;
+	    }
+	    
+        RecipeCrucible recipe = ReflectionHelper.getInstance(ThermalHelper.crucibleRecipe, toStack(input), toFluid(output), energy);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
-	private static class Add implements IUndoableAction {
-		ItemStack input;
-		FluidStack output;
-		int energy;
-		boolean applied = false;
+	private static class Add extends BaseListAddition<RecipeCrucible> {
 
-		public Add(int rf, ItemStack inp, FluidStack out) {
-			energy = rf;
-			input = inp;
-			output = out;
+		public Add(RecipeCrucible recipe) {
+			super(Crucible.name, null);
+			recipes.add(recipe);
 		}
 
 		public void apply() {
-			applied = CrucibleManager.addRecipe(energy, input, output);
-		}
-
-		public boolean canUndo() {
-			return input != null && applied;
-		}
-
-		public String describe() {
-			return "Adding TE Magma Crucible Recipe using " + input.getDisplayName();
+		    for(RecipeCrucible recipe : recipes) {
+		        boolean applied = CrucibleManager.addRecipe(
+		                recipe.getEnergy(),
+		                recipe.getInput(),
+		                recipe.getOutput());
+		        
+		        if(applied) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
 
 		public void undo() {
-			removeCrucibleRecipe(input);
+		    for(RecipeCrucible recipe : successful) {
+		        CrucibleManager.removeRecipe(recipe.getInput());
+		    }
 		}
-
-		public String describeUndo() {
-			return "Removing TE Magma Crucible Recipe using " + input.getDisplayName();
+		
+		@Override
+		protected boolean equals(RecipeCrucible recipe, RecipeCrucible otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
 		}
-
-		public Object getOverrideKey() {
-			return null;
+		
+		@Override
+		protected String getRecipeInfo(RecipeCrucible recipe) {
+		    return LogHelper.getStackDescription(recipe.getInput());
 		}
-
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(input)));
+	public static void removeRecipe(IIngredient input) {
+	    List<RecipeCrucible> recipes = new LinkedList<RecipeCrucible>();
+	    
+	    for(RecipeCrucible recipe : CrucibleManager.getRecipeList()) {
+	        if(recipe != null && matches(input, toIItemStack(recipe.getInput()))) {
+	            recipes.add(recipe);
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+			MineTweakerAPI.apply(new Remove(recipes));
+	    } else {
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s.", name, input.toString()));
+	    }
 	}
 
-	private static class Remove implements IUndoableAction {
-		ItemStack input;
-		RecipeCrucible removed;
+	private static class Remove extends BaseListRemoval<RecipeCrucible> {
 
-		public Remove(ItemStack inp) {
-			input = inp;
+	    public Remove(List<RecipeCrucible> recipes) {
+			super(Crucible.name, null, recipes);
 		}
 
 		public void apply() {
-			removed = CrucibleManager.getRecipe(input);
-			removeCrucibleRecipe(input);
-		}
-
-		public boolean canUndo() {
-			return removed != null;
-		}
-
-		public String describe() {
-			return "Removing TE Magma Crucible Recipe using " + input.getDisplayName();
+		    for(RecipeCrucible recipe : recipes) {
+		        boolean removed = CrucibleManager.removeRecipe(recipe.getInput());
+		        
+		        if(removed) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
 
 		public void undo() {
-			CrucibleManager.addRecipe(removed.getEnergy(), removed.getInput(), removed.getOutput());
+            for(RecipeCrucible recipe : successful) {
+                CrucibleManager.addRecipe(
+                        recipe.getEnergy(),
+                        recipe.getInput(),
+                        recipe.getOutput());
+            }
 		}
-
-		public String describeUndo() {
-			return "Restoring TE Magma Crucible Recipe using " + input.getDisplayName();
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
+		
+        @Override
+        protected boolean equals(RecipeCrucible recipe, RecipeCrucible otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+		
+        @Override
+        protected String getRecipeInfo(RecipeCrucible recipe) {
+            return LogHelper.getStackDescription(recipe.getInput());
+        }
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+	
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
 
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            CrucibleManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Crucible.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Crucible.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

@@ -7,9 +7,7 @@ import java.util.Arrays;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
-import modtweaker2.utils.TweakerPlugin;
+import modtweaker2.utils.BaseUndoable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -34,7 +32,7 @@ public class Aspects {
 	}
 
 	// Adds or sets Aspects
-	private static class Add extends BaseDescriptionAddition {
+	private static class Add extends BaseUndoable {
 		private final ItemStack stack;
 		private final String aspects;
 		private final boolean replace;
@@ -55,7 +53,10 @@ public class Aspects {
 				newList = ThaumcraftHelper.parseAspects(oldList, aspects);
 			else
 				newList = ThaumcraftHelper.parseAspects(aspects);
+			
 			ThaumcraftApi.objectTags.put(Arrays.asList(stack.getItem(), stack.getItemDamage()), newList);
+			
+			success = true;
 		}
 
 		@Override
@@ -80,7 +81,7 @@ public class Aspects {
 			MineTweakerAPI.apply(new Remove(toStack(stack), aspects));
 	}
 
-	private static class Remove extends BaseDescriptionRemoval {
+	private static class Remove extends BaseUndoable {
 		private final ItemStack stack;
 		private final String aspects;
 		private AspectList oldList;
@@ -99,6 +100,8 @@ public class Aspects {
 				newList = ThaumcraftHelper.removeAspects(oldList, aspects);
 				ThaumcraftApi.objectTags.put(Arrays.asList(stack.getItem(), stack.getItemDamage()), newList);
 			}
+			
+			success = true;
 		}
 
 		@Override
@@ -139,7 +142,7 @@ public class Aspects {
 	}
 
 	// Adds or sets Aspects
-	private static class AddEntity extends BaseDescriptionAddition {
+	private static class AddEntity extends BaseUndoable {
 		private final String entityName;
 		private final String aspects;
 		private final boolean replace;
@@ -162,6 +165,8 @@ public class Aspects {
 				newList = ThaumcraftHelper.parseAspects(aspects);
 			ThaumcraftHelper.removeEntityAspects(entityName);
 			ThaumcraftApi.registerEntityTag(entityName, newList);
+			
+			success = true;
 		}
 
 		@Override
@@ -189,7 +194,7 @@ public class Aspects {
 			MineTweakerAPI.apply(new RemoveEntity(entityName, aspects));
 	}
 
-	private static class RemoveEntity extends BaseDescriptionRemoval {
+	private static class RemoveEntity extends BaseUndoable {
 		private final String entityName;
 		private final String aspects;
 		private AspectList oldList;
@@ -209,6 +214,8 @@ public class Aspects {
 				ThaumcraftHelper.removeEntityAspects(entityName);
 				ThaumcraftApi.registerEntityTag(entityName, newList);
 			}
+			
+			success = true;
 		}
 
 		@Override

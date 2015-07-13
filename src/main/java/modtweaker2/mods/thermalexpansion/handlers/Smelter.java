@@ -1,40 +1,32 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
-import modtweaker2.utils.TweakerPlugin;
-import net.minecraft.item.ItemStack;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 @ZenClass("mods.thermalexpansion.Smelter")
 public class Smelter {
-	private static boolean removeValidated(ComparableItemStackSafe stack) {
-		for (Map.Entry entry : ThermalHelper.getSmelterMap().entrySet()) {
-			if (entry != null && entry.getValue() != null) {
-				RecipeSmelter recipe = (RecipeSmelter) entry.getValue();
-				if (recipe != null) {
-					if (stack.equals(new ComparableItemStackSafe(recipe.getPrimaryInput()))) {
-						return false;
-					} else if (stack.equals(new ComparableItemStackSafe(recipe.getSecondaryInput()))) {
-						return false;
-					}
-				}
-			}
-		}
-		return ThermalHelper.smelterValid.remove(stack);
-	}
+    
+    public static final String name = "Thermal Expansion Smelter";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack input2, IItemStack output) {
@@ -43,98 +35,156 @@ public class Smelter {
 
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack input2, IItemStack output, IItemStack output2, int chance) {
-		ItemStack in1 = toStack(input);
-		ItemStack in2 = toStack(input2);
-		ItemStack out1 = toStack(output);
-		ItemStack out2 = toStack(output2);
-		RecipeSmelter recipe = (RecipeSmelter) ThermalHelper.getTERecipe(ThermalHelper.smelterRecipe, in1, in2, out1, out2, chance, energy);
-		
-			MineTweakerAPI.apply(new Add(in1, in2, recipe));
+        if(input == null || input2 == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        if(SmelterManager.recipeExists(toStack(input), toStack(input2))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toStack(input2))));
+            return;
+        }
+        
+        RecipeSmelter recipe = ReflectionHelper.getInstance(ThermalHelper.smelterRecipe, toStack(input), toStack(input2), toStack(output), toStack(output2), chance, energy);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
-	private static class Add extends BaseDescriptionAddition {
-		private final ComparableItemStackSafe input1;
-		private final ComparableItemStackSafe input2;
-		private final List key;
-		private final RecipeSmelter recipe;
-
-		public Add(ItemStack input1, ItemStack input2, RecipeSmelter recipe) {
-			super("Induction Smelter");
-			this.input1 = new ComparableItemStackSafe(input1);
-			this.input2 = new ComparableItemStackSafe(input2);
-			this.key = (Arrays.asList(new ComparableItemStackSafe[] { this.input1, this.input2 }));
-			this.recipe = recipe;
+	private static class Add extends BaseListAddition<RecipeSmelter> {
+		public Add(RecipeSmelter recipe) {
+			super(Smelter.name, null);
+			recipes.add(recipe);
 		}
 
 		@Override
 		public void apply() {
-			ThermalHelper.getSmelterMap().put(key, recipe);
-			ThermalHelper.smelterValid.add(input1);
-			ThermalHelper.smelterValid.add(input2);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return ThermalHelper.getSmelterMap() != null;
+		    for(RecipeSmelter recipe : recipes) {
+		        boolean applied = SmelterManager.addRecipe(
+		                recipe.getEnergy(),
+		                recipe.getPrimaryInput(),
+		                recipe.getSecondaryInput(),
+		                recipe.getPrimaryOutput(),
+		                recipe.getSecondaryOutput(),
+		                recipe.getSecondaryOutputChance());
+		        
+		        if(applied) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
 
 		@Override
 		public void undo() {
-			ThermalHelper.getSmelterMap().remove(key);
-			removeValidated(input1);
-			removeValidated(input2);
+		    for(RecipeSmelter recipe : successful) {
+		        SmelterManager.removeRecipe(recipe.getPrimaryInput(), recipe.getSecondaryInput());
+		    }
+		}
+		
+		@Override
+		protected boolean equals(RecipeSmelter recipe, RecipeSmelter otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((RecipeSmelter) recipe).getPrimaryOutput().getDisplayName();
+		public String getRecipeInfo(RecipeSmelter recipe) {
+		    return LogHelper.getStackDescription(recipe.getPrimaryOutput());
 		}
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input, IItemStack input2) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(input), toStack(input2)));
+	public static void removeRecipe(IIngredient input1, IIngredient input2) {
+	    List<RecipeSmelter> recipes = new LinkedList<RecipeSmelter>();
+	    
+        for(RecipeSmelter recipe : SmelterManager.getRecipeList()) {
+            if(recipe != null && matches(input1, toIItemStack(recipe.getPrimaryInput())) && matches(input2, toIItemStack(recipe.getSecondaryInput()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipes found for %s and %s.", name, input1.toString(), input2.toString()));
+        }
 	}
 
-	private static class Remove extends BaseDescriptionRemoval {
-		private final ComparableItemStackSafe input1;
-		private final ComparableItemStackSafe input2;
-		private final List key;
-		private RecipeSmelter recipe;
+	private static class Remove extends BaseListRemoval<RecipeSmelter> {
 
-		public Remove(ItemStack input1, ItemStack input2) {
-			super("Induction Smelter");
-			this.input1 = new ComparableItemStackSafe(input1);
-			this.input2 = new ComparableItemStackSafe(input2);
-			this.key = (Arrays.asList(new ComparableItemStackSafe[] { this.input1, this.input2 }));
+		public Remove(List<RecipeSmelter> recipes) {
+			super(Smelter.name, null, recipes);
 		}
 
 		@Override
 		public void apply() {
-			recipe = ThermalHelper.getSmelterMap().get(key);
-			ThermalHelper.getSmelterMap().remove(key);
-			removeValidated(input1);
-			removeValidated(input2);
+		    for(RecipeSmelter recipe : recipes) {
+		        boolean removed = SmelterManager.removeRecipe(recipe.getPrimaryInput(), recipe.getSecondaryInput());
+		        
+		        if(removed) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
-
-		@Override
-		public boolean canUndo() {
-			return ThermalHelper.getSmelterMap() != null;
-		}
-
+		
 		@Override
 		public void undo() {
-			ThermalHelper.getSmelterMap().put(key, recipe);
-			ThermalHelper.smelterValid.add(input1);
-			ThermalHelper.smelterValid.add(input2);
+		    for(RecipeSmelter recipe : recipes) {
+		        SmelterManager.addRecipe(
+		                recipe.getEnergy(),
+		                recipe.getPrimaryInput(),
+		                recipe.getSecondaryInput(),
+		                recipe.getPrimaryOutput(),
+		                recipe.getSecondaryOutput(),
+		                recipe.getSecondaryOutputChance());
+		    }
 		}
+		
+        @Override
+        protected boolean equals(RecipeSmelter recipe, RecipeSmelter otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
 
-		@Override
-		public String getRecipeInfo() {
-			return input1.toItemStack().getDisplayName() + " + " + input2.toItemStack().getDisplayName();
-		}
+        @Override
+        public String getRecipeInfo(RecipeSmelter recipe) {
+            return LogHelper.getStackDescription(recipe.getPrimaryOutput());
+        }
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            SmelterManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Smelter.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Smelter.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

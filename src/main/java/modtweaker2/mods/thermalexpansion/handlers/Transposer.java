@@ -1,184 +1,273 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
-import modtweaker2.utils.BaseDescriptionAddition;
-import modtweaker2.utils.BaseDescriptionRemoval;
-import modtweaker2.utils.TweakerPlugin;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
 @ZenClass("mods.thermalexpansion.Transposer")
 public class Transposer {
-	private static boolean removeValidated(ComparableItemStackSafe stack) {
-		// Check if there is a recipe that requires this in the validation set
-		// for filling
-		for (Map.Entry entry : ThermalHelper.getFillMap().entrySet()) {
-			RecipeTransposer recipe = (RecipeTransposer) entry.getValue();
-			if (stack.equals(new ComparableItemStackSafe(recipe.getInput()))) {
-				return false;
-			}
-		}
-
-		// Check if there is a recipe that requires this in the validation set
-		// for extracting
-		for (Map.Entry entry : ThermalHelper.getExtractMap().entrySet()) {
-			RecipeTransposer recipe = (RecipeTransposer) entry.getValue();
-			if (stack.equals(new ComparableItemStackSafe(recipe.getInput()))) {
-				return false;
-			}
-		}
-
-		return ThermalHelper.transposerValid.remove(stack);
-	}
-
+    
+    public static final String nameFill = "Thermal Expansion Transposer (Fill)";
+    public static final String nameExtract = "Thermal Expansion Transposer (Extract)";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 	@ZenMethod
 	public static void addFillRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid) {
-		addRecipe(energy, input, output, liquid, 100, true);
+        if(input == null || output == null || liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFill));
+            return;
+        }
+	    
+        if(TransposerManager.fillRecipeExists(toStack(input), toFluid(liquid))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameFill, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toFluid(liquid))));
+            return;
+        }
+        
+        RecipeTransposer recipe = ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe, RecipeType.Fill));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameFill));
+        }
 	}
 
 	@ZenMethod
 	public static void addExtractRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid, int chance) {
-		addRecipe(energy, input, output, liquid, chance, false);
+        if(input == null || output == null || liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameExtract));
+            return;
+        }
+        
+        if(TransposerManager.extractionRecipeExists(toStack(input), toFluid(liquid))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toFluid(liquid))));
+            return;
+        }
+        
+        RecipeTransposer recipe = ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe, RecipeType.Extract));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameExtract));
+        }
+	}
+	
+	private static class Add extends BaseListAddition<RecipeTransposer> {
+	    private RecipeType type;
+
+        protected Add(RecipeTransposer recipe, RecipeType type) {
+            super(type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, null);
+            this.type = type;
+            recipes.add(recipe);
+        }
+
+        @Override
+        public void apply() {
+            for(RecipeTransposer recipe : recipes) {
+                boolean applied = false;
+                switch(type) {
+                    case Fill:
+                        applied = TransposerManager.addFillRecipe(
+                                recipe.getEnergy(),
+                                recipe.getInput(),
+                                recipe.getOutput(),
+                                recipe.getFluid(),
+                                false);
+                        break;
+                        
+                    case Extract:
+                        applied = TransposerManager.addExtractionRecipe(
+                                recipe.getEnergy(),
+                                recipe.getInput(), 
+                                recipe.getOutput(),
+                                recipe.getFluid(),
+                                recipe.getChance(),
+                                false);
+                        break;
+                }
+
+                if(applied) {
+                    successful.add(recipe);
+                }
+            }
+        }
+        
+        @Override
+        public void undo() {
+            for(RecipeTransposer recipe : successful) {
+                switch(type)
+                {
+                    case Fill:
+                        TransposerManager.removeFillRecipe(recipe.getInput(), recipe.getFluid());
+                        break;
+                    case Extract:
+                        TransposerManager.removeExtractionRecipe(recipe.getInput());
+                        break;
+                }
+            }
+        }
+        
+        @Override
+        protected boolean equals(RecipeTransposer recipe, RecipeTransposer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+        
+        @Override
+        protected String getRecipeInfo(RecipeTransposer recipe) {
+            return LogHelper.getStackDescription(recipe.getInput());
+        }
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@ZenMethod
+	public static void removeFillRecipe(IIngredient input, IIngredient liquid) {
+	    removeRecipe(input, liquid, RecipeType.Fill);
 	}
 
 	@ZenMethod
-	public static void addRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid, int chance, boolean isFillRecipe) {
-		ItemStack in = toStack(input);
-		ItemStack out = toStack(output);
-		FluidStack fluid = toFluid(liquid);
-		RecipeTransposer recipe = (RecipeTransposer) ThermalHelper.getTERecipe(ThermalHelper.transposerRecipe, in, out, fluid, energy, chance);
-		
-			MineTweakerAPI.apply(new Add(in, fluid, recipe, isFillRecipe));
+	public static void removeExtractRecipe(IIngredient input) {
+	    removeRecipe(input, IngredientAny.INSTANCE, RecipeType.Extract);
 	}
 
-	private static class Add extends BaseDescriptionAddition {
-		private List key;
-		private boolean isFillRecipe;
-		private final ComparableItemStackSafe input;
-		private final RecipeTransposer recipe;
-
-		public Add(ItemStack input, FluidStack fluid, RecipeTransposer recipe, boolean isFillRecipe) {
-			super("Transposer");
-			this.isFillRecipe = isFillRecipe;
-			this.input = new ComparableItemStackSafe(input);
-
-			this.recipe = recipe;
-			if (this.isFillRecipe) {
-				this.key = Arrays.asList(new Integer[] { Integer.valueOf(new ComparableItemStackSafe(input).hashCode()), Integer.valueOf(fluid.fluidID) });
-			}
-		}
-
-		@Override
-		public void apply() {
-			if (isFillRecipe) {
-				ThermalHelper.getFillMap().put(key, recipe);
-			} else {
-				ThermalHelper.getExtractMap().put(input, recipe);
-			}
-
-			ThermalHelper.transposerValid.add(input);
-		}
-
-		@Override
-		public boolean canUndo() {
-			return input != null;
-		}
-
-		@Override
-		public void undo() {
-			if (isFillRecipe) {
-				ThermalHelper.getFillMap().remove(key);
-			} else {
-				ThermalHelper.getExtractMap().remove(input);
-			}
-
-			removeValidated(input);
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return ((RecipeTransposer) recipe).getOutput().getDisplayName();
-		}
+	public static void removeRecipe(IIngredient input, IIngredient liquid, RecipeType type) {
+        List<RecipeTransposer> recipes = new LinkedList<RecipeTransposer>();
+        
+        for(RecipeTransposer recipe : type == RecipeType.Fill ? TransposerManager.getFillRecipeList() : TransposerManager.getExtractionRecipeList()) {
+            if(recipe != null && matches(input, toIItemStack(recipe.getInput())) && matches(liquid, toILiquidStack(recipe.getFluid()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes, type));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s and %s.", type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, input.toString(), liquid.toString()));
+        }
 	}
 
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@ZenMethod
-	public static void removeFillRecipe(IItemStack input, ILiquidStack liquid) {
-		removeRecipe(input, liquid, true);
+	private static class Remove extends BaseListRemoval<RecipeTransposer> {
+	    private RecipeType type;
+	    
+        protected Remove(List<RecipeTransposer> recipes, RecipeType type) {
+            super(type == RecipeType.Fill ? Transposer.nameFill : Transposer.nameExtract, null, recipes);
+            this.type = type;
+        }
+        
+        @Override
+        public void apply() {
+            for(RecipeTransposer recipe : recipes) {
+                boolean removed = false;
+                switch(type) {
+                    case Fill:
+                        removed = TransposerManager.removeFillRecipe(recipe.getInput(), recipe.getFluid());
+                        break;
+                    case Extract:
+                        removed = TransposerManager.removeExtractionRecipe(recipe.getInput());
+                        break;
+                }
+                
+                if(removed) {
+                    successful.add(recipe);
+                }
+            }
+        }
+        
+        @Override
+        public void undo() {
+            for(RecipeTransposer recipe : successful) {
+                switch(type) {
+                case Fill:
+                    TransposerManager.addFillRecipe(
+                            recipe.getEnergy(),
+                            recipe.getInput(),
+                            recipe.getOutput(),
+                            recipe.getFluid(),
+                            false);
+                    break;
+                    
+                case Extract:
+                    TransposerManager.addExtractionRecipe(
+                            recipe.getEnergy(),
+                            recipe.getInput(), 
+                            recipe.getOutput(),
+                            recipe.getFluid(),
+                            recipe.getChance(),
+                            false);
+                    break;
+                }
+            }
+        }
+
+        @Override
+        protected boolean equals(RecipeTransposer recipe, RecipeTransposer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
+        
+        @Override
+        protected String getRecipeInfo(RecipeTransposer recipe) {
+            return LogHelper.getStackDescription(recipe.getOutput());
+        }
 	}
+    
+    protected enum RecipeType {
+        Fill,
+        Extract
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
 
-	@ZenMethod
-	public static void removeExtractRecipe(IItemStack input) {
-		removeRecipe(input, null, false);
-	}
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
 
-	@ZenMethod
-	public static void removeRecipe(IItemStack input, ILiquidStack liquid, boolean isFillRecipe) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(input), toFluid(liquid), isFillRecipe));
-	}
+    private static class Refresh implements IUndoableAction {
 
-	private static class Remove extends BaseDescriptionRemoval {
-		private final boolean isFillRecipe;
-		private final ComparableItemStackSafe input;
-		private List key;
-		private RecipeTransposer recipe;
+        public void apply() {
+            TransposerManager.refreshRecipes();
+        }
 
-		public Remove(ItemStack input, FluidStack fluid, boolean isFillRecipe) {
-			super("Transposer");
-			this.isFillRecipe = isFillRecipe;
-			this.input = new ComparableItemStackSafe(input);
-			if (this.isFillRecipe) {
-				this.key = Arrays.asList(new Integer[] { Integer.valueOf(new ComparableItemStackSafe(input).hashCode()), Integer.valueOf(fluid.fluidID) });
-			}
-		}
+        public boolean canUndo() {
+            return true;
+        }
 
-		@Override
-		public void apply() {
-			if (isFillRecipe) {
-				recipe = ThermalHelper.getFillMap().get(key);
-				ThermalHelper.getFillMap().remove(key);
-			} else {
-				recipe = ThermalHelper.getExtractMap().get(input);
-				ThermalHelper.getExtractMap().remove(input);
-			}
+        public String describe() {
+            return "Refreshing " + Transposer.nameFill + " & " + Transposer.nameExtract + " recipes";
+        }
 
-			removeValidated(input);
-		}
+        public void undo() {
+        }
 
-		@Override
-		public boolean canUndo() {
-			return input != null;
-		}
+        public String describeUndo() {
+            return "Ignoring undo of " + Transposer.nameFill + " & " + Transposer.nameExtract + " recipe refresh";
+        }
 
-		@Override
-		public void undo() {
-			if (isFillRecipe) {
-				ThermalHelper.getFillMap().put(key, recipe);
-			} else {
-				ThermalHelper.getExtractMap().put(input, recipe);
-			}
-
-			ThermalHelper.transposerValid.add(input);
-		}
-
-		@Override
-		public String getRecipeInfo() {
-			return input.toItemStack().getDisplayName();
-		}
-	}
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

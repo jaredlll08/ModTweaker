@@ -13,9 +13,9 @@ import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
 
 public class MaterialLogger implements ICommandFunction {
-	private static ArrayList<String> materials = new ArrayList();
+	private static ArrayList<String> materials = new ArrayList<String>();
 	static {
-		materials = new ArrayList();
+		materials = new ArrayList<String>();
 		for (Map.Entry<String, ToolMaterial> entry : TConstructRegistry.toolMaterialStrings.entrySet()) {
 			materials.add(entry.getKey());
 		}

@@ -3,70 +3,81 @@ package modtweaker2.mods.mekanism.handlers;
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import mekanism.common.recipe.RecipeHandler.Recipe;
-import mekanism.common.recipe.inputs.ChemicalPairInput;
+import mekanism.common.recipe.inputs.FluidInput;
+import mekanism.common.recipe.inputs.MachineInput;
+import mekanism.common.recipe.machines.MachineRecipe;
 import mekanism.common.recipe.machines.SeparatorRecipe;
-import mekanism.common.recipe.outputs.ChemicalPairOutput;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.mods.mekanism.Mekanism;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.StackHelper;
 import modtweaker2.mods.mekanism.gas.IGasStack;
+import modtweaker2.mods.mekanism.gas.MCGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
-import modtweaker2.utils.BaseMapRemoval;
-import net.minecraftforge.fluids.FluidStack;
+import modtweaker2.mods.mekanism.util.RemoveMekanismRecipe;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.mekanism.Separator")
 public class Separator {
+    
+    public static final String name = "Mekanism Separator";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(ILiquidStack input, IGasStack gas1, IGasStack gas2) {
-        if (Mekanism.v7)
-        {
-            ChemicalPairInput pair = new ChemicalPairInput(toGas(gas1), toGas(gas2));
-            MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), toFluid(input), pair));
-        } else
-        {
-            throw new UnsupportedOperationException("Syntax for v8 is: Fluid, Energy, Gas, Gas");
+    public static void addRecipe(ILiquidStack liquidInput, double energy, IGasStack leftGasOutput, IGasStack rightGasOutput) {
+        if(liquidInput == null || leftGasOutput == null || rightGasOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
         }
+        
+        SeparatorRecipe recipe = new SeparatorRecipe(toFluid(liquidInput), energy, toGas(leftGasOutput), toGas(rightGasOutput));
+        
+        MineTweakerAPI.apply(new AddMekanismRecipe(name, Recipe.ELECTROLYTIC_SEPARATOR.get(), recipe));
     }
-
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @ZenMethod
-    public static void addRecipe(ILiquidStack input, double energy, IGasStack gas1, IGasStack gas2) {
-        if (Mekanism.v7)
-        {
-            throw new UnsupportedOperationException("Syntax for v7 is: Fluid, Gas, Gas");
-        } else
-        {
-            SeparatorRecipe recipe = new SeparatorRecipe(toFluid(input), energy, toGas(gas1), toGas(gas2));
-            MineTweakerAPI.apply(new AddMekanismRecipe("ELECTROLYTIC_SEPARATOR", Recipe.ELECTROLYTIC_SEPARATOR.get(), recipe.getInput(), recipe));
+    public static void removeRecipe(IIngredient liquidInput, @Optional IIngredient leftGasInput, @Optional IIngredient rightGasInput) {
+        if(liquidInput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
         }
-    }
-
-    @ZenMethod
-    public static void removeRecipe(ILiquidStack input) {
-        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
-        MineTweakerAPI.apply(new Remove(toFluid(input)));
-    }
-
-    private static class Remove extends BaseMapRemoval {
-        public Remove(FluidStack stack) {
-            super("Electrolytic Separator", Recipe.ELECTROLYTIC_SEPARATOR.get(), stack);
+        
+        if(leftGasInput == null) leftGasInput = IngredientAny.INSTANCE;
+        if(rightGasInput == null) leftGasInput = IngredientAny.INSTANCE;
+        
+        Map<MachineInput, MachineRecipe> recipes = new HashMap<MachineInput, MachineRecipe>();
+        
+        for(Entry<FluidInput, SeparatorRecipe> entry : ((Map<FluidInput, SeparatorRecipe>)Recipe.ELECTROLYTIC_SEPARATOR.get()).entrySet() ) {
+            ILiquidStack inputLiquid = InputHelper.toILiquidStack(entry.getKey().ingredient);
+            IGasStack outputItemLeft = new MCGasStack(entry.getValue().recipeOutput.leftGas);
+            IGasStack outputItemRight = new MCGasStack(entry.getValue().recipeOutput.rightGas);
+            
+            if(!StackHelper.matches(liquidInput, inputLiquid)) continue;
+            if(!StackHelper.matches(leftGasInput, outputItemLeft)) continue;
+            if(!StackHelper.matches(rightGasInput, outputItemRight)) continue;
+            
+            recipes.put(entry.getKey(), entry.getValue());
         }
-
-        //We must search through the recipe entries so that we can assign the correct key for removal
-        @Override
-        public void apply() {
-            for (Map.Entry<FluidStack, ChemicalPairOutput> entry : ((Map<FluidStack, ChemicalPairOutput>) map).entrySet()) {
-                if (entry.getKey() != null && entry.getKey().isFluidEqual((FluidStack) stack)) {
-                    key = entry.getKey();
-                    break;
-                }
-            }
-
-            super.apply();
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.ELECTROLYTIC_SEPARATOR.get(), recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, liquidInput.toString(), leftGasInput.toString(), rightGasInput.toString()));
         }
     }
 }

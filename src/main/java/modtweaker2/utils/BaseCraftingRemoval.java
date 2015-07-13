@@ -1,29 +1,35 @@
 package modtweaker2.utils;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import minetweaker.api.item.IIngredient;
+import modtweaker2.helpers.LogHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
-import java.util.List;
-
-import static modtweaker2.helpers.StackHelper.areEqual;
-
-public class BaseCraftingRemoval extends BaseListRemoval {
-	public BaseCraftingRemoval(String name, List list, ItemStack stack) {
-		super(name, list, stack);
+public class BaseCraftingRemoval extends BaseListRemoval<IRecipe> {
+	public BaseCraftingRemoval(String name, List<IRecipe> list, List<IRecipe> recipes) {
+		super(name, list, recipes);
 	}
-
-	@Override
-	public void apply() {
-		for (IRecipe r : (List<IRecipe>) list) {
-			if (r.getRecipeOutput() != null && r.getRecipeOutput() instanceof ItemStack && areEqual(r.getRecipeOutput(), stack)) {
-				recipes.add(r);
-			}
-		}
-		super.apply();
-	}
-
-	@Override
-	public String getRecipeInfo() {
-		return stack.getDisplayName();
-	}
+	
+    @Override
+    public String getRecipeInfo(IRecipe recipe) {
+        return LogHelper.getStackDescription(recipe.getRecipeOutput());
+    }
+    
+    public static List<IRecipe> getRecipes(List<IRecipe> list, IIngredient ingredient) {
+        List<IRecipe> recipes = new LinkedList<IRecipe>();
+        
+        for (IRecipe r : list) {
+            if (r != null && r.getRecipeOutput() != null && r.getRecipeOutput() instanceof ItemStack && matches(ingredient, toIItemStack(r.getRecipeOutput()))) {
+                recipes.add(r);
+            }
+        }
+        
+        return recipes;
+    }
 }

@@ -1,65 +1,65 @@
 package modtweaker2.utils;
 
-import minetweaker.IUndoableAction;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.List;
 
-public abstract class BaseListAddition implements IUndoableAction {
-	protected final List list;
-	protected final Object recipe;
-	protected String description;
+import modtweaker2.helpers.LogHelper;
 
-	public BaseListAddition(String description, List list, Object recipe) {
-		this(list, recipe);
-		this.description = description;
-	}
+public abstract class BaseListAddition<T> extends BaseListModification<T> {
 
-	public BaseListAddition(List list, Object recipe) {
-		this.list = list;
-		this.recipe = recipe;
-	}
+    protected BaseListAddition(String name, List<T> list) {
+        super(name, list);
+    }
+    
+    protected BaseListAddition(String name, List<T> list, List<T> recipies) {
+        this(name, list);
+        if(recipes != null) {
+            recipes.addAll(recipies);
+        }
+    }
 
-	@Override
-	public void apply() {
-		list.add(recipe);
-	}
+    @Override
+    public void apply() {
+        if(recipes.isEmpty()) {
+            return;
+        }
 
-	@Override
-	public boolean canUndo() {
-		return list != null;
-	}
+        for(T recipe : recipes) {
+            if(recipe != null) {
+                if(list.add(recipe)) {
+                    successful.add(recipe);
+                } else {
+                    LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
+                }
+            } else {
+                LogHelper.logError(String.format("Error adding %s Recipe: null object", name));
+            }
+        }
+    }
+    
+    @Override
+    public void undo() {
+        if(this.successful.isEmpty()) {
+            return;
+        }
+        
+        for(T recipe : successful) {
+            if(recipe != null) {
+                if(!list.remove(recipe)) {
+                    LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
+                }
+            } else {
+                LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+            }
+        }
+    }
 
-	@Override
-	public void undo() {
-		list.remove(recipe);
-	}
+    @Override
+    public String describe() {
+        return String.format("[ModTweaker2] Adding %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
+    }
 
-	public String getRecipeInfo() {
-		return "Unknown Item";
-	}
-
-	@Override
-	public String describe() {
-		if (recipe instanceof ItemStack)
-			return "Adding " + description + " Recipe for :" + ((ItemStack) recipe).getDisplayName();
-		else if (recipe instanceof FluidStack)
-			return "Adding " + description + " Recipe for :" + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Adding " + description + " Recipe for :" + getRecipeInfo();
-	}
-
-	@Override
-	public String describeUndo() {
-		if (recipe instanceof ItemStack)
-			return "Removing " + description + " Recipe for :" + ((ItemStack) recipe).getDisplayName();
-		else if (recipe instanceof FluidStack)
-			return "Removing " + description + " Recipe for :" + ((FluidStack) recipe).getFluid().getLocalizedName();
-		else return "Removing " + description + " Recipe for :" + getRecipeInfo();
-	}
-
-	@Override
-	public Object getOverrideKey() {
-		return null;
-	}
+    @Override
+    public String describeUndo() {
+        return String.format("[ModTweaker2] Removing %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
+    }
 }

@@ -1,16 +1,19 @@
 package modtweaker2.mods.tfcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -19,6 +22,8 @@ import com.bioxx.tfc.api.Crafting.KilnRecipe;
 
 @ZenClass("mods.tfcraft.Kiln")
 public class Kiln {
+    
+    public static final String name = "TFC Kiln";
 
 	/** Deprecated, since pottery kiln will check <code>x instanceof ItemPotteryBase</code>
 	 *  <p>If you have a such item, you might consider to use it
@@ -29,31 +34,40 @@ public class Kiln {
 		MineTweakerAPI.apply(new AddRecipe(new KilnRecipe(toStack(input), lv, toStack(output))));
 	}
 
-	@ZenMethod
-	public static void remove(IItemStack stack){
-		MineTweakerAPI.apply(new RemoveRecipe(toStack(stack)));
-	}
-	
-	private static class AddRecipe extends BaseListAddition{	
+	private static class AddRecipe extends BaseListAddition<KilnRecipe> {	
 		public AddRecipe(KilnRecipe recipe) {
-			super("Kiln", TFCHelper.kilnRecipes, recipe);
+			super(Kiln.name, TFCHelper.kilnRecipes);
+			recipes.add(recipe);
+		}
+		
+		@Override
+		protected String getRecipeInfo(KilnRecipe recipe) {
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
-	
-	private static class RemoveRecipe extends BaseListRemoval{
-		public RemoveRecipe(ItemStack out){
-			super("Kiln-Remove", TFCHelper.kilnRecipes, out);
-		}
 
-        @Override
-		public void apply() {
-			for (KilnRecipe recipe : KilnCraftingManager.getInstance().getRecipeList()){
-				if (recipe.getCraftingResult() != null && areEqual(recipe.getCraftingResult(), stack)){
-					recipes.add(recipe);
-				}
-			}
-			super.apply();
+	@ZenMethod
+    public static void remove(IIngredient output){
+	    List<KilnRecipe> recipes = new LinkedList<KilnRecipe>();
+	    
+        for (KilnRecipe recipe : KilnCraftingManager.getInstance().getRecipeList()){
+            if (recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult()))) {
+                recipes.add(recipe);
+            }
+        }
+        
+        MineTweakerAPI.apply(new RemoveRecipe(recipes));
+    }
+   
+	private static class RemoveRecipe extends BaseListRemoval<KilnRecipe> {
+		public RemoveRecipe(List<KilnRecipe> recipes) {
+			super(Kiln.name, TFCHelper.kilnRecipes, recipes);
 		}
+        
+        @Override
+        protected String getRecipeInfo(KilnRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getCraftingResult());
+        }
 	}
 		
 }

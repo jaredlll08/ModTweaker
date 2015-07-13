@@ -1,12 +1,22 @@
 package modtweaker2.mods.fsp.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
 import static modtweaker2.mods.fsp.FSPHelper.getLiquid;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -20,6 +30,11 @@ import flaxbeard.steamcraft.api.Tuple3;
 
 @ZenClass("mods.fsp.Crucible")
 public class Crucible {
+    
+    public static final String nameLiquid = "FSP Crucible (Liquid)";
+    public static final String nameMelting = "FSP Crucible (Liquid)";
+    public static final String nameDunking = "FSP Crucible (Dunking)";
+    
     @ZenMethod
     public static void addLiquid(String name, IItemStack ingot, IItemStack plate, IItemStack nugget, int r, int g, int b) {
         MineTweakerAPI.apply(new AddLiquid(new CrucibleLiquid(name, toStack(ingot), toStack(plate), toStack(nugget), null, r, g, b)));
@@ -30,14 +45,15 @@ public class Crucible {
         MineTweakerAPI.apply(new AddLiquid(new CrucibleLiquid(name, toStack(ingot), toStack(plate), toStack(nugget), new CrucibleFormula(getLiquid(l1), n1, getLiquid(l2), n2, n3), r, g, b)));
     }
 
-    private static class AddLiquid extends BaseListAddition {
+    private static class AddLiquid extends BaseListAddition<CrucibleLiquid> {
         public AddLiquid(CrucibleLiquid recipe) {
-            super("FSP Crucible Liquid", SteamcraftRegistry.liquids, recipe);
+            super(nameLiquid, SteamcraftRegistry.liquids);
+            recipes.add(recipe);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return ((CrucibleLiquid) recipe).name;
+        public String getRecipeInfo(CrucibleLiquid recipe) {
+            return recipe.name;
         }
     }
 
@@ -50,41 +66,43 @@ public class Crucible {
         }
     }
 
-    private static class AddMelting extends BaseMapAddition {
-        private final ItemStack stack;
-
-        public AddMelting(ItemStack stack, Object key, Object recipe) {
-            super("FSP Crucible Melting", SteamcraftRegistry.smeltThings, key, recipe);
-            this.stack = stack;
+    private static class AddMelting extends BaseMapAddition<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> {
+        public AddMelting(ItemStack stack, MutablePair<Item, Integer> key, MutablePair<CrucibleLiquid, Integer> recipe) {
+            super(nameMelting, SteamcraftRegistry.smeltThings);
+            map.put(key, recipe);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return stack.getDisplayName();
+        protected String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipe) {
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 
     @ZenMethod
-    public static void removeMelting(IItemStack input) {
-        MineTweakerAPI.apply(new RemoveMelting(toStack(input), MutablePair.of(toStack(input).getItem(), toStack(input).getItemDamage())));
-    }
-
-    private static class RemoveMelting extends BaseMapRemoval {
-        private final ItemStack stack;
-
-        public RemoveMelting(ItemStack stack, Object key) {
-            super("FSP Crucible Melting", SteamcraftRegistry.smeltThings, key);
-            this.stack = stack;
+    public static void removeMelting(IIngredient input) {
+        Map<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipes = new HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>>();
+        
+        for(Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> entry : SteamcraftRegistry.smeltThings.entrySet()) {
+            if(matches(input, toIItemStack(new ItemStack(entry.getKey().left, 1, entry.getKey().right)))) {
+                recipes.put(entry.getKey(), entry.getValue());
+            }
         }
         
-        public void apply(){
-        	SteamcraftRegistry.smeltThings.remove(stack);
-        	MutablePair<String, Integer> pair;
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveMelting(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipes found for %s", Crucible.nameMelting, input));
+        }
+    }
+
+    private static class RemoveMelting extends BaseMapRemoval<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> {
+        public RemoveMelting(Map<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipes) {
+            super(nameMelting, SteamcraftRegistry.smeltThings, recipes);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return stack.getDisplayName();
+        protected String getRecipeInfo(Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> recipe) {
+            return LogHelper.getStackDescription(new ItemStack(recipe.getKey().left, 1, recipe.getKey().right));
         }
     }
 
@@ -93,40 +111,50 @@ public class Crucible {
         ItemStack stack = toStack(input);
         CrucibleLiquid fluid = getLiquid(liquid);
         if (fluid != null) {
-            MineTweakerAPI.apply(new AddDunking(toStack(input), new Tuple3(stack.getItem(), stack.getItemDamage(), fluid), MutablePair.of(volume, toStack(output))));
+            MineTweakerAPI.apply(new AddDunking(new Tuple3(stack.getItem(), stack.getItemDamage(), fluid), MutablePair.of(volume, toStack(output))));
         }
     }
 
-    private static class AddDunking extends BaseMapAddition {
-        private final ItemStack stack;
-
-        public AddDunking(ItemStack stack, Object key, Object recipe) {
-            super("FSP Crucible Dunking", SteamcraftRegistry.dunkThings, key, recipe);
-            this.stack = stack;
+    private static class AddDunking extends BaseMapAddition<Tuple3, MutablePair<Integer, ItemStack>> {
+        public AddDunking(Tuple3 key, MutablePair<Integer, ItemStack> recipe) {
+            super(Crucible.nameDunking, SteamcraftRegistry.dunkThings);
+            recipes.put(key, recipe);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return stack.getDisplayName();
+        public String getRecipeInfo(Entry<Tuple3, MutablePair<Integer, ItemStack>> recipe) {
+            return LogHelper.getStackDescription(recipe.getValue().right);
         }
     }
 
     @ZenMethod
-    public static void removeDunking(IItemStack input, String liquid) {
-        MineTweakerAPI.apply(new RemoveDunking(toStack(input), new Tuple3(toStack(input).getItem(), toStack(input).getItemDamage(), getLiquid(liquid))));
+    public static void removeDunking(IIngredient input, String liquid) {
+        Map<Tuple3, MutablePair<Integer, ItemStack>> recipes = new HashMap<Tuple3, MutablePair<Integer, ItemStack>>();
+        
+        for(Entry<Tuple3, MutablePair<Integer, ItemStack>> recipe : SteamcraftRegistry.dunkThings.entrySet()) {
+            if(recipe.getValue() != null && recipe.getValue().right != null && matches(input, toIItemStack(recipe.getValue().right))) {
+                if(((CrucibleLiquid)recipe.getKey().third).equals(getLiquid(liquid))) {
+                    recipes.put(recipe.getKey(), recipe.getValue());
+                }
+            }
+                
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveDunking(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s and %s. Command ignored!", Crucible.nameDunking, input.toString(), liquid));
+        }
     }
 
-    private static class RemoveDunking extends BaseMapRemoval {
-        private final ItemStack stack;
-
-        public RemoveDunking(ItemStack stack, Object key) {
-            super("FSP Crucible Dunking", SteamcraftRegistry.dunkThings, key);
-            this.stack = stack;
+    private static class RemoveDunking extends BaseMapRemoval<Tuple3, MutablePair<Integer, ItemStack>> {
+        public RemoveDunking(Map<Tuple3, MutablePair<Integer, ItemStack>> recipes) {
+            super(Crucible.nameDunking, SteamcraftRegistry.dunkThings, recipes);
         }
 
         @Override
-        public String getRecipeInfo() {
-            return stack.getDisplayName();
+        public String getRecipeInfo(Entry<Tuple3, MutablePair<Integer, ItemStack>> recipe) {
+            return LogHelper.getStackDescription(recipe.getValue().right);
         }
     }
 }
