@@ -3,6 +3,7 @@ package modtweaker2.helpers;
 import java.util.Arrays;
 import java.util.List;
 
+import mekanism.api.gas.GasStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
@@ -56,48 +57,15 @@ public class LogHelper {
      */
     public static String getStackDescription(Object object) {
         if(object instanceof ItemStack) {
-            ItemStack stack = (ItemStack)object;
-    	    StringBuilder sb = new StringBuilder();
-    	    
-    	    // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
-    	    sb.append('<');
-    	    sb.append(Item.itemRegistry.getNameForObject(stack.getItem()));
-    	    if(stack.getItemDamage() == 32767) {
-    	        sb.append(":*");
-    	    } else if (stack.getItemDamage() > 0) {
-    	        sb.append(":").append(stack.getItemDamage());
-    	    }
-    	    sb.append('>');
-    	    
-    	    // Do we have a tag? (e.g. <Botania:specialFlower>.withTag({}) )
-    	    if(stack.getTagCompound() != null)
-    	    {
-    	        sb.append(".withTag(");
-    	        sb.append(NBTConverter.from(stack.getTagCompound(), true));
-    	        sb.append(')');
-    	    }
-    	    
-    	    // Do we have a stack size > 1?
-    	    if(stack.stackSize > 1) {
-    	        sb.append(" * ").append(stack.stackSize);
-    	    }
-    	    
-    	    return sb.toString();
+            return getStackDescription((ItemStack)object);
         } else if (object instanceof FluidStack) {
-            FluidStack stack = (FluidStack)object;
-            StringBuilder sb = new StringBuilder();
-            
-            sb.append("<liquid:").append(stack.getFluid().getName()).append('>');
-            
-            if(stack.amount > 1) {
-                sb.append(" * ").append(stack.amount);
-            }
-            
-            return sb.toString();
+            return getStackDescription((FluidStack)object);
+        } else if (object instanceof GasStack) {
+            return getStackDescription((GasStack)object);
         } else if (object instanceof String) {
-            List<ItemStack> ores = OreDictionary.getOres((String)object);
-            
             // Check if string specifies an oredict entry
+            List<ItemStack> ores = OreDictionary.getOres((String)object);
+
             if(!ores.isEmpty()) {
                 return "<ore:" + (String)object + ">";
             } else {
@@ -110,6 +78,59 @@ public class LogHelper {
         }
     }
 
+    public static String getStackDescription(ItemStack stack) {
+        StringBuilder sb = new StringBuilder();
+        
+        // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
+        sb.append('<');
+        sb.append(Item.itemRegistry.getNameForObject(stack.getItem()));
+        if(stack.getItemDamage() == 32767) {
+            sb.append(":*");
+        } else if (stack.getItemDamage() > 0) {
+            sb.append(":").append(stack.getItemDamage());
+        }
+        sb.append('>');
+        
+        // Do we have a tag? (e.g. <Botania:specialFlower>.withTag({}) )
+        if(stack.getTagCompound() != null)
+        {
+            sb.append(".withTag(");
+            sb.append(NBTConverter.from(stack.getTagCompound(), true));
+            sb.append(')');
+        }
+        
+        // Do we have a stack size > 1?
+        if(stack.stackSize > 1) {
+            sb.append(" * ").append(stack.stackSize);
+        }
+        
+        return sb.toString();
+    }
+    
+    public static String getStackDescription(FluidStack stack) {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<liquid:").append(stack.getFluid().getName()).append('>');
+        
+        if(stack.amount > 1) {
+            sb.append(" * ").append(stack.amount);
+        }
+        
+        return sb.toString();
+    }
+    
+    public static String getStackDescription(GasStack stack) {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<gas:").append(stack.getGas().getName()).append('>');
+        
+        if(stack.amount > 1) {
+            sb.append(" * ").append(stack.amount);
+        }
+        
+        return sb.toString();
+    }
+    
     public static String getListDescription(List<?> objects) {
         StringBuilder sb = new StringBuilder();
         

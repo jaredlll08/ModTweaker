@@ -1,10 +1,14 @@
 package modtweaker2.helpers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
+import mekanism.api.gas.GasStack;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.mods.botania.Botania;
+import modtweaker2.mods.mekanism.MekanismHelper;
+import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -105,4 +109,21 @@ public class StackHelper {
         
         return false;
     }
+    
+    public static boolean matches(IIngredient ingredient, IGasStack gasStack) {
+        if(ingredient == null) {
+            return false;
+        }
+        
+        if(ingredient == IngredientAny.INSTANCE) {
+            return true;
+        }
+        
+        if(ingredient instanceof IGasStack) {
+            return MekanismHelper.toGas((IGasStack)ingredient).isGasEqual(MekanismHelper.toGas(gasStack));
+        }
+
+        return false;
+    }
+    
 }

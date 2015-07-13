@@ -16,7 +16,8 @@ import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker2.mods.exnihilo.commands.ExNihiloLogger;
 import modtweaker2.mods.factorization.commands.FactorizationLogger;
-import modtweaker2.mods.mekanism.gas.GasLogger;
+import modtweaker2.mods.mekanism.commands.GasLogger;
+import modtweaker2.mods.mekanism.commands.MekanismLogger;
 import modtweaker2.mods.railcraft.commands.RailcraftLogger;
 import modtweaker2.mods.tconstruct.MaterialLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
@@ -45,6 +46,7 @@ public class Commands {
 
 			if (TweakerPlugin.isLoaded("Mekanism")) {
 				MineTweakerAPI.server.addMineTweakerCommand("gases", new String[] { "/minetweaker gases", "    Outputs a list of all gas names in the game to the minetweaker log" }, new GasLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("mekanism", new String[] { "/minetweaker mekanism [FILTER]", "    Outputs a list of all Mekanism recipes." }, new MekanismLogger());
 			}
 
 			if (TweakerPlugin.isLoaded("Thaumcraft")) {

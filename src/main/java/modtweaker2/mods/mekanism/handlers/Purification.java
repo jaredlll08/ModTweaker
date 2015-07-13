@@ -1,62 +1,101 @@
 package modtweaker2.mods.mekanism.handlers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import mekanism.api.gas.GasRegistry;
+import mekanism.api.gas.GasStack;
 import mekanism.common.recipe.RecipeHandler.Recipe;
 import mekanism.common.recipe.inputs.AdvancedMachineInput;
+import mekanism.common.recipe.inputs.MachineInput;
+import mekanism.common.recipe.machines.MachineRecipe;
 import mekanism.common.recipe.machines.PurificationRecipe;
-import mekanism.common.recipe.outputs.MachineOutput;
+import mekanism.common.recipe.outputs.ItemStackOutput;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.mods.mekanism.Mekanism;
+import minetweaker.api.item.IngredientAny;
+import modtweaker2.helpers.InputHelper;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.StackHelper;
+import modtweaker2.mods.mekanism.gas.IGasStack;
+import modtweaker2.mods.mekanism.gas.MCGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
-import modtweaker2.utils.BaseMapRemoval;
-import net.minecraft.item.ItemStack;
+import modtweaker2.mods.mekanism.util.RemoveMekanismRecipe;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.mekanism.Purification")
 public class Purification {
+    
+    public static final String name = "Mekanism Purification";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void addRecipe(IItemStack input, IItemStack output) {
-        if (Mekanism.v7)
-        {
-            AdvancedMachineInput aInput = new AdvancedMachineInput(toStack(input), GasRegistry.getGas("oxygen"));
-            MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), aInput, toStack(output)));
+    public static void addRecipe(IItemStack itemInput, IItemStack itemOutput) {
+        if(itemInput == null || itemOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
         }
-        else
-        {
-            PurificationRecipe recipe = new PurificationRecipe(toStack(input), toStack(output));
-            MineTweakerAPI.apply(new AddMekanismRecipe("PURIFICATION_CHAMBER", Recipe.PURIFICATION_CHAMBER.get(), recipe.getInput(), recipe));
-        }
+        
+        PurificationRecipe recipe = new PurificationRecipe(toStack(itemInput), toStack(itemOutput));
+        
+        MineTweakerAPI.apply(new AddMekanismRecipe(name, Recipe.PURIFICATION_CHAMBER.get(), recipe));
     }
-
+    
+    @SuppressWarnings("unchecked")
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
-        if (!Mekanism.v7) throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
-        MineTweakerAPI.apply(new Remove(toStack(output)));
-    }
-
-    private static class Remove extends BaseMapRemoval {
-        public Remove(ItemStack stack) {
-            super("Purification Chamber", Recipe.PURIFICATION_CHAMBER.get(), stack);
+    public static void addRecipe(IItemStack itemInput, IGasStack gasInput, IItemStack itemOutput) {
+        if(itemInput == null || gasInput == null || itemOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
         }
 
-        //We must search through the recipe entries so that we can assign the correct key for removal
-        @Override
-        public void apply() {
-            for (Map.Entry<MachineOutput, ItemStack> entry : ((Map<MachineOutput, ItemStack>) map).entrySet()) {
-                if (entry.getValue() != null && areEqual(entry.getValue(), (ItemStack) stack)) {
-                    key = entry.getKey();
-                    break;
-                }
-            }
-
-            super.apply();
+        AdvancedMachineInput input = new AdvancedMachineInput(toStack(itemInput), toGas(gasInput).getGas());
+        ItemStackOutput output = new ItemStackOutput(toStack(itemOutput));
+        
+        PurificationRecipe recipe = new PurificationRecipe(input, output);
+        
+        MineTweakerAPI.apply(new AddMekanismRecipe(name, Recipe.PURIFICATION_CHAMBER.get(), recipe));
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @ZenMethod
+    public static void removeRecipe(IIngredient itemOutput, @Optional IIngredient itemInput, @Optional IIngredient gasInput) {
+        if(itemOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        if(itemInput == null) itemInput = IngredientAny.INSTANCE;
+        if(gasInput == null) gasInput = IngredientAny.INSTANCE;
+        
+        Map<MachineInput, MachineRecipe> recipes = new HashMap<MachineInput, MachineRecipe>();
+        
+        for(Entry<AdvancedMachineInput, PurificationRecipe> entry : ((Map<AdvancedMachineInput, PurificationRecipe>)Recipe.PURIFICATION_CHAMBER.get()).entrySet()) {
+            IItemStack inputItem = InputHelper.toIItemStack(entry.getKey().itemStack);
+            IGasStack inputGas = new MCGasStack(new GasStack(entry.getKey().gasType, 1));
+            IItemStack outputItem = InputHelper.toIItemStack(entry.getValue().recipeOutput.output);
+            
+            if(!StackHelper.matches(itemOutput, outputItem)) continue;
+            if(!StackHelper.matches(itemInput, inputItem)) continue;
+            if(!StackHelper.matches(gasInput, inputGas)) continue;
+            
+            recipes.put(entry.getKey(), entry.getValue());
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.PURIFICATION_CHAMBER.get(), recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, itemOutput.toString(), itemInput.toString(), gasInput.toString()));
         }
     }
 }

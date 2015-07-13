@@ -67,11 +67,11 @@ public abstract class BaseMapAddition<K, V> extends BaseMapModification<K, V> {
 
     @Override
     public String describe() {
-        return String.format("Adding %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
+        return String.format("[ModTweaker2] Adding %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 
     @Override
     public String describeUndo() {
-        return String.format("Removing %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
+        return String.format("[ModTweaker2] Removing %d %s Recipe(s) for %s", recipes.size(), name, getRecipeInfo());
     }
 }
