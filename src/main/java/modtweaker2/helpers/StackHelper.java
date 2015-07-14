@@ -1,7 +1,6 @@
 package modtweaker2.helpers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
-import mekanism.api.gas.GasStack;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.IngredientAny;
