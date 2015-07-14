@@ -9,6 +9,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.mc1710.data.NBTConverter;
 import modtweaker2.utils.TweakerPlugin;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -61,6 +62,8 @@ public class LogHelper {
             return getStackDescription((ItemStack)object);
         } else if (object instanceof FluidStack) {
             return getStackDescription((FluidStack)object);
+        } else if (object instanceof Block) {
+            return getStackDescription(new ItemStack((Block)object, 1, 0));
         } else if (TweakerPlugin.isLoaded("Mekanism") && object instanceof GasStack) {
             return getStackDescription((GasStack)object);
         } else if (object instanceof String) {
