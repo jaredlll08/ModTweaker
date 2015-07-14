@@ -14,12 +14,12 @@ public class FactorizationHelper {
     public static List slag = null;
     @SuppressWarnings("rawtypes")
     public static List crystallizer = null;
-
+    
     static {
         try {
-            lacerator = getStaticObject(Class.forName("factorization.oreprocessing.TileEntityGrinder"), "recipes");
-            slag = getStaticObject(Class.forName("factorization.oreprocessing.TileEntitySlagFurnace$SlagRecipes"), "smeltingResults");
-            crystallizer = getStaticObject(Class.forName("factorization.oreprocessing.TileEntityCrystallizer"), "recipes");
+            lacerator    = getStaticObject(Class.forName("factorization.oreprocessing.TileEntityGrinder"), "recipes");
+            slag         = ReflectionHelper.getObject(getStaticObject(Class.forName("factorization.oreprocessing.TileEntitySlagFurnace"), "recipes"), "list");
+            crystallizer = ReflectionHelper.getObject(getStaticObject(Class.forName("factorization.oreprocessing.TileEntityCrystallizer"), "recipes"), "list");
         } catch (Exception e) {}
     }
 
