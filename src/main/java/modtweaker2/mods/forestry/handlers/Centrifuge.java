@@ -7,17 +7,20 @@ import static modtweaker2.helpers.StackHelper.matches;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.WeightedItemStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.gadgets.MachineCentrifuge.Recipe;
+import forestry.api.recipes.ICentrifugeRecipe;
+import forestry.factory.gadgets.MachineCentrifuge.CentrifugeRecipe;
 import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
 
 
@@ -28,39 +31,68 @@ public class Centrifuge {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+	/**
+	 * Adds a recipe for the Centrifuge
+	 * 
+	 * @param output List of items to produce with associated chance
+	 * @param timePerItem time per item to process
+	 * @param ingredient item input
+	 */
 	@ZenMethod
-	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {
-		HashMap<ItemStack, Integer> products = new HashMap<ItemStack, Integer>();
-		// products.put(toStack(output[0]), chances[0]);
-		int i = 0;
-		for (IItemStack product : output) {
-			products.put(toStack(product), chances[i]);
-			i++;
+	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient) {
+		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
+		for (WeightedItemStack product : output) {
+			products.put(toStack(product.getStack()), product.getChance());
 		}
-		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStack(itemInput), products)));
+		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(ingredient), products)));
 	}
 
-    private static class Add extends BaseListAddition<Recipe> {
+	/**
+	 * Adds a recipe for the Centrifuge
+	 * 
+	 * @param output List of items to produce
+	 * @param output List of percentages to produce a item (same order as in item list) 
+	 * @param timePerItem time per item to process
+	 * @param itemInput item input
+	 */
+	@ZenMethod
+	@Deprecated
+	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {
+		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
+		int i = 0;
+		for (IItemStack product : output) {
+			products.put(toStack(product), ((float) chances[i] / 100));
+			i++;
+		}
+		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(itemInput), products)));
+	}
 
-        public Add(Recipe recipe) {
+    private static class Add extends BaseListAddition<ICentrifugeRecipe> {
+
+    	public Add(ICentrifugeRecipe recipe) {
             super(Centrifuge.name, RecipeManager.recipes);
             recipes.add(recipe);
         }
         
         @Override
-        protected String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.resource);
+        protected String getRecipeInfo(ICentrifugeRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getInput());
         }
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @ZenMethod
+	/**
+	 * Removes a recipe for the Centrifuge
+	 * 
+	 * @param ingredient item input
+	 */
+	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
-        List<Recipe> recipes = new LinkedList<Recipe>();
+        List<ICentrifugeRecipe> recipes = new LinkedList<ICentrifugeRecipe>();
         
-        for(Recipe recipe : RecipeManager.recipes) {
-            if(recipe != null && matches(input, toIItemStack(recipe.resource))) {
+        for(ICentrifugeRecipe recipe : RecipeManager.recipes) {
+            if(recipe != null && matches(input, toIItemStack(recipe.getInput()))) {
                 recipes.add(recipe);
             }
         }
@@ -72,15 +104,15 @@ public class Centrifuge {
         }
 	}
 
-	private static class Remove extends BaseListRemoval<Recipe> {
+	private static class Remove extends BaseListRemoval<ICentrifugeRecipe> {
 
-		public Remove(List<Recipe> recipes) {
+		public Remove(List<ICentrifugeRecipe> recipes) {
 			super(Centrifuge.name, RecipeManager.recipes, recipes);
 		}
 
 		@Override
-		protected String getRecipeInfo(Recipe recipe) {
-		    return LogHelper.getStackDescription(recipe.resource);
+		protected String getRecipeInfo(ICentrifugeRecipe recipe) {
+		    return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 }

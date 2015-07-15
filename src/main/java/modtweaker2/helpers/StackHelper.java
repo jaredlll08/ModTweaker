@@ -70,7 +70,7 @@ public class StackHelper {
         }
         
         // Check for Botania special flowers
-        if(ingredient.getItems() != null && Botania.isSubtile(toStack(itemStack))) {
+        if(ingredient.getItems() != null && TweakerPlugin.isLoaded("Botania") && Botania.isSubtile(toStack(itemStack))) {
             for(IItemStack item : ingredient.getItems()) {
                 if(areEqual(toStack(item), toStack(itemStack))) {
                     return true;
