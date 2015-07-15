@@ -80,7 +80,7 @@ public class ThermionicFabricator {
 
         @Override
         public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.getPlan());
+            return LogHelper.getStackDescription(recipe.asIRecipe().getRecipeOutput());
         }
     }
 
@@ -139,7 +139,7 @@ public class ThermionicFabricator {
 
         @Override
         public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.getPlan());
+            return LogHelper.getStackDescription(recipe.asIRecipe().getRecipeOutput());
         }
     }
 }
