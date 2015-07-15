@@ -8,11 +8,11 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.StackHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;
@@ -33,6 +33,12 @@ public class PureDaisy {
         }
         
         Object input = InputHelper.toObject(blockInput);
+        
+        if(input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack)input))) {
+            LogHelper.logError(String.format("Input must be a block or an oredict entry."));
+            return;
+        }
+        
         if(input instanceof ItemStack) input = Block.getBlockFromItem(((ItemStack)input).getItem());
         ItemStack output = InputHelper.toStack(blockOutput);
         
@@ -55,11 +61,16 @@ public class PureDaisy {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void removeRecipe(IIngredient input, @Optional IIngredient output) {
+    @ZenMethod
+    public static void removeRecipe(IIngredient output) {
         List<RecipePureDaisy> recipes = new LinkedList<RecipePureDaisy>();
         
         for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
-            recipes.add(recipe);
+            IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutput(), 1, recipe.getOutputMeta()));
+            
+            if(StackHelper.matches(output, out)) {
+                recipes.add(recipe);
+            }
         }
         
         if(!recipes.isEmpty()) {

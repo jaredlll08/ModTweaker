@@ -2,11 +2,14 @@ package modtweaker2.mods.botania.handlers;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.StringHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -55,9 +58,11 @@ public class Brew {
     @ZenMethod
     public static void removeRecipe(String brewName) {
         List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
+        Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
         
         for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {
-            if(recipe.getBrew().getKey().equalsIgnoreCase(brewName)) {
+            matcher.reset(recipe.getBrew().getKey());
+            if(matcher.matches()) {
                 recipes.add(recipe);
             }
         }
@@ -65,7 +70,7 @@ public class Brew {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
-            
+            LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
         }
     }
     
