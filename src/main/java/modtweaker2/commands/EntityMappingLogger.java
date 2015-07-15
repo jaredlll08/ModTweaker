@@ -14,8 +14,11 @@ public class EntityMappingLogger implements ICommandFunction {
 	@Override
 	public void execute(String[] arguments, IPlayer player) {
 
-		Set<Integer> keys = EntityList.stringToIDMapping.keySet();
+		@SuppressWarnings("unchecked")
+        Set<Integer> keys = EntityList.stringToIDMapping.keySet();
+		
 		System.out.println("Mob Keys: " + keys.size());
+		
 		for (Integer key : keys) {
 			ModTweaker2.logger.info("Mob Key " + EntityList.getStringFromID(key) + " : " + key);
 			MineTweakerAPI.logCommand("Mob Key " + EntityList.getStringFromID(key) + " : " + key);

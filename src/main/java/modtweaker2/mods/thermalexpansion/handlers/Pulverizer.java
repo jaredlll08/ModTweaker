@@ -1,11 +1,21 @@
 package modtweaker2.mods.thermalexpansion.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker2.utils.TweakerPlugin;
-import net.minecraft.item.ItemStack;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.ReflectionHelper;
+import modtweaker2.mods.thermalexpansion.ThermalHelper;
+import modtweaker2.utils.BaseListAddition;
+import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
@@ -13,101 +23,163 @@ import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
 @ZenClass("mods.thermalexpansion.Pulverizer")
 public class Pulverizer {
+    
+    public static final String name = "Thermal Expansion Pulverizer";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack output) {
-		
-			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output), null, 0));
+		addRecipe(energy, input, output, null, 0);
 	}
 
 	@ZenMethod
 	public static void addRecipe(int energy, IItemStack input, IItemStack output, IItemStack secondary, int secondaryChance) {
-		
-			MineTweakerAPI.apply(new Add(energy, toStack(input), toStack(output), toStack(secondary), secondaryChance));
+       if(input == null || output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+	    
+        if(PulverizerManager.recipeExists(toStack(input))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input))));
+            return;
+        }
+        
+        RecipePulverizer recipe = ReflectionHelper.getInstance(ThermalHelper.pulverizerRecipe, toStack(input), toStack(output), toStack(secondary), secondaryChance, energy); 
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
+        }
 	}
 
-	private static class Add implements IUndoableAction {
-		ItemStack input;
-		ItemStack output;
-		ItemStack secondary;
-		int secondaryChance;
-		int energy;
-		boolean applied = false;
-
-		public Add(int rf, ItemStack inp, ItemStack out, ItemStack sec, int chance) {
-			energy = rf;
-			input = inp;
-			output = out;
-			secondary = sec;
-			secondaryChance = chance;
+	private static class Add extends BaseListAddition<RecipePulverizer> {
+		public Add(RecipePulverizer recipe) {
+		    super(Pulverizer.name, null);
+		    recipes.add(recipe);
 		}
 
 		public void apply() {
-			applied = PulverizerManager.addRecipe(energy, input, output, secondary, secondaryChance);
-		}
-
-		public boolean canUndo() {
-			return input != null && applied;
-		}
-
-		public String describe() {
-			return "Adding Pulverizer Recipe using " + input.getDisplayName();
+		    for(RecipePulverizer recipe : recipes) {
+		        boolean applied = PulverizerManager.addRecipe(
+		                recipe.getEnergy(),
+		                recipe.getInput(),
+		                recipe.getPrimaryOutput(),
+		                recipe.getSecondaryOutput(),
+		                recipe.getSecondaryOutputChance());
+		        
+		        if(applied) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
 
 		public void undo() {
-			PulverizerManager.removeRecipe(input);
+		    for(RecipePulverizer recipe : successful) {
+		        PulverizerManager.removeRecipe(recipe.getInput());
+		    }
+		}
+		
+		@Override
+		protected boolean equals(RecipePulverizer recipe, RecipePulverizer otherRecipe) {
+		    return ThermalHelper.equals(recipe, otherRecipe);
 		}
 
-		public String describeUndo() {
-			return "Removing Pulverizer Recipe using " + input.getDisplayName();
+		@Override
+		protected String getRecipeInfo(RecipePulverizer recipe) {
+		    return LogHelper.getStackDescription(recipe.getInput());
 		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack input) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(input)));
+	public static void removeRecipe(IIngredient input) {
+	    List<RecipePulverizer> recipes = new LinkedList<RecipePulverizer>();
+	    RecipePulverizer[] list = PulverizerManager.getRecipeList();
+	    
+	    for(RecipePulverizer recipe : list) {
+	        if(recipe != null && recipe.getInput() != null && matches(input, toIItemStack(recipe.getInput()))) {
+	            recipes.add(recipe);
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+	        MineTweakerAPI.apply(new Remove(recipes));
+	    } else {
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s.", name, input.toString()));
+	    }
+	    
 	}
 
-	private static class Remove implements IUndoableAction {
-		ItemStack input;
-		RecipePulverizer removed;
-
-		public Remove(ItemStack inp) {
-			input = inp;
+	private static class Remove extends BaseListRemoval<RecipePulverizer> {
+		public Remove(List<RecipePulverizer> recipes) {
+			super(Pulverizer.name, null, recipes);
 		}
 
 		public void apply() {
-			removed = PulverizerManager.getRecipe(input);
-			PulverizerManager.removeRecipe(input);
-		}
-
-		public boolean canUndo() {
-			return removed != null;
-		}
-
-		public String describe() {
-			return "Removing Pulverizer Recipe using " + input.getDisplayName();
+		    for(RecipePulverizer recipe : recipes) {
+		        boolean removed = PulverizerManager.removeRecipe(recipe.getInput());
+		        
+		        if(removed) {
+		            successful.add(recipe);
+		        }
+		    }
 		}
 
 		public void undo() {
-			PulverizerManager.addRecipe(removed.getEnergy(), removed.getInput(), removed.getPrimaryOutput(), removed.getSecondaryOutput(), removed.getSecondaryOutputChance());
+		    for(RecipePulverizer recipe : successful) {
+		        PulverizerManager.addRecipe(
+		                recipe.getEnergy(),
+		                recipe.getInput(),
+		                recipe.getPrimaryOutput(),
+		                recipe.getSecondaryOutput(),
+		                recipe.getSecondaryOutputChance());
+		    }
 		}
+		
+        @Override
+        protected boolean equals(RecipePulverizer recipe, RecipePulverizer otherRecipe) {
+            return ThermalHelper.equals(recipe, otherRecipe);
+        }
 
-		public String describeUndo() {
-			return "Restoring Pulverizer Recipe using " + input.getDisplayName();
-		}
-
-		public Object getOverrideKey() {
-			return null;
-		}
-
+        @Override
+        protected String getRecipeInfo(RecipePulverizer recipe) {
+            return LogHelper.getStackDescription(recipe.getInput());
+        }
 	}
+	
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
 
+    @ZenMethod
+    public static void refreshRecipes() {
+        MineTweakerAPI.apply(new Refresh());
+    }
+
+    private static class Refresh implements IUndoableAction {
+
+        public void apply() {
+            PulverizerManager.refreshRecipes();
+        }
+
+        public boolean canUndo() {
+            return true;
+        }
+
+        public String describe() {
+            return "Refreshing " + Pulverizer.name + " recipes";
+        }
+
+        public void undo() {
+        }
+
+        public String describeUndo() {
+            return "Ignoring undo of " + Pulverizer.name + " recipe refresh";
+        }
+
+        public Object getOverrideKey() {
+            return null;
+        }
+    }
 }

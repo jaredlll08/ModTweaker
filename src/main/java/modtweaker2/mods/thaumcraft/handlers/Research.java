@@ -21,7 +21,6 @@ import modtweaker2.mods.thaumcraft.research.RemoveResearch;
 import modtweaker2.mods.thaumcraft.research.RemoveTab;
 import modtweaker2.mods.thaumcraft.research.SetAspects;
 import modtweaker2.mods.thaumcraft.research.SetResearch;
-import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.ResourceLocation;
 import stanhebben.zenscript.annotations.Optional;

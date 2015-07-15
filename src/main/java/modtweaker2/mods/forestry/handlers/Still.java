@@ -2,14 +2,17 @@ package modtweaker2.mods.forestry.handlers;
 
 import static modtweaker2.helpers.InputHelper.getFluid;
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
+import static modtweaker2.helpers.StackHelper.matches;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.factory.gadgets.MachineStill;
@@ -18,6 +21,10 @@ import forestry.factory.gadgets.MachineStill.RecipeManager;
 
 @ZenClass("mods.forestry.Still")
 public class Still {
+    
+    public static final String name = "Forestry Still";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void addRecipe(int timePerUnit, ILiquidStack input, ILiquidStack output) {
@@ -29,37 +36,46 @@ public class Still {
 		MachineStill.RecipeManager.recipeFluidOutputs.add(getFluid(output));
 	}
 
-	private static class Add extends BaseListAddition {
+	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
-			super("Forestry Still", MachineStill.RecipeManager.recipes, recipe);
+			super("Forestry Still", MachineStill.RecipeManager.recipes);
+			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return ((Recipe) recipe).output.getLocalizedName();
+		public String getRecipeInfo(Recipe recipe) {
+			return LogHelper.getStackDescription(recipe.output);
 		}
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void removeRecipe(ILiquidStack output, ILiquidStack input) {
-		MineTweakerAPI.apply(new Remove(MachineStill.RecipeManager.recipes, toFluid(input)));
+	    List<Recipe> recipes = new LinkedList<Recipe>();
+	    
+        for (Recipe r : RecipeManager.recipes) {
+            if (r != null && r.output != null && matches(output, toILiquidStack(r.output))) {
+                recipes.add(r);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name, output.toString()));
+        }
 	}
 
-	private static class Remove extends BaseListRemoval {
-
-		public Remove(List list, FluidStack input) {
-			super(list, input);
+	private static class Remove extends BaseListRemoval<Recipe> {
+		public Remove(List<Recipe> recipes) {
+			super(Still.name, RecipeManager.recipes, recipes);
 
 		}
-
-		@Override
-		public void apply() {
-			for (Recipe r : RecipeManager.recipes) {
-				if (r.output != null && r.output.isFluidEqual(fluid)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
-		}
+		
+        @Override
+        public String getRecipeInfo(Recipe recipe) {
+            return LogHelper.getStackDescription(recipe.output);
+        }
 	}
 }

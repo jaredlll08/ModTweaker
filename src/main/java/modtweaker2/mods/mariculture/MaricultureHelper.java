@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mariculture.api.core.FuelInfo;
 import mariculture.api.core.MaricultureHandlers;
 import mariculture.api.fishery.Fishing;
 import mariculture.api.fishery.Loot;
@@ -15,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaricultureHelper {
-    public static Map fuels = null;
+    public static Map<Object, FuelInfo> fuels = null;
     public static HashMap<Rarity, ArrayList<Loot>> loot = null;
 
     static {
@@ -27,7 +28,7 @@ public class MaricultureHelper {
 
     private MaricultureHelper() {}
 
-    //Helper for getting the key that is used when adding/removing fuels
+    // Helper for getting the key that is used when adding/removing fuels
     public static String getKey(Object o) {
         if (o instanceof String) return (String) o;
         else if (o instanceof ItemStack) {

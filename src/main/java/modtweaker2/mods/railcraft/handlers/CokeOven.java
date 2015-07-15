@@ -1,18 +1,24 @@
 package modtweaker2.mods.railcraft.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.StackHelper.matches;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import minetweaker.mc1710.item.MCItemStack;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -20,6 +26,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.railcraft.CokeOven")
 public class CokeOven {
 
+	public static final String name = "Railcraft Coke Oven";
+	
 	/**
 	 * Adds a recipe for the Coke Oven
 	 * 
@@ -74,43 +82,49 @@ public class CokeOven {
 		MineTweakerAPI.apply(new Add( new CokeOvenRecipe(toStack(input), matchDamage, matchNBT, toStack(output), toFluid(fluidOutput), cookTime) ));
 	}
 
-	private static class Add extends BaseListAddition {
+	private static class Add extends BaseListAddition<ICokeOvenRecipe> {
 
-		public Add(CokeOvenRecipe recipe) {
-			super("Railcraft CokeOven", RailcraftCraftingManager.cokeOven.getRecipes(), recipe);
+		@SuppressWarnings("unchecked")
+        public Add(ICokeOvenRecipe recipe) {
+			super(CokeOven.name, (List<ICokeOvenRecipe>)RailcraftCraftingManager.cokeOven.getRecipes());
+			recipes.add(recipe);
 		}
+		
 		@Override
-		public String getRecipeInfo() {
-			return " " + new MCItemStack(((ICokeOvenRecipe) recipe).getInput()) + " (Input)";
+		public String getRecipeInfo(ICokeOvenRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(toStack(output)));
+	public static void removeRecipe(IIngredient output) {
+	    List<ICokeOvenRecipe> recipes = new LinkedList<ICokeOvenRecipe>();
+	    
+        for (ICokeOvenRecipe r : RailcraftHelper.oven) {
+            if (r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
+                recipes.add(r);
+            }
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new Remove(recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", CokeOven.name, output.toString()));
+        }
 	}
 
-	private static class Remove extends BaseListRemoval {
-		public Remove(ItemStack stack) {
-			super("Coke Oven", RailcraftHelper.oven, stack);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public void apply() {
-			for (ICokeOvenRecipe r : RailcraftHelper.oven) {
-				if (r.getOutput() != null && r.getOutput().isItemEqual(stack) && ItemStack.areItemStackTagsEqual(r.getOutput(), stack)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
+	private static class Remove extends BaseListRemoval<ICokeOvenRecipe> {
+	    
+	    @SuppressWarnings("unchecked")
+		public Remove(List<ICokeOvenRecipe> recipes) {
+			super(CokeOven.name, (List<ICokeOvenRecipe>)RailcraftHelper.oven, recipes);
 		}
 
 		@Override
-		public String getRecipeInfo() {
-			return " " + new MCItemStack(stack) + " (Input)";
+		public String getRecipeInfo(ICokeOvenRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 }

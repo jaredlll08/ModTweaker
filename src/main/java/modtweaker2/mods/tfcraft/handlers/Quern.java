@@ -1,13 +1,16 @@
 package modtweaker2.mods.tfcraft.handlers;
 
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.areEqual;
+import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tfcraft.TFCHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -19,39 +22,70 @@ import com.bioxx.tfc.api.Crafting.QuernRecipe;
 
 @ZenClass("mods.tfcraft.Quern")
 public class Quern {
+    
+    public static final String name = "TFC Quern";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void add(IItemStack input, IItemStack output) {
 		MineTweakerAPI.apply(new AddRecipe(new QuernRecipe(toStack(input), toStack(output))));
 	}
 	
-	@ZenMethod
-	public static void remove(IItemStack input){
-		MineTweakerAPI.apply(new RemoveRecipe(toStack(input)));
-	}
-
-	private static class AddRecipe extends BaseListAddition{
+	private static class AddRecipe extends BaseListAddition<QuernRecipe> {
 		public AddRecipe(QuernRecipe recipe) {
-			super("Quern", TFCHelper.quernRecipes, recipe);
-			TFCHelper.quernVaildItems.add(recipe.getInItem());
+			super(Quern.name, TFCHelper.quernRecipes);
+			recipes.add(recipe);
+		}
+		
+		@Override
+		public void apply() {
+		    super.apply();
+		    
+            for (QuernRecipe recipe : successful){
+                TFCHelper.quernVaildItems.add(recipe.getInItem());
+            }
+		}
+		
+		@Override
+		public void undo() {
+            for (QuernRecipe recipe : successful){
+                TFCHelper.quernVaildItems.remove(recipe.getInItem());
+            }
+            
+            super.undo();
+		}
+		
+		@Override
+		protected String getRecipeInfo(QuernRecipe recipe) {
+		    return LogHelper.getStackDescription(recipe.getResult());
 		}
 	}
 	
-	private static class RemoveRecipe extends BaseListRemoval{
-		public RemoveRecipe(ItemStack stack) {
-			super("Quern-Remove", TFCHelper.quernRecipes, stack);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+    @ZenMethod
+    public static void remove(IIngredient output) {
+        List<QuernRecipe> recipes = new LinkedList<QuernRecipe>();
+        
+        for (QuernRecipe recipe : QuernManager.getInstance().getRecipes()) {
+            if (recipe != null && recipe.getResult() != null && matches(output, toIItemStack(recipe.getResult()))){
+                recipes.add(recipe);
+            }
+        }
+        
+        MineTweakerAPI.apply(new RemoveRecipe(recipes));
+    }
+	
+	private static class RemoveRecipe extends BaseListRemoval<QuernRecipe> {
+		public RemoveRecipe(List<QuernRecipe> recipes) {
+			super(Quern.name, TFCHelper.quernRecipes, recipes);
 		}
 
 		@Override
 		public void apply() {
-			for (QuernRecipe recipe : QuernManager.getInstance().getRecipes()){
-				if (recipe.getResult() !=null && areEqual(recipe.getResult(), stack)){
-					recipes.add(recipe);
-				}
-			}
-			
-			for (Object aRecipe : recipes){
-			    TFCHelper.quernVaildItems.remove(((QuernRecipe)aRecipe).getInItem());
+			for (QuernRecipe recipe : recipes) {
+			    TFCHelper.quernVaildItems.remove(recipe.getInItem());
 			}
 			
 			super.apply();
@@ -59,11 +93,16 @@ public class Quern {
 		
         @Override
         public void undo() {
-            for (Object aRecipe : recipes){
-                TFCHelper.quernVaildItems.add(((QuernRecipe)aRecipe).getInItem());
-            }
-            
             super.undo();
+
+            for (QuernRecipe recipe : successful){
+                TFCHelper.quernVaildItems.add(recipe.getInItem());
+            }
+        }
+        
+        @Override
+        protected String getRecipeInfo(QuernRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getResult());
         }
 	}
 	

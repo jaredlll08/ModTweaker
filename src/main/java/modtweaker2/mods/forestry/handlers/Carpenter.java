@@ -1,15 +1,20 @@
 package modtweaker2.mods.forestry.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
+import static modtweaker2.helpers.InputHelper.toIItemStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
+import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.forestry.ForestryHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
@@ -24,7 +29,11 @@ import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
 
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {
+    
+    public static final String name = "Forestry Carpenter";
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 	@ZenMethod
 	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -45,10 +54,11 @@ public class Carpenter {
 		return null;
 	}
 
-	private static class Add extends BaseListAddition {
+	private static class Add extends BaseListAddition<Recipe> {
 
 		public Add(Recipe recipe) {
-			super("Forestry Carpenter", MachineCarpenter.RecipeManager.recipes, recipe);
+			super(Carpenter.name, MachineCarpenter.RecipeManager.recipes);
+			recipes.add(recipe);
 
 			// The Carpenter has a list of valid Fluids, access them via
 			// Relfection because of private
@@ -59,37 +69,43 @@ public class Carpenter {
 				ForestryHelper.addCarpenterRecipeBox(recipe.getBox());
 			}
 		}
-
+		
 		@Override
-		public String getRecipeInfo(){
-			return ((MachineCarpenter.Recipe) recipe).getCraftingResult().getDisplayName();
+		protected String getRecipeInfo(Recipe recipe) {
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IItemStack output) {
-		MineTweakerAPI.apply(new Remove(MachineCarpenter.RecipeManager.recipes, toStack(output)));
+	public static void removeRecipe(IIngredient output) {
+	    List<Recipe> recipes = new LinkedList<Recipe>();
+	    
+	    for(Recipe recipe : RecipeManager.recipes) {
+	        if(recipe != null && recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult()))) {
+	            recipes.add(recipe);
+	        }
+	    }
+	    
+	    if(!recipes.isEmpty()) {
+	        MineTweakerAPI.apply(new Remove(recipes));
+	    } else {
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Carpenter.name, output.toString()));
+	    }
+	    
+		
 	}
 
-	private static class Remove extends BaseListRemoval {
+	private static class Remove extends BaseListRemoval<Recipe> {
 
-		public Remove(List list, ItemStack stack) {
-			super("Forestry Carpenter", list, stack);
+		public Remove(List<Recipe> recipes) {
+			super(Carpenter.name, RecipeManager.recipes, recipes);
 		}
-
+		
 		@Override
-		public void apply() {
-			for (Recipe r : RecipeManager.recipes) {
-				if (r.getCraftingResult() != null && r.getCraftingResult().isItemEqual(stack)) {
-					recipes.add(r);
-				}
-			}
-			super.apply();
-		}
-
-		@Override
-		public String getRecipeInfo(){
-			return "Removed recipe for: " + stack.getDisplayName();
+		protected String getRecipeInfo(Recipe recipe) {
+		    return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 }

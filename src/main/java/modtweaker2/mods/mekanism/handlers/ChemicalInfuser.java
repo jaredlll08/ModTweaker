@@ -1,36 +1,80 @@
 package modtweaker2.mods.mekanism.handlers;
 
 import static modtweaker2.mods.mekanism.MekanismHelper.toGas;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import mekanism.common.recipe.RecipeHandler.Recipe;
 import mekanism.common.recipe.inputs.ChemicalPairInput;
+import mekanism.common.recipe.inputs.MachineInput;
 import mekanism.common.recipe.machines.ChemicalInfuserRecipe;
+import mekanism.common.recipe.machines.MachineRecipe;
 import minetweaker.MineTweakerAPI;
-import modtweaker2.mods.mekanism.Mekanism;
+import minetweaker.api.item.IIngredient;
+import minetweaker.api.item.IngredientAny;
+import modtweaker2.helpers.LogHelper;
+import modtweaker2.helpers.StackHelper;
 import modtweaker2.mods.mekanism.gas.IGasStack;
+import modtweaker2.mods.mekanism.gas.MCGasStack;
 import modtweaker2.mods.mekanism.util.AddMekanismRecipe;
 import modtweaker2.mods.mekanism.util.RemoveMekanismRecipe;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.mekanism.chemical.Infuser")
 public class ChemicalInfuser {
-	@ZenMethod
-	public static void addRecipe(IGasStack left, IGasStack right, IGasStack out) {
-		if (Mekanism.v7) {
-			ChemicalPairInput pair = new ChemicalPairInput(toGas(left), toGas(right));
-			MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), pair, toGas(out)));
-		} else {
-			ChemicalInfuserRecipe recipe = new ChemicalInfuserRecipe(toGas(left), toGas(right), toGas(out));
-			MineTweakerAPI.apply(new AddMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), recipe.getInput(), recipe));
-		}
-	}
 
-	@ZenMethod
-	public static void removeRecipe(IGasStack output) {
-		if (!Mekanism.v7)
-			throw new UnsupportedOperationException("Function not added to v8 compatibility yet");
-		MineTweakerAPI.apply(new RemoveMekanismRecipe("CHEMICAL_INFUSER", Recipe.CHEMICAL_INFUSER.get(), toGas(output)));
-		
-		
-	}
+    public static final String name = "Mekanism Infuser";
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    @SuppressWarnings("unchecked")
+    @ZenMethod
+    public static void addRecipe(IGasStack leftGasInput, IGasStack rightGasInput, IGasStack gasOutput) {
+        if(leftGasInput == null || rightGasInput == null || gasOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        ChemicalInfuserRecipe recipe = new ChemicalInfuserRecipe(toGas(leftGasInput), toGas(rightGasInput), toGas(gasOutput));
+        
+        MineTweakerAPI.apply(new AddMekanismRecipe(name, Recipe.CHEMICAL_INFUSER.get(), recipe));
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ZenMethod
+    public static void removeRecipe(IIngredient gasOutput, @Optional IIngredient leftGasInput, @Optional IIngredient rightGasInput) {
+        if(gasOutput == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        if(leftGasInput == null) leftGasInput = IngredientAny.INSTANCE;
+        if(rightGasInput == null) rightGasInput = IngredientAny.INSTANCE;
+        
+        Map<MachineInput, MachineRecipe> recipes = new HashMap<MachineInput, MachineRecipe>();
+        
+        for(Entry<ChemicalPairInput, ChemicalInfuserRecipe> entry : ((Map<ChemicalPairInput, ChemicalInfuserRecipe>)Recipe.CHEMICAL_DISSOLUTION_CHAMBER.get()).entrySet()) {
+            IGasStack inputGasLeft = new MCGasStack(entry.getKey().leftGas);
+            IGasStack inputGasRight = new MCGasStack(entry.getKey().rightGas);
+            IGasStack outputGas = new MCGasStack(entry.getValue().recipeOutput.output);
+            
+            if(!StackHelper.matches(gasOutput, outputGas)) continue;
+            if(!StackHelper.matches(leftGasInput, inputGasLeft)) continue;
+            if(!StackHelper.matches(rightGasInput, inputGasRight)) continue;
+            
+            recipes.put(entry.getKey(), entry.getValue());
+        }
+        
+        if(!recipes.isEmpty()) {
+            MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.CHEMICAL_DISSOLUTION_CHAMBER.get(), recipes));
+        } else {
+            LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, gasOutput.toString(), leftGasInput.toString(), rightGasInput.toString()));
+        }
+    }
 }
