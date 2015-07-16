@@ -20,7 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {
 		if (!(isABlock(toStack(block)))) {
-			LogHelper.logError("Item must be a block, or you must specify a block to render as when adding a TConstruct Melting recipe");
 			return false;
 		} else
 			return true;

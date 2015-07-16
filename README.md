@@ -17,7 +17,7 @@ Supported Mods
 - ExNihilo
 - ExtendedWorkbench
 - Factorization (0.8.95+)
-- Forestry
+- Forestry (3.6.0+)
 - Flaxbeard's Steam Power
 - Mariculture
 - Mekanism 8

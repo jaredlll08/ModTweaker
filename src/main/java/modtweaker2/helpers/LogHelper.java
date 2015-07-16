@@ -7,10 +7,10 @@ import mekanism.api.gas.GasStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
-import minetweaker.mc1710.data.NBTConverter;
+import minetweaker.mc1710.item.MCItemStack;
+import modtweaker2.mods.mekanism.gas.MCGasStack;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -59,13 +59,13 @@ public class LogHelper {
      */
     public static String getStackDescription(Object object) {
         if(object instanceof ItemStack) {
-            return getStackDescription((ItemStack)object);
+            return new MCItemStack((ItemStack)object).toString();
         } else if (object instanceof FluidStack) {
             return getStackDescription((FluidStack)object);
         } else if (object instanceof Block) {
-            return getStackDescription(new ItemStack((Block)object, 1, 0));
+            return new MCItemStack(new ItemStack((Block)object, 1, 0)).toString();
         } else if (TweakerPlugin.isLoaded("Mekanism") && object instanceof GasStack) {
-            return getStackDescription((GasStack)object);
+            return new MCGasStack((GasStack)object).toString();
         } else if (object instanceof String) {
             // Check if string specifies an oredict entry
             List<ItemStack> ores = OreDictionary.getOres((String)object);
@@ -81,52 +81,11 @@ public class LogHelper {
             return "null";
         }
     }
-
-    public static String getStackDescription(ItemStack stack) {
-        StringBuilder sb = new StringBuilder();
-        
-        // Creates a name like <minecraft:piston> or <appliedenergistics2:item.ItemMultiMaterial:156>
-        sb.append('<');
-        sb.append(Item.itemRegistry.getNameForObject(stack.getItem()));
-        if(stack.getItemDamage() == 32767) {
-            sb.append(":*");
-        } else if (stack.getItemDamage() > 0) {
-            sb.append(":").append(stack.getItemDamage());
-        }
-        sb.append('>');
-        
-        // Do we have a tag? (e.g. <Botania:specialFlower>.withTag({}) )
-        if(stack.getTagCompound() != null)
-        {
-            sb.append(".withTag(");
-            sb.append(NBTConverter.from(stack.getTagCompound(), true));
-            sb.append(')');
-        }
-        
-        // Do we have a stack size > 1?
-        if(stack.stackSize > 1) {
-            sb.append(" * ").append(stack.stackSize);
-        }
-        
-        return sb.toString();
-    }
     
     public static String getStackDescription(FluidStack stack) {
         StringBuilder sb = new StringBuilder();
         
         sb.append("<liquid:").append(stack.getFluid().getName()).append('>');
-        
-        if(stack.amount > 1) {
-            sb.append(" * ").append(stack.amount);
-        }
-        
-        return sb.toString();
-    }
-    
-    public static String getStackDescription(GasStack stack) {
-        StringBuilder sb = new StringBuilder();
-        
-        sb.append("<gas:").append(stack.getGas().getName()).append('>');
         
         if(stack.amount > 1) {
             sb.append(" * ").append(stack.amount);
