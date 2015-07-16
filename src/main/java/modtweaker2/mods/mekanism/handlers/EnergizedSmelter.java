@@ -71,7 +71,7 @@ public class EnergizedSmelter {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.ENERGIZED_SMELTER.get(), recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, itemInput.toString(), itemOutput.toString()));
+            LogHelper.logWarning(String.format("No %s recipe found for %s and %s. Command ignored!", name, itemInput.toString(), itemOutput.toString()));
         }
     }
 }

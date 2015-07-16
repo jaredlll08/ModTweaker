@@ -71,7 +71,7 @@ public class SolarNeutronActivator {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.SOLAR_NEUTRON_ACTIVATOR.get(), recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, gasInput.toString(), gasOutput.toString()));
+            LogHelper.logWarning(String.format("No %s recipe found for %s and %s. Command ignored!", name, gasInput.toString(), gasOutput.toString()));
         }
     }
 }
