@@ -20,6 +20,9 @@ import mekanism.common.recipe.machines.PressurizedRecipe;
 import mekanism.common.recipe.machines.PurificationRecipe;
 import mekanism.common.recipe.machines.SawmillRecipe;
 import mekanism.common.recipe.machines.SeparatorRecipe;
+import mekanism.common.recipe.machines.SmeltingRecipe;
+import mekanism.common.recipe.machines.SolarEvaporationRecipe;
+import mekanism.common.recipe.machines.SolarNeutronRecipe;
 import mekanism.common.recipe.machines.WasherRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
@@ -39,8 +42,10 @@ public class MekanismLogger implements ICommandFunction {
         validArguments.add("crystallizer");
         validArguments.add("dissolution");
         validArguments.add("enrichment");
+        validArguments.add("evaporation");
         validArguments.add("infuser");
         validArguments.add("injection");
+        validArguments.add("neutron");
         validArguments.add("oxidizer");
         validArguments.add("purification");
         validArguments.add("reaction");
@@ -135,6 +140,14 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
+            if(args.isEmpty() || args.contains("crusher")) {
+                for(SmeltingRecipe recipe : (Collection<SmeltingRecipe>)Recipe.ENERGIZED_SMELTER.get().values()) {
+                    MineTweakerAPI.logCommand(String.format("mods.mekanism.Smelter.addRecipe(%s, %s);",
+                            LogHelper.getStackDescription(recipe.recipeInput.ingredient),
+                            LogHelper.getStackDescription(recipe.recipeOutput.output)));
+                }
+            }
+            
             if(args.isEmpty() || args.contains("enrichment")) {
                 for(EnrichmentRecipe recipe : (Collection<EnrichmentRecipe>)Recipe.ENRICHMENT_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Enrichment.addRecipe(%s, %s);",
@@ -198,6 +211,22 @@ public class MekanismLogger implements ICommandFunction {
                             recipe.energyUsage,
                             LogHelper.getStackDescription(recipe.recipeOutput.leftGas),
                             LogHelper.getStackDescription(recipe.recipeOutput.rightGas)));
+                }
+            }
+            
+            if(args.isEmpty() || args.contains("evaporation")) {
+                for(SolarEvaporationRecipe recipe : (Collection<SolarEvaporationRecipe>)Recipe.SOLAR_EVAPORATION_PLANT.get().values()) {
+                    MineTweakerAPI.logCommand(String.format("mods.mekanism.SolarEvaporation.addRecipe(%s, %s);",
+                            LogHelper.getStackDescription(recipe.recipeInput.ingredient),
+                            LogHelper.getStackDescription(recipe.recipeOutput.output)));
+                }
+            }
+            
+            if(args.isEmpty() || args.contains("neutron")) {
+                for(SolarNeutronRecipe recipe : (Collection<SolarNeutronRecipe>)Recipe.SOLAR_NEUTRON_ACTIVATOR.get().values()) {
+                    MineTweakerAPI.logCommand(String.format("mods.mekanism.SolarNeutronActivator.addRecipe(%s, %s);",
+                            LogHelper.getStackDescription(recipe.recipeInput.ingredient),
+                            LogHelper.getStackDescription(recipe.recipeOutput.output)));
                 }
             }
                 
