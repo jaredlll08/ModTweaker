@@ -2,8 +2,10 @@ package modtweaker2.mods.forestry.handlers;
 
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
+import static modtweaker2.helpers.InputHelper.toShapedObjects;
 import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.core.utils.ShapedRecipeCustom;
@@ -34,6 +37,20 @@ public class Carpenter {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+	/**
+	 * Adds a shaped recipe for the Carpenter
+	 * 
+	 * @param output recipe output
+	 * @param fluidInput recipe fluid amount
+	 * @param ingredients recipe ingredients
+	 * @param packagingTime time per crafting operation
+	 * @param box recipes casting item (optional)
+	 */
+	@ZenMethod
+	public static void addRecipe(IItemStack output, int packagingTime, IIngredient[][] ingredients, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
+		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
+	}
+
 	@ZenMethod
 	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -78,13 +95,23 @@ public class Carpenter {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Removes a recipe for the Carpenter
+	 * 
+	 * @param ingredient item input
+	 */
 	@ZenMethod
-	public static void removeRecipe(IIngredient output) {
+	public static void removeRecipe(IIngredient output, @Optional IIngredient liquid) {
 	    List<Recipe> recipes = new LinkedList<Recipe>();
 	    
 	    for(Recipe recipe : RecipeManager.recipes) {
-	        if(recipe != null && recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult()))) {
-	            recipes.add(recipe);
+	        if( recipe != null && recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult())) ) {
+	        	if (liquid != null) {
+	        		if (matches(liquid, toILiquidStack(recipe.getLiquid())))
+			            recipes.add(recipe);
+	        	} else {
+		            recipes.add(recipe);
+	        	}
 	        }
 	    }
 	    
