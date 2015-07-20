@@ -53,7 +53,7 @@ public class ReflectionHelper {
             Constructor<T> constructor = clazz.getDeclaredConstructor(types);
             constructor.setAccessible(true);
             return constructor;
-        } catch (Exception ex) { LogHelper.logError("Exception getting constructore of " + clazz.getName(), ex); }
+        } catch (Exception ex) { LogHelper.logError("Exception getting constructor of " + clazz.getName(), ex); }
 
         return null;
     }
@@ -73,7 +73,7 @@ public class ReflectionHelper {
                 Field result = cls.getDeclaredField(field);
                 result.setAccessible(true);
                 return (T) result.get(object);
-            } catch (Exception ex) {}
+            } catch (Exception ex) { LogHelper.logError("Exception in getObject()", ex); }
         }
 
         LogHelper.logError("Could not retrieve any object for the provided field names.");
@@ -99,7 +99,7 @@ public class ReflectionHelper {
                 modifiersField.setAccessible(true);
                 modifiersField.setInt(result, result.getModifiers() & ~Modifier.FINAL);
                 return (T) result.get(object);
-            } catch (Exception ex) {}
+            } catch (Exception ex) { LogHelper.logError("Exception in getFinalObject()", ex); }
         }
         
         LogHelper.logError("Could not retrieve any final object for the provided field names.");
@@ -120,7 +120,7 @@ public class ReflectionHelper {
                 Field result = clazz.getDeclaredField(field);
                 result.setAccessible(true);
                 return (T) result.get(null);
-            } catch (Exception e) {}
+            } catch (Exception e) { LogHelper.logError("Exception in getStaticObject()", e); }
         }
         
         LogHelper.logError("Could not retrieve any static object for the provided field names.");
@@ -138,7 +138,7 @@ public class ReflectionHelper {
         try {
             Class<?> clazz = Class.forName(className);
             return getStaticObject(clazz, fieldNames);
-        } catch (ClassNotFoundException e) { }
+        } catch (ClassNotFoundException e) { LogHelper.logError("Exception in getStaticObject()", e); }
         
         LogHelper.logError("Could not retrieve any static object for the provided field names.");
         
@@ -150,7 +150,7 @@ public class ReflectionHelper {
             Field f = cls.getDeclaredField(field);
             f.setAccessible(true);
             f.setInt(null, var);
-        } catch (Exception e) {}
+        } catch (Exception e) { LogHelper.logError("Exception in setPrivateValue()", e); }
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

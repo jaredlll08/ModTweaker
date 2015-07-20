@@ -12,12 +12,10 @@ import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 
 public class ThaumcraftHelper {
-    public static ArrayList recipes = null;
     public static HashMap<Object, Integer> warpList;
 
     static {
         try {
-            recipes = ReflectionHelper.getStaticObject(ThaumcraftApi.class, "recipes");
             warpList = ReflectionHelper.getStaticObject(ThaumcraftApi.class, "warpMap");
         } catch (Exception e) {}
     }
