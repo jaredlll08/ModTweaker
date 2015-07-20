@@ -41,16 +41,14 @@ public class InputHelper {
 	
 	public static IItemStack[] toStacks(IIngredient[] iIngredient) {
 		ArrayList<IItemStack> stacks = new ArrayList<IItemStack>();
+		
 		for (IIngredient ing : iIngredient) {
 			for (IItemStack stack : ing.getItems()) {
 				stacks.add(stack);
 			}
 		}
-		IItemStack[] returnArray = new IItemStack[stacks.size()];
-			for(int i = 0; i < returnArray.length;i++){
-				returnArray[i] = stacks.get(i);
-			}
-		return returnArray;
+		
+		return stacks.toArray(new IItemStack[stacks.size()]);
 	}
 
 	public static boolean isABlock(ItemStack block) {
@@ -62,11 +60,11 @@ public class InputHelper {
 	}
 
 	public static ItemStack toStack(IItemStack iStack) {
-		if (iStack == null)
+		if (iStack == null) {
 			return null;
-		else {
+		} else {
 			Object internal = iStack.getInternal();
-			if (internal == null || !(internal instanceof ItemStack)) {
+			if (!(internal instanceof ItemStack)) {
 				LogHelper.logError("Not a valid item stack: " + iStack);
 			}
 
@@ -79,8 +77,9 @@ public class InputHelper {
 	}
 	
 	public static IIngredient toIngredient(FluidStack stack) {
-	    if(stack == null)
+	    if(stack == null) {
 	        return null;
+	    }
 	    
 	    return new MCLiquidStack(stack);
 	}
@@ -102,9 +101,9 @@ public class InputHelper {
 	}
 
 	public static ItemStack[] toStacks(IItemStack[] iStack) {
-		if (iStack == null)
+		if (iStack == null) {
 			return null;
-		else {
+		} else {
 			ItemStack[] output = new ItemStack[iStack.length];
 			for (int i = 0; i < iStack.length; i++) {
 				output[i] = toStack(iStack[i]);
