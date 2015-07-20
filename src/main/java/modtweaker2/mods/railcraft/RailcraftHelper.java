@@ -9,6 +9,7 @@ import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager.BlastFurnaceRecipe;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
 import mods.railcraft.common.util.crafting.RockCrusherCraftingManager.CrusherRecipe;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -27,7 +28,7 @@ public class RailcraftHelper {
             crusher = RailcraftCraftingManager.rockCrusher.getRecipes();
             rolling = RailcraftCraftingManager.rollingMachine.getRecipeList();
             fuels = ReflectionHelper.<List<ItemStack>>getObject(RailcraftCraftingManager.blastFurnace, "fuels");
-        } catch (Exception e) {}
+        } catch (Exception e) { LogHelper.logError("Error in RailcraftHelper", e); }
     }
 
     private RailcraftHelper() {}
