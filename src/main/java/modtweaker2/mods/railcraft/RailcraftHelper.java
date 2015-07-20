@@ -1,11 +1,13 @@
 package modtweaker2.mods.railcraft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import mods.railcraft.api.crafting.IRockCrusherRecipe;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
+import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager;
 import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager.BlastFurnaceRecipe;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
 import mods.railcraft.common.util.crafting.RockCrusherCraftingManager.CrusherRecipe;
@@ -27,7 +29,10 @@ public class RailcraftHelper {
             oven = RailcraftCraftingManager.cokeOven.getRecipes();
             crusher = RailcraftCraftingManager.rockCrusher.getRecipes();
             rolling = RailcraftCraftingManager.rollingMachine.getRecipeList();
-            fuels = ReflectionHelper.<List<ItemStack>>getObject(RailcraftCraftingManager.blastFurnace, "fuels");
+            
+            fuels = new ArrayList<ItemStack>(RailcraftCraftingManager.blastFurnace.getFuels());
+            ReflectionHelper.setPrivateValue(BlastFurnaceCraftingManager.class, RailcraftCraftingManager.blastFurnace, "fuels", fuels);
+
         } catch (Exception e) { LogHelper.logError("Error in RailcraftHelper", e); }
     }
 
