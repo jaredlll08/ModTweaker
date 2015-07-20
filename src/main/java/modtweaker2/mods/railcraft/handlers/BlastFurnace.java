@@ -11,14 +11,10 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
-import modtweaker2.helpers.InputHelper;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.helpers.StackHelper;
 import modtweaker2.mods.railcraft.RailcraftHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -87,80 +83,5 @@ public class BlastFurnace {
         public String getRecipeInfo(IBlastFurnaceRecipe recipe) {
             return LogHelper.getStackDescription(recipe.getOutput());
         }
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@ZenMethod
-	public static void addFuel(IIngredient itemInput) {
-        if(itemInput == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
-            return;
-        }
-        
-        List<ItemStack> fuels = new LinkedList<ItemStack>();
-	    
-	    for(IItemStack item : itemInput.getItems()) {
-	        
-	        boolean match = false;
-	        
-	        for(ItemStack fuel : RailcraftHelper.fuels) {
-	            if(StackHelper.matches(item, InputHelper.toIItemStack(fuel))) {
-	                match = true;
-	                break;
-	            }
-	        }
-	        
-	        if(!match && TileEntityFurnace.isItemFuel(InputHelper.toStack(item))) {
-	            fuels.add(InputHelper.toStack(item));
-	        }
-	    }
-	    
-	    if(!fuels.isEmpty()) {
-	        MineTweakerAPI.apply(new AddFuels(fuels));
-	    } else {
-	        LogHelper.logWarning(String.format("No %s added.", nameFuel));
-	    }
-	}
-	
-	private static class AddFuels extends BaseListAddition<ItemStack> {
-	    public AddFuels(List<ItemStack> fuels) {
-	        super(BlastFurnace.nameFuel, RailcraftHelper.fuels, fuels);
-	    }
-	    
-        @Override
-        protected String getRecipeInfo(ItemStack recipe) {
-            return LogHelper.getStackDescription(recipe);
-        }
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@ZenMethod
-	private static void removeFuel(IIngredient itemInput) {
-	    List<ItemStack> fuels = new LinkedList<ItemStack>();
-	    
-	    for(ItemStack fuel : RailcraftHelper.fuels) {
-	        if(StackHelper.matches(itemInput, InputHelper.toIItemStack(fuel))) {
-	            fuels.add(fuel);
-	        }
-	    }
-	    
-        if(!fuels.isEmpty()) {
-            MineTweakerAPI.apply(new RemoveFuels(fuels));
-        } else {
-            LogHelper.logWarning(String.format("No %s found for argument %s.", nameFuel, itemInput.toString()));
-        }
-	}
-	
-	private static class RemoveFuels extends BaseListRemoval<ItemStack> {
-	    public RemoveFuels(List<ItemStack> fuels) {
-	        super(BlastFurnace.nameFuel, RailcraftHelper.fuels, fuels);
-	    }
-	    
-	    @Override
-	    protected String getRecipeInfo(ItemStack recipe) {
-	        return LogHelper.getStackDescription(recipe);
-	    }
 	}
 }
