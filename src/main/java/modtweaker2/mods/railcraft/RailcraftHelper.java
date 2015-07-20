@@ -19,12 +19,14 @@ public class RailcraftHelper {
     public static List<? extends ICokeOvenRecipe> oven = null;
     public static List<? extends IRockCrusherRecipe> crusher = null;
     public static List<IRecipe> rolling = null;
+    public static List<ItemStack> fuels = null;
     static {
         try {
             furnace = RailcraftCraftingManager.blastFurnace.getRecipes();
             oven = RailcraftCraftingManager.cokeOven.getRecipes();
             crusher = RailcraftCraftingManager.rockCrusher.getRecipes();
             rolling = RailcraftCraftingManager.rollingMachine.getRecipeList();
+            fuels = ReflectionHelper.<List<ItemStack>>getObject(RailcraftCraftingManager.blastFurnace, "fuels");
         } catch (Exception e) {}
     }
 
