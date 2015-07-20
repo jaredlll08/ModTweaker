@@ -52,6 +52,7 @@ public class Infuser {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ZenMethod
     public static void removeRecipe(IIngredient itemOutput, @Optional IIngredient itemInput, @Optional String infuseType) {
         if(itemOutput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
