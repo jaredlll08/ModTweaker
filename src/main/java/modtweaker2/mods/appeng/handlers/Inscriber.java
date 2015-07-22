@@ -31,7 +31,7 @@ public class Inscriber {
 
 	@ZenMethod
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, String type) {
-        if(imprintable == null || out == null || (!type.equals("Press") || !type.equals("Inscribe"))) {
+        if(imprintable == null || out == null || (!type.equals("Press") && !type.equals("Inscribe"))) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Inscriber.name));
             return;
         }
