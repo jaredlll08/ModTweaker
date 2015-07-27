@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thaumcraft.aspect.AspectStack;
 import modtweaker2.mods.thaumcraft.aspect.IAspectStack;
-import net.minecraft.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApi.EntityTags;
 import thaumcraft.api.aspects.Aspect;
