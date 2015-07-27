@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import minetweaker.api.item.IItemStack;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
+import modtweaker2.mods.thaumcraft.aspect.AspectStack;
+import modtweaker2.mods.thaumcraft.aspect.IAspectStack;
+import net.minecraft.item.ItemStack;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApi.EntityTags;
 import thaumcraft.api.aspects.Aspect;
@@ -103,4 +108,30 @@ public class ThaumcraftHelper {
 		}
 		return output;
 	}
+	
+    public static AspectStack[] toStacks(IAspectStack[] iStack) {
+        if (iStack == null) {
+            return null;
+        } else {
+            AspectStack[] output = new AspectStack[iStack.length];
+            for (int i = 0; i < iStack.length; i++) {
+                output[i] = toStack(iStack[i]);
+            }
+
+            return output;
+        }
+    }
+    
+    public static AspectStack toStack(IAspectStack iStack) {
+        if (iStack == null) {
+            return null;
+        } else {
+            Object internal = iStack.getInternal();
+            if (!(internal instanceof AspectStack)) {
+                LogHelper.logError("Not a valid aspect stack: " + iStack);
+            }
+
+            return (AspectStack) internal;
+        }
+    }
 }

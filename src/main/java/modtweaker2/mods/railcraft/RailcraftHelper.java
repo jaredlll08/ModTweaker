@@ -1,14 +1,17 @@
 package modtweaker2.mods.railcraft;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import mods.railcraft.api.crafting.IRockCrusherRecipe;
 import mods.railcraft.api.crafting.RailcraftCraftingManager;
+import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager;
 import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager.BlastFurnaceRecipe;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager.CokeOvenRecipe;
 import mods.railcraft.common.util.crafting.RockCrusherCraftingManager.CrusherRecipe;
+import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,13 +22,18 @@ public class RailcraftHelper {
     public static List<? extends ICokeOvenRecipe> oven = null;
     public static List<? extends IRockCrusherRecipe> crusher = null;
     public static List<IRecipe> rolling = null;
+    public static List<ItemStack> fuels = null;
     static {
         try {
             furnace = RailcraftCraftingManager.blastFurnace.getRecipes();
             oven = RailcraftCraftingManager.cokeOven.getRecipes();
             crusher = RailcraftCraftingManager.rockCrusher.getRecipes();
             rolling = RailcraftCraftingManager.rollingMachine.getRecipeList();
-        } catch (Exception e) {}
+            
+            fuels = new ArrayList<ItemStack>(RailcraftCraftingManager.blastFurnace.getFuels());
+            ReflectionHelper.setPrivateValue(BlastFurnaceCraftingManager.class, RailcraftCraftingManager.blastFurnace, "fuels", fuels);
+
+        } catch (Exception e) { LogHelper.logError("Error in RailcraftHelper", e); }
     }
 
     private RailcraftHelper() {}

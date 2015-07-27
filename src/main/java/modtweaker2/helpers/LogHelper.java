@@ -1,6 +1,7 @@
 package modtweaker2.helpers;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import mekanism.api.gas.GasStack;
@@ -9,6 +10,8 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.mc1710.item.MCItemStack;
 import modtweaker2.mods.mekanism.gas.MCGasStack;
+import modtweaker2.mods.thaumcraft.aspect.AspectStack;
+import modtweaker2.mods.thaumcraft.aspect.MCAspectStack;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -19,6 +22,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 public class LogHelper {
     public static void logPrinted(IPlayer player) {
@@ -66,6 +71,14 @@ public class LogHelper {
             return new MCItemStack(new ItemStack((Block)object, 1, 0)).toString();
         } else if (TweakerPlugin.isLoaded("Mekanism") && object instanceof GasStack) {
             return new MCGasStack((GasStack)object).toString();
+        } else if (TweakerPlugin.isLoaded("Thaumcraft") && object instanceof AspectStack) {
+            return new MCAspectStack((AspectStack)object).toString();
+        } else if(TweakerPlugin.isLoaded("Thaumcraft") && object instanceof AspectList) {
+            List<AspectStack> stacks = new LinkedList<AspectStack>();
+            for(Aspect a : ((AspectList)object).getAspects()) {
+                stacks.add(new AspectStack(a, ((AspectList)object).getAmount(a)));
+            }
+            return(getListDescription(stacks));
         } else if (object instanceof String) {
             // Check if string specifies an oredict entry
             List<ItemStack> ores = OreDictionary.getOres((String)object);
@@ -75,6 +88,10 @@ public class LogHelper {
             } else {
                 return "\"" + (String)object + "\"";
             }
+        } else if (object instanceof List) {
+            return getListDescription((List)object);
+        } else if(object instanceof Object[]) {
+            return getListDescription(Arrays.asList((Object[])object));
         } else if (object != null) {
             return "\"" + object.toString() + "\"";
         } else {

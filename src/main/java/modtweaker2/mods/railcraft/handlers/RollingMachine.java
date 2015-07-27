@@ -24,6 +24,8 @@ public class RollingMachine {
     
     public static final String name = "Railcraft Rolling Machine";
     
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @ZenMethod
     public static void addShaped(IItemStack output, IIngredient[][] ingredients) {
         MineTweakerAPI.apply(new Add(new ShapedOreRecipe(toStack(output), toShapedObjects(ingredients))));

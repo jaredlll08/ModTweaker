@@ -23,6 +23,8 @@ public class RockCrusher {
     
     public static final String name = "Railcraft Rock Crusher";
     
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @ZenMethod
     public static void addRecipe(IItemStack input, boolean matchDamage, boolean matchNBT, IItemStack[] output, double[] chances) {
         IRockCrusherRecipe recipe = RailcraftHelper.getRockCrusherRecipe(toStack(input), matchDamage, matchNBT);
