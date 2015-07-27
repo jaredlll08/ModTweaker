@@ -11,7 +11,6 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import minetweaker.api.item.WeightedItemStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
@@ -31,31 +30,24 @@ public class Insolator {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ZenMethod
-	public static void addRecipe(int energy, IItemStack primaryInput, IItemStack secondaryInput, IItemStack primaryOutput, @Optional WeightedItemStack secondaryOutput) {
-        if(primaryInput == null || secondaryInput == null || primaryOutput == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
-            return;
-        }
-        
-        if(InsolatorManager.recipeExists(toStack(primaryInput), toStack(secondaryInput))) {
+	public static void addRecipe(int energy, IItemStack primaryInput, IItemStack secondaryInput, IItemStack primaryOutput, @Optional IItemStack secondaryOutput, @Optional int secondaryChance) {
+	    if(primaryInput == null || secondaryInput == null || primaryOutput == null) {
+	        LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+	        return;
+	    }
+	    
+	    if(InsolatorManager.recipeExists(toStack(primaryInput), toStack(secondaryInput))) {
             LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", name, primaryInput.toString(), secondaryInput.toString()));
             return;
-        }
-        
-        RecipeInsolator recipe = ReflectionHelper.getInstance(ThermalHelper.insolatorRecipe, toStack(primaryInput), toStack(secondaryInput), toStack(primaryOutput), toStack(secondaryOutput.getStack()), (int)(secondaryOutput != null ? secondaryOutput.getPercent() : 0), energy);
-        
+	    }
+	    
+	    RecipeInsolator recipe = ReflectionHelper.getInstance(ThermalHelper.insolatorRecipe, toStack(primaryInput), toStack(secondaryInput), toStack(primaryOutput), toStack(secondaryOutput), secondaryChance, energy);
+	    
         if(recipe != null) {
             MineTweakerAPI.apply(new Add(recipe));
         } else {
             LogHelper.logError(String.format("Error while creating instance for %s recipe.", name));
         }
-
-	}
-
-	@Deprecated
-	@ZenMethod
-	public static void addRecipe(int energy, IItemStack primaryInput, IItemStack secondaryInput, IItemStack primaryOutput, @Optional IItemStack secondaryOutput, @Optional int secondaryChance) {
-	    addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput != null ? secondaryOutput.weight(secondaryChance) : null);
 	}
 	
 	private static class Add extends BaseListAddition<RecipeInsolator> {

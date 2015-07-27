@@ -14,8 +14,6 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
-import modtweaker2.mods.thaumcraft.aspect.AspectStack;
-import modtweaker2.mods.thaumcraft.aspect.IAspectStack;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
@@ -34,29 +32,16 @@ public class Arcane {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 	@ZenMethod
-	public static void addShaped(String key, IItemStack output, IAspectStack[] aspects, IIngredient[][] ingredients) {
-		MineTweakerAPI.apply(new Add(new ShapedArcaneRecipe(key, toStack(output), AspectStack.join(ThaumcraftHelper.toStacks(aspects)), toShapedObjects(ingredients))));
-	}
-	
-	@Deprecated
-	@ZenMethod
 	public static void addShaped(String key, IItemStack output, String aspects, IIngredient[][] ingredients) {
 		MineTweakerAPI.apply(new Add(new ShapedArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toShapedObjects(ingredients))));
 	}
 
-	@ZenMethod
-	public static void addShapeless(String key, IItemStack output, IAspectStack[] aspects, IIngredient[] ingredients) {
-	    MineTweakerAPI.apply(new Add(new ShapelessArcaneRecipe(key, toStack(output), AspectStack.join(ThaumcraftHelper.toStacks(aspects)), toObjects(ingredients))));
-	}
-	
-	@Deprecated
 	@ZenMethod
 	public static void addShapeless(String key, IItemStack output, String aspects, IIngredient[] ingredients) {
 	    MineTweakerAPI.apply(new Add(new ShapelessArcaneRecipe(key, toStack(output), ThaumcraftHelper.parseAspects(aspects), toObjects(ingredients))));
 	}
 
 	private static class Add extends BaseListAddition<IArcaneRecipe> {
-		@SuppressWarnings("unchecked")
 		public Add(IArcaneRecipe recipe) {
 			super(Arcane.name, ThaumcraftApi.getCraftingRecipes());
 			recipes.add(recipe);
@@ -97,7 +82,6 @@ public class Arcane {
 	}
 
 	private static class Remove extends BaseListRemoval<IArcaneRecipe> {
-		@SuppressWarnings("unchecked")
 		public Remove(List<IArcaneRecipe> recipes) {
 			super(Arcane.name, ThaumcraftApi.getCraftingRecipes(), recipes);
 		}

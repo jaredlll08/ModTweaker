@@ -8,6 +8,7 @@ import modtweaker2.mods.thaumcraft.handlers.Crucible;
 import modtweaker2.mods.thaumcraft.handlers.Infusion;
 import modtweaker2.mods.thaumcraft.handlers.Loot;
 import modtweaker2.mods.thaumcraft.handlers.Research;
+import modtweaker2.mods.thaumcraft.handlers.Test;
 import modtweaker2.mods.thaumcraft.handlers.Warp;
 
 public class Thaumcraft {

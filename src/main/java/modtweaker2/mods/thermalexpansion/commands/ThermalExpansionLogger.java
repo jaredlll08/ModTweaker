@@ -68,7 +68,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
             if(args.isEmpty() || args.contains("insolator")) {
                 for(RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
                     if(recipe.getSecondaryOutput() != null) {
-                        MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Insolator.addRecipe(%d, %s, %s, %s, %s %% %d);",
+                        MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Insolator.addRecipe(%d, %s, %s, %s, %s, %d);",
                                 recipe.getEnergy(),
                                 LogHelper.getStackDescription(recipe.getPrimaryInput()),
                                 LogHelper.getStackDescription(recipe.getSecondaryInput()),
