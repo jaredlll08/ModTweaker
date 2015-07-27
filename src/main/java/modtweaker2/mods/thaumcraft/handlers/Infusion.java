@@ -49,6 +49,7 @@ public class Infusion {
 	}
 
 	private static class Add extends BaseListAddition<InfusionRecipe> {
+		@SuppressWarnings("unchecked")
 		public Add(InfusionRecipe recipe) {
 			super(Infusion.name, ThaumcraftApi.getCraftingRecipes());
 			recipes.add(recipe);
@@ -65,6 +66,7 @@ public class Infusion {
 	}
 
 	private static class AddEnchant extends BaseListAddition<InfusionEnchantmentRecipe> {
+		@SuppressWarnings("unchecked")
 		public AddEnchant(InfusionEnchantmentRecipe inp) {
 		    super(Infusion.enchName, ThaumcraftApi.getCraftingRecipes());
 		    recipes.add(inp);
@@ -120,6 +122,7 @@ public class Infusion {
 	}
 
 	private static class Remove extends BaseListRemoval<InfusionRecipe> {
+		@SuppressWarnings("unchecked")
 		public Remove(List<InfusionRecipe> recipes) {
 			super(Infusion.name, ThaumcraftApi.getCraftingRecipes(), recipes);
 		}
@@ -138,6 +141,7 @@ public class Infusion {
 	}
 
 	private static class RemoveEnchant extends BaseListRemoval<InfusionEnchantmentRecipe> {
+		@SuppressWarnings("unchecked")
 		public RemoveEnchant(List<InfusionEnchantmentRecipe> recipes) {
 		    super(Infusion.enchName, ThaumcraftApi.getCraftingRecipes(), recipes);
 		}

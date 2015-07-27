@@ -22,6 +22,7 @@ import modtweaker2.mods.railcraft.commands.RailcraftLogger;
 import modtweaker2.mods.tconstruct.MaterialLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
 import modtweaker2.mods.thaumcraft.commands.AspectLogger;
+import modtweaker2.mods.thaumcraft.commands.ThaumcraftLogger;
 import modtweaker2.mods.thaumcraft.research.commands.ResearchLogger;
 import modtweaker2.mods.thermalexpansion.commands.ThermalExpansionLogger;
 import modtweaker2.utils.TweakerPlugin;
@@ -52,6 +53,7 @@ public class Commands {
 			if (TweakerPlugin.isLoaded("Thaumcraft")) {
 				MineTweakerAPI.server.addMineTweakerCommand("research", new String[] { "/minetweaker research", "/minetweaker research [CATEGORY]", "    Outputs a list of all category names in the game to the minetweaker log," + " or outputs a list of all research keys in a category to the log." }, new ResearchLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("aspectList", new String[] { "/minetweaker aspectList", "    Outputs a list of all aspects registered to entities and items" }, new AspectLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("thaumcraft", new String[] { "/minetweaker thaumcraft [FILTER]", "Outputs a list of all Thaumcraft recipes."}, new ThaumcraftLogger());
 			}
 
 			if (TweakerPlugin.isLoaded("TConstruct")) {

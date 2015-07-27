@@ -21,14 +21,12 @@ public class Aspects {
 	/** Add/Remove/Set Aspects for items **/
 	@ZenMethod
 	public static void add(IItemStack stack, String aspects) {
-		
-			MineTweakerAPI.apply(new Add(toStack(stack), aspects, false));
+		MineTweakerAPI.apply(new Add(toStack(stack), aspects, false));
 	}
 
 	@ZenMethod
 	public static void set(IItemStack stack, String aspects) {
-		
-			MineTweakerAPI.apply(new Add(toStack(stack), aspects, true));
+		MineTweakerAPI.apply(new Add(toStack(stack), aspects, true));
 	}
 
 	// Adds or sets Aspects
@@ -77,8 +75,7 @@ public class Aspects {
 
 	@ZenMethod
 	public static void remove(IItemStack stack, String aspects) {
-		
-			MineTweakerAPI.apply(new Remove(toStack(stack), aspects));
+		MineTweakerAPI.apply(new Remove(toStack(stack), aspects));
 	}
 
 	private static class Remove extends BaseUndoable {
@@ -138,7 +135,7 @@ public class Aspects {
 			return;
 		}
 		
-			MineTweakerAPI.apply(new AddEntity(entityName, aspects, true));
+		MineTweakerAPI.apply(new AddEntity(entityName, aspects, true));
 	}
 
 	// Adds or sets Aspects
@@ -182,7 +179,7 @@ public class Aspects {
 		}
 	}
 
-	// ////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
 	public static void removeEntity(String entityName, String aspects) {
@@ -190,8 +187,8 @@ public class Aspects {
 			MineTweakerAPI.getLogger().logError("No such entity " + entityName);
 			return;
 		}
-		
-			MineTweakerAPI.apply(new RemoveEntity(entityName, aspects));
+
+		MineTweakerAPI.apply(new RemoveEntity(entityName, aspects));
 	}
 
 	private static class RemoveEntity extends BaseUndoable {
