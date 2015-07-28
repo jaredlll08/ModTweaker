@@ -98,7 +98,7 @@ public class Squeezer {
             	if (ingredients != null) {
             		boolean matched = false;
             		for (int i = 0; i < ingredients.length; i++) {
-            			if ( matches(ingredients[i], toIItemStack(r.resources[i])) && (ingredients[i].getAmount() == toIItemStack(r.resources[i]).getAmount()) )
+            			if ( matches(ingredients[i], toIItemStack(r.resources[i])) )
             				matched = true;
             			else {
             				matched = false;
