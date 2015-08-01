@@ -4,6 +4,7 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.player.IPlayer;
+import modtweaker2.helpers.InputHelper;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.mods.thaumcraft.research.AddPage;
 import modtweaker2.mods.thaumcraft.research.AddPrereq;
@@ -77,14 +78,20 @@ public class Research {
 	@ZenMethod
 	public static void addResearch(String key, String tab, @Optional String aspects, int x, int y, int difficulty, String domain, String path) {
 		
-			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, new ResourceLocation(domain, path))));
+			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, new ResourceLocation(domain, path)), null, null));
 	}
 
 	@ZenMethod
 	public static void addResearch(String key, String tab, @Optional String aspects, int x, int y, int difficulty, IItemStack item) {
 		
-			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, toStack(item))));
+			MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, toStack(item)),null, null));
 	}
+	
+	@ZenMethod
+    public static void addResearch(String key, String tab, @Optional String aspects, int x, int y, int difficulty, IItemStack item, IItemStack[] triggers, String[] entTriggers) {
+	
+        MineTweakerAPI.apply(new AddResearch(new ResearchItem(key, tab, ThaumcraftHelper.parseAspects(aspects), x, y, difficulty, toStack(item)), InputHelper.toStacks(triggers), entTriggers));
+    }
 
 	@ZenMethod
 	public static void addPage(String key, String unlocalized) {
