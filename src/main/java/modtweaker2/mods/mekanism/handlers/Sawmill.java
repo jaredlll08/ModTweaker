@@ -52,6 +52,7 @@ public class Sawmill {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @ZenMethod
     public static void removeRecipe(IIngredient itemInput, @Optional IIngredient itemOutput, @Optional IIngredient optionalItemOutput) {
         if(itemInput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
