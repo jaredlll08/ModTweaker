@@ -59,7 +59,7 @@ public class ChemicalInfuser {
         
         Map<MachineInput, MachineRecipe> recipes = new HashMap<MachineInput, MachineRecipe>();
         
-        for(Entry<ChemicalPairInput, ChemicalInfuserRecipe> entry : ((Map<ChemicalPairInput, ChemicalInfuserRecipe>)Recipe.CHEMICAL_DISSOLUTION_CHAMBER.get()).entrySet()) {
+        for(Entry<ChemicalPairInput, ChemicalInfuserRecipe> entry : ((Map<ChemicalPairInput, ChemicalInfuserRecipe>)Recipe.CHEMICAL_INFUSER.get()).entrySet()) {
             IGasStack inputGasLeft = new MCGasStack(entry.getKey().leftGas);
             IGasStack inputGasRight = new MCGasStack(entry.getKey().rightGas);
             IGasStack outputGas = new MCGasStack(entry.getValue().recipeOutput.output);
@@ -72,7 +72,7 @@ public class ChemicalInfuser {
         }
         
         if(!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.CHEMICAL_DISSOLUTION_CHAMBER.get(), recipes));
+            MineTweakerAPI.apply(new RemoveMekanismRecipe(name, Recipe.CHEMICAL_INFUSER.get(), recipes));
         } else {
             LogHelper.logWarning(String.format("No %s recipe found for %s, %s and %s. Command ignored!", name, gasOutput.toString(), leftGasInput.toString(), rightGasInput.toString()));
         }
