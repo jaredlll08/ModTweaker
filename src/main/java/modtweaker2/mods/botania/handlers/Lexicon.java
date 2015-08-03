@@ -7,6 +7,8 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -359,7 +361,7 @@ public class Lexicon {
     }
 
     @ZenMethod
-    public static void addEntry(String entry, String catagory) {
+    public static void addEntry(String entry, String catagory, IItemStack stack) {
     	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(catagory);
     	if(lexiconCategory==null)
     	{
@@ -367,6 +369,7 @@ public class Lexicon {
     		return;
     	}
     	LexiconEntry lexiconEntry=new LexiconEntry(entry,lexiconCategory);
+    	lexiconEntry.setIcon(toStack(stack));
         MineTweakerAPI.apply(new AddEntry(lexiconEntry));
     }
     @ZenMethod

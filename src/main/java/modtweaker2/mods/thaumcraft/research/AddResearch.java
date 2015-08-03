@@ -5,44 +5,54 @@ import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 
 public class AddResearch implements IUndoableAction {
-    String key;
-    String tab;
-    ResearchItem research;
+	String key;
+	String tab;
+	ResearchItem research;
+	ItemStack[] itemTriggers;
+	String[] entityTriggers;
 
-    public AddResearch(ResearchItem res) {
-        research = res;
-        tab = research.category;
-        key = research.key;
-    }
+	public AddResearch(ResearchItem res, ItemStack[] triggers, String[] entTriggers) {
+		research = res;
+		tab = research.category;
+		key = research.key;
+		itemTriggers = triggers;
+		entityTriggers = entTriggers;
+	}
 
-    @Override
-    public void apply() {
-        research.registerResearchItem();
-    }
+	@Override
+	public void apply() {
+		if (itemTriggers != null) {
+			research = research.setItemTriggers(itemTriggers);
+		}
+		if (entityTriggers != null) {
+			research = research.setEntityTriggers(entityTriggers);
+		}
+		research.registerResearchItem();
+	}
 
-    @Override
-    public String describe() {
-        return "Registering Research: " + key;
-    }
+	@Override
+	public String describe() {
+		return "Registering Research: " + key;
+	}
 
-    @Override
-    public boolean canUndo() {
-        return tab != null && key != null;
-    }
+	@Override
+	public boolean canUndo() {
+		return tab != null && key != null;
+	}
 
-    @Override
-    public void undo() {
-        ResearchCategories.researchCategories.get(tab).research.remove(key);
-    }
+	@Override
+	public void undo() {
+		ResearchCategories.researchCategories.get(tab).research.remove(key);
+	}
 
-    @Override
-    public String describeUndo() {
-        return "Removing Research: " + key;
-    }
+	@Override
+	public String describeUndo() {
+		return "Removing Research: " + key;
+	}
 
-    @Override
-    public String getOverrideKey() {
-        return null;
-    }
+	@Override
+	public String getOverrideKey() {
+		return null;
+	}
 
 }
