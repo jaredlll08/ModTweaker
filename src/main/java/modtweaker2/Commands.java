@@ -64,7 +64,7 @@ public class Commands {
 				MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
-				MineTweakerAPI.server.addMineTweakerCommand("botaniaOrchid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("botaniaOrechid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("botania", new String[] { "/minetweaker botania [FILTER]", "    Outputs a list of all Botania recipes." }, new BotaniaLogger());
 			}
 
