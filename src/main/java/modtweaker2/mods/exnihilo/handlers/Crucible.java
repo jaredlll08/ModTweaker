@@ -162,7 +162,7 @@ public class Crucible {
     }
 
     //Removes a recipe, will always remove the key, so all should be good
-    private static class RemoveHeatSource extends BaseMapAddition<ItemInfo, Float> 
+    private static class RemoveHeatSource extends BaseMapRemoval<ItemInfo, Float> 
 	{
         public RemoveHeatSource(Map<ItemInfo, Float> recipes) {
         	super(Crucible.nameHeatSource, ExNihiloHelper.getHeatMap(), recipes);
