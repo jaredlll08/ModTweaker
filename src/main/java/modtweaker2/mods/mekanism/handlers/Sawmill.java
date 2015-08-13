@@ -69,8 +69,8 @@ public class Sawmill {
             IItemStack outputItem = InputHelper.toIItemStack(entry.getValue().recipeOutput.primaryOutput);
             IItemStack outputItemOptional = InputHelper.toIItemStack(entry.getValue().recipeOutput.secondaryOutput);
             
-            if(!StackHelper.matches(itemOutput, outputItem)) continue;
             if(!StackHelper.matches(itemInput, inputItem)) continue;
+            if(!StackHelper.matches(itemOutput, outputItem)) continue;
             if(!StackHelper.matches(optionalItemOutput, outputItemOptional)) continue;
             
             recipes.put(entry.getKey(), entry.getValue());
