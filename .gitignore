@@ -1,20 +1,42 @@
+# Forge
 /LICENSE-fml.txt
 /MinecraftForge-Credits.txt
 /MinecraftForge-License.txt
 /README.txt
 /CREDITS-fml.txt
 /forge-1.7.2*
-/build
-/common
-/out/
-/eclipse/*
-/.gradle
+
 /bin/*
-.classpath
-.project
-.settings/*
-src/api/resources/*
-run/
-.metadata/
-/.nb-gradle/private/
+
+# Modproject
+/src/api/resources/*
 /mods/*
+
+# Gradle
+/.gradle
+/build
+
+# Eclipse
+/.classpath
+/.project
+/.settings
+/bin
+/eclipse/*
+/.metadata
+
+# IntelliJ IDEA
+/*.iml
+/*.ipr
+/*.iws
+/.idea
+/out
+
+# Debugging
+/run
+
+# OS X
+.DS_Store
+
+# other
+/.nb-gradle/private/
+/common
