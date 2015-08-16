@@ -30,7 +30,7 @@ public class Insolator {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ZenMethod
-	public static void addRecipe(int energy, IItemStack primaryInput, IItemStack secondaryInput, IItemStack primaryOutput, @Optional IItemStack secondaryOutput, @Optional int secondaryChance) {
+	public static void addRecipe(int energy, IItemStack secondaryInput, IItemStack primaryInput, IItemStack primaryOutput, @Optional IItemStack secondaryOutput, @Optional int secondaryChance) {
 	    if(primaryInput == null || secondaryInput == null || primaryOutput == null) {
 	        LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
 	        return;
