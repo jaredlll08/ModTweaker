@@ -16,6 +16,7 @@ import modtweaker2.mods.extraUtils.ExtraUtils;
 import modtweaker2.mods.factorization.Factorization;
 import modtweaker2.mods.forestry.Forestry;
 import modtweaker2.mods.fsp.Steamcraft;
+import modtweaker2.mods.ic2c.IC2C;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
 import modtweaker2.mods.metallurgy.Metallurgy;
@@ -84,6 +85,7 @@ public class ModTweaker2 {
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
 		TweakerPlugin.register("ExtraUtilities", ExtraUtils.class);
+		TweakerPlugin.register("IC2", IC2C.class);
 		
 
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
