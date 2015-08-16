@@ -12,6 +12,7 @@ import modtweaker2.mods.botania.Botania;
 import modtweaker2.mods.chisel.Chisel;
 import modtweaker2.mods.exnihilo.ExNihilo;
 import modtweaker2.mods.extendedworkbench.ExtendedWorkbench;
+import modtweaker2.mods.extraUtils.ExtraUtils;
 import modtweaker2.mods.factorization.Factorization;
 import modtweaker2.mods.forestry.Forestry;
 import modtweaker2.mods.fsp.Steamcraft;
@@ -84,6 +85,8 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Forestry", Forestry.class);
 		TweakerPlugin.register("chisel", Chisel.class);
 		TweakerPlugin.register("aura", AuraCascade.class);
+		TweakerPlugin.register("ExtraUtilities", ExtraUtils.class);
+		
 
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			MinecraftForge.EVENT_BUS.register(new ClientEvents());
