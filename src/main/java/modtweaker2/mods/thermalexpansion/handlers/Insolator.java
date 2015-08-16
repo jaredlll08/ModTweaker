@@ -97,7 +97,7 @@ public class Insolator {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IIngredient input1, IIngredient input2) {
+	public static void removeRecipe(IIngredient input2, IIngredient input1) {
 	    List<RecipeInsolator> recipes = new LinkedList<RecipeInsolator>();
 	    
         for(RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
