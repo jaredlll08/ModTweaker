@@ -22,7 +22,6 @@ import modtweaker2.mods.metallurgy.Metallurgy;
 import modtweaker2.mods.pneumaticcraft.PneumaticCraft;
 import modtweaker2.mods.railcraft.Railcraft;
 import modtweaker2.mods.tconstruct.TConstruct;
-import modtweaker2.mods.tfcraft.TerraFirmaCraft;
 import modtweaker2.mods.thaumcraft.Thaumcraft;
 import modtweaker2.mods.thermalexpansion.ThermalExpansion;
 import modtweaker2.proxy.CommonProxy;
@@ -79,7 +78,6 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Railcraft", Railcraft.class);
 		TweakerPlugin.register("Steamcraft", Steamcraft.class);
 		TweakerPlugin.register("TConstruct", TConstruct.class);
-		TweakerPlugin.register("terrafirmacraft", TerraFirmaCraft.class);
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
 		TweakerPlugin.register("Forestry", Forestry.class);
