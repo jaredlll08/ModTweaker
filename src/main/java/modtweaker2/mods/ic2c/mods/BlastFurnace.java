@@ -56,7 +56,7 @@ public class BlastFurnace {
 	private static class Remove extends BaseMapRemoval<IRecipeInput, RecipeOutput> {
 
 		protected Remove(Map<IRecipeInput, RecipeOutput> recipes) {
-			super("BlastFurnace", Recipes.blockcutter.getRecipes(), recipes);
+			super("BlastFurnace", Recipes.blastfurance.getRecipes(), recipes);
 		}
 
 		@Override
