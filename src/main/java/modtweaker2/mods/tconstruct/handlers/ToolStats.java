@@ -14,10 +14,20 @@ import tconstruct.library.tools.ToolMaterial;
 
 @ZenClass("mods.tconstruct.ToolStats")
 public class ToolStats {
+    /**
+     * @deprecated
+     */
+    @java.lang.Deprecated
     @ZenMethod
     public static void set(String material, @Optional String name, int level, int durability, int speed, int damage, double handle, int reinforced, double stonebound, String style, String ability) {
         if (name == null) name = material + " ";
-        MineTweakerAPI.apply(new SetToolStats(material, "", new ToolMaterial(material, name, level, durability, speed, damage, (float) handle, reinforced, (float) stonebound, style, ability)));
+        MineTweakerAPI.apply(new SetToolStats(material, "", new ToolMaterial(material, name, level, durability, speed, damage, (float) handle, reinforced, (float) stonebound, style, 0xFFFFFF)));
+    }
+
+    @ZenMethod
+    public static void set(String material, @Optional String name, int level, int durability, int speed, int damage, double handle, int reinforced, double stonebound, String style, int primaryColor) {
+        if (name == null) name = material + " ";
+        MineTweakerAPI.apply(new SetToolStats(material, "", new ToolMaterial(material, name, level, durability, speed, damage, (float) handle, reinforced, (float) stonebound, style, primaryColor)));
     }
 
     @ZenMethod
@@ -94,7 +104,7 @@ public class ToolStats {
                     fresh = (ToolMaterial) value;
                 } else {
                     ToolMaterial t = (ToolMaterial) old;
-                    fresh = new ToolMaterial(t.materialName, t.displayName, t.harvestLevel, t.durability, t.miningspeed, t.attack, t.handleModifier, t.reinforced, t.stonebound, t.tipStyle, t.ability);
+                    fresh = new ToolMaterial(t.materialName, t.localizationString, t.harvestLevel, t.durability, t.miningspeed, t.attack, t.handleModifier, t.reinforced, t.stonebound, t.tipStyle, t.primaryColor);
                     ReflectionHelper.setPrivateValue(ToolMaterial.class, fresh, field, value);
                 }
 
