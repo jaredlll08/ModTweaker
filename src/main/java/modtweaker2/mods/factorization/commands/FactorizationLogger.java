@@ -19,9 +19,9 @@ public class FactorizationLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("crystallizer");
-        validArguments.add("lacerator");
-        validArguments.add("slagfurnace");
+        validArguments.add("Crystallizer");
+        validArguments.add("Lacerator");
+        validArguments.add("SlagFurnace");
     }
     
     @Override
@@ -33,7 +33,7 @@ public class FactorizationLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("crystallizer")) {
+            if(args.isEmpty() || args.contains("Crystallizer")) {
                 for(Object recipe : FactorizationHelper.crystallizer) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.Crystallizer.addRecipe(%s, %s, %s, %s);",
                             LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),
@@ -43,7 +43,7 @@ public class FactorizationLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("lacerator")) {
+            if(args.isEmpty() || args.contains("Lacerator")) {
                 for(Object recipe : FactorizationHelper.lacerator) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.Lacerator.addRecipe(%s, %s, %s);",
                             ReflectionHelper.<String>getObject(recipe, "oreName") != null ? 
@@ -54,7 +54,7 @@ public class FactorizationLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("slagfurnace")) {
+            if(args.isEmpty() || args.contains("SlagFurnace")) {
                 for(Object recipe : FactorizationHelper.slag) {
                     MineTweakerAPI.logCommand(String.format("mods.factorization.SlagFurnace.addRecipe(%s, %s, %s, %s, %s);",
                             LogHelper.getStackDescription(ReflectionHelper.<ItemStack>getObject(recipe, "input")),

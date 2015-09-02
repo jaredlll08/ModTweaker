@@ -25,9 +25,9 @@ public class TConstructLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("casting");
-        validArguments.add("drying");
-        validArguments.add("smeltery");
+        validArguments.add("Casting");
+        validArguments.add("Drying");
+        validArguments.add("Smeltery");
     }
     
     @Override
@@ -39,7 +39,7 @@ public class TConstructLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("casting")) {
+            if(args.isEmpty() || args.contains("Casting")) {
                 for(CastingRecipe recipe : TConstructHelper.basinCasting) {
                     MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addBasinRecipe(%s, %s, %s, %s, %d);",
                             LogHelper.getStackDescription(recipe.output),
@@ -59,7 +59,7 @@ public class TConstructLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("drying")) {
+            if(args.isEmpty() || args.contains("Drying")) {
                 for(DryingRecipe recipe : DryingRackRecipes.recipes) {
                     MineTweakerAPI.logCommand(String.format("mods.tconstruct.Drying.addRecipe(%s, %s, %d);",
                             LogHelper.getStackDescription(recipe.input),
@@ -68,7 +68,7 @@ public class TConstructLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("smeltery")) {
+            if(args.isEmpty() || args.contains("Smeltery")) {
                 
                 for(Entry<ItemMetaWrapper, FluidStack> recipe : TConstructHelper.smeltingList.entrySet()) {
                     int temperature = TConstructHelper.temperatureList.get(recipe.getKey());

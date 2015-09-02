@@ -24,12 +24,12 @@ public class BotaniaLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("apothecary");
-        validArguments.add("brew");
-        validArguments.add("elventrade");
-        validArguments.add("manainfusion");
-        validArguments.add("puredaisy");
-        validArguments.add("runealtar");
+        validArguments.add("Apothecary");
+        validArguments.add("Brew");
+        validArguments.add("ElvenTrade");
+        validArguments.add("ManaInfusion");
+        validArguments.add("PureDaisy");
+        validArguments.add("RuneAltar");
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BotaniaLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("apothecary")) {
+            if(args.isEmpty() || args.contains("Apothecary")) {
                 for(RecipePetals recipe : BotaniaAPI.petalRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.Apothecary.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.getOutput()),
@@ -50,7 +50,7 @@ public class BotaniaLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("brew")) {
+            if(args.isEmpty() || args.contains("Brew")) {
                 for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.Brew.addRecipe(%s, \"%s\");",
                             LogHelper.getListDescription(recipe.getInputs()),
@@ -58,7 +58,7 @@ public class BotaniaLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("elventrade")) {
+            if(args.isEmpty() || args.contains("ElvenTrade")) {
                 for(RecipeElvenTrade recipe : BotaniaAPI.elvenTradeRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.ElvenTrade.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.getOutput()),
@@ -67,7 +67,7 @@ public class BotaniaLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("manainfusion")) {
+            if(args.isEmpty() || args.contains("ManaInfusion")) {
                 for(RecipeManaInfusion recipe : BotaniaAPI.manaInfusionRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.ManaInfusion.add%s(%s, %s, %d);",
                             recipe.isAlchemy() ? "Alchemy" : recipe.isConjuration() ? "Conjuration" : "Infusion",
@@ -78,7 +78,7 @@ public class BotaniaLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("puredaisy")) {
+            if(args.isEmpty() || args.contains("PureDaisy")) {
                 for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.PureDaisy.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.getInput()), 
@@ -86,7 +86,7 @@ public class BotaniaLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("runealtar")) {
+            if(args.isEmpty() || args.contains("RuneAltar")) {
                 for(RecipeRuneAltar recipe : BotaniaAPI.runeAltarRecipes) {
                     MineTweakerAPI.logCommand(String.format("mods.botania.RuneAltar.addRecipe(%s, %s, %d);",
                             LogHelper.getStackDescription(recipe.getOutput()),

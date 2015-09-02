@@ -30,10 +30,10 @@ public class ExNihiloLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("compost");
-        validArguments.add("crucible");
-        validArguments.add("hammer");
-        validArguments.add("sieve");
+        validArguments.add("Composting");
+        validArguments.add("Crucible");
+        validArguments.add("Hammer");
+        validArguments.add("Sieve");
     }
     
     @Override
@@ -45,7 +45,7 @@ public class ExNihiloLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("compost")) {
+            if(args.isEmpty() || args.contains("Composting")) {
                 for(Entry<ItemInfo, Compostable> recipe : CompostRegistry.entries.entrySet()) {
                     MineTweakerAPI.logCommand(String.format("mods.exnihilo.Composting.addRecipe(%s, %s, \"%s\");",
                             LogHelper.getStackDescription(recipe.getKey().getStack()),
@@ -54,7 +54,7 @@ public class ExNihiloLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("crucible")) {
+            if(args.isEmpty() || args.contains("Crucible")) {
                 for(Meltable recipe : CrucibleRegistry.entries.values()) {
                     MineTweakerAPI.logCommand(String.format("mods.exnihilo.Crucible.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(new ItemStack(recipe.block, 1, recipe.meta)),
@@ -68,7 +68,7 @@ public class ExNihiloLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("hammer")) {
+            if(args.isEmpty() || args.contains("Hammer")) {
                 for(Entry<ItemInfo, ArrayList<Smashable>> entry : HammerRegistry.getRewards().entrySet()) {
                     for(Smashable recipe : entry.getValue()) {
                         MineTweakerAPI.logCommand(String.format("mods.exnihilo.Hammer.addRecipe(%s, %s, %s, %s);",
@@ -80,7 +80,7 @@ public class ExNihiloLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("sieve")) {
+            if(args.isEmpty() || args.contains("Sieve")) {
                 for(Entry<ItemInfo, ArrayList<SiftingResult>> entry : SieveRegistry.getSiftables().entrySet()) {
                     for(SiftingResult recipe : entry.getValue()) {
                         MineTweakerAPI.logCommand(String.format("mods.exnihilo.Sieve.addRecipe(%s, %s, %s);",

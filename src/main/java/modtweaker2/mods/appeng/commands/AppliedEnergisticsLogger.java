@@ -19,8 +19,8 @@ public class AppliedEnergisticsLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("grinder");
-        validArguments.add("inscriber");
+        validArguments.add("Grinder");
+        validArguments.add("Inscriber");
     }
     
 	@Override
@@ -32,7 +32,7 @@ public class AppliedEnergisticsLogger implements ICommandFunction {
 		        player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
 		    }
 		} else {
-    		if(args.isEmpty() || args.contains("grinder")) {
+    		if(args.isEmpty() || args.contains("Grinder")) {
     			for(IGrinderEntry recipe : AEApi.instance().registries().grinder().getRecipes()) {
     				MineTweakerAPI.logCommand(String.format("mods.appeng.Grinder.addRecipe(%s, %s, %d, %s, %s, %s, %s);", 
     						LogHelper.getStackDescription(recipe.getInput()),
@@ -45,7 +45,7 @@ public class AppliedEnergisticsLogger implements ICommandFunction {
     			}
     		}
     		
-    		if(args.isEmpty() || args.contains("inscriber")) {
+    		if(args.isEmpty() || args.contains("Inscriber")) {
     			for(IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
     				MineTweakerAPI.logCommand(String.format("mods.appeng.Inscriber.addRecipe(%s, %s, %s, %s, \"%s\");",
     						LogHelper.getListDescription(recipe.getInputs()),

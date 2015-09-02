@@ -36,22 +36,22 @@ public class MekanismLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("combiner");
-        validArguments.add("compressor");
-        validArguments.add("crusher");
-        validArguments.add("crystallizer");
-        validArguments.add("dissolution");
-        validArguments.add("enrichment");
-        validArguments.add("evaporation");
-        validArguments.add("infuser");
-        validArguments.add("injection");
-        validArguments.add("neutron");
-        validArguments.add("oxidizer");
-        validArguments.add("purification");
-        validArguments.add("reaction");
-        validArguments.add("sawmill");
-        validArguments.add("separator");
-        validArguments.add("washer");
+        validArguments.add("Combiner");
+        validArguments.add("Compressor");
+        validArguments.add("Crusher");
+        validArguments.add("Crystallizer");
+        validArguments.add("Dissolution");
+        validArguments.add("Enrichment");
+        validArguments.add("SolarEvaporation");
+        validArguments.add("Infuser");
+        validArguments.add("Injection");
+        validArguments.add("SolarNeutronActivator");
+        validArguments.add("Oxidizer");
+        validArguments.add("Purification");
+        validArguments.add("Reaction");
+        validArguments.add("Sawmill");
+        validArguments.add("Separator");
+        validArguments.add("Washer");
     }
     
     @SuppressWarnings({ "unchecked" })
@@ -64,7 +64,7 @@ public class MekanismLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("crystallizer")) {
+            if(args.isEmpty() || args.contains("Crystallizer")) {
                 for(CrystallizerRecipe recipe : (Collection<CrystallizerRecipe>)Recipe.CHEMICAL_CRYSTALLIZER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Crystallizer.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -72,7 +72,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("dissolution")) {
+            if(args.isEmpty() || args.contains("Dissolution")) {
                 for(DissolutionRecipe recipe : (Collection<DissolutionRecipe>)Recipe.CHEMICAL_DISSOLUTION_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Dissolution.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -80,7 +80,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("infuser")) {
+            if(args.isEmpty() || args.contains("Infuser")) {
                 for(ChemicalInfuserRecipe recipe : (Collection<ChemicalInfuserRecipe>)Recipe.CHEMICAL_INFUSER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Infuser.addRecipe(%s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.leftGas),
@@ -89,7 +89,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("injection")) {
+            if(args.isEmpty() || args.contains("Injection")) {
                 for(InjectionRecipe recipe : (Collection<InjectionRecipe>)Recipe.CHEMICAL_INJECTION_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Injection.addRecipe(%s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.itemStack),
@@ -98,7 +98,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("oxidizer")) {
+            if(args.isEmpty() || args.contains("Oxidizer")) {
                 for(OxidationRecipe recipe : (Collection<OxidationRecipe>)Recipe.CHEMICAL_OXIDIZER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Oxidizer.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -106,7 +106,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("washer")) {
+            if(args.isEmpty() || args.contains("Washer")) {
                 for(WasherRecipe recipe : (Collection<WasherRecipe>)Recipe.CHEMICAL_WASHER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.chemical.Washer.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -114,7 +114,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("combiner")) {
+            if(args.isEmpty() || args.contains("Combiner")) {
                 for(CombinerRecipe recipe : (Collection<CombinerRecipe>)Recipe.COMBINER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Combiner.addRecipe(%s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.itemStack),
@@ -123,7 +123,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("compressor")) {
+            if(args.isEmpty() || args.contains("Compressor")) {
                 for(CombinerRecipe recipe : (Collection<CombinerRecipe>)Recipe.COMBINER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Compressor.addRecipe(%s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.itemStack),
@@ -132,7 +132,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("crusher")) {
+            if(args.isEmpty() || args.contains("Crusher")) {
                 for(CrusherRecipe recipe : (Collection<CrusherRecipe>)Recipe.CRUSHER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Crusher.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -140,7 +140,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("crusher")) {
+            if(args.isEmpty() || args.contains("Smelter")) {
                 for(SmeltingRecipe recipe : (Collection<SmeltingRecipe>)Recipe.ENERGIZED_SMELTER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Smelter.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -148,7 +148,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("enrichment")) {
+            if(args.isEmpty() || args.contains("Enrichment")) {
                 for(EnrichmentRecipe recipe : (Collection<EnrichmentRecipe>)Recipe.ENRICHMENT_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Enrichment.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -156,7 +156,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("infuser")) {
+            if(args.isEmpty() || args.contains("Infuser")) {
                 for(MetallurgicInfuserRecipe recipe : (Collection<MetallurgicInfuserRecipe>)Recipe.METALLURGIC_INFUSER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Infuser.addRecipe(\"%s\", %d, %s, %s);",
                             recipe.getInput().infuse.type.name,
@@ -166,7 +166,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("purification")) {
+            if(args.isEmpty() || args.contains("Purification")) {
                 for(PurificationRecipe recipe : (Collection<PurificationRecipe>)Recipe.PURIFICATION_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Purification.addRecipe(%s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.itemStack),
@@ -175,7 +175,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("reaction")) {
+            if(args.isEmpty() || args.contains("Reaction")) {
                 for(PressurizedRecipe recipe : (Collection<PressurizedRecipe>)Recipe.PRESSURIZED_REACTION_CHAMBER.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Reaction.addRecipe(%s, %s, %s, %s, %s, %s, %d);",
                             LogHelper.getStackDescription(recipe.recipeInput.getSolid()),
@@ -188,7 +188,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("sawmill")) {
+            if(args.isEmpty() || args.contains("Sawmill")) {
                 for(SawmillRecipe recipe : (Collection<SawmillRecipe>)Recipe.PRECISION_SAWMILL.get().values()) {
                     if(recipe.getOutput().hasSecondary()) {
                         MineTweakerAPI.logCommand(String.format("mods.mekanism.Sawmill.addRecipe(%s, %s, %s, %s);",
@@ -204,7 +204,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("separator")) {
+            if(args.isEmpty() || args.contains("Separator")) {
                 for(SeparatorRecipe recipe : (Collection<SeparatorRecipe>)Recipe.ELECTROLYTIC_SEPARATOR.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.Separator.addRecipe(%s, %s, %s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -214,7 +214,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("evaporation")) {
+            if(args.isEmpty() || args.contains("SolarEvaporation")) {
                 for(SolarEvaporationRecipe recipe : (Collection<SolarEvaporationRecipe>)Recipe.SOLAR_EVAPORATION_PLANT.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.SolarEvaporation.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),
@@ -222,7 +222,7 @@ public class MekanismLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("neutron")) {
+            if(args.isEmpty() || args.contains("SolarNeutronActivator")) {
                 for(SolarNeutronRecipe recipe : (Collection<SolarNeutronRecipe>)Recipe.SOLAR_NEUTRON_ACTIVATOR.get().values()) {
                     MineTweakerAPI.logCommand(String.format("mods.mekanism.SolarNeutronActivator.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.recipeInput.ingredient),

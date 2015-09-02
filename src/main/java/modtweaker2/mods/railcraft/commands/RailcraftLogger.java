@@ -25,10 +25,10 @@ public class RailcraftLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("blastfurnace");
-        validArguments.add("cokeoven");
-        validArguments.add("rockcrusher");
-        validArguments.add("rollingmachine");
+        validArguments.add("BlastFurnace");
+        validArguments.add("CokeOven");
+        validArguments.add("RockCrusher");
+        validArguments.add("RollingMachine");
     }
     
     @Override
@@ -40,7 +40,7 @@ public class RailcraftLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("blastfurnace")) {
+            if(args.isEmpty() || args.contains("BlastFurnace")) {
                 for(IBlastFurnaceRecipe recipe : RailcraftHelper.furnace) {
                     MineTweakerAPI.logCommand(String.format("mods.railcraft.BlastFurnace.addRecipe(%s, %s, %s, %d, %s);",
                             LogHelper.getStackDescription(recipe.getInput()),
@@ -51,7 +51,7 @@ public class RailcraftLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("cokeoven")) {
+            if(args.isEmpty() || args.contains("CokeOven")) {
                 for(ICokeOvenRecipe recipe : RailcraftCraftingManager.cokeOven.getRecipes()) {
                     MineTweakerAPI.logCommand(String.format("mods.railcraft.CokeOven.addRecipe(%s, %s, %s, %s, %s, %d);",
                             LogHelper.getStackDescription(recipe.getInput()),
@@ -63,7 +63,7 @@ public class RailcraftLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("rockcrusher")) {
+            if(args.isEmpty() || args.contains("RockCrusher")) {
                 for(IRockCrusherRecipe recipe : RailcraftHelper.crusher) {
                     MineTweakerAPI.logCommand(String.format("mods.railcraft.RockCrusher.addRecipe(%s, %s, %s, %s);",
                             LogHelper.getStackDescription(recipe.getInput()),
@@ -73,7 +73,7 @@ public class RailcraftLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("rollingmachine")) {
+            if(args.isEmpty() || args.contains("RollingMachine")) {
                 for(IRecipe recipe : RailcraftHelper.rolling) {
                     MineTweakerAPI.logCommand(String.format("mods.railcraft.RollingMachine.addRecipe(%s, %s);",
                             LogHelper.getStackDescription(recipe.getRecipeOutput()),

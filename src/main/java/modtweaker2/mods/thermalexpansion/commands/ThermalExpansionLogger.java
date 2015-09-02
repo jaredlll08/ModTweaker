@@ -29,13 +29,13 @@ public class ThermalExpansionLogger implements ICommandFunction {
     private static final List<String> validArguments = new LinkedList<String>();
     
     static {
-        validArguments.add("crucible");
-        validArguments.add("furnace");
-        validArguments.add("insolator");
-        validArguments.add("pulverizer");
-        validArguments.add("sawmill");
-        validArguments.add("smelter");
-        validArguments.add("transposer");
+        validArguments.add("Crucible");
+        validArguments.add("Furnace");
+        validArguments.add("Insolator");
+        validArguments.add("Pulverizer");
+        validArguments.add("Sawmill");
+        validArguments.add("Smelter");
+        validArguments.add("Transposer");
     }
     
     @Override
@@ -47,7 +47,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
             }
         } else {
-            if(args.isEmpty() || args.contains("crucible")) {
+            if(args.isEmpty() || args.contains("Crucible")) {
                 for(RecipeCrucible recipe : CrucibleManager.getRecipeList()) {
                     MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Crucible.addRecipe(%d, %s, %s);",
                             recipe.getEnergy(),
@@ -56,7 +56,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("furnace")) {
+            if(args.isEmpty() || args.contains("Furnace")) {
                 for(RecipeFurnace recipe : FurnaceManager.getRecipeList()) {
                     MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Furnace.addRecipe(%d, %s, %s);",
                             recipe.getEnergy(),
@@ -65,7 +65,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("insolator")) {
+            if(args.isEmpty() || args.contains("Insolator")) {
                 for(RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
                     if(recipe.getSecondaryOutput() != null) {
                         MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Insolator.addRecipe(%d, %s, %s, %s, %s, %d);",
@@ -85,7 +85,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("pulverizer")) {
+            if(args.isEmpty() || args.contains("Pulverizer")) {
                 for(RecipePulverizer recipe : PulverizerManager.getRecipeList()) {
                     if(recipe.getSecondaryOutput() != null) {
                         MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Pulverizer.addRecipe(%d, %s, %s, %s, %d);",
@@ -103,7 +103,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("sawmill")) {
+            if(args.isEmpty() || args.contains("Sawmill")) {
                 for(RecipeSawmill recipe : SawmillManager.getRecipeList()) {
                     if(recipe.getSecondaryOutput() != null) {
                         MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Sawmill.addRecipe(%d, %s, %s, %s, %d);",
@@ -121,7 +121,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("smelter")) {
+            if(args.isEmpty() || args.contains("Smelter")) {
                 for(RecipeSmelter recipe : SmelterManager.getRecipeList()) {
                     if(recipe.getSecondaryOutput() != null) {
                         MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Smelter.addRecipe(%d, %s, %s, %s, %s, %d);",
@@ -141,7 +141,7 @@ public class ThermalExpansionLogger implements ICommandFunction {
                 }
             }
             
-            if(args.isEmpty() || args.contains("transposer")) {
+            if(args.isEmpty() || args.contains("Transposer")) {
                 for(RecipeTransposer recipe : TransposerManager.getFillRecipeList()) {
                     MineTweakerAPI.logCommand(String.format("mods.thermalexpansion.Transposer.addFillRecipe(%d, %s, %s, %s);",
                             recipe.getEnergy(),
