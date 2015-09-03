@@ -47,7 +47,7 @@ public class Carpenter {
 	 * @param box recipes casting item (optional)
 	 */
 	@ZenMethod
-	public static void addRecipe(IIngredient[] ingredients, int packagingTime, IItemStack output, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
+	public static void addRecipe(IIngredient[][] ingredients, int packagingTime, IItemStack output, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
 		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
 	}
 
