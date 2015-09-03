@@ -27,7 +27,7 @@ public class SlagFurnace {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 	@ZenMethod
-	public static void addRecipe(IItemStack input, IItemStack output2, double chance2, IItemStack output1, double chance1) {
+	public static void addRecipe(IItemStack input, IItemStack output1, double chance1, IItemStack output2, double chance2) {
 		Object recipe = FactorizationHelper.getSlagFurnaceRecipe(toStack(input), (float) chance1, toStack(output1), (float) chance2, toStack(output2));
 		MineTweakerAPI.apply(new Add(toStack(input), recipe));
 	}
