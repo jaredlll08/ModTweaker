@@ -37,21 +37,6 @@ public class Combiner {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @SuppressWarnings({ "unchecked" })
     @ZenMethod
-    public static void addRecipe(IItemStack itemInput, IItemStack itemOutput, IGasStack gasInput) {
-        if(itemInput == null || gasInput == null || itemOutput == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
-            return;
-        }
-        
-        AdvancedMachineInput input = new AdvancedMachineInput(toStack(itemInput), toGas(gasInput).getGas());
-        ItemStackOutput output = new ItemStackOutput(toStack(itemOutput));
-        CombinerRecipe recipe = new CombinerRecipe(input, output);
-        
-        MineTweakerAPI.apply(new AddMekanismRecipe(name, Recipe.COMBINER.get(), recipe));
-    }
-    
-    @SuppressWarnings({ "unchecked" })
-    @ZenMethod
     public static void addRecipe(IItemStack itemInput, IGasStack gasInput, IItemStack itemOutput) {
         if(itemInput == null || gasInput == null || itemOutput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
