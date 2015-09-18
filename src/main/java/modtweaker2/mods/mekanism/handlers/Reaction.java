@@ -57,7 +57,7 @@ public class Reaction {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @ZenMethod
-    public static void removeRecipe(IIngredient itemOutput, IIngredient gasOutput, @Optional IIngredient itemInput, @Optional IIngredient liquidInput, IIngredient gasInput) {
+    public static void removeRecipe(IIngredient itemOutput, IIngredient gasOutput, @Optional IIngredient itemInput, @Optional IIngredient liquidInput, @Optional IIngredient gasInput) {
         if(itemOutput == null || gasOutput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
