@@ -22,7 +22,6 @@ import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import stanhebben.zenscript.annotations.Optional;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
@@ -54,15 +53,7 @@ public class Transposer {
             LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameFill));
         }
 	}
-	
-	@ZenMethod
-	public static void addExtractRecipe(int energy, IItemStack input, ILiquidStack liquid, @Optional IItemStack output, @Optional int chance) {
-        if(input == null || output == null || liquid == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameExtract));
-            return;
-        }
 
- 	//Deprecated
 	@ZenMethod
 	public static void addExtractRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid, int chance) {
         if(input == null || output == null || liquid == null) {
