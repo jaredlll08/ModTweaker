@@ -99,7 +99,7 @@ public class Smelter {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(IIngredient input1, IIngredient input2) {
+	public static void removeRecipe(IIngredient input2, IIngredient input2IIngredient input1) {
 	    List<RecipeSmelter> recipes = new LinkedList<RecipeSmelter>();
 	    
         for(RecipeSmelter recipe : SmelterManager.getRecipeList()) {
