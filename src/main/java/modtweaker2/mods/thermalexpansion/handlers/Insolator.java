@@ -36,10 +36,12 @@ public class Insolator {
 	        return;
 	    }
 	    
+	    /* TODO: Make it check for meta data
 	    if(InsolatorManager.recipeExists(toStack(primaryInput), toStack(secondaryInput))) {
             LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", name, primaryInput.toString(), secondaryInput.toString()));
             return;
 	    }
+	    */
 	    
 	    RecipeInsolator recipe = ReflectionHelper.getInstance(ThermalHelper.insolatorRecipe, toStack(primaryInput), toStack(secondaryInput), toStack(primaryOutput), toStack(secondaryOutput), secondaryChance, energy);
 	    
@@ -106,12 +108,14 @@ public class Insolator {
             }
         }
         
+        /* TODO: Make it check for meta data
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
             LogHelper.logWarning(String.format("No %s Recipes found for %s and %s.", name, input1.toString(), input2.toString()));
         }
 	}
+        */
 
 	private static class Remove extends BaseListRemoval<RecipeInsolator> {
 
