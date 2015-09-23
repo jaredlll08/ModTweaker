@@ -114,8 +114,8 @@ public class Insolator {
         } else {
             LogHelper.logWarning(String.format("No %s Recipes found for %s and %s.", name, input1.toString(), input2.toString()));
         }
-	}
         */
+	}
 
 	private static class Remove extends BaseListRemoval<RecipeInsolator> {
 
