@@ -18,6 +18,7 @@ import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.Optional;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
@@ -34,7 +35,7 @@ public class Smelter {
 	}
 
 	@ZenMethod
-	public static void addRecipe(int energy, IItemStack input, IItemStack input2, IItemStack output, IItemStack output2, int chance) {
+	public static void addRecipe(int energy, IItemStack input, IItemStack input2, IItemStack output, @Optional IItemStack output2, @Optional int chance) {
         if(input == null || input2 == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
