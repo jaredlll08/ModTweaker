@@ -18,6 +18,7 @@ import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.Optional;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
@@ -34,7 +35,7 @@ public class Pulverizer {
 	}
 
 	@ZenMethod
-	public static void addRecipe(int energy, IItemStack input, IItemStack output, IItemStack secondary, int secondaryChance) {
+	public static void addRecipe(int energy, IItemStack input, IItemStack output, @Optional IItemStack secondary, @Optional int secondaryChance) {
        if(input == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
