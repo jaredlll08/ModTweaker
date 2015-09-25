@@ -72,7 +72,7 @@ public class ToolStats {
 
     @ZenMethod
     public static void setStyle(String material, String name) {
-        MineTweakerAPI.apply(new SetToolStats(material, "tipStyle", name));
+        MineTweakerAPI.apply(new SetToolStats(material, "tipStyle" + " ", name));
     }
 
     @ZenMethod

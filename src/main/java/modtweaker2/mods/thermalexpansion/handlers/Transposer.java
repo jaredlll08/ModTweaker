@@ -20,6 +20,7 @@ import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thermalexpansion.ThermalHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
@@ -53,7 +54,29 @@ public class Transposer {
             LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameFill));
         }
 	}
+	
+	@ZenMethod
+	public static void addExtractRecipe(int energy, IItemStack input, ILiquidStack liquid, @Optional IItemStack output, @Optional int chance) {
+        if(input == null || output == null || liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameExtract));
+            return;
+        }
+        
+        if(TransposerManager.extractionRecipeExists(toStack(input), toFluid(liquid))) {
+            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s and %s. Command ignored!", Transposer.nameExtract, LogHelper.getStackDescription(toStack(input)), LogHelper.getStackDescription(toFluid(liquid))));
+            return;
+        }
+        
+        RecipeTransposer recipe = ReflectionHelper.getInstance(ThermalHelper.transposerRecipe, toStack(input), toStack(output), toFluid(liquid), energy, 100);
+        
+        if(recipe != null) {
+            MineTweakerAPI.apply(new Add(recipe, RecipeType.Extract));
+        } else {
+            LogHelper.logError(String.format("Error while creating instance for %s recipe.", nameExtract));
+        }
+	}
 
+	//Deprecated
 	@ZenMethod
 	public static void addExtractRecipe(int energy, IItemStack input, IItemStack output, ILiquidStack liquid, int chance) {
         if(input == null || output == null || liquid == null) {
