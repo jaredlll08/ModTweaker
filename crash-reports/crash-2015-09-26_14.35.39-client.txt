@@ -1,0 +1,137 @@
+---- Minecraft Crash Report ----
+// Uh... Did I do that?
+
+Time: 26/09/15 14:35
+Description: There was a severe problem during mod loading that has caused the game to fail
+
+cpw.mods.fml.common.LoaderException: java.lang.NoClassDefFoundError: team/chisel/block/BlockCarvable
+	at cpw.mods.fml.common.LoadController.transition(LoadController.java:163)
+	at cpw.mods.fml.common.Loader.loadMods(Loader.java:544)
+	at cpw.mods.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:208)
+	at net.minecraft.client.Minecraft.startGame(Minecraft.java:522)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:942)
+	at net.minecraft.client.main.Main.main(Main.java:164)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(Unknown Source)
+	at GradleStart.main(Unknown Source)
+Caused by: java.lang.NoClassDefFoundError: team/chisel/block/BlockCarvable
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Unknown Source)
+	at cpw.mods.fml.common.FMLModContainer.constructMod(FMLModContainer.java:440)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.google.common.eventbus.EventSubscriber.handleEvent(EventSubscriber.java:74)
+	at com.google.common.eventbus.SynchronizedEventSubscriber.handleEvent(SynchronizedEventSubscriber.java:47)
+	at com.google.common.eventbus.EventBus.dispatch(EventBus.java:322)
+	at com.google.common.eventbus.EventBus.dispatchQueuedEvents(EventBus.java:304)
+	at com.google.common.eventbus.EventBus.post(EventBus.java:275)
+	at cpw.mods.fml.common.LoadController.sendEventToModContainer(LoadController.java:212)
+	at cpw.mods.fml.common.LoadController.propogateStateMessage(LoadController.java:190)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.google.common.eventbus.EventSubscriber.handleEvent(EventSubscriber.java:74)
+	at com.google.common.eventbus.SynchronizedEventSubscriber.handleEvent(SynchronizedEventSubscriber.java:47)
+	at com.google.common.eventbus.EventBus.dispatch(EventBus.java:322)
+	at com.google.common.eventbus.EventBus.dispatchQueuedEvents(EventBus.java:304)
+	at com.google.common.eventbus.EventBus.post(EventBus.java:275)
+	at cpw.mods.fml.common.LoadController.distributeStateMessage(LoadController.java:119)
+	at cpw.mods.fml.common.Loader.loadMods(Loader.java:513)
+	... 12 more
+Caused by: java.lang.ClassNotFoundException: team.chisel.block.BlockCarvable
+	at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:191)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	... 37 more
+Caused by: java.lang.NoClassDefFoundError: com/cricketcraft/chisel/api/ICarvable
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(Unknown Source)
+	at java.security.SecureClassLoader.defineClass(Unknown Source)
+	at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:182)
+	... 39 more
+Caused by: java.lang.ClassNotFoundException: com.cricketcraft.chisel.api.ICarvable
+	at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:191)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	... 43 more
+Caused by: java.lang.NoClassDefFoundError: team/chisel/ctmlib/ICTMBlock
+	at java.lang.ClassLoader.defineClass1(Native Method)
+	at java.lang.ClassLoader.defineClass(Unknown Source)
+	at java.security.SecureClassLoader.defineClass(Unknown Source)
+	at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:182)
+	... 45 more
+Caused by: java.lang.ClassNotFoundException: team.chisel.ctmlib.ICTMBlock
+	at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:101)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	at java.lang.ClassLoader.loadClass(Unknown Source)
+	... 49 more
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.8.0_40, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 365163016 bytes (348 MB) / 1416626176 bytes (1351 MB) up to 3793747968 bytes (3618 MB)
+	JVM Flags: 0 total; 
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.4.1492 38 mods loaded, 38 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	UC	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) 
+	UC	FML{7.10.99.99} [Forge Mod Loader] (forgeSrc-1.7.10-10.13.4.1492-1.7.10.jar) 
+	UC	Forge{10.13.4.1492} [Minecraft Forge] (forgeSrc-1.7.10-10.13.4.1492-1.7.10.jar) 
+	UC	NotEnoughItems{1.0.5.118} [Not Enough Items] (NotEnoughItems-1.7.10-1.0.5.118-dev.jar) 
+	UC	MCVanillaTweaks{1.0} [Mariculture - Vanilla Tweaks] (minecraft.jar) 
+	UC	CodeChickenCore{1.0.7.47} [CodeChicken Core] (minecraft.jar) 
+	UC	appliedenergistics2-core{rv2-stable-10} [AppliedEnergistics2 Core] (minecraft.jar) 
+	UC	<CoFH ASM>{000} [CoFH ASM] (minecraft.jar) 
+	UC	MineTweaker3{3.0.10} [MineTweaker 3] (MineTweaker3-Dev-Full-1.7.10-3.0.10B.jar) 
+	UC	modtweaker2{0.9.2} [Mod Tweaker 2] (bin) 
+	UC	appliedenergistics2{rv2-stable-10} [Applied Energistics 2] (appliedenergistics2-rv2-stable-10-dev.jar) 
+	UC	Baubles{1.0.1.10} [Baubles] (Baubles-deobf-1.7.10-1.0.1.10.jar) 
+	UC	aura{unspecified} [Aura Cascade] (AuraCascade-552-dev.jar) 
+	UC	AWWayofTime{v1.3.0b} [Blood Magic: Alchemical Wizardry] (BloodMagic-1.7.10-1.3.0b-3-deobf.jar) 
+	UC	Botania{r1.7-223} [Botania] (Botania r1.7-223-deobf.jar) 
+	UC	ForgeMultipart{1.2.0.345} [Forge Multipart] (ForgeMultipart-1.7.10-1.2.0.345-dev.jar) 
+	UC	IC2{2.2.999} [IndustrialCraft 2 Classic] (IC2.Classic.Version.1.1.0.19.Dev.jar) 
+	UC	CoFHCore{1.7.10R3.0.4B1} [CoFH Core] (CoFHCore-[1.7.10]3.0.4B1-308-dev.jar) 
+	UC	Railcraft{9.7.0.0} [Railcraft] (Railcraft_1.7.10-9.7.0.0-dev.jar) 
+	UE	chisel{2.9.1.7} [Chisel] (Chisel-2.9.1.7-deobf.jar) 
+	UC	Enchiridion{1.3} [Enchiridion] (Enchiridion 2-1.7.10-2.0.2a-73-dev.jar) 
+	UC	Enchiridion2{2.0.2a} [Enchiridion 2] (Enchiridion 2-1.7.10-2.0.2a-73-dev.jar) 
+	UC	exnihilo{1.38-46} [Ex Nihilo] (Ex-Nihilo-1.38-46-deobf.jar) 
+	UC	ThermalFoundation{1.7.10R1.2.0} [Thermal Foundation] (ThermalFoundation-[1.7.10]1.2.0-102-dev.jar) 
+	UC	ExtraUtilities{1.2.11} [Extra Utilities] (extrautilities-1.2.11-deobf.jar) 
+	UC	Forestry{3.6.7.25} [Forestry for Minecraft] (forestry_1.7.10-3.6.7.25-dev.jar) 
+	UC	McMultipart{1.2.0.345} [Minecraft Multipart Plugin] (ForgeMultipart-1.7.10-1.2.0.345-dev.jar) 
+	UC	IC2-Classic-Spmod{0.0.0.0} [IC2 Classic Detection Helper] (IC2.Classic.Version.1.1.0.19.Dev.jar) 
+	UC	Mantle{1.7.10-0.3.2.jenkins190} [Mantle] (Mantle-1.7.10-0.3.2.jenkins190-deobf.jar) 
+	UC	ThermalExpansion{1.7.10R4.0.3B1} [Thermal Expansion] (ThermalExpansion-[1.7.10]4.0.3B1-218-dev.jar) 
+	UC	TConstruct{1.7.10-1.8.7.build982} [Tinkers' Construct] (TConstruct-1.7.10-1.8.7.build982-deobf.jar) 
+	UC	Mariculture{1.7.10-1.2.4.2-51} [Mariculture] (Mariculture-Deluxe-1.7.10-1.2.4.2-51-dev.jar) 
+	UC	MariTech{1.0} [Marine Technlogy] (Mariculture-Deluxe-1.7.10-1.2.4.2-51-dev.jar) 
+	UC	MetallurgyCore{4.0.4} [Metallurgy Core] (MetallurgyCore-1.7.10-4.0.4.24-deobf.jar) 
+	UC	Mekanism{8.1.7} [Mekanism] (Mekanism-1.7.10-8.1.7.252.jar) 
+	UC	Metallurgy{4.0.8} [Metallurgy 4] (Metallurgy-1.7.10-4.0.8.128-deobf.jar) 
+	UC	Steamcraft{0.27.3} [Flaxbeard's Steam Power] (Steamcraft-0.27.3-dev.jar) 
+	UC	ForgeMicroblock{1.2.0.345} [Forge Microblocks] (ForgeMultipart-1.7.10-1.2.0.345-dev.jar) 
+	GL info: ' Vendor: 'ATI Technologies Inc.' Version: '4.2.12002 Compatibility Profile Context 9.12.0.0' Renderer: 'AMD Radeon HD 6900 Series'
+	AE2 Version: stable rv2-stable-10 for Forge 10.13.2.1291
+	CoFHCore: -[1.7.10]3.0.4B1-308
+	ThermalFoundation: -[1.7.10]1.2.0-102
+	Mantle Environment: Environment healthy.
+	ThermalExpansion: -[1.7.10]4.0.3B1-218
+	TConstruct Environment: Environment healthy.

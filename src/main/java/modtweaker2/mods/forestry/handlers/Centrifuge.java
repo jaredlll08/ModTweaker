@@ -39,7 +39,7 @@ public class Centrifuge {
 	 * @param ingredient item input
 	 */
 	@ZenMethod
-	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient) {
+	public static void addRecipe(WeightedItemStack[] output, IItemStack ingredient, int timePerItem) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
 		for (WeightedItemStack product : output) {
 			products.put(toStack(product.getStack()), product.getChance());

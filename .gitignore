@@ -9,6 +9,12 @@
 /logs/*
 /config/*
 /configs/*
+/asm/*
+/saves/*
+/usernamecache.json
+/options.txt
+/minetweaker.log
+/BotaniaVars.dat
 
 /bin/*
 
