@@ -35,6 +35,20 @@ public class Moistener {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+	 * Adds a recipe for the Moistener
+	 * 
+	 * @param output recipe output
+	 * @param resource organic item
+	 * @param timePerItem time per item to process
+	 */
+	@ZenMethod
+	public static void addRecipe(IItemStack product, IItemStack resource, int timePerItem) {
+		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), toStack(product), timePerItem)));
+
+	}
+    
+	@Deprecated
 	@ZenMethod
 	public static void addRecipe(int timePerItem, IItemStack resource, IItemStack product) {
 		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), toStack(product), timePerItem)));

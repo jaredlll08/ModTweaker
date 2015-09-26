@@ -208,7 +208,7 @@ public class Fermenter {
 	 * Note: the actual consumption of fluid input depends on the fermentation fuel
 	 * 
 	 * @param item Item that is a valid fuel for the fermenter
-	 * @param fermentPerCycle How much is fermeted per work cycle, i.e. how much fluid of the input is consumed.
+	 * @param fermentPerCycle How much is fermented per work cycle, i.e. how much fluid of the input is consumed.
 	 * @param burnDuration Amount of work cycles a single item of this fuel lasts before expiring.
 	 */
     @ZenMethod

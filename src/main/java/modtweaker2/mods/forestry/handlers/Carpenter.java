@@ -41,17 +41,17 @@ public class Carpenter {
 	 * Adds a shaped recipe for the Carpenter
 	 * 
 	 * @param output recipe output
-	 * @param fluidInput recipe fluid amount
 	 * @param ingredients recipe ingredients
+	 * @param fluidInput recipe fluid amount
 	 * @param packagingTime time per crafting operation
 	 * @param box recipes casting item (optional)
 	 */
 	@ZenMethod
-	public static void addRecipe(IIngredient[][] ingredients, int packagingTime, IItemStack output, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
+	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, @Optional ILiquidStack fluidInput, int packagingTime, @Optional IItemStack box) {
 		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
 	}
 
-	//Deprecated
+	@Deprecated
 	@ZenMethod
 	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -79,7 +79,7 @@ public class Carpenter {
 			recipes.add(recipe);
 
 			// The Carpenter has a list of valid Fluids, access them via
-			// Relfection because of private
+			// Reflection because of private
 			if (recipe.getLiquid() != null)
 				ForestryHelper.addCarpenterRecipeFluids(recipe.getLiquid().getFluid());
 
@@ -99,7 +99,8 @@ public class Carpenter {
 	/**
 	 * Removes a recipe for the Carpenter
 	 * 
-	 * @param ingredient item input
+	 * @param output = item output
+	 * @param liquid = liquid input
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional IIngredient liquid) {

@@ -17,7 +17,6 @@ import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.ICentrifugeRecipe;
@@ -38,27 +37,16 @@ public class Centrifuge {
 	 * @param output List of items to produce with associated chance
 	 * @param timePerItem time per item to process
 	 * @param ingredient item input
-	 * @param output List of percentages to produce a item (same order as in item list) 
 	 */
 	@ZenMethod
-	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient, @Optional int[] chances) {
+	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
-		int i = 0;
 		for (WeightedItemStack product : output) {
-			products.put(toStack(product.getStack()), ((float) chances[i] / 100));
-			i++;
+			products.put(toStack(product.getStack()), product.getChance());
 		}
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(ingredient), products)));
 	}
 
-	/**
-	 * Adds a recipe for the Centrifuge
-	 * 
-	 * @param output List of items to produce
-	 * @param output List of percentages to produce a item (same order as in item list) 
-	 * @param timePerItem time per item to process
-	 * @param itemInput item input
-	 */
 	@ZenMethod
 	@Deprecated
 	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {

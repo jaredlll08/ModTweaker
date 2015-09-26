@@ -26,6 +26,24 @@ public class Still {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Adds a recipe for the Still
+	 * 
+	 * @param fluidOutput recipe fluid amount
+	 * @param fluidInput recipe fluid input
+	 * @param timePerUnit time per crafting operation
+	 */
+	@ZenMethod
+	public static void addRecipe(ILiquidStack fluidOutput, ILiquidStack fluidInput, int timePerUnit) {
+		fluidOutput.amount(fluidOutput.getAmount() / 100);
+		fluidInput.amount(fluidInput.getAmount() / 100);
+		
+		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
+		MachineStill.RecipeManager.recipeFluidInputs.add(getFluid(fluidInput));
+		MachineStill.RecipeManager.recipeFluidOutputs.add(getFluid(fluidOutput));
+	}
+    
+	@Deprecated
 	@ZenMethod
 	public static void addRecipe(int timePerUnit, ILiquidStack input, ILiquidStack output) {
 		output.amount(output.getAmount() / 100);

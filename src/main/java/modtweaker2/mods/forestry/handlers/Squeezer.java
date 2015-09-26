@@ -34,18 +34,6 @@ public class Squeezer {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 * Adds a recipe without additional item output
-	 * 
-	 * @param fluidOutput recipe fluid amount
-	 * @param ingredients recipe ingredients
-	 * @param timePerItem time per crafting operation
-	 */
-	@ZenMethod
-	public static void addRecipe(ILiquidStack fluidOutput, int timePerItem, IItemStack[] ingredients) {
-		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), null, 0) ));
-	}
-	
-	/**
 	 * Adds a recipe with additional item output
 	 * 
 	 * @param fluidOutput recipe fluid amount
@@ -54,7 +42,7 @@ public class Squeezer {
 	 * @param timePerItem time per crafting operation
 	 */
 	@ZenMethod
-	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, int timePerItem, IItemStack[] ingredients) {
+	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
 		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent()) ));
 	}
 	
