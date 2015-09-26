@@ -38,12 +38,15 @@ public class Centrifuge {
 	 * @param output List of items to produce with associated chance
 	 * @param timePerItem time per item to process
 	 * @param ingredient item input
+	 * @param output List of percentages to produce a item (same order as in item list) 
 	 */
 	@ZenMethod
 	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient, @Optional int[] chances) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
+		int i = 0;
 		for (WeightedItemStack product : output) {
-			products.put(toStack(product.getStack()), product.getChance());
+			products.put(toStack(product.getStack()), ((float) chances[i] / 100));
+			i++;
 		}
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(ingredient), products)));
 	}

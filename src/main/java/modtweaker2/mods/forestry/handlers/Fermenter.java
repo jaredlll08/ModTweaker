@@ -44,8 +44,8 @@ public class Fermenter {
 	 * Note: the actual consumption of fluid input depends on the fermentation fuel
 	 * 
 	 * @param fluidOutput type of fluid produced
-	 * @param fluidInput type of fluid required in input
 	 * @param resource organic item
+	 * @param fluidInput type of fluid required in input
 	 * @param fermentationValue amount of inputFluid on organic item requires
 	 * @param fluidOutputModifier Output multiplier (this is usually a from the input fluid
 	 */
