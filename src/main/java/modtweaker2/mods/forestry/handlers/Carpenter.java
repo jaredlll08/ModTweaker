@@ -42,9 +42,9 @@ public class Carpenter {
 	 * 
 	 * @param output recipe output
 	 * @param ingredients recipe ingredients
-	 * @param fluidInput recipe fluid amount
+	 * @optionalParam fluidInput recipe fluid amount
 	 * @param packagingTime time per crafting operation
-	 * @param box recipes casting item (optional)
+	 * @optionalParam box recipes casting item (optional)
 	 */
 	@ZenMethod
 	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, @Optional ILiquidStack fluidInput, int packagingTime, @Optional IItemStack box) {
@@ -100,7 +100,7 @@ public class Carpenter {
 	 * Removes a recipe for the Carpenter
 	 * 
 	 * @param output = item output
-	 * @param liquid = liquid input
+	 * @optionalParam liquid = liquid input
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional IIngredient liquid) {

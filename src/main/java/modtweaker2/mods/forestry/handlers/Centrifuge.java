@@ -35,8 +35,8 @@ public class Centrifuge {
 	 * Adds a recipe for the Centrifuge
 	 * 
 	 * @param output List of items to produce with associated chance
-	 * @param timePerItem time per item to process
 	 * @param ingredient item input
+	 * @param timePerItem time per item to process
 	 */
 	@ZenMethod
 	public static void addRecipe(WeightedItemStack[] output, IItemStack ingredient, int timePerItem) {

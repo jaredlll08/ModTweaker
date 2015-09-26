@@ -44,6 +44,9 @@ public class Squeezer {
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
 		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent()) ));
+		//TODO: this should definitiv solved somehow better
+		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(fluidOutput));
+		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(ingredients)));
 	}
 	
 	@ZenMethod

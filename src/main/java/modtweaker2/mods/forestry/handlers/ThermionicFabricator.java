@@ -17,6 +17,7 @@ import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.core.utils.ShapedRecipeCustom;
@@ -63,7 +64,7 @@ public class ThermionicFabricator {
 	 * @param plan recipe plan item
 	 */
 	@ZenMethod
-	public static void addCast(IItemStack product, IItemStack[][] ingredients, int fluidInput, IItemStack plan) {
+	public static void addCast(IItemStack product, IItemStack[][] ingredients, int fluidInput, @Optional IItemStack plan) {
 		ItemStack[] flatList = new ItemStack[9];
 		for ( int i = 0; i < 3; i++) {
 			for ( int j = 0; j < 3; j++) {

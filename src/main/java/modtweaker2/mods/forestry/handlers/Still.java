@@ -13,6 +13,7 @@ import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.factory.gadgets.MachineStill;
@@ -69,7 +70,7 @@ public class Still {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@ZenMethod
-	public static void removeRecipe(ILiquidStack output, ILiquidStack input) {
+	public static void removeRecipe(ILiquidStack output, @Optional ILiquidStack input) {
 	    List<Recipe> recipes = new LinkedList<Recipe>();
 	    
         for (Recipe r : RecipeManager.recipes) {
