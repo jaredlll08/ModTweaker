@@ -15,6 +15,10 @@
 /options.txt
 /minetweaker.log
 /BotaniaVars.dat
+/.analytics/*
+/crash-reports/*
+/scripts/*
+
 
 /bin/*
 
@@ -50,3 +54,4 @@
 # other
 /.nb-gradle/private/
 /common
+
