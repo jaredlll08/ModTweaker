@@ -17,6 +17,7 @@ import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.ICentrifugeRecipe;
@@ -39,7 +40,7 @@ public class Centrifuge {
 	 * @param ingredient item input
 	 */
 	@ZenMethod
-	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient) {
+	public static void addRecipe(WeightedItemStack[] output, int timePerItem, IItemStack ingredient, @Optional int[] chances) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
 		for (WeightedItemStack product : output) {
 			products.put(toStack(product.getStack()), product.getChance());

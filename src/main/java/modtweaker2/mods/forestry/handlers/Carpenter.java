@@ -51,6 +51,7 @@ public class Carpenter {
 		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
 	}
 
+	//Deprecated
 	@ZenMethod
 	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
