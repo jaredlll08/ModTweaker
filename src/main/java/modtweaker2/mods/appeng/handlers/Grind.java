@@ -27,7 +27,47 @@ public class Grind {
     protected static final String name = "Applied Energistics 2 Grinder";
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+	 * Adds a shaped recipe for the Carpenter
+	 * 
+	 * @param outputStack - Product of the Recipe
+	 * @param inputStack - Ingredient of the Recipe
+	 * @optionalParam outputStack2 - Second product of the Recipe
+	 * @optionalParam outputStack2Chance - Chance for the acquirement of the second product
+	 * @optionalParam outputStack3 - Third product of the Recipe
+	 * @optionalParam outputStack3Chance - Chance for the acquirement of the third product
+	 * @param inputEnergy - Energy requirement of the Recipe
+	 **/
+    @ZenMethod
+	public static void addRecipe(IItemStack outputStack, IItemStack inputStack, @Optional IItemStack outputStack2, @Optional float outputStack2Chance, @Optional IItemStack outputStack3, @Optional float outputStack3Chance, int inputEnergy) {
+        if(inputStack == null || outputStack == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        
+        // Create recipe
+        IGrinderEntry recipe;
+        
+        if(outputStack2 != null && outputStack3 != null)
+            recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputStack), InputHelper.toStack(outputStack2), InputHelper.toStack(outputStack3), outputStack2Chance, outputStack3Chance, inputEnergy);
+        else if(outputStack2 != null)
+            recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputStack), InputHelper.toStack(outputStack2), outputStack2Chance, inputEnergy);
+        else
+            recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputStack), inputEnergy);
+        
+        // Check if the recipe is already present, we don't want to add duplicates
+        for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
+            if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
+                LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(inputStack))));
+                return;
+            }
+        }
+
+		MineTweakerAPI.apply(new Add(recipe));
+	}
     
+    @Deprecated
     @ZenMethod
 	public static void addRecipe(IItemStack input, IItemStack output, int energy, @Optional IItemStack output2, @Optional float chance2, @Optional IItemStack output3, @Optional float chance3) {
         if(input == null || output == null) {
@@ -76,10 +116,14 @@ public class Grind {
 	
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    /**
+	 * Adds a shaped recipe for the Carpenter
+	 * 
+	 * @param outputStack - Product of the Recipe
+	 **/
 	@ZenMethod
-	public static void removeRecipe(IIngredient output) {
-        if(output == null) {
+	public static void removeRecipe(IIngredient outputStack) {
+        if(outputStack == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
@@ -88,7 +132,7 @@ public class Grind {
 	    LinkedList<IGrinderEntry> result = new LinkedList<IGrinderEntry>();
 	    
         for(IGrinderEntry entry : AEApi.instance().registries().grinder().getRecipes()) {
-            if(entry != null && entry.getOutput() != null && matches(output, toIItemStack(entry.getOutput()))) {
+            if(entry != null && entry.getOutput() != null && matches(outputStack, toIItemStack(entry.getOutput()))) {
                 result.add(entry);
             }
         }
@@ -97,7 +141,7 @@ public class Grind {
 	    if(!result.isEmpty()) {
 	        MineTweakerAPI.apply(new Remove(result));
 	    } else {
-	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", name, output.toString()));
+	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", name, outputStack.toString()));
 	    }
 	}
 

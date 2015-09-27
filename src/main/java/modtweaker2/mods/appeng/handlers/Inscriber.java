@@ -29,6 +29,37 @@ public class Inscriber {
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+	 * Adds a shaped recipe for the Carpenter
+	 * 
+	 * @param outputStack - Product of the Recipe
+	 * @param inputArray - Ingredients of the Recipe
+	 * @param inputStackPlateA - Ingredient of the Recipe for Plate Slot A
+	 * @param inputStackPlateB - Ingredient of the Recipe for Plate Slot B
+	 * @param typeString - Type that decides whether to consume the ItemStack in Plate Slot A/B
+	 **/
+	@ZenMethod
+	public static void addRecipe(IItemStack outputStack, IItemStack[] inputArray, IItemStack inputStackPlateA, IItemStack inputStackPlateB, String typeString) {
+        if(inputArray == null || outputStack == null || (!typeString.equals("Press") && !typeString.equals("Inscribe"))) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Inscriber.name));
+            return;
+        }
+        
+	    // Create recipe
+	    IInscriberRecipe recipe = new InscriberRecipe(ArrayUtils.toArrayList(toStacks(inputArray)), toStack(outputStack), toStack(inputStackPlateA), toStack(inputStackPlateB), InscriberProcessType.valueOf(typeString));
+	    
+        // Check if the recipe is already present, we don't want to add duplicates
+	    for(IInscriberRecipe r : AEApi.instance().registries().inscriber().getRecipes()) {
+	        if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
+	            LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", Inscriber.name, LogHelper.getStackDescription(toStack(outputStack))));
+	            return;
+	        }
+	    }
+	    
+		MineTweakerAPI.apply(new Add(recipe));
+	}
+    
+	@Deprecated
 	@ZenMethod
 	public static void addRecipe(IItemStack[] imprintable, IItemStack plateA, IItemStack plateB, IItemStack out, String type) {
         if(imprintable == null || out == null || (!type.equals("Press") && !type.equals("Inscribe"))) {
@@ -96,9 +127,14 @@ public class Inscriber {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+	 * Adds a shaped recipe for the Carpenter
+	 * 
+	 * @param outputStack - Product of the Recipe
+	 **/
 	@ZenMethod
-	public static void removeRecipe(IIngredient output) {
-        if(output == null) {
+	public static void removeRecipe(IIngredient outputStack) {
+        if(outputStack == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", Inscriber.name));
             return;
         }
@@ -107,7 +143,7 @@ public class Inscriber {
         LinkedList<IInscriberRecipe> result = new LinkedList<IInscriberRecipe>();
         
         for(IInscriberRecipe entry : AEApi.instance().registries().inscriber().getRecipes()) {
-            if(entry != null && entry.getOutput() != null && matches(output, toIItemStack(entry.getOutput()))) {
+            if(entry != null && entry.getOutput() != null && matches(outputStack, toIItemStack(entry.getOutput()))) {
                 result.add(entry);
             }
         }
@@ -116,7 +152,7 @@ public class Inscriber {
         if(!result.isEmpty()) {
             MineTweakerAPI.apply(new Remove(result));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Inscriber.name, output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Inscriber.name, outputStack.toString()));
         }
 	}
 
