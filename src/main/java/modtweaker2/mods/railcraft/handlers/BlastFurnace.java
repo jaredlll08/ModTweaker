@@ -137,7 +137,7 @@ public class BlastFurnace {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@ZenMethod
-	private static void removeFuel(IIngredient itemInput) {
+	public static void removeFuel(IIngredient itemInput) {
 	    List<ItemStack> fuels = new LinkedList<ItemStack>();
 	    
 	    for(ItemStack fuel : RailcraftHelper.fuels) {
