@@ -18,6 +18,7 @@
 /.analytics/*
 /crash-reports/*
 /scripts/*
+/crash-reports
 
 
 /bin/*
