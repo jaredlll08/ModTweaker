@@ -69,20 +69,27 @@ public class Still {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Removes a recipe for the Still
+     *
+     * @param output = liquid output
+     * @optionalParam liquid = liquid input
+     */
 	@ZenMethod
 	public static void removeRecipe(ILiquidStack output, @Optional ILiquidStack input) {
 	    List<Recipe> recipes = new LinkedList<Recipe>();
 	    
         for (Recipe r : RecipeManager.recipes) {
             if (r != null && r.output != null && matches(output, toILiquidStack(r.output))) {
-                recipes.add(r);
+                if (r.input == null || matches(input, toILiquidStack(r.input)))
+                    recipes.add(r);
             }
         }
         
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name, output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name,  LogHelper.getStackDescription(output)));
         }
 	}
 
