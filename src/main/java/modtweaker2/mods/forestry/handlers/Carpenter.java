@@ -36,18 +36,31 @@ public class Carpenter {
     public static final String name = "Forestry Carpenter";
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
+	/**
+	 * Adds a shaped recipe for the Carpenter
+	 *
+	 * @param output recipe output
+	 * @param ingredients recipe ingredients
+	 * @param packagingTime time per crafting operation
+	 * @optionalParam box recipes casting item (optional)
+	 */
+	@ZenMethod
+	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional IItemStack box) {
+		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, null, toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
+	}
+
 	/**
 	 * Adds a shaped recipe for the Carpenter
 	 * 
 	 * @param output recipe output
 	 * @param ingredients recipe ingredients
-	 * @optionalParam fluidInput recipe fluid amount
+	 * @param fluidInput recipe fluid amount
 	 * @param packagingTime time per crafting operation
 	 * @optionalParam box recipes casting item (optional)
 	 */
 	@ZenMethod
-	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, @Optional ILiquidStack fluidInput, int packagingTime, @Optional IItemStack box) {
+	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, ILiquidStack fluidInput, int packagingTime, @Optional IItemStack box) {
 		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)) )));
 	}
 
@@ -65,11 +78,6 @@ public class Carpenter {
 
 		}
 		MineTweakerAPI.apply(new Add(new Recipe(packagingTime, toFluid(liquid), toStack(ingredient), new ShapedRecipeCustom(3, 3, toStacks(ingredients), toStack(product)))));
-	}
-
-	public ShapedRecipeCustom convertToRecipeCustom() {
-
-		return null;
 	}
 
 	private static class Add extends BaseListAddition<Recipe> {
