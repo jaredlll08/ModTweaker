@@ -1,6 +1,5 @@
 package modtweaker2.mods.forestry.handlers;
 
-import static modtweaker2.helpers.InputHelper.getFluid;
 import static modtweaker2.helpers.InputHelper.toFluid;
 import static modtweaker2.helpers.InputHelper.toILiquidStack;
 import static modtweaker2.helpers.InputHelper.toIItemStack;
@@ -29,10 +28,23 @@ import forestry.factory.gadgets.MachineSqueezer.RecipeManager;
 
 @ZenClass("mods.forestry.Squeezer")
 public class Squeezer {
-    
-    public static final String name = "Forestry Squeezer";
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static final String name = "Forestry Squeezer";
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/*
+	 * Adds a recipe without additional item output
+	 *
+	 * @param fluidOutput recipe fluid amount
+	 * @param ingredients recipe ingredients
+	 * @param timePerItem time per crafting operation
+	 */
+	@ZenMethod
+	public static void addRecipe(ILiquidStack fluidOutput, int timePerItem, IItemStack[] ingredients) {
+		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), null, 0) ));
+	}
+
 	/**
 	 * Adds a recipe with additional item output
 	 * 
@@ -43,26 +55,35 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
-		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent()) ));
-		//TODO: this should definitiv solved somehow better
-		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(fluidOutput));
-		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(ingredients)));
+		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent())));
 	}
 	
 	@ZenMethod
 	@Deprecated
 	public static void addRecipe(int timePerItem, IItemStack[] resources, ILiquidStack liquid, IItemStack remnants, int chance) {
 		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStacks(resources), toFluid(liquid), toStack(remnants), chance)));
-
-		//TODO: this should definitiv solved somehow better
-		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(liquid));
-		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(resources)));
 	}
 
 	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
 			super(Squeezer.name, MachineSqueezer.RecipeManager.recipes);
 			recipes.add(recipe);
+		}
+
+		@Override
+		public void apply() {
+			super.apply();
+			for (Recipe recipe : recipes) {
+				RecipeManager.recipeInputs.addAll(Arrays.asList(recipe.resources));
+			}
+		}
+
+		@Override
+		public void undo() {
+			super.undo();
+			for (Recipe recipe : recipes) {
+				RecipeManager.recipeInputs.removeAll(Arrays.asList(recipe.resources));
+			}
 		}
 
 		@Override
@@ -82,36 +103,35 @@ public class Squeezer {
 	@ZenMethod
 	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
 	    List<Recipe> recipes = new LinkedList<Recipe>();
-	 
-        for (Recipe r : RecipeManager.recipes) {
-            if (r != null && r.liquid != null && matches(liquid, toILiquidStack(r.liquid))) {
-            	// optional check for ingredients
-            	if (ingredients != null) {
-            		boolean matched = false;
-            		for (int i = 0; i < ingredients.length; i++) {
-            			if ( matches(ingredients[i], toIItemStack(r.resources[i])) )
-            				matched = true;
-            			else {
-            				matched = false;
-            				// if one ingredients doesn't match abort all further checks
-            				break;
-            			}
+
+		for (Recipe r : RecipeManager.recipes) {
+			if (r != null && r.liquid != null && matches(liquid, toILiquidStack(r.liquid))) {
+				// optional check for ingredients
+				if (ingredients != null) {
+					boolean matched = false;
+					for (int i = 0; i < ingredients.length; i++) {
+						if ( matches(ingredients[i], toIItemStack(r.resources[i])) )
+							matched = true;
+						else {
+							matched = false;
+							// if one ingredients doesn't match abort all further checks
+							break;
+						}
 					}
-            		// if some ingredient doesn't match, the last one is false
-           			if (matched)
+					// if some ingredient doesn't match, the last one is false
+					if (matched)
 						recipes.add(r);
-            	} else {
-                    recipes.add(r);
-            	}
-            }
-        }
-        
-        if(!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new Remove(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Squeezer.name, liquid.toString()));
-        }
-		    
+				} else {
+					recipes.add(r);
+				}
+			}
+		}
+
+		if(!recipes.isEmpty()) {
+			MineTweakerAPI.apply(new Remove(recipes));
+		} else {
+			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Squeezer.name, liquid.toString()));
+		}
 	}
 
 	private static class Remove extends BaseListRemoval<Recipe> {
@@ -122,13 +142,23 @@ public class Squeezer {
 
 		@Override
 		public void apply() {
-
 			super.apply();
+			for (Recipe recipe : recipes) {
+				RecipeManager.recipeInputs.removeAll(Arrays.asList(recipe.resources));
+			}
+		}
+
+		@Override
+		public void undo() {
+			super.undo();
+			for (Recipe recipe : recipes) {
+				RecipeManager.recipeInputs.addAll(Arrays.asList(recipe.resources));
+			}
 		}
 		
-        @Override
-        public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.liquid);
-        }
+		@Override
+		public String getRecipeInfo(Recipe recipe) {
+			return LogHelper.getStackDescription(recipe.liquid);
+		}
 	}
 }
