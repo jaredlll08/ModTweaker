@@ -1,8 +1,6 @@
 package modtweaker2.mods.forestry.handlers;
 
-import static modtweaker2.helpers.InputHelper.toFluid;
-import static modtweaker2.helpers.InputHelper.toIItemStack;
-import static modtweaker2.helpers.InputHelper.toStack;
+import static modtweaker2.helpers.InputHelper.*;
 import static modtweaker2.helpers.StackHelper.matches;
 
 import java.util.LinkedList;
@@ -15,7 +13,6 @@ import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -42,8 +39,8 @@ public class ThermionicFabricator {
 	 */
 	@ZenMethod
 	public static void addSmelting(int fluidOutput, IItemStack itemInput, int meltingPoint) {
-		//fluidOutput hardcoded to Liquid Glass 
-		MineTweakerAPI.apply(new AddSmelting(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
+        //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
+        MineTweakerAPI.apply(new AddSmelting(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
 	}
     
 	@Deprecated
@@ -58,34 +55,21 @@ public class ThermionicFabricator {
 	/**
 	 * Adds a casting recipe for the Thermionic Fabricator
 	 * 
-	 * @param product recipe output item
+	 * @param output recipe output item
 	 * @param ingredients list of input items
 	 * @param fluidInput recipe fluid input
 	 * @param plan recipe plan item
 	 */
 	@ZenMethod
-	public static void addCast(IItemStack product, IItemStack[][] ingredients, int fluidInput, @Optional IItemStack plan) {
-		ItemStack[] flatList = new ItemStack[9];
-		for ( int i = 0; i < 3; i++) {
-			for ( int j = 0; j < 3; j++) {
-				flatList[i*3 + j] = toStack(ingredients[i][j]);
-			}
-		}
-
-		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
+	public static void addCast(IItemStack output, IIngredient[][] ingredients, int fluidInput, @Optional IItemStack plan) {
+		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)))));
 	}
 	
 	@Deprecated
 	@ZenMethod
-	public static void addCast(ILiquidStack fluidInput, IItemStack[][] ingredients, IItemStack plan, IItemStack product) {
-		ItemStack[] flatList = new ItemStack[9];
-		for ( int i = 0; i < 3; i++) {
-			for ( int j = 0; j < 3; j++) {
-				flatList[i*3 + j] = toStack(ingredients[i][j]);
-			}
-		}
+	public static void addCast(ILiquidStack fluidInput, IIngredient[][] ingredients, IItemStack plan, IItemStack output) {
 
-		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), toFluid(fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
+		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), toFluid(fluidInput), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)))));
 	}
 
 	/*
