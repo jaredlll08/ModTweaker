@@ -16,10 +16,8 @@
 /minetweaker.log
 /BotaniaVars.dat
 /.analytics/*
-/crash-reports/*
+/crash-reports/
 /scripts/*
-/crash-reports
-
 
 /bin/*
 
