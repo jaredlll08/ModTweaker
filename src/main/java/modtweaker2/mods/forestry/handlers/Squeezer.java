@@ -23,9 +23,11 @@ import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.gadgets.MachineSqueezer;
-import forestry.factory.gadgets.MachineSqueezer.Recipe;
-import forestry.factory.gadgets.MachineSqueezer.RecipeManager;
+import forestry.factory.tiles.TileSqueezer;
+import forestry.factory.tiles.TileSqueezer.RecipeManager;
+import forestry.factory.recipes.ISqueezerRecipe;
+import forestry.factory.recipes.SqueezerContainerRecipe;
+import forestry.factory.recipes.SqueezerRecipe;
 
 @ZenClass("mods.forestry.Squeezer")
 public class Squeezer {
@@ -43,31 +45,21 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
-		MineTweakerAPI.apply(new Add( new Recipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent()) ));
-		//TODO: this should definitiv solved somehow better
-		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(fluidOutput));
-		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(ingredients)));
+		MineTweakerAPI.apply(new Add( new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent()) ));
+		
 	}
 	
-	@ZenMethod
-	@Deprecated
-	public static void addRecipe(int timePerItem, IItemStack[] resources, ILiquidStack liquid, IItemStack remnants, int chance) {
-		MineTweakerAPI.apply(new Add(new Recipe(timePerItem, toStacks(resources), toFluid(liquid), toStack(remnants), chance)));
-
-		//TODO: this should definitiv solved somehow better
-		MachineSqueezer.RecipeManager.recipeFluids.add(getFluid(liquid));
-		MachineSqueezer.RecipeManager.recipeInputs.addAll(Arrays.asList(toStacks(resources)));
-	}
-
-	private static class Add extends BaseListAddition<Recipe> {
-		public Add(Recipe recipe) {
-			super(Squeezer.name, MachineSqueezer.RecipeManager.recipes);
+	
+	
+	private static class Add extends BaseListAddition<ISqueezerRecipe> {
+		public Add(ISqueezerRecipe recipe) {
+			super(Squeezer.name, TileSqueezer.RecipeManager.recipes);
 			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo(Recipe recipe) {
-			return LogHelper.getStackDescription(recipe.liquid);
+		public String getRecipeInfo(ISqueezerRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getFluidOutput());
 		}
 	}
 	
@@ -81,15 +73,15 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
-	    List<Recipe> recipes = new LinkedList<Recipe>();
+	    List<ISqueezerRecipe> recipes = new LinkedList<ISqueezerRecipe>();
 	 
-        for (Recipe r : RecipeManager.recipes) {
-            if (r != null && r.liquid != null && matches(liquid, toILiquidStack(r.liquid))) {
+        for (ISqueezerRecipe r : RecipeManager.recipes) {
+            if (r != null && r.getFluidOutput() != null && matches(liquid, toILiquidStack(r.getFluidOutput()))) {
             	// optional check for ingredients
             	if (ingredients != null) {
             		boolean matched = false;
             		for (int i = 0; i < ingredients.length; i++) {
-            			if ( matches(ingredients[i], toIItemStack(r.resources[i])) )
+            			if ( matches(ingredients[i], toIItemStack(r.getResources()[i])) )
             				matched = true;
             			else {
             				matched = false;
@@ -99,9 +91,9 @@ public class Squeezer {
 					}
             		// if some ingredient doesn't match, the last one is false
            			if (matched)
-						recipes.add(r);
+						recipes.add((SqueezerRecipe) r);
             	} else {
-                    recipes.add(r);
+                    recipes.add((SqueezerRecipe) r);
             	}
             }
         }
@@ -114,9 +106,9 @@ public class Squeezer {
 		    
 	}
 
-	private static class Remove extends BaseListRemoval<Recipe> {
-		public Remove(List<Recipe> recipes) {
-			super(Squeezer.name, MachineSqueezer.RecipeManager.recipes, recipes);
+	private static class Remove extends BaseListRemoval<ISqueezerRecipe> {
+		public Remove(List<ISqueezerRecipe> recipes) {
+			super(Squeezer.name, TileSqueezer.RecipeManager.recipes, recipes);
 
 		}
 
@@ -127,8 +119,8 @@ public class Squeezer {
 		}
 		
         @Override
-        public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.liquid);
+        public String getRecipeInfo(ISqueezerRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getFluidOutput());
         }
 	}
 }

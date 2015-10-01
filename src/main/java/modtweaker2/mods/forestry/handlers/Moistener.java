@@ -24,9 +24,9 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.fuels.FermenterFuel;
 import forestry.api.fuels.FuelManager;
 import forestry.api.fuels.MoistenerFuel;
-import forestry.factory.gadgets.MachineMoistener;
-import forestry.factory.gadgets.MachineMoistener.Recipe;
-import forestry.factory.gadgets.MachineMoistener.RecipeManager;
+import forestry.factory.tiles.TileMoistener;
+import forestry.factory.tiles.TileMoistener.Recipe;
+import forestry.factory.tiles.TileMoistener.RecipeManager;
 
 @ZenClass("mods.forestry.Moistener")
 public class Moistener {
@@ -57,7 +57,7 @@ public class Moistener {
 
 	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
-			super(Moistener.name, MachineMoistener.RecipeManager.recipes);
+			super(Moistener.name, TileMoistener.RecipeManager.recipes);
 			recipes.add(recipe);
 		}
 

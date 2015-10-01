@@ -16,9 +16,9 @@ import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.gadgets.MachineStill;
-import forestry.factory.gadgets.MachineStill.Recipe;
-import forestry.factory.gadgets.MachineStill.RecipeManager;
+import forestry.factory.tiles.TileStill;
+import forestry.factory.tiles.TileStill.Recipe;
+import forestry.factory.tiles.TileStill.RecipeManager;
 
 @ZenClass("mods.forestry.Still")
 public class Still {
@@ -40,8 +40,8 @@ public class Still {
 		fluidInput.amount(fluidInput.getAmount() / 100);
 		
 		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
-		MachineStill.RecipeManager.recipeFluidInputs.add(getFluid(fluidInput));
-		MachineStill.RecipeManager.recipeFluidOutputs.add(getFluid(fluidOutput));
+		TileStill.RecipeManager.recipeFluidInputs.add(getFluid(fluidInput));
+		TileStill.RecipeManager.recipeFluidOutputs.add(getFluid(fluidOutput));
 	}
     
 	@Deprecated
@@ -51,13 +51,13 @@ public class Still {
 		input.amount(input.getAmount() / 100);
 		
 		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(input), toFluid(output))));
-		MachineStill.RecipeManager.recipeFluidInputs.add(getFluid(input));
-		MachineStill.RecipeManager.recipeFluidOutputs.add(getFluid(output));
+		TileStill.RecipeManager.recipeFluidInputs.add(getFluid(input));
+		TileStill.RecipeManager.recipeFluidOutputs.add(getFluid(output));
 	}
 
 	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
-			super("Forestry Still", MachineStill.RecipeManager.recipes);
+			super("Forestry Still", TileStill.RecipeManager.recipes);
 			recipes.add(recipe);
 		}
 
