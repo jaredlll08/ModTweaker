@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.ICentrifugeRecipe;
-import forestry.factory.gadgets.MachineCentrifuge.CentrifugeRecipe;
-import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
+import forestry.factory.tiles.TileCentrifuge.CentrifugeRecipe;
+import forestry.factory.tiles.TileCentrifuge.RecipeManager;
 
 
 @ZenClass("mods.forestry.Centrifuge")

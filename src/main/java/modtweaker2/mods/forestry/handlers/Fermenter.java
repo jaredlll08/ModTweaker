@@ -28,8 +28,8 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.fuels.FermenterFuel;
 import forestry.api.fuels.FuelManager;
-import forestry.factory.gadgets.MachineFermenter.Recipe;
-import forestry.factory.gadgets.MachineFermenter.RecipeManager;
+import forestry.factory.tiles.TileFermenter.Recipe;
+import forestry.factory.tiles.TileFermenter.RecipeManager;
 
 @ZenClass("mods.forestry.Fermenter")
 public class Fermenter {

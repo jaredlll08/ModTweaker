@@ -25,10 +25,10 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.core.utils.ShapedRecipeCustom;
-import forestry.factory.gadgets.MachineCarpenter;
-import forestry.factory.gadgets.MachineCarpenter.Recipe;
-import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
+import forestry.core.recipes.ShapedRecipeCustom;
+import forestry.factory.tiles.TileCarpenter;
+import forestry.factory.tiles.TileCarpenter.Recipe;
+import forestry.factory.tiles.TileCarpenter.RecipeManager;
 
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {
@@ -83,7 +83,7 @@ public class Carpenter {
 	private static class Add extends BaseListAddition<Recipe> {
 
 		public Add(Recipe recipe) {
-			super(Carpenter.name, MachineCarpenter.RecipeManager.recipes);
+			super(Carpenter.name, TileCarpenter.RecipeManager.recipes);
 			recipes.add(recipe);
 
 			// The Carpenter has a list of valid Fluids, access them via

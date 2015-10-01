@@ -20,10 +20,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.core.utils.ShapedRecipeCustom;
-import forestry.factory.gadgets.MachineFabricator.Recipe;
-import forestry.factory.gadgets.MachineFabricator.RecipeManager;
-import forestry.factory.gadgets.MachineFabricator.Smelting;
+import forestry.core.recipes.ShapedRecipeCustom;
+import forestry.api.recipes.IFabricatorRecipe;
+import forestry.factory.recipes.FabricatorRecipe;
+import forestry.factory.tiles.TileFabricator.RecipeManager;
+import forestry.factory.tiles.TileFabricator.Smelting;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
 public class ThermionicFabricator {
@@ -72,7 +73,7 @@ public class ThermionicFabricator {
 			}
 		}
 
-		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
+		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
 	}
 	
 	@Deprecated
@@ -85,7 +86,7 @@ public class ThermionicFabricator {
 			}
 		}
 
-		MineTweakerAPI.apply(new AddCast(new Recipe(toStack(plan), toFluid(fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
+		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), toFluid(fluidInput), new ShapedRecipeCustom(3, 3, flatList, toStack(product)))));
 	}
 
 	/*
@@ -105,16 +106,16 @@ public class ThermionicFabricator {
         }
 	}
 	
-    private static class AddCast extends BaseListAddition<Recipe> {
+    private static class AddCast extends BaseListAddition<IFabricatorRecipe> {
 
-        public AddCast(Recipe recipe) {
+        public AddCast(IFabricatorRecipe recipe) {
             super(ThermionicFabricator.nameCasting, RecipeManager.recipes);
             recipes.add(recipe);
         }
 
         @Override
-        public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.asIRecipe().getRecipeOutput());
+        public String getRecipeInfo(IFabricatorRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getRecipeOutput());
         }
     }
     
@@ -139,10 +140,10 @@ public class ThermionicFabricator {
 
     @ZenMethod
     public static void removeCast(IIngredient product) {
-        List<Recipe> recipes = new LinkedList<Recipe>();
+        List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
         
-        for (Recipe r : RecipeManager.recipes) {
-            if (r != null && r.asIRecipe().getRecipeOutput() != null && matches(product, toIItemStack(r.asIRecipe().getRecipeOutput()))) {
+        for (IFabricatorRecipe r : RecipeManager.recipes) {
+            if (r != null && r.getRecipeOutput() != null && matches(product, toIItemStack(r.getRecipeOutput()))) {
                 recipes.add(r);
             }
         }
@@ -157,10 +158,10 @@ public class ThermionicFabricator {
     @Deprecated //Not sure why this is called Casts, Cast aint an array
     @ZenMethod
     public static void removeCasts(IIngredient product) {
-        List<Recipe> recipes = new LinkedList<Recipe>();
+        List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
         
-        for (Recipe r : RecipeManager.recipes) {
-            if (r != null && r.asIRecipe().getRecipeOutput() != null && matches(product, toIItemStack(r.asIRecipe().getRecipeOutput()))) {
+        for (IFabricatorRecipe r : RecipeManager.recipes) {
+            if (r != null && r.getRecipeOutput() != null && matches(product, toIItemStack(r.getRecipeOutput()))) {
                 recipes.add(r);
             }
         }
@@ -183,14 +184,14 @@ public class ThermionicFabricator {
 		}
 	}
 	
-    private static class RemoveCasts extends BaseListRemoval<Recipe> {
-        public RemoveCasts(List<Recipe> recipes) {
+    private static class RemoveCasts extends BaseListRemoval<IFabricatorRecipe> {
+        public RemoveCasts(List<IFabricatorRecipe> recipes) {
             super(ThermionicFabricator.nameCasting, RecipeManager.recipes, recipes);
         }
 
         @Override
-        public String getRecipeInfo(Recipe recipe) {
-            return LogHelper.getStackDescription(recipe.asIRecipe().getRecipeOutput());
+        public String getRecipeInfo(IFabricatorRecipe recipe) {
+            return LogHelper.getStackDescription(recipe.getRecipeOutput());
         }
     }
 }
