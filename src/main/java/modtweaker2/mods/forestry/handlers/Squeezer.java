@@ -130,7 +130,7 @@ public class Squeezer {
 		if(!recipes.isEmpty()) {
 			MineTweakerAPI.apply(new Remove(recipes));
 		} else {
-			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Squeezer.name, liquid.toString()));
+			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Squeezer.name, LogHelper.getStackDescription(liquid)));
 		}
 	}
 
