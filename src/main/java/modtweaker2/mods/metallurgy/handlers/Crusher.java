@@ -50,7 +50,7 @@ public class Crusher {
         
         @Override
         protected String getRecipeInfo(Entry<String, ItemStack> recipe) {
-            return LogHelper.getStackDescription(recipe.getValue());
+            return LogHelper.getStackDescription(stack);
         }
     }
 
@@ -68,7 +68,7 @@ public class Crusher {
         public Remove(ItemStack stack) {
             super("Metallurgy Crusher", MetallurgyHelper.crusherMetaList);
             
-            map.put(MetallurgyHelper.getCrusherKey(stack), MetallurgyHelper.crusherMetaList.get(MetallurgyHelper.getCrusherKey(stack)));
+            recipes.put(MetallurgyHelper.getCrusherKey(stack), MetallurgyHelper.crusherMetaList.get(MetallurgyHelper.getCrusherKey(stack)));
             this.stack = stack;
         }
 
@@ -90,7 +90,7 @@ public class Crusher {
         
         @Override
         protected String getRecipeInfo(Entry<String, ItemStack> recipe) {
-            return LogHelper.getStackDescription(recipe.getValue());
+            return LogHelper.getStackDescription(stack);
         }
     }
 
