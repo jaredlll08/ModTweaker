@@ -88,7 +88,7 @@ public class Still {
 	 * @optionalParam liquid = liquid input
 	 */
 	@ZenMethod
-	public static void removeRecipe(IIngredient output, @Optional IIngredient input) {
+	public static void removeRecipe(IIngredient output, @Optional ILiquidStack input) {
 		List<Recipe> recipes = new LinkedList<Recipe>();
 
 		for (Recipe r : RecipeManager.recipes) {
@@ -106,7 +106,7 @@ public class Still {
 		if(!recipes.isEmpty()) {
 			MineTweakerAPI.apply(new Remove(recipes));
 		} else {
-			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name, output.toString()));
+			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name, LogHelper.getStackDescription(output)));
 		}
 	}
 
