@@ -7,6 +7,7 @@ import java.util.List;
 import mekanism.api.gas.GasStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
+import minetweaker.api.item.IIngredient;
 import minetweaker.api.player.IPlayer;
 import minetweaker.mc1710.item.MCItemStack;
 import modtweaker2.mods.mekanism.gas.MCGasStack;
@@ -63,10 +64,12 @@ public class LogHelper {
      * Returns a string representation of the item which can also be used in scripts
      */
     public static String getStackDescription(Object object) {
-        if(object instanceof ItemStack) {
+        if(object instanceof IIngredient) {
+            return getStackDescription((IIngredient)object);
+        } else if (object instanceof ItemStack) {
             return new MCItemStack((ItemStack)object).toString();
         } else if (object instanceof FluidStack) {
-            return getStackDescription((FluidStack)object);
+            return getStackDescription((FluidStack) object);
         } else if (object instanceof Block) {
             return new MCItemStack(new ItemStack((Block)object, 1, 0)).toString();
         } else if (TweakerPlugin.isLoaded("Mekanism") && object instanceof GasStack) {
@@ -98,7 +101,19 @@ public class LogHelper {
             return "null";
         }
     }
-    
+
+    public static String getStackDescription(IIngredient stack) {
+        Object internalObject = stack.getInternal();
+
+        if (internalObject instanceof ItemStack) {
+            return getStackDescription((ItemStack) internalObject);
+        } else if (internalObject instanceof FluidStack) {
+            return getStackDescription((FluidStack) internalObject);
+        } else {
+            return "null";
+        }
+    }
+
     public static String getStackDescription(FluidStack stack) {
         StringBuilder sb = new StringBuilder();
         
