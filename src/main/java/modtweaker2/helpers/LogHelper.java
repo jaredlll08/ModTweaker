@@ -8,6 +8,7 @@ import mekanism.api.gas.GasStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.item.IIngredient;
+import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.api.player.IPlayer;
 import minetweaker.mc1710.item.MCItemStack;
 import modtweaker2.mods.mekanism.gas.MCGasStack;
@@ -109,6 +110,8 @@ public class LogHelper {
             return getStackDescription((ItemStack) internalObject);
         } else if (internalObject instanceof FluidStack) {
             return getStackDescription((FluidStack) internalObject);
+        } else if (internalObject instanceof IOreDictEntry) {
+            return getStackDescription(((IOreDictEntry) internalObject).getName());
         } else {
             return "null";
         }
