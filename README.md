@@ -4,21 +4,21 @@ ModTweaker is an addon for MineTweaker 3. Minetweaker lets you adjust recipes, r
 
 
 Stable Releases on Curse
-==========
+----------
 http://minecraft.curseforge.com/mc-mods/220954-modtweaker
 
 Development build on jenkins
-==========
+----------
 http://ci.tterrag.com/job/ModTweaker2
 
 
 Guidelines for Bugreporting
-==========
+----------
 https://github.com/jaredlll08/ModTweaker2/wiki/Bug-Reporting-Guidelines
 
 
 Supported Mods
-==========
+----------
 - Applied Energistics 2
 - Auracascade
 - Botania

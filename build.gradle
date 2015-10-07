@@ -16,13 +16,24 @@ buildscript {
 }
 
 apply plugin: 'forge'
+apply plugin: 'java'
 
-version = "0.9.2"
+// define the properties file
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // read config.  it shall from now on be referenced as simply config or as project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+version=config.mod.version
 group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ModTweaker~2"
+archivesBaseName = "ModTweaker2"
 
 minecraft {
-    version = "${mc_version}-${forge_version}"
+    version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "eclipse"
 }
 
