@@ -43,8 +43,9 @@ public class Sieve {
         
 		addRecipe(input, new IItemStack[] { output }, new int[] { rarity });
 	}
-	
-	public static void addRecipe(IItemStack input, IItemStack[] output, int[] rarity) {
+
+    @ZenMethod
+    public static void addRecipe(IItemStack input, IItemStack[] output, int[] rarity) {
         if(input == null || output == null || rarity == null) {
             LogHelper.logError(String.format("Required parameters missing for %s recipe.", name));
             return;
@@ -96,7 +97,7 @@ public class Sieve {
                     }
                     
                     if(!backup.isEmpty()) {
-                        LogHelper.logWarning(String.format("Overwritten %d %s recipe outputs for %s.", backup.size(), Hammer.name, LogHelper.getStackDescription(entry.getKey().getStack())));
+                        LogHelper.logWarning(String.format("Overwritten %d %s recipe outputs for %s.", backup.size(), name, LogHelper.getStackDescription(entry.getKey().getStack())));
                         overwritten.put(entry.getKey(), backup);
                     }
                     
@@ -195,7 +196,7 @@ public class Sieve {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s recipes found for %s and %s. Command ignored!", input.toString(), output.toString()));
+            LogHelper.logWarning(String.format("No %s recipes found for %s and %s. Command ignored!", name, input.toString(), output.toString()));
         }
 	}
 
