@@ -16,17 +16,17 @@ import modtweaker2.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.gadgets.MachineStill;
-import forestry.factory.gadgets.MachineStill.Recipe;
-import forestry.factory.gadgets.MachineStill.RecipeManager;
+import forestry.factory.tiles.TileStill;
+import forestry.factory.tiles.TileStill.Recipe;
+import forestry.factory.tiles.TileStill.RecipeManager;
 
 @ZenClass("mods.forestry.Still")
 public class Still {
-
+	
 	public static final String name = "Forestry Still";
-
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Adds a recipe for the Still
 	 * 
@@ -41,7 +41,7 @@ public class Still {
 		
 		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
 	}
-
+	
 	@Deprecated
 	@ZenMethod
 	public static void addRecipe(int timePerUnit, ILiquidStack input, ILiquidStack output) {
@@ -50,13 +50,13 @@ public class Still {
 		
 		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(input), toFluid(output))));
 	}
-
+	
 	private static class Add extends BaseListAddition<Recipe> {
 		public Add(Recipe recipe) {
-			super("Forestry Still", MachineStill.RecipeManager.recipes);
+			super("Forestry Still", TileStill.RecipeManager.recipes);
 			recipes.add(recipe);
 		}
-
+		
 		@Override
 		public void apply() {
 			super.apply();
@@ -64,7 +64,7 @@ public class Still {
 				RecipeManager.recipeFluidInputs.add(recipe.input.getFluid());
 			}
 		}
-
+		
 		@Override
 		public void undo() {
 			super.undo();
@@ -72,7 +72,7 @@ public class Still {
 				RecipeManager.recipeFluidInputs.remove(recipe.input.getFluid());
 			}
 		}
-
+		
 		@Override
 		public String getRecipeInfo(Recipe recipe) {
 			return LogHelper.getStackDescription(recipe.output);
@@ -80,7 +80,7 @@ public class Still {
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Removes a recipe for the Still
 	 *
@@ -90,7 +90,7 @@ public class Still {
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional ILiquidStack input) {
 		List<Recipe> recipes = new LinkedList<Recipe>();
-
+		
 		for (Recipe r : RecipeManager.recipes) {
 			if (r != null && r.output != null && matches(output, toILiquidStack(r.output))) {
 				if (input != null) {
@@ -102,14 +102,14 @@ public class Still {
 					recipes.add(r);
 			}
 		}
-
+		
 		if(!recipes.isEmpty()) {
 			MineTweakerAPI.apply(new Remove(recipes));
 		} else {
 			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Still.name, LogHelper.getStackDescription(output)));
 		}
 	}
-
+	
 	private static class Remove extends BaseListRemoval<Recipe> {
 		public Remove(List<Recipe> recipes) {
 			super(Still.name, RecipeManager.recipes, recipes);
@@ -119,7 +119,7 @@ public class Still {
 		public String getRecipeInfo(Recipe recipe) {
 			return LogHelper.getStackDescription(recipe.output);
 		}
-
+		
 		@Override
 		public void apply() {
 			super.apply();
@@ -127,7 +127,7 @@ public class Still {
 				RecipeManager.recipeFluidInputs.remove(recipe.input.getFluid());
 			}
 		}
-
+		
 		@Override
 		public void undo() {
 			super.undo();

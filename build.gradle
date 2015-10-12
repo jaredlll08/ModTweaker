@@ -37,6 +37,17 @@ minecraft {
     runDir = "eclipse"
 }
 
+repositories {
+    maven {
+        name = "forestry"
+        url = "http://maven.ic2.player.to/"
+    }
+}
+
+dependencies {
+    compile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.

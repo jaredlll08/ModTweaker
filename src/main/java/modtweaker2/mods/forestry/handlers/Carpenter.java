@@ -25,17 +25,17 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.core.utils.ShapedRecipeCustom;
-import forestry.factory.gadgets.MachineCarpenter;
-import forestry.factory.gadgets.MachineCarpenter.Recipe;
-import forestry.factory.gadgets.MachineCarpenter.RecipeManager;
+import forestry.core.recipes.ShapedRecipeCustom;
+import forestry.factory.tiles.TileCarpenter;
+import forestry.factory.tiles.TileCarpenter.Recipe;
+import forestry.factory.tiles.TileCarpenter.RecipeManager;
 
 @ZenClass("mods.forestry.Carpenter")
 public class Carpenter {
-    
-    public static final String name = "Forestry Carpenter";
+	
+	public static final String name = "Forestry Carpenter";
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Adds a shaped recipe for the Carpenter
@@ -83,7 +83,7 @@ public class Carpenter {
 	private static class Add extends BaseListAddition<Recipe> {
 
 		public Add(Recipe recipe) {
-			super(Carpenter.name, MachineCarpenter.RecipeManager.recipes);
+			super(Carpenter.name, TileCarpenter.RecipeManager.recipes);
 			recipes.add(recipe);
 
 			// The Carpenter has a list of valid Fluids, access them via
@@ -98,12 +98,12 @@ public class Carpenter {
 		
 		@Override
 		protected String getRecipeInfo(Recipe recipe) {
-		    return LogHelper.getStackDescription(recipe.getCraftingResult());
+			return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Removes a recipe for the Carpenter
 	 * 
@@ -112,37 +112,35 @@ public class Carpenter {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional IIngredient liquid) {
-	    List<Recipe> recipes = new LinkedList<Recipe>();
-	    
-	    for(Recipe recipe : RecipeManager.recipes) {
-	        if( recipe != null && recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult())) ) {
-	        	if (liquid != null) {
-	        		if (matches(liquid, toILiquidStack(recipe.getLiquid())))
-			            recipes.add(recipe);
-	        	} else {
-		            recipes.add(recipe);
-	        	}
-	        }
-	    }
-	    
-	    if(!recipes.isEmpty()) {
-	        MineTweakerAPI.apply(new Remove(recipes));
-	    } else {
-	        LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Carpenter.name, output.toString()));
-	    }
-	    
+		List<Recipe> recipes = new LinkedList<Recipe>();
 		
+		for(Recipe recipe : RecipeManager.recipes) {
+			if( recipe != null && recipe.getCraftingResult() != null && matches(output, toIItemStack(recipe.getCraftingResult())) ) {
+				if (liquid != null) {
+					if (matches(liquid, toILiquidStack(recipe.getLiquid())))
+						recipes.add(recipe);
+				} else {
+					recipes.add(recipe);
+				}
+			}
+		}
+		
+		if(!recipes.isEmpty()) {
+			MineTweakerAPI.apply(new Remove(recipes));
+		} else {
+			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Carpenter.name, output.toString()));
+		}
 	}
-
+	
 	private static class Remove extends BaseListRemoval<Recipe> {
-
+		
 		public Remove(List<Recipe> recipes) {
 			super(Carpenter.name, RecipeManager.recipes, recipes);
 		}
 		
 		@Override
 		protected String getRecipeInfo(Recipe recipe) {
-		    return LogHelper.getStackDescription(recipe.getCraftingResult());
+			return LogHelper.getStackDescription(recipe.getCraftingResult());
 		}
 	}
 }

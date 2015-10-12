@@ -20,17 +20,17 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.recipes.ICentrifugeRecipe;
-import forestry.factory.gadgets.MachineCentrifuge.CentrifugeRecipe;
-import forestry.factory.gadgets.MachineCentrifuge.RecipeManager;
+import forestry.factory.tiles.TileCentrifuge.CentrifugeRecipe;
+import forestry.factory.tiles.TileCentrifuge.RecipeManager;
 
 
 @ZenClass("mods.forestry.Centrifuge")
 public class Centrifuge {
-
-    public static final String name = "Forestry Centrifuge";
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+	
+	public static final String name = "Forestry Centrifuge";
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Adds a recipe for the Centrifuge
 	 * 
@@ -46,7 +46,7 @@ public class Centrifuge {
 		}
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(ingredient), products)));
 	}
-
+	
 	@ZenMethod
 	@Deprecated
 	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {
@@ -58,53 +58,52 @@ public class Centrifuge {
 		}
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(itemInput), products)));
 	}
-
-    private static class Add extends BaseListAddition<ICentrifugeRecipe> {
-
-    	public Add(ICentrifugeRecipe recipe) {
-            super(Centrifuge.name, RecipeManager.recipes);
-            recipes.add(recipe);
-        }
-        
-        @Override
-        protected String getRecipeInfo(ICentrifugeRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.getInput());
-        }
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
+	private static class Add extends BaseListAddition<ICentrifugeRecipe> {
+		public Add(ICentrifugeRecipe recipe) {
+			super(Centrifuge.name, RecipeManager.recipes);
+			recipes.add(recipe);
+		}
+		
+		@Override
+		protected String getRecipeInfo(ICentrifugeRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getInput());
+		}
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Removes a recipe for the Centrifuge
 	 * 
-	 * @param ingredient item input
+	 * @param input item input
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
-        List<ICentrifugeRecipe> recipes = new LinkedList<ICentrifugeRecipe>();
-        
-        for(ICentrifugeRecipe recipe : RecipeManager.recipes) {
-            if(recipe != null && matches(input, toIItemStack(recipe.getInput()))) {
-                recipes.add(recipe);
-            }
-        }
-        
-        if(!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new Remove(recipes));            
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Centrifuge.name, input.toString()));
-        }
+		List<ICentrifugeRecipe> recipes = new LinkedList<ICentrifugeRecipe>();
+		
+		for(ICentrifugeRecipe recipe : RecipeManager.recipes) {
+			if(recipe != null && matches(input, toIItemStack(recipe.getInput()))) {
+				recipes.add(recipe);
+			}
+		}
+		
+		if(!recipes.isEmpty()) {
+			MineTweakerAPI.apply(new Remove(recipes));
+		} else {
+			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Centrifuge.name, input.toString()));
+		}
 	}
-
+	
 	private static class Remove extends BaseListRemoval<ICentrifugeRecipe> {
-
+		
 		public Remove(List<ICentrifugeRecipe> recipes) {
 			super(Centrifuge.name, RecipeManager.recipes, recipes);
 		}
-
+		
 		@Override
 		protected String getRecipeInfo(ICentrifugeRecipe recipe) {
-		    return LogHelper.getStackDescription(recipe.getInput());
+			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}
 }
