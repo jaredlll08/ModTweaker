@@ -14,14 +14,16 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.WeightedItemStack;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.mods.forestry.ForestryListAddition;
+import modtweaker2.mods.forestry.ForestryListRemoval;
+import modtweaker2.mods.forestry.recipes.CentrifugeRecipe;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import forestry.api.recipes.ICentrifugeManager;
 import forestry.api.recipes.ICentrifugeRecipe;
-import forestry.factory.tiles.TileCentrifuge.CentrifugeRecipe;
-import forestry.factory.tiles.TileCentrifuge.RecipeManager;
+import forestry.api.recipes.RecipeManagers;
 
 
 @ZenClass("mods.forestry.Centrifuge")
@@ -59,9 +61,9 @@ public class Centrifuge {
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(itemInput), products)));
 	}
 	
-	private static class Add extends BaseListAddition<ICentrifugeRecipe> {
+	private static class Add extends ForestryListAddition<ICentrifugeRecipe, ICentrifugeManager> {
 		public Add(ICentrifugeRecipe recipe) {
-			super(Centrifuge.name, RecipeManager.recipes);
+			super(Centrifuge.name, RecipeManagers.centrifugeManager);
 			recipes.add(recipe);
 		}
 		
@@ -82,7 +84,7 @@ public class Centrifuge {
 	public static void removeRecipe(IIngredient input) {
 		List<ICentrifugeRecipe> recipes = new LinkedList<ICentrifugeRecipe>();
 		
-		for(ICentrifugeRecipe recipe : RecipeManager.recipes) {
+		for(ICentrifugeRecipe recipe : RecipeManagers.centrifugeManager.recipes()) {
 			if(recipe != null && matches(input, toIItemStack(recipe.getInput()))) {
 				recipes.add(recipe);
 			}
@@ -95,10 +97,10 @@ public class Centrifuge {
 		}
 	}
 	
-	private static class Remove extends BaseListRemoval<ICentrifugeRecipe> {
+	private static class Remove extends ForestryListRemoval<ICentrifugeRecipe, ICentrifugeManager> {
 		
 		public Remove(List<ICentrifugeRecipe> recipes) {
-			super(Centrifuge.name, RecipeManager.recipes, recipes);
+			super(Centrifuge.name, RecipeManagers.centrifugeManager, recipes);
 		}
 		
 		@Override

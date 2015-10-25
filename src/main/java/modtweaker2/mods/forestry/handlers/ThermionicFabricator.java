@@ -11,17 +11,23 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.mods.forestry.ForestryListAddition;
+import modtweaker2.mods.forestry.ForestryListRemoval;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import modtweaker2.mods.forestry.recipes.DescriptiveRecipe;
+import modtweaker2.mods.forestry.recipes.FabricatorRecipe;
+import modtweaker2.mods.forestry.recipes.FabricatorSmeltingRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.core.recipes.ShapedRecipeCustom;
+
+import forestry.api.recipes.IDescriptiveRecipe;
+import forestry.api.recipes.IFabricatorManager;
+import forestry.api.recipes.IFabricatorSmeltingManager;
+import forestry.api.recipes.IFabricatorSmeltingRecipe;
+import forestry.api.recipes.RecipeManagers;
 import forestry.api.recipes.IFabricatorRecipe;
-import forestry.factory.recipes.FabricatorRecipe;
-import forestry.factory.tiles.TileFabricator.RecipeManager;
-import forestry.factory.tiles.TileFabricator.Smelting;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
 public class ThermionicFabricator {
@@ -41,14 +47,14 @@ public class ThermionicFabricator {
 	@ZenMethod
 	public static void addSmelting(int fluidOutput, IItemStack itemInput, int meltingPoint) {
 		//The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
-		MineTweakerAPI.apply(new AddSmelting(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
+		MineTweakerAPI.apply(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
 	}
 	
 	@Deprecated
 	@ZenMethod
 	public static void addSmelting(IItemStack itemInput, int meltingPoint, int fluidOutput) {
 		//The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass 
-		MineTweakerAPI.apply(new AddSmelting(new Smelting(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
+		MineTweakerAPI.apply(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,36 +69,38 @@ public class ThermionicFabricator {
 	 */
 	@ZenMethod
 	public static void addCast(IItemStack output, IIngredient[][] ingredients, int fluidInput, @Optional IItemStack plan) {
-		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)))));
+		IDescriptiveRecipe recipe = new DescriptiveRecipe(3, 3, toShapedObjects(ingredients), toStack(output), false);
+		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), recipe)));
 	}
 	
 	@Deprecated
 	@ZenMethod
 	public static void addCast(ILiquidStack fluidInput, IIngredient[][] ingredients, IItemStack plan, IItemStack output) {
-		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), toFluid(fluidInput), ShapedRecipeCustom.createShapedRecipe(toStack(output), toShapedObjects(ingredients)))));
+		IDescriptiveRecipe recipe = new DescriptiveRecipe(3, 3, toShapedObjects(ingredients), toStack(output), false);
+		MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), toFluid(fluidInput), recipe)));
 	}
 	
 	/*
 	Implements the actions to add a recipe
 	Since the machine has two crafting Steps, this is a constructors for both
 	*/
-	private static class AddSmelting extends BaseListAddition<Smelting> {
+	private static class AddSmelting extends ForestryListAddition<IFabricatorSmeltingRecipe, IFabricatorSmeltingManager> {
 		
-		public AddSmelting(Smelting recipe) {
-			super(ThermionicFabricator.nameSmelting, RecipeManager.smeltings);
+		public AddSmelting(IFabricatorSmeltingRecipe recipe) {
+			super(ThermionicFabricator.nameSmelting, RecipeManagers.fabricatorSmeltingManager);
 			recipes.add(recipe);
 		}
 		
 		@Override
-		public String getRecipeInfo(Smelting recipe) {
+		public String getRecipeInfo(IFabricatorSmeltingRecipe recipe) {
 		    return LogHelper.getStackDescription(recipe.getResource());
 		}
 	}
 	
-	private static class AddCast extends BaseListAddition<IFabricatorRecipe> {
+	private static class AddCast extends ForestryListAddition<IFabricatorRecipe, IFabricatorManager> {
 		
 		public AddCast(IFabricatorRecipe recipe) {
-			super(ThermionicFabricator.nameCasting, RecipeManager.recipes);
+			super(ThermionicFabricator.nameCasting, RecipeManagers.fabricatorManager);
 			recipes.add(recipe);
 		}
 		
@@ -106,9 +114,9 @@ public class ThermionicFabricator {
 	
 	@ZenMethod
 	public static void removeSmelting(IIngredient itemInput) {
-		List<Smelting> recipes = new LinkedList<Smelting>();
+		List<IFabricatorSmeltingRecipe> recipes = new LinkedList<IFabricatorSmeltingRecipe>();
 		
-		for (Smelting r : RecipeManager.smeltings) {
+		for (IFabricatorSmeltingRecipe r : RecipeManagers.fabricatorSmeltingManager.recipes()) {
 			if (r != null && r.getResource() != null && matches(itemInput, toIItemStack(r.getResource()))) {
 				recipes.add(r);
 			}
@@ -125,7 +133,7 @@ public class ThermionicFabricator {
 	public static void removeCast(IIngredient product) {
 		List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
 		
-		for (IFabricatorRecipe r : RecipeManager.recipes) {
+		for (IFabricatorRecipe r : RecipeManagers.fabricatorManager.recipes()) {
 			if (r != null && r.getRecipeOutput() != null && matches(product, toIItemStack(r.getRecipeOutput()))) {
 				recipes.add(r);
 			}
@@ -143,7 +151,7 @@ public class ThermionicFabricator {
 	public static void removeCasts(IIngredient product) {
 		List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
 		
-		for (IFabricatorRecipe r : RecipeManager.recipes) {
+		for (IFabricatorRecipe r : RecipeManagers.fabricatorManager.recipes()) {
 			if (r != null && r.getRecipeOutput() != null && matches(product, toIItemStack(r.getRecipeOutput()))) {
 				recipes.add(r);
 			}
@@ -156,20 +164,20 @@ public class ThermionicFabricator {
 		}
 	}
 	
-	private static class RemoveSmelting extends BaseListRemoval<Smelting> {
-		public RemoveSmelting(List<Smelting> recipes) {
-			super(ThermionicFabricator.nameSmelting, RecipeManager.smeltings, recipes);
+	private static class RemoveSmelting extends ForestryListRemoval<IFabricatorSmeltingRecipe, IFabricatorSmeltingManager> {
+		public RemoveSmelting(List<IFabricatorSmeltingRecipe> recipes) {
+			super(ThermionicFabricator.nameSmelting, RecipeManagers.fabricatorSmeltingManager, recipes);
 		}
 		
 		@Override
-		public String getRecipeInfo(Smelting recipe) {
+		public String getRecipeInfo(IFabricatorSmeltingRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getResource());
 		}
 	}
 	
-	private static class RemoveCasts extends BaseListRemoval<IFabricatorRecipe> {
+	private static class RemoveCasts extends ForestryListRemoval<IFabricatorRecipe, IFabricatorManager> {
 		public RemoveCasts(List<IFabricatorRecipe> recipes) {
-			super(ThermionicFabricator.nameCasting, RecipeManager.recipes, recipes);
+			super(ThermionicFabricator.nameCasting, RecipeManagers.fabricatorManager, recipes);
 		}
 		
 		@Override

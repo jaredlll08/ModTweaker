@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    compile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
+    compile "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:api"
 }
 
 processResources

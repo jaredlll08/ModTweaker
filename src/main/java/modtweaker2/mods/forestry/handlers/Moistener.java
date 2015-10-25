@@ -15,17 +15,18 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.mods.forestry.ForestryListAddition;
+import modtweaker2.mods.forestry.ForestryListRemoval;
+import modtweaker2.mods.forestry.recipes.MoistenerRecipe;
 import modtweaker2.utils.BaseMapAddition;
 import modtweaker2.utils.BaseMapRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import forestry.api.fuels.FuelManager;
 import forestry.api.fuels.MoistenerFuel;
-import forestry.factory.tiles.TileMoistener;
-import forestry.factory.tiles.TileMoistener.Recipe;
-import forestry.factory.tiles.TileMoistener.RecipeManager;
+import forestry.api.recipes.IMoistenerManager;
+import forestry.api.recipes.IMoistenerRecipe;
+import forestry.api.recipes.RecipeManagers;
 
 @ZenClass("mods.forestry.Moistener")
 public class Moistener {
@@ -44,24 +45,24 @@ public class Moistener {
 	 */
 	@ZenMethod
 	public static void addRecipe(IItemStack output, IItemStack resource, int timePerItem) {
-		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), toStack(output), timePerItem)));
+		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(resource), toStack(output), timePerItem)));
 	}
 
 	@Deprecated
 	@ZenMethod
 	public static void addRecipe(int timePerItem, IItemStack resource, IItemStack product) {
-		MineTweakerAPI.apply(new Add(new Recipe(toStack(resource), toStack(product), timePerItem)));
+		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(resource), toStack(product), timePerItem)));
 	}
 
-	private static class Add extends BaseListAddition<Recipe> {
-		public Add(Recipe recipe) {
-			super(Moistener.name, TileMoistener.RecipeManager.recipes);
+	private static class Add extends ForestryListAddition<IMoistenerRecipe, IMoistenerManager> {
+		public Add(IMoistenerRecipe recipe) {
+			super(Moistener.name, RecipeManagers.moistenerManager);
 			recipes.add(recipe);
 		}
 
 		@Override
-		public String getRecipeInfo(Recipe recipe) {
-			return LogHelper.getStackDescription(recipe.product);
+		public String getRecipeInfo(IMoistenerRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getProduct());
 		}
 	}
 	
@@ -69,9 +70,9 @@ public class Moistener {
 
 	@ZenMethod
 	public static void removeRecipe(IIngredient output) {
-		List<Recipe> recipes = new LinkedList<Recipe>();
-		for (Recipe recipe : RecipeManager.recipes) {
-			if (recipe != null && recipe.product != null && matches(output, toIItemStack(recipe.product))) {
+		List<IMoistenerRecipe> recipes = new LinkedList<IMoistenerRecipe>();
+		for (IMoistenerRecipe recipe : RecipeManagers.moistenerManager.recipes()) {
+			if (recipe != null && recipe.getProduct() != null && matches(output, toIItemStack(recipe.getProduct()))) {
 				recipes.add(recipe);
 			}
 		}
@@ -83,14 +84,14 @@ public class Moistener {
 		}
 	}
 
-	private static class Remove extends BaseListRemoval<Recipe> {
-		public Remove(List<Recipe> recipes) {
-			super(Moistener.name, RecipeManager.recipes, recipes);
+	private static class Remove extends ForestryListRemoval<IMoistenerRecipe, IMoistenerManager> {
+		public Remove(List<IMoistenerRecipe> recipes) {
+			super(Moistener.name, RecipeManagers.moistenerManager, recipes);
 		}
 
 		@Override
-		public String getRecipeInfo(Recipe recipe) {
-			return LogHelper.getStackDescription(recipe.product);
+		public String getRecipeInfo(IMoistenerRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getProduct());
 		}
 	}
 
