@@ -11,14 +11,16 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.mods.forestry.ForestryListAddition;
+import modtweaker2.mods.forestry.ForestryListRemoval;
+import modtweaker2.mods.forestry.recipes.StillRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.tiles.TileStill;
-import forestry.factory.tiles.TileStill.Recipe;
-import forestry.factory.tiles.TileStill.RecipeManager;
+
+import forestry.api.recipes.IStillManager;
+import forestry.api.recipes.IStillRecipe;
+import forestry.api.recipes.RecipeManagers;
 
 @ZenClass("mods.forestry.Still")
 public class Still {
@@ -39,7 +41,7 @@ public class Still {
 		fluidOutput.amount(fluidOutput.getAmount() / 100);
 		fluidInput.amount(fluidInput.getAmount() / 100);
 		
-		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
+		MineTweakerAPI.apply(new Add(new StillRecipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
 	}
 	
 	@Deprecated
@@ -48,34 +50,18 @@ public class Still {
 		output.amount(output.getAmount() / 100);
 		input.amount(input.getAmount() / 100);
 		
-		MineTweakerAPI.apply(new Add(new Recipe(timePerUnit, toFluid(input), toFluid(output))));
+		MineTweakerAPI.apply(new Add(new StillRecipe(timePerUnit, toFluid(input), toFluid(output))));
 	}
 	
-	private static class Add extends BaseListAddition<Recipe> {
-		public Add(Recipe recipe) {
-			super("Forestry Still", TileStill.RecipeManager.recipes);
+	private static class Add extends ForestryListAddition<IStillRecipe, IStillManager> {
+		public Add(IStillRecipe recipe) {
+			super("Forestry Still", RecipeManagers.stillManager);
 			recipes.add(recipe);
 		}
 		
 		@Override
-		public void apply() {
-			super.apply();
-			for (Recipe recipe : recipes) {
-				RecipeManager.recipeFluidInputs.add(recipe.input.getFluid());
-			}
-		}
-		
-		@Override
-		public void undo() {
-			super.undo();
-			for (Recipe recipe : recipes) {
-				RecipeManager.recipeFluidInputs.remove(recipe.input.getFluid());
-			}
-		}
-		
-		@Override
-		public String getRecipeInfo(Recipe recipe) {
-			return LogHelper.getStackDescription(recipe.output);
+		public String getRecipeInfo(IStillRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getOutput());
 		}
 	}
 	
@@ -89,12 +75,12 @@ public class Still {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional ILiquidStack input) {
-		List<Recipe> recipes = new LinkedList<Recipe>();
+		List<IStillRecipe> recipes = new LinkedList<IStillRecipe>();
 		
-		for (Recipe r : RecipeManager.recipes) {
-			if (r != null && r.output != null && matches(output, toILiquidStack(r.output))) {
+		for (IStillRecipe r : RecipeManagers.stillManager.recipes()) {
+			if (r != null && r.getOutput() != null && matches(output, toILiquidStack(r.getOutput()))) {
 				if (input != null) {
-					if (matches(input, toILiquidStack(r.input))) {
+					if (matches(input, toILiquidStack(r.getInput()))) {
 						recipes.add(r);
 					}
 				}
@@ -110,30 +96,14 @@ public class Still {
 		}
 	}
 	
-	private static class Remove extends BaseListRemoval<Recipe> {
-		public Remove(List<Recipe> recipes) {
-			super(Still.name, RecipeManager.recipes, recipes);
+	private static class Remove extends ForestryListRemoval<IStillRecipe, IStillManager> {
+		public Remove(List<IStillRecipe> recipes) {
+			super(Still.name, RecipeManagers.stillManager, recipes);
 		}
 		
 		@Override
-		public String getRecipeInfo(Recipe recipe) {
-			return LogHelper.getStackDescription(recipe.output);
-		}
-		
-		@Override
-		public void apply() {
-			super.apply();
-			for (Recipe recipe : recipes) {
-				RecipeManager.recipeFluidInputs.remove(recipe.input.getFluid());
-			}
-		}
-		
-		@Override
-		public void undo() {
-			super.undo();
-			for (Recipe recipe : recipes) {
-				RecipeManager.recipeFluidInputs.add(recipe.input.getFluid());
-			}
+		public String getRecipeInfo(IStillRecipe recipe) {
+			return LogHelper.getStackDescription(recipe.getOutput());
 		}
 	}
 }

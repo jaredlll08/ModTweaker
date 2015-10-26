@@ -7,9 +7,12 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
 import static modtweaker2.helpers.StackHelper.matches;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import forestry.api.recipes.ISqueezerManager;
+import forestry.api.recipes.ISqueezerRecipe;
+import forestry.api.recipes.RecipeManagers;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -17,15 +20,12 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.WeightedItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import modtweaker2.helpers.LogHelper;
-import modtweaker2.utils.BaseListAddition;
-import modtweaker2.utils.BaseListRemoval;
+import modtweaker2.mods.forestry.ForestryListAddition;
+import modtweaker2.mods.forestry.ForestryListRemoval;
+import modtweaker2.mods.forestry.recipes.SqueezerRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import forestry.factory.tiles.TileSqueezer;
-import forestry.factory.tiles.TileSqueezer.RecipeManager;
-import forestry.factory.recipes.ISqueezerRecipe;
-import forestry.factory.recipes.SqueezerRecipe;
 
 @ZenClass("mods.forestry.Squeezer")
 public class Squeezer {
@@ -65,26 +65,10 @@ public class Squeezer {
 		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(resources), toFluid(liquid), toStack(remnants), chance)));
 	}
 	
-	private static class Add extends BaseListAddition<ISqueezerRecipe> {
+	private static class Add extends ForestryListAddition<ISqueezerRecipe, ISqueezerManager> {
 		public Add(ISqueezerRecipe recipe) {
-			super(Squeezer.name, TileSqueezer.RecipeManager.recipes);
+			super(Squeezer.name, RecipeManagers.squeezerManager);
 			recipes.add(recipe);
-		}
-		
-		@Override
-		public void apply() {
-			super.apply();
-			for (ISqueezerRecipe recipe : recipes) {
-				RecipeManager.recipeInputs.addAll(Arrays.asList(recipe.getResources()));
-			}
-		}
-		
-		@Override
-		public void undo() {
-			super.undo();
-			for (ISqueezerRecipe recipe : recipes) {
-				RecipeManager.recipeInputs.removeAll(Arrays.asList(recipe.getResources()));
-			}
 		}
 		
 		@Override
@@ -105,7 +89,7 @@ public class Squeezer {
 	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
 		List<ISqueezerRecipe> recipes = new LinkedList<ISqueezerRecipe>();
 		
-		for (ISqueezerRecipe r : RecipeManager.recipes) {
+		for (ISqueezerRecipe r : RecipeManagers.squeezerManager.recipes()) {
 			if (r != null && r.getFluidOutput() != null && matches(liquid, toILiquidStack(r.getFluidOutput()))) {
 				// optional check for ingredients
 				if (ingredients != null) {
@@ -135,25 +119,9 @@ public class Squeezer {
 		}
 	}
 
-	private static class Remove extends BaseListRemoval<ISqueezerRecipe> {
+	private static class Remove extends ForestryListRemoval<ISqueezerRecipe, ISqueezerManager> {
 		public Remove(List<ISqueezerRecipe> recipes) {
-			super(Squeezer.name, TileSqueezer.RecipeManager.recipes, recipes);
-		}
-
-		@Override
-		public void apply() {
-			super.apply();
-			for (ISqueezerRecipe recipe : recipes) {
-				RecipeManager.recipeInputs.removeAll(Arrays.asList(recipe.getResources()));
-			}
-		}
-
-		@Override
-		public void undo() {
-			super.undo();
-			for (ISqueezerRecipe recipe : recipes) {
-				RecipeManager.recipeInputs.addAll(Arrays.asList(recipe.getResources()));
-			}
+			super(Squeezer.name, RecipeManagers.squeezerManager, recipes);
 		}
 		
 		@Override
