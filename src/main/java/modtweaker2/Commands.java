@@ -19,7 +19,8 @@ import modtweaker2.mods.factorization.commands.FactorizationLogger;
 import modtweaker2.mods.mekanism.commands.GasLogger;
 import modtweaker2.mods.mekanism.commands.MekanismLogger;
 import modtweaker2.mods.railcraft.commands.RailcraftLogger;
-import modtweaker2.mods.tconstruct.MaterialLogger;
+import modtweaker2.mods.tconstruct.commands.MaterialLogger;
+import modtweaker2.mods.tconstruct.commands.ModifierLogger;
 import modtweaker2.mods.tconstruct.commands.TConstructLogger;
 import modtweaker2.mods.thaumcraft.commands.AspectLogger;
 import modtweaker2.mods.thaumcraft.research.commands.ResearchLogger;
@@ -81,6 +82,7 @@ public class Commands {
 
 			if (TweakerPlugin.isLoaded("TConstruct")) {
 				MineTweakerAPI.server.addMineTweakerCommand("materials", new String[] { "/minetweaker materials", "    Outputs a list of all Tinker's Construct material names in the game to the minetweaker log" }, new MaterialLogger());
+				MineTweakerAPI.server.addMineTweakerCommand("modifiers", new String[] { "/minetweaker modifiers", "    Outputs a list of all Tinker's Construct modifier names in the game to the minetweaker log" }, new ModifierLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("tconstruct", new String[]{ "/minetweaker tconstruct [HANDLER]", "    Outputs a list of all Tinkers Construct recipes."}, new TConstructLogger());
 			}
 
