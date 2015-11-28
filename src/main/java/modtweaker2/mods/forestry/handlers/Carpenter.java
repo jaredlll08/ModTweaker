@@ -69,9 +69,21 @@ public class Carpenter {
 
 	@Deprecated
 	@ZenMethod
-	public static void addRecipe(int packagingTime, ILiquidStack liquid, IItemStack[] ingredients, IItemStack ingredient, IItemStack product) {
-		IDescriptiveRecipe craftRecipe = new DescriptiveRecipe(3, 3, toStacks(ingredients), toStack(product), false);
-		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(liquid), toStack(ingredient), craftRecipe)));
+	public static void addRecipe(int packagingTime, ILiquidStack fluidInput, IItemStack[] ingredients, IItemStack box, IItemStack output) {
+		IDescriptiveRecipe craftRecipe = new DescriptiveRecipe(3, 3, toShapedObjects(transform(ingredients, 3)), toStack(output), false);
+		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), craftRecipe)));
+	}
+
+	private static IItemStack[][] transform(IItemStack[] arr, int N) {
+	    int M = (arr.length + N - 1) / N;
+	    IItemStack[][] mat = new IItemStack[M][];
+	    int start = 0;
+	    for (int r = 0; r < M; r++) {
+	        int L = Math.min(N, arr.length - start);
+	        mat[r] = java.util.Arrays.copyOfRange(arr, start, start + L);
+	        start += L;
+	    }
+	    return mat;
 	}
 
 	private static class Add extends ForestryListAddition<ICarpenterRecipe, ICarpenterManager> {
