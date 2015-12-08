@@ -67,15 +67,4 @@ public class TConstructHelper {
                 output);
     }
 
-    public static String getMaterialFromID(int id) {
-        return TConstructRegistry.toolMaterials.get(id).materialName;
-    }
-
-    public static ItemKey getItemKey(Item item, int damage, int value, String material) {
-        return ReflectionHelper.getInstance(ReflectionHelper.getConstructor(ItemKey.class, ItemStack.class, int.class, int.class, String.class),
-                item,
-                damage,
-                value,
-                material);
-    }
 }
