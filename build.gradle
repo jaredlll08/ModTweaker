@@ -20,7 +20,6 @@ apply plugin: 'java'
 
 // define the properties file
 ext.configFile = file "build.properties"
-
 configFile.withReader {
     // read config.  it shall from now on be referenced as simply config or as project.config
     def prop = new Properties()
@@ -35,6 +34,7 @@ archivesBaseName = "ModTweaker2"
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"
     runDir = "eclipse"
+    replace "@modVersion@", config.mod.version
 }
 
 repositories {
@@ -52,14 +52,14 @@ processResources
 {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mcversion", config.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':config.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
