@@ -55,10 +55,6 @@ public class ModTweaker2 {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger.info("Starting PreInitialization for " + ModProps.modid);
-		baseIMCFolder = new File("imcScripts");
-		if (!baseIMCFolder.exists()) {
-			baseIMCFolder.mkdir();
-		}
 	}
 
 	@SidedProxy(clientSide = "modtweaker2.proxy.ClientProxy", serverSide = "modtweaker2.proxy.CommonProxy")
@@ -100,9 +96,6 @@ public class ModTweaker2 {
 
 			}
 		});
-
-		MineTweakerImplementationAPI.setScriptProvider(new ScriptProviderDirectory(baseIMCFolder));
-		MineTweakerImplementationAPI.reload();
 
 		File scripts = new File("scripts");
 		if (!scripts.exists()) {
