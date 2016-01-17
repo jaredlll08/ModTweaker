@@ -179,7 +179,7 @@ public class Hammer {
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s recipes found for %s and %s. Command ignored!", input.toString(), output.toString()));
+            LogHelper.logWarning(String.format("No %s recipes found for %s and %s. Command ignored!", name, input.toString(), output.toString()));
         }
 	}
 
