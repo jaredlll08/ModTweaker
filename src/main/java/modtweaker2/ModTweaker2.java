@@ -9,6 +9,7 @@ import minetweaker.util.IEventHandler;
 import modtweaker2.mods.appeng.AppliedEnergistics;
 import modtweaker2.mods.auracascade.AuraCascade;
 import modtweaker2.mods.botania.Botania;
+import modtweaker2.mods.botanicaladdons.BotanicalAddons;
 import modtweaker2.mods.chisel.Chisel;
 import modtweaker2.mods.exnihilo.ExNihilo;
 import modtweaker2.mods.extendedworkbench.ExtendedWorkbench;
@@ -65,6 +66,7 @@ public class ModTweaker2 {
 		logger.info("Starting Initialization for " + ModProps.modid);
 		TweakerPlugin.register("appliedenergistics2-core", AppliedEnergistics.class);
 		TweakerPlugin.register("Botania", Botania.class);
+		TweakerPlugin.register("shadowfox_botany", BotanicalAddons.class);
 		TweakerPlugin.register("exnihilo", ExNihilo.class);
 		TweakerPlugin.register("extendedWorkbench", ExtendedWorkbench.class);
 		TweakerPlugin.register("factorization", Factorization.class);

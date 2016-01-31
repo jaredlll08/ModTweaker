@@ -22,6 +22,7 @@ Supported Mods
 - Applied Energistics 2
 - Auracascade
 - Botania
+- Botanical Addons
 - Chisel
 - ExNihilo
 - ExtendedWorkbench
