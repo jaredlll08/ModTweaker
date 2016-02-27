@@ -59,6 +59,7 @@ public abstract class BaseListModification<T> extends BaseUndoable {
         return 37 * super.hashCode() ^ (list != null ? 43 * list.hashCode() : 0);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
         if(obj == this)

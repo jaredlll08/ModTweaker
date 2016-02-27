@@ -2,7 +2,7 @@ package modtweaker2.utils;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 
 public class TweakerPlugin {
     private static ArrayList<String> isLoaded = new ArrayList<String>();

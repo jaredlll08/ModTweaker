@@ -26,7 +26,7 @@ public class Crucible {
     public static final String name = "Thaumcraft Crucible";
     
 	@ZenMethod
-	public static void addRecipe(String key, IItemStack result, IIngredient catalyst, String aspects) {
+	public static void addRecipe(String key[], IItemStack result, IIngredient catalyst, String aspects) {
 	    MineTweakerAPI.apply(new Add(new CrucibleRecipe(key, toStack(result), toObject(catalyst), ThaumcraftHelper.parseAspects(aspects))));
 	}
     

@@ -1,13 +1,11 @@
 package modtweaker2.helpers;
 
 import static modtweaker2.helpers.InputHelper.toStack;
+
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker2.mods.botania.Botania;
-import modtweaker2.mods.mekanism.MekanismHelper;
-import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,9 +17,7 @@ public class StackHelper {
 	public static boolean areEqual(ItemStack stack1, ItemStack stack2) {
 		if (stack1 == null || stack2 == null) {
 			return false;
-		} else if (TweakerPlugin.isLoaded("Botania") && Botania.isSubtile(stack1) && Botania.isSubtile(stack2)) {
-			return Botania.subtileMatches(stack1, stack2);
-		} else {
+		}  else {
 			return stack1.isItemEqual(stack2);
 		}
 	}
@@ -69,18 +65,7 @@ public class StackHelper {
             return false;
         }
         
-        // Check for Botania special flowers
-        if(ingredient.getItems() != null && TweakerPlugin.isLoaded("Botania") && Botania.isSubtile(toStack(itemStack))) {
-            for(IItemStack item : ingredient.getItems()) {
-                if(areEqual(toStack(item), toStack(itemStack))) {
-                    return true;
-                }
-            }
-        } else {
             return true;
-        }
-        
-        return false;
     }
     
     /**
@@ -109,20 +94,5 @@ public class StackHelper {
         return false;
     }
     
-    public static boolean matches(IIngredient ingredient, IGasStack gasStack) {
-        if(ingredient == null) {
-            return false;
-        }
-        
-        if(ingredient == IngredientAny.INSTANCE) {
-            return true;
-        }
-        
-        if(ingredient instanceof IGasStack) {
-            return MekanismHelper.toGas((IGasStack)ingredient).isGasEqual(MekanismHelper.toGas(gasStack));
-        }
-
-        return false;
-    }
     
 }

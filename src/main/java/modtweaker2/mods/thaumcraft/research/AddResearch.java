@@ -22,12 +22,12 @@ public class AddResearch implements IUndoableAction {
 
 	@Override
 	public void apply() {
-		if (itemTriggers != null) {
-			research = research.setItemTriggers(itemTriggers);
-		}
-		if (entityTriggers != null) {
-			research = research.setEntityTriggers(entityTriggers);
-		}
+//		if (itemTriggers != null) {
+//			research = research.settrsetItemTriggers(itemTriggers);
+//		}
+//		if (entityTriggers != null) {
+//			research = research.setEntityTriggers(entityTriggers);
+//		}
 		research.registerResearchItem();
 	}
 

@@ -28,6 +28,7 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.research.ResearchHelper;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage.PageType;
 
@@ -36,24 +37,24 @@ public class Research {
 	private static final ResourceLocation defaultBackground = new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png");
 
 	@ZenMethod
-	public static void addTab(String key, String iconDomain, String iconPath) {
-		addTab(key, iconDomain, iconPath, null, null);
+	public static void addTab(String key, String researchKey, String iconDomain, String iconPath) {
+		addTab(key,researchKey, iconDomain, iconPath, null, null);
 	}
 
 	@ZenMethod
-	public static void addTab(String key, String iconDomain, String iconPath, String backDomain, String backPath) {
+	public static void addTab(String key,String researchKey, String iconDomain, String iconPath, String backDomain, String backPath) {
 		ResourceLocation icon = new ResourceLocation(iconDomain, iconPath);
 		ResourceLocation background;
 		if (backPath == null)
 			background = defaultBackground;
 		else
 			background = new ResourceLocation(backDomain, backPath);
-		addTab(key, icon, background);
+		addTab(key, researchKey, icon, background);
 	}
 
-	private static void addTab(String key, ResourceLocation icon, ResourceLocation background) {
+	private static void addTab(String key, String researchKey, ResourceLocation icon, ResourceLocation background) {
 		
-			MineTweakerAPI.apply(new AddTab(key, icon, background));
+			MineTweakerAPI.apply(new AddTab(key, researchKey, icon, background));
 	}
 
 	@ZenMethod
@@ -126,7 +127,7 @@ public class Research {
 	@ZenMethod
 	public static void addEnchantmentPage(String key, int i) {
 		
-			MineTweakerAPI.apply(new AddPage(key, PageType.INFUSION_ENCHANTMENT, Enchantment.enchantmentsList[i]));
+			MineTweakerAPI.apply(new AddPage(key, PageType.INFUSION_ENCHANTMENT, Enchantment.getEnchantmentById(i)));
 	}
 
 	@ZenMethod
@@ -227,8 +228,7 @@ public class Research {
 
 	@ZenMethod
 	public static boolean hasResearched(IPlayer player, String key) {
-
-		return ThaumcraftApiHelper.isResearchComplete(player.getName(), key);
+		return ResearchHelper.isResearchComplete(player.getName(), key);
 	}
 
 	public static enum SetType {

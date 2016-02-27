@@ -5,11 +5,13 @@ import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.research.ResearchCategories;
 
 public class AddTab implements IUndoableAction {
+    String key;
     String tab;
     ResourceLocation icon;
     ResourceLocation background;
 
-    public AddTab(String research, ResourceLocation pic, ResourceLocation back) {
+    public AddTab(String key, String research, ResourceLocation pic, ResourceLocation back) {
+        this.key = key;
         icon = pic;
         background = back;
         tab = research;
@@ -17,7 +19,7 @@ public class AddTab implements IUndoableAction {
 
     @Override
     public void apply() {
-        ResearchCategories.registerCategory(tab, icon, background);
+        ResearchCategories.registerCategory(key, tab, icon, background);
     }
 
     @Override

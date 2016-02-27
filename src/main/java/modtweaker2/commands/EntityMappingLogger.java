@@ -11,22 +11,22 @@ import net.minecraft.entity.EntityList;
 
 public class EntityMappingLogger implements ICommandFunction {
 
-	@Override
-	public void execute(String[] arguments, IPlayer player) {
+    @Override
+    public void execute(String[] arguments, IPlayer player) {
 
-		@SuppressWarnings("unchecked")
-        Set<Integer> keys = EntityList.stringToIDMapping.keySet();
-		
-		System.out.println("Mob Keys: " + keys.size());
-		
-		for (Integer key : keys) {
-			ModTweaker2.logger.info("Mob Key " + EntityList.getStringFromID(key) + " : " + key);
-			MineTweakerAPI.logCommand("Mob Key " + EntityList.getStringFromID(key) + " : " + key);
+        @SuppressWarnings("unchecked")
+        Set<String> keys = EntityList.stringToClassMapping.keySet();
 
-		}
+        System.out.println("Mob Keys: " + keys.size());
 
-		if (player != null) {
-			player.sendChat(MineTweakerImplementationAPI.platform.getMessage("List generated; see minetweaker.log in your minecraft dir"));
-		}
-	}
+        for (String key : keys) {
+            ModTweaker2.logger.info("Mob Key "  + key);
+            MineTweakerAPI.logCommand("Mob Key " + key);
+
+        }
+
+        if (player != null) {
+            player.sendChat(MineTweakerImplementationAPI.platform.getMessage("List generated; see minetweaker.log in your minecraft dir"));
+        }
+    }
 }

@@ -45,7 +45,7 @@ public class Infusion {
 
 	@ZenMethod
 	public static void addEnchantment(String key, int enchantID, int instability, String aspects, IItemStack[] recipe) {
-	    MineTweakerAPI.apply(new AddEnchant(new InfusionEnchantmentRecipe(key, Enchantment.enchantmentsList[enchantID], instability, ThaumcraftHelper.parseAspects(aspects), toStacks(recipe))));
+	    MineTweakerAPI.apply(new AddEnchant(new InfusionEnchantmentRecipe(key, Enchantment.getEnchantmentById(enchantID), instability, ThaumcraftHelper.parseAspects(aspects), toStacks(recipe))));
 	}
 
 	private static class Add extends BaseListAddition<InfusionRecipe> {
@@ -101,7 +101,7 @@ public class Infusion {
 	@ZenMethod
 	public static void removeEnchant(int id) {
 	    List<InfusionEnchantmentRecipe> recipes = new LinkedList<InfusionEnchantmentRecipe>();
-	    Enchantment ench = Enchantment.enchantmentsList[id];
+	    Enchantment ench = Enchantment.getEnchantmentById(id);
 	    
         for (Object recipe : ThaumcraftApi.getCraftingRecipes()) {
             if (recipe instanceof InfusionEnchantmentRecipe) {

@@ -21,13 +21,11 @@ public class Aspects {
 	/** Add/Remove/Set Aspects for items **/
 	@ZenMethod
 	public static void add(IItemStack stack, String aspects) {
-		
 			MineTweakerAPI.apply(new Add(toStack(stack), aspects, false));
 	}
 
 	@ZenMethod
 	public static void set(IItemStack stack, String aspects) {
-		
 			MineTweakerAPI.apply(new Add(toStack(stack), aspects, true));
 	}
 
@@ -48,7 +46,7 @@ public class Aspects {
 
 		@Override
 		public void apply() {
-			oldList = ThaumcraftApiHelper.getObjectAspects(stack);
+			oldList = new AspectList(stack);
 			if (!replace)
 				newList = ThaumcraftHelper.parseAspects(oldList, aspects);
 			else
@@ -95,7 +93,7 @@ public class Aspects {
 
 		@Override
 		public void apply() {
-			oldList = ThaumcraftApiHelper.getObjectAspects(stack);
+		    oldList = new AspectList(stack);
 			if (oldList != null) {
 				newList = ThaumcraftHelper.removeAspects(oldList, aspects);
 				ThaumcraftApi.objectTags.put(Arrays.asList(stack.getItem(), stack.getItemDamage()), newList);

@@ -155,6 +155,6 @@ public class ReflectionHelper {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void setPrivateValue( Class cls, Object o, String field, Object var) {
-        cpw.mods.fml.relauncher.ReflectionHelper.setPrivateValue(cls, o, var, field);
+       net.minecraftforge.fml.relauncher.ReflectionHelper.setPrivateValue(cls, o, var, field);
     }
 }

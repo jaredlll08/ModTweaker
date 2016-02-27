@@ -32,7 +32,7 @@ public class ThaumcraftHelper {
     public static AspectList parseAspects(AspectList list, String str) {
     	AspectList output=new AspectList();
         if (list != null)
-        	for(Aspect aspect : list.getAspectsSortedAmount())
+        	for(Aspect aspect : list.getAspectsSortedByAmount())
         	{
         		if(aspect!=null)
         			output.add(aspect, list.getAmount(aspect));
@@ -51,7 +51,7 @@ public class ThaumcraftHelper {
     public static AspectList removeAspects(AspectList list, String str) {
     	AspectList output=new AspectList();
         if (list != null)
-        	for(Aspect aspect : list.getAspectsSortedAmount())
+        	for(Aspect aspect : list.getAspectsSortedByAmount())
         	{
         		if(aspect!=null)
         			output.add(aspect, list.getAmount(aspect));
@@ -99,7 +99,7 @@ public class ThaumcraftHelper {
 	{
 		System.out.println(aspects);
 		String output="";
-		for(Aspect aspect : aspects.getAspectsSortedAmount())
+		for(Aspect aspect : aspects.getAspectsSortedByAmount())
 		{
 			if(aspect!=null)
 				output+=aspect.getName()+" "+aspects.getAmount(aspect)+",";

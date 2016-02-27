@@ -4,14 +4,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import mekanism.api.gas.GasStack;
 import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.api.player.IPlayer;
-import minetweaker.mc1710.item.MCItemStack;
-import modtweaker2.mods.mekanism.gas.MCGasStack;
+import minetweaker.mc18.item.MCItemStack;
 import modtweaker2.mods.thaumcraft.aspect.AspectStack;
 import modtweaker2.mods.thaumcraft.aspect.MCAspectStack;
 import modtweaker2.utils.TweakerPlugin;
@@ -64,6 +62,7 @@ public class LogHelper {
     /**
      * Returns a string representation of the item which can also be used in scripts
      */
+    @SuppressWarnings("rawtypes")
     public static String getStackDescription(Object object) {
         if(object instanceof IIngredient) {
             return getStackDescription((IIngredient)object);
@@ -73,9 +72,7 @@ public class LogHelper {
             return getStackDescription((FluidStack) object);
         } else if (object instanceof Block) {
             return new MCItemStack(new ItemStack((Block)object, 1, 0)).toString();
-        } else if (TweakerPlugin.isLoaded("Mekanism") && object instanceof GasStack) {
-            return new MCGasStack((GasStack)object).toString();
-        } else if (TweakerPlugin.isLoaded("Thaumcraft") && object instanceof AspectStack) {
+        }  else if (TweakerPlugin.isLoaded("Thaumcraft") && object instanceof AspectStack) {
             return new MCAspectStack((AspectStack)object).toString();
         } else if(TweakerPlugin.isLoaded("Thaumcraft") && object instanceof AspectList) {
             List<AspectStack> stacks = new LinkedList<AspectStack>();

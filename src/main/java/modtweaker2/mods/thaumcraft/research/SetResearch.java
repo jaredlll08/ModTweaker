@@ -31,8 +31,8 @@ public class SetResearch implements IUndoableAction {
             else if (type == SetType.SPIKE) research.setSpecial();
             else if (type == SetType.SECONDARY) research.setSecondary();
             else if (type == SetType.STUB) research.setStub();
-            else if (type == SetType.VIRTUAL) research.setVirtual();
-            else if (type == SetType.CONCEAL) research.setConcealed();
+//            else if (type == SetType.VIRTUAL) research.setsetVirtual();
+//            else if (type == SetType.CONCEAL) research.setConcealed();
             applied = true;
         } else {
             try {
@@ -75,8 +75,8 @@ public class SetResearch implements IUndoableAction {
             else if (type == SetType.SPIKE) research.setSpecial();
             else if (type == SetType.SECONDARY) research.setSecondary();
             else if (type == SetType.STUB) research.setStub();
-            else if (type == SetType.VIRTUAL) research.setVirtual();
-            else if (type == SetType.CONCEAL) research.setConcealed();
+//            else if (type == SetType.VIRTUAL) research.setVirtual();
+//            else if (type == SetType.CONCEAL) research.setConcealed();
         } else {
             try {
                 Field target = null;
