@@ -29,7 +29,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.Infuser")
 public class Infuser {
     
-    public static final String name = "Mekanism Infuser";
+    public static final String name = "Mekanism Metallurgic Infuser";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

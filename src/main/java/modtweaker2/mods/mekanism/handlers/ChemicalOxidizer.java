@@ -30,7 +30,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.chemical.Oxidizer")
 public class ChemicalOxidizer {
     
-    public static final String name = "Mekanism Oxidizer";
+    public static final String name = "Mekanism Chemical Oxidizer";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

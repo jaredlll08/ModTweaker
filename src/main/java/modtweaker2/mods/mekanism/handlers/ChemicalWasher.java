@@ -27,7 +27,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.chemical.Washer")
 public class ChemicalWasher {
     
-    public static final String name = "Mekanism Washer";
+    public static final String name = "Mekanism Chemical Washer";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

@@ -27,7 +27,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.chemical.Infuser")
 public class ChemicalInfuser {
 
-    public static final String name = "Mekanism Infuser";
+    public static final String name = "Mekanism Chemical Infuser";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     

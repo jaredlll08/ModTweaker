@@ -30,7 +30,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.chemical.Dissolution")
 public class ChemicalDissolution {
     
-    public static final String name = "Mekanism Dissolution";
+    public static final String name = "Mekanism Chemical Dissolution Chamber";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

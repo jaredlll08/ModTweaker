@@ -32,7 +32,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.mekanism.chemical.Injection")
 public class ChemicalInjection {
     
-    public static final String name = "Mekanism Injection";
+    public static final String name = "Mekanism Chemical Injection Chamber";
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
