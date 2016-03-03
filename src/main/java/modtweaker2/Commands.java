@@ -12,6 +12,7 @@ import modtweaker2.mods.botania.commands.BotaniaOrechidLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconCategoryLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconKnowledgeTypesLogger;
 import modtweaker2.mods.botania.lexicon.commands.LexiconPageLogger;
+import modtweaker2.mods.botanicaladdons.commands.BotanicalAddonsDendricLogger;
 import modtweaker2.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker2.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker2.mods.exnihilo.commands.ExNihiloLogger;
@@ -56,6 +57,10 @@ public class Commands {
 				MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("botaniaOrechid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
 				MineTweakerAPI.server.addMineTweakerCommand("botania", new String[] { "/minetweaker botania [HANDLER]", "    Outputs a list of all Botania recipes." }, new BotaniaLogger());
+			}
+
+			if (TweakerPlugin.isLoaded("shadowfox_botany")) {
+				MineTweakerAPI.server.addMineTweakerCommand("treeCrafting", new String[] { "/minetweaker treeCrafting", "    Outputs a list of all Botanical Addons Tree Crafting recipes." }, new BotanicalAddonsDendricLogger());
 			}
 
 			if (TweakerPlugin.isLoaded("chisel")) {
