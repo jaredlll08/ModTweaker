@@ -2,6 +2,8 @@ package modtweaker2.mods.mekanism;
 
 import minetweaker.MineTweakerAPI;
 import modtweaker2.mods.mekanism.gas.GasBracketHandler;
+import modtweaker2.mods.mekanism.gas.IGasDefinition;
+import modtweaker2.mods.mekanism.gas.IGasStack;
 import modtweaker2.mods.mekanism.handlers.ChemicalCrystallizer;
 import modtweaker2.mods.mekanism.handlers.ChemicalDissolution;
 import modtweaker2.mods.mekanism.handlers.ChemicalInfuser;
@@ -25,6 +27,8 @@ import modtweaker2.utils.TweakerPlugin;
 public class Mekanism extends TweakerPlugin {
     public Mekanism() {
         MineTweakerAPI.registerBracketHandler(new GasBracketHandler());
+        MineTweakerAPI.registerClass(IGasDefinition.class);
+        MineTweakerAPI.registerClass(IGasStack.class);
         MineTweakerAPI.registerClass(ChemicalCrystallizer.class);
         MineTweakerAPI.registerClass(ChemicalDissolution.class);
         MineTweakerAPI.registerClass(ChemicalInfuser.class);
