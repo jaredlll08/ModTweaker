@@ -56,7 +56,7 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
-		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), (int) itemOutput.getPercent())));
+		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
 	}
 	
 	@ZenMethod
