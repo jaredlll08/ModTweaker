@@ -16,7 +16,6 @@ import modtweaker2.mods.extendedworkbench.ExtendedWorkbench;
 import modtweaker2.mods.extraUtils.ExtraUtils;
 import modtweaker2.mods.factorization.Factorization;
 import modtweaker2.mods.forestry.Forestry;
-import modtweaker2.mods.fsp.Steamcraft;
 import modtweaker2.mods.ic2c.IC2C;
 import modtweaker2.mods.mariculture.Mariculture;
 import modtweaker2.mods.mekanism.Mekanism;
@@ -75,7 +74,6 @@ public class ModTweaker2 {
 		TweakerPlugin.register("Metallurgy", Metallurgy.class);
 		TweakerPlugin.register("PneumaticCraft", PneumaticCraft.class);
 		TweakerPlugin.register("Railcraft", Railcraft.class);
-		TweakerPlugin.register("Steamcraft", Steamcraft.class);
 		TweakerPlugin.register("TConstruct", TConstruct.class);
 		TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
 		TweakerPlugin.register("ThermalExpansion", ThermalExpansion.class);
