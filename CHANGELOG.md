@@ -1,24 +1,39 @@
 # Change Log
 
+## [0.9.6](https://github.com/jaredlll08/ModTweaker2/tree/0.9.6) (2016-07-06)
+[Full Changelog](https://github.com/jaredlll08/ModTweaker2/compare/0.9.5...0.9.6)
+
+**Implemented enhancements:**
+
+- \[Request\] Botanical Addons \(Botania\) support [\#301](https://github.com/jaredlll08/ModTweaker2/issues/301)
+
+**Fixed bugs:**
+
+- Remove FSP integration [\#327](https://github.com/jaredlll08/ModTweaker2/issues/327)
+- \[1.7.10\] \[BUG\] Cannot specify low byproduct chance for Forestry squeezer [\#320](https://github.com/jaredlll08/ModTweaker2/issues/320)
+- Importing some ModTweaker classes in ZenScript fails [\#308](https://github.com/jaredlll08/ModTweaker2/issues/308)
+- Missing 'name' parameter in line 182 of modtweaker2.mods.exnihilo.mods.handler.Hammer results in script failure when no recipe found. [\#297](https://github.com/jaredlll08/ModTweaker2/issues/297)
+
 ## [0.9.5](https://github.com/jaredlll08/ModTweaker2/tree/0.9.5) (2015-12-07)
 [Full Changelog](https://github.com/jaredlll08/ModTweaker2/compare/0.9.4...0.9.5)
 
 **Implemented enhancements:**
 
 - Added WeightedItemStack Handlers [\#275](https://github.com/jaredlll08/ModTweaker2/issues/275)
-- \[Request Feature\] TinkerConstruct support: a way to disable a modifier [\#238](https://github.com/jaredlll08/ModTweaker2/issues/238)
 
 **Fixed bugs:**
 
 - Crash with Forestry 4.0 [\#252](https://github.com/jaredlll08/ModTweaker2/issues/252)
+
+**Closed issues:**
+
+- \[Request Feature\] TinkerConstruct support: a way to disable a modifier [\#238](https://github.com/jaredlll08/ModTweaker2/issues/238)
 
 ## [0.9.4](https://github.com/jaredlll08/ModTweaker2/tree/0.9.4) (2015-10-12)
 **Implemented enhancements:**
 
 - QED Table remove funktion missing [\#245](https://github.com/jaredlll08/ModTweaker2/issues/245)
 - \[Suggestion\] Oredicted Recipes QED Table [\#242](https://github.com/jaredlll08/ModTweaker2/issues/242)
-- \[Request\] Allow oredict usage in Forestry Carpenter [\#192](https://github.com/jaredlll08/ModTweaker2/issues/192)
-- Updated ToolStats based on new TConstruct API [\#232](https://github.com/jaredlll08/ModTweaker2/pull/232) ([blade1981m](https://github.com/blade1981m))
 
 **Fixed bugs:**
 
@@ -28,6 +43,10 @@
 - ArrayIndexOutOfBoundsException: Mekanism Sawmill removeRecipe [\#215](https://github.com/jaredlll08/ModTweaker2/issues/215)
 - mekanism chemicalInfuser MineTweakerAPI.apply call; incorrect param [\#213](https://github.com/jaredlll08/ModTweaker2/issues/213)
 - \[AE2 Inscriber\] Error msg [\#200](https://github.com/jaredlll08/ModTweaker2/issues/200)
+
+**Closed issues:**
+
+- \[Request\] Allow oredict usage in Forestry Carpenter [\#192](https://github.com/jaredlll08/ModTweaker2/issues/192)
 
 
 
