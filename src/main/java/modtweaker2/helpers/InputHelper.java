@@ -1,21 +1,21 @@
 package modtweaker2.helpers;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import minetweaker.api.entity.IEntity;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
-import minetweaker.mc18.item.MCItemStack;
-import minetweaker.mc18.liquid.MCLiquidStack;
+import minetweaker.mc19.item.MCItemStack;
+import minetweaker.mc19.liquid.MCLiquidStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class InputHelper {
 	public static boolean isABlock(IItemStack block) {

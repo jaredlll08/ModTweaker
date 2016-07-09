@@ -16,7 +16,6 @@ public class StringHelper {
     
     public static String join(List<String> list, String conjunction) {
         StringBuilder sb = new StringBuilder();
-        
         if(conjunction == null) {
             conjunction = ", ";
         }
