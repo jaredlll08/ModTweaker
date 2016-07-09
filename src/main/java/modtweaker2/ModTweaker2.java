@@ -1,15 +1,11 @@
 package modtweaker2;
 
-import java.io.File;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
-import modtweaker2.mods.thaumcraft.Thaumcraft;
+import modtweaker2.mods.forestry.Forestry;
+import modtweaker2.mods.tconstruct.TConstruct;
 import modtweaker2.proxy.CommonProxy;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,6 +19,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 @Mod(modid = ModProps.modid, version = ModProps.version, dependencies = ModProps.dependencies)
 public class ModTweaker2 {
@@ -44,7 +44,8 @@ public class ModTweaker2 {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         logger.info("Starting Initialization for " + ModProps.modid);
-        TweakerPlugin.register("Thaumcraft", Thaumcraft.class);
+        TweakerPlugin.register("forestry", Forestry.class);
+        TweakerPlugin.register("tconstruct", TConstruct.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());

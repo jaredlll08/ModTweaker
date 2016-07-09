@@ -1,34 +1,27 @@
 package modtweaker2.helpers;
 
-import static modtweaker2.helpers.ReflectionHelper.getConstructor;
-import static modtweaker2.helpers.ReflectionHelper.getFinalObject;
-import static modtweaker2.helpers.ReflectionHelper.getInstance;
-import static modtweaker2.helpers.ReflectionHelper.getStaticObject;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.List;
+import java.util.Map;
+
+import static modtweaker2.helpers.ReflectionHelper.*;
 
 public class ForgeHelper {
     @SuppressWarnings("rawtypes")
     public static Map translate = null;
     @SuppressWarnings("rawtypes")
     public static List seeds = null;
-    public static HashMap<String, ChestGenHooks> loot = null;
 
     static {
         try {
             seeds = getStaticObject(ForgeHooks.class, "seedList");
-            loot = getStaticObject(ChestGenHooks.class, "chestInfo");
-            translate = getFinalObject(getStaticObject(StatCollector.class, "localizedName", "field_74839_a"), "languageList", "field_74816_c");
+            translate = getFinalObject(getStaticObject(I18n.class, "localizedName", "field_74839_a"), "languageList", "field_74816_c");
         } catch (Exception e) {
         }
     }
