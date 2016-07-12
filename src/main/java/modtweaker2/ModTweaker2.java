@@ -40,7 +40,7 @@ public class ModTweaker2 {
         logger.info("Starting PreInitialization for " + ModProps.modid);
     }
 
-   
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         logger.info("Starting Initialization for " + ModProps.modid);

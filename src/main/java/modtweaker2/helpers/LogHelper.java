@@ -5,7 +5,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.api.player.IPlayer;
-import minetweaker.mc19.item.MCItemStack;
+import minetweaker.mc1102.item.MCItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
