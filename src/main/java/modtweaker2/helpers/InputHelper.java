@@ -5,13 +5,8 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.oredict.IOreDictEntry;
-<<<<<<< HEAD
 import minetweaker.mc1102.item.MCItemStack;
 import minetweaker.mc1102.liquid.MCLiquidStack;
-=======
-import minetweaker.mc19.item.MCItemStack;
-import minetweaker.mc19.liquid.MCLiquidStack;
->>>>>>> 1.9
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
