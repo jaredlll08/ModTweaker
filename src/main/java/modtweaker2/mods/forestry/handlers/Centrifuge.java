@@ -33,31 +33,19 @@ public class Centrifuge {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Adds a recipe for the Centrifuge
-	 * 
-	 * @param output List of items to produce with associated chance
-	 * @param ingredient item input
-	 * @param timePerItem time per item to process
+	 * Adds recipe to Centrifuge
+	 *
+	 * @param output           recipe product
+	 * @param ingredients      required ingredients
+	 * @param packagingTime    amount of ticks per crafting operation
 	 */
 	@ZenMethod
-	public static void addRecipe(WeightedItemStack[] output, IItemStack ingredient, int timePerItem) {
+	public static void addRecipe(WeightedItemStack[] output, IItemStack ingredients, int packagingTime) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
 		for (WeightedItemStack product : output) {
 			products.put(toStack(product.getStack()), product.getChance());
 		}
-		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(ingredient), products)));
-	}
-	
-	@ZenMethod
-	@Deprecated
-	public static void addRecipe(int timePerItem, IItemStack itemInput, IItemStack[] output, int[] chances) {
-		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
-		int i = 0;
-		for (IItemStack product : output) {
-			products.put(toStack(product), ((float) chances[i] / 100));
-			i++;
-		}
-		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(timePerItem, toStack(itemInput), products)));
+		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(packagingTime, toStack(ingredients), products)));
 	}
 	
 	private static class Add extends ForestryListAddition<ICentrifugeRecipe, ICentrifugeManager> {
@@ -77,7 +65,7 @@ public class Centrifuge {
 	/**
 	 * Removes a recipe for the Centrifuge
 	 * 
-	 * @param input item input
+	 * @param input type of item in input
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {

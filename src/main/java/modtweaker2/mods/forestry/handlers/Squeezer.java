@@ -28,36 +28,18 @@ public class Squeezer {
 	public static final String name = "Forestry Squeezer";
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
-	 * Adds a recipe without additional item output
-	 *
-	 * @param fluidOutput recipe fluid amount
-	 * @param ingredients recipe ingredients
-	 * @param timePerItem time per crafting operation
-	 */
-	@ZenMethod
-	public static void addRecipe(ILiquidStack fluidOutput, int timePerItem, IItemStack[] ingredients) {
-		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), null, 0)));
-	}
-	
-	/**
-	 * Adds a recipe with additional item output
+	 * Adds recipe to Squeezer
 	 * 
 	 * @param fluidOutput recipe fluid amount
-	 * @param itemOutput recipe output
 	 * @param ingredients recipe ingredients
 	 * @param timePerItem time per crafting operation
+	 ** @param itemOutput recipe output (optional)
 	 */
 	@ZenMethod
-	public static void addRecipe(ILiquidStack fluidOutput, WeightedItemStack itemOutput, IItemStack[] ingredients, int timePerItem) {
+	public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
 		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
-	}
-	
-	@ZenMethod
-	@Deprecated
-	public static void addRecipe(int timePerItem, IItemStack[] resources, ILiquidStack liquid, IItemStack remnants, int chance) {
-		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(resources), toFluid(liquid), toStack(remnants), chance)));
 	}
 	
 	private static class Add extends ForestryListAddition<ISqueezerRecipe, ISqueezerManager> {
@@ -78,7 +60,7 @@ public class Squeezer {
 	 * Removes a recipe for the Centrifuge
 	 * 
 	 * @param liquid liquid output
-	 * @param ingredients list of ingredients
+	 ** @param ingredients list of ingredients (optional)
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {

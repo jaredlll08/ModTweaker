@@ -32,33 +32,17 @@ public class Carpenter {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Adds a shaped recipe for the Carpenter
+     * Adds shaped recipe to Carpenter
      *
-     * @param output        recipe output
-     * @param ingredients   recipe ingredients
-     * @param packagingTime time per crafting operation
-     * @optionalParam box recipes casting item (optional)
+     * @param output           recipe product
+     * @param ingredients      required ingredients
+     * @param packagingTime    amount of ticks per crafting operation
+     ** @param fluidInput      required mB of fluid (optional)
+     ** @param box             required box in top slot (optional)
+     ** @param remainingItems  no idea (optional)
      */
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional IItemStack box, @Optional IItemStack[] remainingItems) {
-        if (remainingItems == null) {
-            remainingItems = new IItemStack[0];
-        }
-        IDescriptiveRecipe craftRecipe = new DescriptiveRecipe(3, 3, toShapedObjects(ingredients), toStack(output), toStacks(remainingItems));
-        MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, null, toStack(box), craftRecipe)));
-    }
-
-    /**
-     * Adds a shaped recipe for the Carpenter
-     *
-     * @param output        recipe output
-     * @param ingredients   recipe ingredients
-     * @param fluidInput    recipe fluid amount
-     * @param packagingTime time per crafting operation
-     * @optionalParam box recipes casting item (optional)
-     */
-    @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient[][] ingredients, ILiquidStack fluidInput, int packagingTime, @Optional IItemStack box, @Optional IItemStack[] remainingItems) {
+    public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box, @Optional IItemStack[] remainingItems) {
         if (remainingItems == null) {
             remainingItems = new IItemStack[0];
         }
@@ -91,24 +75,36 @@ public class Carpenter {
         }
     }
 
+    /**
+     * Adds shapeless recipe to Carpenter
+     *
+     * @param output           recipe product
+     * @param ingredients      required ingredients
+     * @param packagingTime    amount of ticks per crafting operation
+     ** @param fluidInput      required mB of fluid (optional)
+     ** @param box             required box in top slot (optional)
+     ** @param remainingItems  no idea (optional)
+     */
+    //TODO
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Removes a recipe for the Carpenter
+     * Removes recipe from Carpenter
      *
-     * @param output = item output
-     * @optionalParam liquid = liquid input
+     * @param output = recipe result
+     ** @param fluidInput = required type of fluid (optional)
      */
     @ZenMethod
-    public static void removeRecipe(IIngredient output, @Optional IIngredient liquid) {
+    public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
         List<ICarpenterRecipe> recipes = new LinkedList<ICarpenterRecipe>();
 
         for (ICarpenterRecipe recipe : RecipeManagers.carpenterManager.recipes()) {
             if (recipe != null) {
                 ItemStack recipeResult = recipe.getCraftingGridRecipe().getRecipeOutput();
                 if (recipeResult != null && matches(output, toIItemStack(recipeResult))) {
-                    if (liquid != null) {
-                        if (matches(liquid, toILiquidStack(recipe.getFluidResource())))
+                    if (fluidInput != null) {
+                        if (matches(fluidInput, toILiquidStack(recipe.getFluidResource())))
                             recipes.add(recipe);
                     } else {
                         recipes.add(recipe);

@@ -31,7 +31,7 @@ public class ThermionicFabricator {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Adds a smelting recipe for the Thermionic Fabricator
+     * Adds smelting recipe to Thermionic Fabricator
      *
      * @param fluidOutput  recipe fluid amount
      * @param itemInput    recipe input input
@@ -43,22 +43,16 @@ public class ThermionicFabricator {
         MineTweakerAPI.apply(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
     }
 
-    @Deprecated
-    @ZenMethod
-    public static void addSmelting(IItemStack itemInput, int meltingPoint, int fluidOutput) {
-        //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
-        MineTweakerAPI.apply(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
-    }
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Adds a casting recipe for the Thermionic Fabricator
+     * Adds casting recipe to Thermionic Fabricator
      *
-     * @param output      recipe output item
-     * @param ingredients list of input items
-     * @param fluidInput  recipe fluid input
-     * @param plan        recipe plan item
+     * @param output           recipe output item
+     * @param ingredients      list of input items
+     * @param fluidInput       recipe fluid input
+     ** @param plan            recipe plan item (optional)
+     ** @param remainingItems  no idea(optional)
      */
     @ZenMethod
     public static void addCast(IItemStack output, IIngredient[][] ingredients, int fluidInput, @Optional IItemStack plan, @Optional IItemStack[] remainingItems) {
@@ -67,16 +61,6 @@ public class ThermionicFabricator {
         }
         IDescriptiveRecipe recipe = new DescriptiveRecipe(3, 3, toShapedObjects(ingredients), toStack(output), toStacks(remainingItems));
         MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), FluidRegistry.getFluidStack("glass", fluidInput), recipe)));
-    }
-
-    @Deprecated
-    @ZenMethod
-    public static void addCast(ILiquidStack fluidInput, IIngredient[][] ingredients, IItemStack plan, IItemStack output, @Optional IItemStack[] remainingItems) {
-        if (remainingItems == null) {
-            remainingItems = new IItemStack[0];
-        }
-        IDescriptiveRecipe recipe = new DescriptiveRecipe(3, 3, toShapedObjects(ingredients), toStack(output), toStacks(remainingItems));
-        MineTweakerAPI.apply(new AddCast(new FabricatorRecipe(toStack(plan), toFluid(fluidInput), recipe)));
     }
 
     /*
@@ -111,6 +95,11 @@ public class ThermionicFabricator {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Removes smelting recipe from Thermionic Fabricator
+     *
+     * @param itemInput = item input
+     */
     @ZenMethod
     public static void removeSmelting(IIngredient itemInput) {
         List<IFabricatorSmeltingRecipe> recipes = new LinkedList<IFabricatorSmeltingRecipe>();
@@ -128,26 +117,13 @@ public class ThermionicFabricator {
         }
     }
 
+    /**
+     * Removes casting recipe from Thermionic Fabricator
+     *
+     * @param product = recipe result
+     */
     @ZenMethod
     public static void removeCast(IIngredient product) {
-        List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
-
-        for (IFabricatorRecipe r : RecipeManagers.fabricatorManager.recipes()) {
-            if (r != null && r.getRecipeOutput() != null && matches(product, toIItemStack(r.getRecipeOutput()))) {
-                recipes.add(r);
-            }
-        }
-
-        if (!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new RemoveCasts(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ThermionicFabricator.nameSmelting, product.toString()));
-        }
-    }
-
-    @Deprecated
-    @ZenMethod
-    public static void removeCasts(IIngredient product) {
         List<IFabricatorRecipe> recipes = new LinkedList<IFabricatorRecipe>();
 
         for (IFabricatorRecipe r : RecipeManagers.fabricatorManager.recipes()) {

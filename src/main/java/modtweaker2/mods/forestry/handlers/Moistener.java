@@ -37,21 +37,15 @@ public class Moistener {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Adds a recipe for the Moistener
+	 * Adds recipe to Moistener
 	 * 
-	 * @param output recipe output
-	 * @param resource organic item
-	 * @param timePerItem time per item to process
+	 * @param output 	    recipe product
+	 * @param input    		required item
+	 * @param packagingTime amount of ticks per crafting operation
 	 */
 	@ZenMethod
-	public static void addRecipe(IItemStack output, IItemStack resource, int timePerItem) {
-		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(resource), toStack(output), timePerItem)));
-	}
-
-	@Deprecated
-	@ZenMethod
-	public static void addRecipe(int timePerItem, IItemStack resource, IItemStack product) {
-		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(resource), toStack(product), timePerItem)));
+	public static void addRecipe(IItemStack output, IItemStack input, int packagingTime) {
+		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(input), toStack(output), packagingTime)));
 	}
 
 	private static class Add extends ForestryListAddition<IMoistenerRecipe, IMoistenerManager> {
@@ -68,6 +62,11 @@ public class Moistener {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Removes recipe from Fermenter
+	 *
+	 * @param output recipe product
+	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output) {
 		List<IMoistenerRecipe> recipes = new LinkedList<IMoistenerRecipe>();
@@ -98,7 +97,7 @@ public class Moistener {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Adds moistener fuel.  
+	 * Adds Moistener fuel
 	 * 
 	 * @param item The item to use
 	 * @param product The item that leaves the moistener's working slot (i.e. mouldy wheat, decayed wheat, mulch)
@@ -129,7 +128,7 @@ public class Moistener {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Removes a moistener fuel.  
+	 * Removes Moistener fuel.
 	 * 
 	 * @param moistenerItem Item that is a valid fuel for the moistener
 	 */

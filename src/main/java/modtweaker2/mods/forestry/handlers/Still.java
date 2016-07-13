@@ -29,7 +29,7 @@ public class Still {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Adds a recipe for the Still
+	 * Adds recipe to Still
 	 * 
 	 * @param fluidOutput recipe fluid amount
 	 * @param fluidInput recipe fluid input
@@ -41,15 +41,6 @@ public class Still {
 		fluidInput.amount(fluidInput.getAmount() / 100);
 		
 		MineTweakerAPI.apply(new Add(new StillRecipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
-	}
-	
-	@Deprecated
-	@ZenMethod
-	public static void addRecipe(int timePerUnit, ILiquidStack input, ILiquidStack output) {
-		output.amount(output.getAmount() / 100);
-		input.amount(input.getAmount() / 100);
-		
-		MineTweakerAPI.apply(new Add(new StillRecipe(timePerUnit, toFluid(input), toFluid(output))));
 	}
 	
 	private static class Add extends ForestryListAddition<IStillRecipe, IStillManager> {
@@ -67,19 +58,19 @@ public class Still {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Removes a recipe for the Still
+	 * Removes recipe from Still
 	 *
 	 * @param output = liquid output
-	 * @optionalParam liquid = liquid input
+	 ** @param fluidInput = liquid input (optional)
 	 */
 	@ZenMethod
-	public static void removeRecipe(IIngredient output, @Optional ILiquidStack input) {
+	public static void removeRecipe(IIngredient output, @Optional ILiquidStack fluidInput) {
 		List<IStillRecipe> recipes = new LinkedList<IStillRecipe>();
 		
 		for (IStillRecipe r : RecipeManagers.stillManager.recipes()) {
 			if (r != null && r.getOutput() != null && matches(output, toILiquidStack(r.getOutput()))) {
-				if (input != null) {
-					if (matches(input, toILiquidStack(r.getInput()))) {
+				if (fluidInput != null) {
+					if (matches(fluidInput, toILiquidStack(r.getInput()))) {
 						recipes.add(r);
 					}
 				}

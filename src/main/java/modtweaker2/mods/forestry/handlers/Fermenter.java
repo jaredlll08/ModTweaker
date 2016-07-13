@@ -37,23 +37,18 @@ public class Fermenter {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Adds a fermenter recipe. Amount of fluid output is calculated: fermentationValue * fluidOutputModifier
+	 * Adds recipe to fermenter
+	 * Amount of fluid output: fermentationValue * fluidOutputModifier
 	 * Note: the actual consumption of fluid input depends on the fermentation fuel
 	 * 
 	 * @param fluidOutput type of fluid produced
 	 * @param resource organic item
 	 * @param fluidInput type of fluid required in input
 	 * @param fermentationValue amount of inputFluid on organic item requires
-	 * @param fluidOutputModifier Output multiplier (this is usually a from the input fluid
+	 * @param fluidOutputModifier Output multiplier (this is usually a from the input fluid)
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
-		MineTweakerAPI.apply(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
-	}
-	
-	@Deprecated
-	@ZenMethod
-	public static void addRecipe(IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier, ILiquidStack fluidOutput) {
 		MineTweakerAPI.apply(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
 	}
 
@@ -70,7 +65,12 @@ public class Fermenter {
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
+	/**
+	 * Removes recipe from Fermenter
+	 *
+	 * @param input type of item in input
+	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
 		List<IFermenterRecipe> recipes = new LinkedList<IFermenterRecipe>();
@@ -109,7 +109,7 @@ public class Fermenter {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Adds fermenter fuel.  
+	 * Adds fermenter fuel
 	 * Note: the actual consumption of fluid input depends on the fermentation fuel
 	 * 
 	 * @param item Item that is a valid fuel for the fermenter
@@ -136,7 +136,7 @@ public class Fermenter {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Removes a fermenter fuel.  
+	 * Removes fermenter fuel
 	 * 
 	 * @param fermenterItem Item that is a valid fuel for the fermenter
 	 */
