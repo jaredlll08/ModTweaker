@@ -23,7 +23,6 @@ public abstract class BaseListRemoval<T> extends BaseListModification<T> {
         if (recipes.isEmpty()) {
             return;
         }
-
         for (T recipe : this.recipes) {
             if (recipe != null) {
                 if (this.list.remove(recipe)) {

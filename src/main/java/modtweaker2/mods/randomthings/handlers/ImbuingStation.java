@@ -62,6 +62,12 @@ public class ImbuingStation {
 
             for (ImbuingRecipe recipe : this.recipes) {
                 if (recipe != null) {
+                    for (ImbuingRecipe r : ImbuingRecipeHandler.imbuingRecipes) {
+                        System.out.println(recipe.getIngredients() + " : " +r.getIngredients());
+                        System.out.println(recipe.toImbue() + " : " +r.toImbue());
+                        System.out.println(recipe.getResult() + " : " +r.getResult());
+
+                    }
                     if (ImbuingRecipeHandler.imbuingRecipes.remove(recipe)) {
                         successful.add(recipe);
                     } else {
