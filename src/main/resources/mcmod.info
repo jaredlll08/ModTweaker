@@ -1,6 +1,6 @@
 [
 {
-  "modid": "modtweaker2",
+  "modid": "modtweaker",
   "name": "Mod Tweaker 2",
   "description": "ModTweaker is an addon for MineTweaker 3.",
   "version": "${version}",
