@@ -24,8 +24,8 @@ public class ImbuingStation {
     }
 
     @ZenMethod
-    public static void remove(IItemStack output, IItemStack input, IItemStack ingredient1, IItemStack ingredient2, IItemStack ingredient3) {
-        MineTweakerAPI.apply(new Remove(new ImbuingRecipe(InputHelper.toStack(input), InputHelper.toStack(output), InputHelper.toStack(ingredient1), InputHelper.toStack(ingredient2), InputHelper.toStack(ingredient3))));
+    public static void remove(IItemStack output) {
+        MineTweakerAPI.apply(new Remove(new ImbuingRecipe(null, InputHelper.toStack(output), null, null, null)));
     }
 
     private static class Add extends BaseListAddition<ImbuingRecipe> {
@@ -45,6 +45,33 @@ public class ImbuingStation {
             }
             return build.toString();
         }
+
+        @Override
+        public void undo() {
+
+            if (this.successful.isEmpty()) {
+                return;
+            }
+
+            for (ImbuingRecipe recipe : this.successful) {
+                if (recipe != null) {
+                    ImbuingRecipe toRemove = null;
+                    for (ImbuingRecipe r : ImbuingRecipeHandler.imbuingRecipes) {
+                        if (r.getResult().isItemEqual(recipe.getResult())) {
+                            toRemove = r;
+                        }
+                    }
+                    if (toRemove != null)
+                        if (ImbuingRecipeHandler.imbuingRecipes.remove(toRemove)) {
+                        } else {
+                            LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                        }
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }
+            }
+
+        }
     }
 
     private static class Remove extends BaseListRemoval<ImbuingRecipe> {
@@ -62,17 +89,18 @@ public class ImbuingStation {
 
             for (ImbuingRecipe recipe : this.recipes) {
                 if (recipe != null) {
+                    ImbuingRecipe toRemove = null;
                     for (ImbuingRecipe r : ImbuingRecipeHandler.imbuingRecipes) {
-                        System.out.println(recipe.getIngredients() + " : " +r.getIngredients());
-                        System.out.println(recipe.toImbue() + " : " +r.toImbue());
-                        System.out.println(recipe.getResult() + " : " +r.getResult());
-
+                        if (r.getResult().isItemEqual(recipe.getResult())) {
+                            toRemove = r;
+                        }
                     }
-                    if (ImbuingRecipeHandler.imbuingRecipes.remove(recipe)) {
-                        successful.add(recipe);
-                    } else {
-                        LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
-                    }
+                    if (toRemove != null)
+                        if (ImbuingRecipeHandler.imbuingRecipes.remove(toRemove)) {
+                            successful.add(recipe);
+                        } else {
+                            LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                        }
                 } else {
                     LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
                 }

@@ -1,8 +1,8 @@
 package modtweaker.utils;
 
-import java.util.List;
-
 import modtweaker.helpers.LogHelper;
+
+import java.util.List;
 
 public abstract class BaseListAddition<T> extends BaseListModification<T> {
 
