@@ -5,15 +5,14 @@ import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
 import modtweaker2.mods.forestry.Forestry;
+import modtweaker2.mods.randomthings.RandomThings;
 import modtweaker2.mods.tconstruct.TConstruct;
 import modtweaker2.proxy.CommonProxy;
 import modtweaker2.utils.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -46,6 +45,7 @@ public class ModTweaker2 {
         logger.info("Starting Initialization for " + ModProps.modid);
         TweakerPlugin.register("forestry", Forestry.class);
         TweakerPlugin.register("tconstruct", TConstruct.class);
+        TweakerPlugin.register("randomthings", RandomThings.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());

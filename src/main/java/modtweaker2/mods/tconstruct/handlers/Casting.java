@@ -1,15 +1,5 @@
 package modtweaker2.mods.tconstruct.handlers;
 
-import static modtweaker2.helpers.InputHelper.toFluid;
-import static modtweaker2.helpers.InputHelper.toIItemStack;
-import static modtweaker2.helpers.InputHelper.toILiquidStack;
-import static modtweaker2.helpers.InputHelper.toStack;
-import static modtweaker2.helpers.StackHelper.matches;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -19,10 +9,18 @@ import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import slimeknights.mantle.util.RecipeMatch;
+import slimeknights.tconstruct.library.smeltery.CastingRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import slimeknights.tconstruct.library.smeltery.CastingRecipe;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import static modtweaker2.helpers.InputHelper.*;
+import static modtweaker2.helpers.StackHelper.matches;
 
 @ZenClass("mods.tconstruct.Casting")
 public class Casting {
@@ -32,23 +30,23 @@ public class Casting {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void addBasinRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast, @Optional boolean consume, int delay) {
-        if(metal == null || output == null) {
+    public static void addBasinRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast) {
+        if (metal == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-
-        MineTweakerAPI.apply(new Add(new CastingRecipe(toStack(output), toFluid(metal), toStack(cast), consume, delay, null), TConstructHelper.basinCasting));
+        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(metal).getFluid(), metal.getAmount());
+        MineTweakerAPI.apply(new Add(rec, (ArrayList<CastingRecipe>) TConstructHelper.basinCasting));
     }
 
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast, @Optional boolean consume, int delay) {
-        if(metal == null || output == null) {
+    public static void addTableRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast) {
+        if (metal == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-
-        MineTweakerAPI.apply(new Add(new CastingRecipe(toStack(output), toFluid(metal), toStack(cast), consume, delay, null), TConstructHelper.tableCasting));
+        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(metal).getFluid(), metal.getAmount());
+        MineTweakerAPI.apply(new Add(rec, (ArrayList<CastingRecipe>) TConstructHelper.tableCasting));
     }
 
     //Passes the list to the base list implementation, and adds the recipe
@@ -61,7 +59,7 @@ public class Casting {
 
         @Override
         protected String getRecipeInfo(CastingRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.getResult());
         }
     }
 
@@ -79,32 +77,31 @@ public class Casting {
     }
 
     public static void removeRecipe(IIngredient output, IIngredient material, IIngredient cast, List<CastingRecipe> list) {
-        if(output == null) {
+        if (output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
 
-        if(material == null) {
+        if (material == null) {
             material = IngredientAny.INSTANCE;
         }
 
-        if(cast == null) {
+        if (cast == null) {
             cast = IngredientAny.INSTANCE;
         }
 
         List<CastingRecipe> recipes = new LinkedList<CastingRecipe>();
 
-        for(CastingRecipe recipe : list) {
-            if(recipe != null) {
-                if (!matches(output, toIItemStack(recipe.output))) {
+        for (CastingRecipe recipe : list) {
+            if (recipe != null) {
+                if (!matches(output, toIItemStack(recipe.getResult()))) {
                     continue;
                 }
 
-                if (!matches(material, toILiquidStack(recipe.castingMetal))) {
+                if (!matches(material, toILiquidStack(recipe.getFluid()))) {
                     continue;
                 }
-
-                if(!matches(cast, toIItemStack(recipe.cast))) {
+                if (recipe.cast.matches(toStacks(cast.getItems().toArray(new IItemStack[0]))) != null) {
                     continue;
                 }
 
@@ -112,9 +109,13 @@ public class Casting {
             }
         }
 
-        if(!recipes.isEmpty()) {
+        if (!recipes.isEmpty())
+
+        {
             MineTweakerAPI.apply(new Remove(list, recipes));
-        } else {
+        } else
+
+        {
             LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast.toString()));
         }
     }
@@ -127,7 +128,7 @@ public class Casting {
 
         @Override
         protected String getRecipeInfo(CastingRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.getResult());
         }
     }
 }

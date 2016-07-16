@@ -1,11 +1,5 @@
 package modtweaker2.mods.tconstruct.handlers;
 
-import static modtweaker2.helpers.InputHelper.toIItemStack;
-import static modtweaker2.helpers.InputHelper.toStack;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -13,9 +7,16 @@ import modtweaker2.helpers.LogHelper;
 import modtweaker2.mods.tconstruct.TConstructHelper;
 import modtweaker2.utils.BaseListAddition;
 import modtweaker2.utils.BaseListRemoval;
+import slimeknights.tconstruct.library.DryingRecipe;
+import slimeknights.tconstruct.library.TinkerRegistry;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import slimeknights.tconstruct.library.DryingRecipe;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static modtweaker2.helpers.InputHelper.toIItemStack;
+import static modtweaker2.helpers.InputHelper.toStack;
 
 @ZenClass("mods.tconstruct.Drying")
 public class Drying {
@@ -26,7 +27,7 @@ public class Drying {
 
     @ZenMethod
     public static void addRecipe(IItemStack input, IItemStack output, int time) {
-        if(input == null || output == null) {
+        if (input == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
@@ -37,13 +38,13 @@ public class Drying {
     //Passes the list to the base list implementation, and adds the recipe
     private static class Add extends BaseListAddition<DryingRecipe> {
         public Add(DryingRecipe recipe) {
-            super(Drying.name, DryingRackRecipes.recipes);
+            super(Drying.name, TinkerRegistry.getAllDryingRecipes());
             this.recipes.add(recipe);
         }
 
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.getResult());
         }
     }
 
@@ -54,13 +55,13 @@ public class Drying {
     public static void removeRecipe(IIngredient ingredient) {
         List<DryingRecipe> recipes = new LinkedList<DryingRecipe>();
 
-        for (DryingRecipe recipe : DryingRackRecipes.recipes) {
-            if (recipe != null && recipe.result != null && ingredient.matches(toIItemStack(recipe.result))) {
+        for (DryingRecipe recipe : TinkerRegistry.getAllDryingRecipes()) {
+            if (recipe != null && recipe.getResult() != null && ingredient.matches(toIItemStack(recipe.getResult()))) {
                 recipes.add(recipe);
             }
         }
 
-        if(!recipes.isEmpty()) {
+        if (!recipes.isEmpty()) {
             MineTweakerAPI.apply(new Remove(recipes));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Drying.name, ingredient.toString()));
@@ -70,12 +71,12 @@ public class Drying {
     //Removes a recipe, apply is never the same for anything, so will always need to override it
     private static class Remove extends BaseListRemoval<DryingRecipe> {
         public Remove(List<DryingRecipe> list) {
-            super(Drying.name, DryingRackRecipes.recipes, list);
+            super(Drying.name, TinkerRegistry.getAllDryingRecipes(), list);
         }
 
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.result);
+            return LogHelper.getStackDescription(recipe.getResult());
         }
     }
 }
