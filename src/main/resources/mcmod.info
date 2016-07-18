@@ -1,8 +1,8 @@
 [
 {
   "modid": "modtweaker",
-  "name": "Mod Tweaker 2",
-  "description": "ModTweaker is an addon for MineTweaker 3.",
+  "name": "Mod Tweaker",
+  "description": "ModTweaker is an addon for CraftTweaker.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
