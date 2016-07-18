@@ -5,6 +5,9 @@ import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker.commands.EntityMappingLogger;
 import modtweaker.mods.randomthings.commands.RandomThingsLogger;
+import modtweaker.mods.tconstruct.commands.MaterialLogger;
+import modtweaker.mods.tconstruct.commands.ModifierLogger;
+import modtweaker.mods.tconstruct.commands.TConstructLogger;
 import modtweaker.utils.TweakerPlugin;
 
 public class Commands {
@@ -23,6 +26,11 @@ public class Commands {
 
             if (TweakerPlugin.isLoaded("randomthings")) {
                 MineTweakerAPI.server.addMineTweakerCommand("randomthings", new String[]{"/minetweaker randomthings [HANDLER]", "    Outputs a list of all Random Things recipes."}, new RandomThingsLogger());
+            }
+            if (TweakerPlugin.isLoaded("tconstruct")) {
+                MineTweakerAPI.server.addMineTweakerCommand("materials", new String[] { "/minetweaker materials", "    Outputs a list of all Tinker's Construct material names in the game to the minetweaker log" }, new MaterialLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("modifiers", new String[] { "/minetweaker modifiers", "    Outputs a list of all Tinker's Construct modifier names in the game to the minetweaker log" }, new ModifierLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("tconstruct", new String[]{ "/minetweaker tconstruct [HANDLER]", "    Outputs a list of all Tinkers Construct recipes."}, new TConstructLogger());
             }
         }
     }

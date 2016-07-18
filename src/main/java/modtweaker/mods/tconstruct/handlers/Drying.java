@@ -7,6 +7,7 @@ import modtweaker.helpers.LogHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
 import modtweaker.utils.BaseListAddition;
 import modtweaker.utils.BaseListRemoval;
+import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.DryingRecipe;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -31,8 +32,8 @@ public class Drying {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-
-        MineTweakerAPI.apply(new Add(TConstructHelper.getDryingRecipe(toStack(input), time, toStack(output))));
+        RecipeMatch match = new RecipeMatch.Item(toStack(input), toStack(input).stackSize);
+        MineTweakerAPI.apply(new Add(TConstructHelper.getDryingRecipe(toStack(output), match, time)));
     }
 
     //Passes the list to the base list implementation, and adds the recipe

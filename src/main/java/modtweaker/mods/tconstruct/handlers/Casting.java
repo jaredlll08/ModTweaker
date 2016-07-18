@@ -15,7 +15,6 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class Casting {
             return;
         }
         CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(metal).getFluid(), metal.getAmount());
-        MineTweakerAPI.apply(new Add(rec, (ArrayList<CastingRecipe>) TConstructHelper.basinCasting));
+        MineTweakerAPI.apply(new Add(rec, (LinkedList<CastingRecipe>) TConstructHelper.basinCasting));
     }
 
     @ZenMethod
@@ -45,15 +44,18 @@ public class Casting {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(metal).getFluid(), metal.getAmount());
-        MineTweakerAPI.apply(new Add(rec, (ArrayList<CastingRecipe>) TConstructHelper.tableCasting));
+        RecipeMatch match = null;
+        if (cast != null) {
+            match = RecipeMatch.of(toStack(cast));
+        }
+        CastingRecipe rec = new CastingRecipe(toStack(output), match, toFluid(metal).getFluid(), metal.getAmount());
+        MineTweakerAPI.apply(new Add(rec, (LinkedList<CastingRecipe>) TConstructHelper.tableCasting));
     }
 
     //Passes the list to the base list implementation, and adds the recipe
     private static class Add extends BaseListAddition<CastingRecipe> {
-        public Add(CastingRecipe recipe, ArrayList<CastingRecipe> list) {
+        public Add(CastingRecipe recipe, LinkedList<CastingRecipe> list) {
             super(Casting.name, list);
-
             this.recipes.add(recipe);
         }
 
@@ -86,22 +88,20 @@ public class Casting {
             material = IngredientAny.INSTANCE;
         }
 
-        if (cast == null) {
-            cast = IngredientAny.INSTANCE;
-        }
-
         List<CastingRecipe> recipes = new LinkedList<CastingRecipe>();
 
         for (CastingRecipe recipe : list) {
             if (recipe != null) {
                 if (!matches(output, toIItemStack(recipe.getResult()))) {
+
                     continue;
                 }
 
                 if (!matches(material, toILiquidStack(recipe.getFluid()))) {
+
                     continue;
                 }
-                if (recipe.cast.matches(toStacks(cast.getItems().toArray(new IItemStack[0]))) != null) {
+                if ((recipe.cast != null && cast != null) && (recipe.cast.matches(toStacks(cast.getItems().toArray(new IItemStack[0]))) == null)) {
                     continue;
                 }
 
@@ -116,7 +116,7 @@ public class Casting {
         } else
 
         {
-            LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast != null ? cast.toString() : null));
         }
     }
 
