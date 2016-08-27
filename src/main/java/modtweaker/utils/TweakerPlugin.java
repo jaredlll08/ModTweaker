@@ -1,29 +1,41 @@
 package modtweaker.utils;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.fml.common.Loader;
 
-public class TweakerPlugin {
-    private static ArrayList<String> isLoaded = new ArrayList<String>();
+import java.util.Map;
+import java.util.TreeMap;
 
-    public static void register(String mod, Class<?> clazz) {
+public class TweakerPlugin {
+    private static Map<String, Boolean> mods = new TreeMap<String, Boolean>();
+
+    public static void register(String mod, Boolean enabled, Class<?> clazz) {
         if (Loader.isModLoaded(mod)) {
-            load(mod, clazz);
+            load(mod, enabled, clazz);
         }
     }
 
-    public static void load(String mod, Class<?> clazz) {
+    public static void load(String mod, boolean enabled, Class<?> clazz) {
         try {
             clazz.newInstance();
-            isLoaded.add(mod);
+            mods.put(mod, enabled);
         } catch (Exception e) {
-            isLoaded.remove(mod);
+            mods.remove(mod);
         }
     }
 
     public static boolean isLoaded(String string) {
-        return isLoaded.contains(string);
+        return mods.containsKey(string);
     }
-    
+
+    public void setState(String mod, boolean state) {
+        mods.put(mod, state);
+    }
+
+    public boolean getState(String mod) {
+        return mods.get(mod);
+    }
+
+    public static Map<String, Boolean> getMods() {
+        return mods;
+    }
 }

@@ -1,13 +1,7 @@
 package modtweaker.mods.forestry;
 
 import minetweaker.MineTweakerAPI;
-import modtweaker.mods.forestry.handlers.Carpenter;
-import modtweaker.mods.forestry.handlers.Centrifuge;
-import modtweaker.mods.forestry.handlers.Fermenter;
-import modtweaker.mods.forestry.handlers.Moistener;
-import modtweaker.mods.forestry.handlers.Squeezer;
-import modtweaker.mods.forestry.handlers.Still;
-import modtweaker.mods.forestry.handlers.ThermionicFabricator;
+import modtweaker.mods.forestry.handlers.*;
 
 public class Forestry {
 	public Forestry() {

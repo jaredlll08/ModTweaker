@@ -41,13 +41,12 @@ public class ModTweaker {
         logger.info("Starting PreInitialization for " + ModProps.modid);
     }
 
-
     @EventHandler
     public void init(FMLInitializationEvent event) {
         logger.info("Starting Initialization for " + ModProps.modid);
-        TweakerPlugin.register("forestry", Forestry.class);
-        TweakerPlugin.register("tconstruct", TConstruct.class);
-        TweakerPlugin.register("randomthings", RandomThings.class);
+        TweakerPlugin.register("forestry", true, Forestry.class);
+        TweakerPlugin.register("tconstruct", true, TConstruct.class);
+        TweakerPlugin.register("randomthings", true, RandomThings.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
