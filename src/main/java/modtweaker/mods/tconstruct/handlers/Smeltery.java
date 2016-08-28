@@ -98,7 +98,7 @@ public class Smeltery {
 
     // Adding a TConstruct Melting recipe
     @ZenMethod
-    public static void addMelting(IIngredient input, ILiquidStack output, int temp, @Optional IItemStack block) {
+    public static void addMelting(ILiquidStack output, IIngredient input, int temp, @Optional IItemStack block) {
 
         if (input == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameMelting));
@@ -210,6 +210,30 @@ public class Smeltery {
      * TConstruct Fuel Recipes
      **********************************************/
 
+    @ZenMethod
+    public static void addFuel(ILiquidStack liquid) {
+        if (liquid == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFuel));
+            return;
+        }
+
+        List<FluidStack> stacks = new ArrayList<FluidStack>();
+        stacks.add(toFluid(liquid));
+        MineTweakerAPI.apply(new AddFuel(stacks));
+    }
+
+    public static class AddFuel extends BaseListAddition<FluidStack> {
+
+        public AddFuel(List<FluidStack> recipes) {
+            super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
+        }
+
+        @Override
+        public String getRecipeInfo(FluidStack recipe) {
+            return LogHelper.getStackDescription(recipe);
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @ZenMethod
     public static void removeFuel(IIngredient input) {
@@ -235,32 +259,6 @@ public class Smeltery {
 
         @Override
         protected String getRecipeInfo(FluidStack recipe) {
-            return LogHelper.getStackDescription(recipe);
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @ZenMethod
-    public static void addFuel(ILiquidStack liquid) {
-        if (liquid == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFuel));
-            return;
-        }
-
-        List<FluidStack> stacks = new ArrayList<FluidStack>();
-        stacks.add(toFluid(liquid));
-        MineTweakerAPI.apply(new AddFuel(stacks));
-    }
-
-    public static class AddFuel extends BaseListAddition<FluidStack> {
-
-        public AddFuel(List<FluidStack> recipes) {
-            super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
-        }
-
-        @Override
-        public String getRecipeInfo(FluidStack recipe) {
             return LogHelper.getStackDescription(recipe);
         }
     }

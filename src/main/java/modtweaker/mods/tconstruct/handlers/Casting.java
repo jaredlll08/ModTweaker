@@ -29,18 +29,18 @@ public class Casting {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void addBasinRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast) {
-        if (metal == null || output == null) {
+    public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast) {
+        if (liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(metal).getFluid(), metal.getAmount());
+        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(liquid).getFluid(), liquid.getAmount());
         MineTweakerAPI.apply(new Add(rec, (LinkedList<CastingRecipe>) TConstructHelper.basinCasting));
     }
 
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, ILiquidStack metal, @Optional IItemStack cast) {
-        if (metal == null || output == null) {
+    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast) {
+        if (liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
@@ -48,7 +48,7 @@ public class Casting {
         if (cast != null) {
             match = RecipeMatch.of(toStack(cast));
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), match, toFluid(metal).getFluid(), metal.getAmount());
+        CastingRecipe rec = new CastingRecipe(toStack(output), match, toFluid(liquid).getFluid(), liquid.getAmount());
         MineTweakerAPI.apply(new Add(rec, (LinkedList<CastingRecipe>) TConstructHelper.tableCasting));
     }
 
@@ -68,24 +68,24 @@ public class Casting {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void removeTableRecipe(IIngredient output, @Optional IIngredient material, @Optional IIngredient cast) {
-        removeRecipe(output, material, cast, TConstructHelper.tableCasting);
+    public static void removeTableRecipe(IIngredient output, @Optional IIngredient liquid, @Optional IIngredient cast) {
+        removeRecipe(output, liquid, cast, TConstructHelper.tableCasting);
     }
 
     @ZenMethod
-    public static void removeBasinRecipe(IIngredient output, @Optional IIngredient material, @Optional IIngredient cast) {
+    public static void removeBasinRecipe(IIngredient output, @Optional IIngredient liquid, @Optional IIngredient cast) {
 
-        removeRecipe(output, material, cast, TConstructHelper.basinCasting);
+        removeRecipe(output, liquid, cast, TConstructHelper.basinCasting);
     }
 
-    public static void removeRecipe(IIngredient output, IIngredient material, IIngredient cast, List<CastingRecipe> list) {
+    public static void removeRecipe(IIngredient output, IIngredient liquid, IIngredient cast, List<CastingRecipe> list) {
         if (output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
 
-        if (material == null) {
-            material = IngredientAny.INSTANCE;
+        if (liquid == null) {
+            liquid = IngredientAny.INSTANCE;
         }
 
         List<CastingRecipe> recipes = new LinkedList<CastingRecipe>();
@@ -97,7 +97,7 @@ public class Casting {
                     continue;
                 }
 
-                if (!matches(material, toILiquidStack(recipe.getFluid()))) {
+                if (!matches(liquid, toILiquidStack(recipe.getFluid()))) {
 
                     continue;
                 }
@@ -116,7 +116,7 @@ public class Casting {
         } else
 
         {
-            LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), material.toString(), cast != null ? cast.toString() : null));
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), liquid.toString(), cast != null ? cast.toString() : null));
         }
     }
 
