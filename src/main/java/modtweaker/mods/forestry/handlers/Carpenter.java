@@ -4,6 +4,7 @@ import forestry.api.recipes.ICarpenterManager;
 import forestry.api.recipes.ICarpenterRecipe;
 import forestry.api.recipes.IDescriptiveRecipe;
 import forestry.api.recipes.RecipeManagers;
+import forestry.factory.recipes.CarpenterRecipeManager;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -34,12 +35,12 @@ public class Carpenter {
     /**
      * Adds shaped recipe to Carpenter
      *
-     * @param output           recipe product
-     * @param ingredients      required ingredients
-     * @param packagingTime    amount of ticks per crafting operation
-     ** @param fluidInput      required mB of fluid (optional)
-     ** @param box             required box in top slot (optional)
-     ** @param remainingItems  no idea (optional)
+     * @param output        recipe product
+     * @param ingredients   required ingredients
+     * @param packagingTime amount of ticks per crafting operation
+     *                      * @param fluidInput      required mB of fluid (optional)
+     *                      * @param box             required box in top slot (optional)
+     *                      * @param remainingItems  no idea (optional)
      */
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box, @Optional IItemStack[] remainingItems) {
@@ -70,6 +71,17 @@ public class Carpenter {
         }
 
         @Override
+        public void apply() {
+            super.apply();
+            successful.forEach(ent -> {
+                if (!CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
+                    CarpenterRecipeManager.getRecipeFluids().add(ent.getFluidResource().getFluid());
+                }
+            });
+
+        }
+
+        @Override
         protected String getRecipeInfo(ICarpenterRecipe recipe) {
             return LogHelper.getStackDescription(recipe.getCraftingGridRecipe().getRecipeOutput());
         }
@@ -93,7 +105,7 @@ public class Carpenter {
      * Removes recipe from Carpenter
      *
      * @param output = recipe result
-     ** @param fluidInput = required type of fluid (optional)
+     *               * @param fluidInput = required type of fluid (optional)
      */
     @ZenMethod
     public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
@@ -124,6 +136,16 @@ public class Carpenter {
 
         public Remove(List<ICarpenterRecipe> recipes) {
             super(Carpenter.name, RecipeManagers.carpenterManager, recipes);
+        }
+
+        @Override
+        public void apply() {
+            super.apply();
+            successful.forEach(ent -> {
+                if (CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
+                    CarpenterRecipeManager.getRecipeFluids().remove(ent.getFluidResource().getFluid());
+                }
+            });
         }
 
         @Override
