@@ -9,6 +9,7 @@ import modtweaker.helpers.LogHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
 import modtweaker.utils.BaseListAddition;
 import modtweaker.utils.BaseListRemoval;
+import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
 import slimeknights.tconstruct.library.smeltery.ICastingRecipe;
@@ -30,17 +31,21 @@ public class Casting {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
-    public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast) {
+    public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional Integer timeInTicks) {
         if (liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), toFluid(liquid).getFluid(), liquid.getAmount());
+        FluidStack fluid = toFluid(liquid);
+        if (timeInTicks == null) {
+            timeInTicks = CastingRecipe.calcCooldownTime(fluid.getFluid(), fluid.amount);
+        }
+        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), fluid, timeInTicks, consumeCast, false);
         MineTweakerAPI.apply(new Add(rec, (LinkedList<ICastingRecipe>) TConstructHelper.basinCasting));
     }
 
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast) {
+    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional Integer timeInTicks) {
         if (liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -49,7 +54,11 @@ public class Casting {
         if (cast != null) {
             match = RecipeMatch.of(toStack(cast));
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), match, toFluid(liquid).getFluid(), liquid.getAmount());
+        FluidStack fluid = toFluid(liquid);
+        if (timeInTicks == null) {
+            timeInTicks = CastingRecipe.calcCooldownTime(fluid.getFluid(), fluid.amount);
+        }
+        CastingRecipe rec = new CastingRecipe(toStack(output), match, fluid, timeInTicks, consumeCast, false);
         MineTweakerAPI.apply(new Add(rec, (LinkedList<ICastingRecipe>) TConstructHelper.tableCasting));
     }
 
@@ -92,7 +101,7 @@ public class Casting {
         List<ICastingRecipe> recipes = new LinkedList<ICastingRecipe>();
 
         for (ICastingRecipe recipe : list) {
-            if (recipe != null) {
+            if (recipe instanceof CastingRecipe) {
                 if (!matches(output, toIItemStack(((CastingRecipe) recipe).getResult()))) {
 
                     continue;
