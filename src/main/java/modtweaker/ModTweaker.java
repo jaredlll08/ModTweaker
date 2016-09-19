@@ -4,6 +4,8 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
+import modtweaker.mods.botania.Botania;
+import modtweaker.mods.chisel.Chisel;
 import modtweaker.mods.forestry.Forestry;
 import modtweaker.mods.randomthings.RandomThings;
 import modtweaker.mods.tconstruct.TConstruct;
@@ -47,6 +49,8 @@ public class ModTweaker {
         TweakerPlugin.register("forestry", Forestry.class);
         TweakerPlugin.register("tconstruct", TConstruct.class);
         TweakerPlugin.register("randomthings", RandomThings.class);
+        TweakerPlugin.register("botania", Botania.class);
+        TweakerPlugin.register("chisel", Chisel.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
@@ -57,7 +61,6 @@ public class ModTweaker {
             @Override
             public void handle(ReloadEvent event) {
                 proxy.registerCommands();
-
             }
         });
 
