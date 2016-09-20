@@ -45,7 +45,7 @@ public class Casting {
     }
 
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional Integer timeInTicks) {
+    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional int timeInTicks) {
         if (liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -55,7 +55,7 @@ public class Casting {
             match = RecipeMatch.of(toStack(cast));
         }
         FluidStack fluid = toFluid(liquid);
-        if (timeInTicks == null) {
+        if (timeInTicks == 0) {
             timeInTicks = CastingRecipe.calcCooldownTime(fluid.getFluid(), fluid.amount);
         }
         CastingRecipe rec = new CastingRecipe(toStack(output), match, fluid, timeInTicks, consumeCast, false);
