@@ -36,11 +36,15 @@ public class Casting {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
         }
+        RecipeMatch match = null;
+        if (cast != null) {
+            match = RecipeMatch.of(toStack(cast));
+        }
         FluidStack fluid = toFluid(liquid);
         if (timeInTicks == 0) {
             timeInTicks = CastingRecipe.calcCooldownTime(fluid.getFluid(), fluid.amount);
         }
-        CastingRecipe rec = new CastingRecipe(toStack(output), RecipeMatch.of(toStack(cast)), fluid, timeInTicks, consumeCast, false);
+        CastingRecipe rec = new CastingRecipe(toStack(output), match, fluid, timeInTicks, consumeCast, false);
         MineTweakerAPI.apply(new Add(rec, (LinkedList<ICastingRecipe>) TConstructHelper.basinCasting));
     }
 
