@@ -1,16 +1,16 @@
 [
-{
-  "modid": "modtweaker",
-  "name": "Mod Tweaker",
-  "description": "ModTweaker is an addon for CraftTweaker.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["Jaredlll08"],
-  "credits": "joshie and Spitefulfox for writing ModTweaker, yulife for documentation.",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+    {
+      "modid": "modtweaker",
+      "name": "Mod Tweaker",
+      "description": "ModTweaker is an addon for CraftTweaker, a recipe manipulator utility for Minecraft. It allows you to modify the recipes of other mods that add their own crafting mechanics",
+      "version": "${version}",
+      "mcversion": "${mcversion}",
+      "url": "https://minecraft.curseforge.com/projects/ModTweaker",
+      "updateUrl": "https://minecraft.curseforge.com/projects/ModTweaker/files",
+      "authorList": ["Jaredlll08", "SnowShock35"],
+      "credits": "Joshie and SpitefulFox for writing ModTweaker, Yulife for documentation.",
+      "logoFile": "",
+      "screenshots": [],
+      "dependencies": []
+    }
 ]
