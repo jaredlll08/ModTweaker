@@ -4,6 +4,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
+import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.chisel.Chisel;
 import modtweaker.mods.forestry.Forestry;
@@ -48,6 +49,7 @@ public class ModTweaker {
         TweakerPlugin.register("randomthings", RandomThings.class);
         TweakerPlugin.register("Botania", Botania.class);
         TweakerPlugin.register("chisel", Chisel.class);
+        TweakerPlugin.register("BloodMagic", BloodMagic.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
