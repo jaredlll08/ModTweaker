@@ -33,6 +33,31 @@ public class Altar
     @ZenMethod
     public static void addRecipe(IItemStack output, int minTier, int syphon, int consumeRate, int drainRate, IItemStack[] input)
     {
+        if (output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        else if(minTier <= 0 || minTier > altarTiers.length)
+        {
+            LogHelper.logWarning(String.format("Invalid altar tier (%d) required for %s Recipe", minTier, Altar.name));
+            return;
+        }
+        else if(syphon < 0)
+        {
+            LogHelper.logWarning(String.format("Syphon can't be below 0 (%d) for %s Recipe", syphon, Altar.name));
+            return;
+        }
+        else if(consumeRate < 0)
+        {
+            LogHelper.logWarning(String.format("Consume rate can't be below 0 (%d) for %s Recipe", consumeRate, Altar.name));
+            return;
+        }
+        else if(drainRate < 0)
+        {
+            LogHelper.logWarning(String.format("Drain rate can't be below 0 (%d) for %s Recipe", drainRate, Altar.name));
+            return;
+        }
+
         List<ItemStack> inputs = Arrays.asList(toStacks(input));
         AltarRecipeRegistry.AltarRecipe temp = new AltarRecipeRegistry.AltarRecipe(inputs, toStack(output), altarTiers[minTier-1], syphon, consumeRate, drainRate);
         MineTweakerAPI.apply(new Add(temp.getInput(), temp, BloodMagicHelper.altarBiMap));
