@@ -25,6 +25,26 @@ public class AlchemyTable
     @ZenMethod
     public static void addRecipe(IItemStack output, int lpDrained, int ticksRequired, int tierRequired, IIngredient[] input)
     {
+        if (output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+        else if(lpDrained < 0)
+        {
+            LogHelper.logWarning(String.format("LP drained can't be below 0 (%d) for %s Recipe", lpDrained, name));
+            return;
+        }
+        else if(ticksRequired < 0)
+        {
+            LogHelper.logWarning(String.format("Ticks required can't be below 0 (%d) for %s Recipe", ticksRequired, name));
+            return;
+        }
+        else if(tierRequired < 1)
+        {
+            LogHelper.logWarning(String.format("Tier required can't be below 1 (%d) for %s Recipe", tierRequired, name));
+            return;
+        }
+
         MineTweakerAPI.apply(new Add(new AlchemyTableRecipe(toStack(output), lpDrained, ticksRequired, tierRequired, toObjects(input)), BloodMagicHelper.alchemyTableList));
     }
 
