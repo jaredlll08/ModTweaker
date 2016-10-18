@@ -1,6 +1,5 @@
 package modtweaker.mods.bloodmagic.handlers;
 
-import WayofTime.bloodmagic.api.registry.TartaricForgeRecipeRegistry;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -21,7 +20,7 @@ import java.util.List;
 @ZenClass("mods.bloodmagic.SoulForge")
 public class SoulForge
 {
-    protected static final String name = "BloodMagic Soul Forge";
+    protected static final String name = "Blood Magic Soul Forge";
 
     @ZenMethod
     public static void addRecipe(IItemStack output, double minimumSouls, double drain, IIngredient[] input)
