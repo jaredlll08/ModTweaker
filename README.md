@@ -21,6 +21,7 @@ Supported Mods
 ----------
 - Applied Energistics 2
 - Auracascade
+- Blood Magic
 - Botania
 - Chisel
 - ExNihilo
