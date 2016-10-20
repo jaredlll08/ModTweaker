@@ -3,6 +3,7 @@ package modtweaker.mods.bloodmagic.handlers;
 import WayofTime.bloodmagic.api.ItemStackWrapper;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
+import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry.AltarRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -10,6 +11,7 @@ import modtweaker.helpers.LogHelper;
 import modtweaker.helpers.ReflectionHelper;
 import modtweaker.mods.bloodmagic.BloodMagicHelper;
 import modtweaker.utils.BaseMapAddition;
+import modtweaker.utils.BaseMapRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import net.minecraft.item.ItemStack;
@@ -17,10 +19,7 @@ import net.minecraft.item.ItemStack;
 import static modtweaker.helpers.InputHelper.*;
 import static modtweaker.helpers.StackHelper.matches;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 @ZenClass("mods.bloodmagic.Altar")
@@ -63,16 +62,64 @@ public class Altar
         MineTweakerAPI.apply(new Add(temp.getInput(), temp, BloodMagicHelper.altarBiMap));
     }
 
-    private static class Add extends BaseMapAddition<List<ItemStackWrapper>, AltarRecipeRegistry.AltarRecipe>
+    private static class Add extends BaseMapAddition<List<ItemStackWrapper>, AltarRecipe>
     {
-        public Add(List<ItemStackWrapper> inputs, AltarRecipeRegistry.AltarRecipe altarRecipe, Map<List<ItemStackWrapper>, AltarRecipeRegistry.AltarRecipe> list)
+        public Add(List<ItemStackWrapper> inputs, AltarRecipe altarRecipe, Map<List<ItemStackWrapper>, AltarRecipe> map)
         {
-            super(Altar.name, list);
+            super(Altar.name, map);
             this.recipes.put(inputs, altarRecipe);
         }
 
         @Override
-        public String getRecipeInfo(Entry<List<ItemStackWrapper>, AltarRecipeRegistry.AltarRecipe> recipe)
+        public String getRecipeInfo(Entry<List<ItemStackWrapper>, AltarRecipe> recipe)
+        {
+            ItemStack output = ReflectionHelper.getFinalObject(recipe.getValue(), "output");
+            return LogHelper.getStackDescription(output);
+        }
+    }
+
+    @ZenMethod
+    public static void removeRecipe(IIngredient output)
+    {
+        remove(output, BloodMagicHelper.altarBiMap);
+    }
+
+    public static void remove(IIngredient output, Map<List<ItemStackWrapper>, AltarRecipe> map)
+    {
+        if (output == null) {
+            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+            return;
+        }
+
+        Map<List<ItemStackWrapper>, AltarRecipe> recipes = new HashMap<>();
+
+        for(AltarRecipe altarRecipe : map.values())
+        {
+            ItemStack recipeOutput = ReflectionHelper.getFinalObject(altarRecipe, "output");
+            if(matches(output, toIItemStack(recipeOutput))) {
+                recipes.put(altarRecipe.getInput(), altarRecipe);
+            }
+        }
+
+        if(!recipes.isEmpty())
+        {
+            MineTweakerAPI.apply(new Remove(map, recipes));
+        }
+        else
+        {
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s. Command ignored!", Altar.name, output.toString()));
+        }
+    }
+
+    private static class Remove extends BaseMapRemoval<List<ItemStackWrapper>, AltarRecipe>
+    {
+        public Remove(Map<List<ItemStackWrapper>, AltarRecipe> map, Map<List<ItemStackWrapper>, AltarRecipe> inputs)
+        {
+            super(Altar.name, map, inputs);
+        }
+
+        @Override
+        public String getRecipeInfo(Entry<List<ItemStackWrapper>, AltarRecipe> recipe)
         {
             ItemStack output = ReflectionHelper.getFinalObject(recipe.getValue(), "output");
             return LogHelper.getStackDescription(output);

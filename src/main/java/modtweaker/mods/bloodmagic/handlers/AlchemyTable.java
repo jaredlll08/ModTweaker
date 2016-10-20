@@ -73,7 +73,7 @@ public class AlchemyTable
             return;
         }
 
-        List<AlchemyTableRecipe> recipes = new LinkedList<AlchemyTableRecipe>();
+        List<AlchemyTableRecipe> recipes = new LinkedList<>();
 
         for(AlchemyTableRecipe recipe : list)
         {

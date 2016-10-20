@@ -53,7 +53,7 @@ public class SoulForge
             return;
         }
 
-        List<TartaricForgeRecipe> recipes = new LinkedList<TartaricForgeRecipe>();
+        List<TartaricForgeRecipe> recipes = new LinkedList<>();
 
         for(TartaricForgeRecipe recipe : list)
         {
