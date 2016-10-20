@@ -63,6 +63,23 @@ public class StackHelper {
         
             return true;
     }
+
+    /**
+     * Adds extra check to IIngredient matches() for Botania special flowers
+     */
+    public static boolean matches(IIngredient ingredient, IItemStack[] itemStack) {
+        if(ingredient == null) {
+            return false;
+        }
+
+        for (IItemStack stack : itemStack) {
+            if(!ingredient.matches(stack)){
+                return false;
+            }
+        }
+
+        return true;
+    }
     
     /**
      * This function compares an ingredient with a fluid. MCLiquidStack.matches() function

@@ -1,11 +1,12 @@
 package modtweaker.utils;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.fml.common.Loader;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class TweakerPlugin {
-    private static ArrayList<String> isLoaded = new ArrayList<String>();
+    private static List<String> mods = new LinkedList<String>();
 
     public static void register(String mod, Class<?> clazz) {
         if (Loader.isModLoaded(mod)) {
@@ -16,14 +17,17 @@ public class TweakerPlugin {
     public static void load(String mod, Class<?> clazz) {
         try {
             clazz.newInstance();
-            isLoaded.add(mod);
+            mods.add(mod);
         } catch (Exception e) {
-            isLoaded.remove(mod);
+            mods.remove(mod);
         }
     }
 
     public static boolean isLoaded(String string) {
-        return isLoaded.contains(string);
+        return mods.contains(string);
     }
-    
+
+    public static List<String> getMods() {
+        return mods;
+    }
 }

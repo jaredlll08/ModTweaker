@@ -20,7 +20,7 @@ public abstract class ForestryListRemoval<T extends IForestryRecipe, C extends I
 	protected abstract String getRecipeInfo(T recipe);
 
 	@Override
-	public final void apply() {
+	public void apply() {
 		for (T recipe : recipes) {
 			if (recipe != null) {
 				if (craftingProvider.removeRecipe(recipe)) {

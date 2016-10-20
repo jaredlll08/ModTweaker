@@ -8,10 +8,13 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.WeightedItemStack;
 import minetweaker.api.liquid.ILiquidStack;
+import minetweaker.mc1102.item.MCItemStack;
 import modtweaker.helpers.LogHelper;
 import modtweaker.mods.forestry.ForestryListAddition;
 import modtweaker.mods.forestry.ForestryListRemoval;
 import modtweaker.mods.forestry.recipes.SqueezerRecipe;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -39,6 +42,9 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
+		if(itemOutput == null){
+			itemOutput = new WeightedItemStack(new MCItemStack(new ItemStack(Blocks.AIR)),0);
+		}
 		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
 	}
 	

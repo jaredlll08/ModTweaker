@@ -11,6 +11,7 @@ import slimeknights.tconstruct.library.DryingRecipe;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
+import slimeknights.tconstruct.library.smeltery.ICastingRecipe;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -35,20 +36,20 @@ public class TConstructLogger implements ICommandFunction {
             }
         } else {
             if (args.isEmpty() || args.contains("Casting")) {
-                for (CastingRecipe recipe : TConstructHelper.basinCasting) {
+                for (ICastingRecipe recipe : TConstructHelper.basinCasting) {
                     MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addBasinRecipe(%s, %s, %s, %s, %d);",
-                            LogHelper.getStackDescription(recipe.getResult()),
-                            LogHelper.getStackDescription(recipe.getFluid()),
-                            LogHelper.getStackDescription(recipe.cast),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).cast),
                             recipe.consumesCast(),
                             recipe.getTime()));
                 }
 
-                for (CastingRecipe recipe : TConstructHelper.tableCasting) {
+                for (ICastingRecipe recipe : TConstructHelper.tableCasting) {
                     MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addTableRecipe(%s, %s, %s, %s, %d);",
-                            LogHelper.getStackDescription(recipe.getResult()),
-                            LogHelper.getStackDescription(recipe.getFluid()),
-                            LogHelper.getStackDescription(recipe.cast),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                            LogHelper.getStackDescription(((CastingRecipe) recipe).cast),
                             recipe.consumesCast(),
                             recipe.getTime()));
                 }

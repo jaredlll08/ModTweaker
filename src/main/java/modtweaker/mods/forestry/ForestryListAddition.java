@@ -25,7 +25,7 @@ public abstract class ForestryListAddition<T extends IForestryRecipe, C extends 
 	protected abstract String getRecipeInfo(T recipe);
 
 	@Override
-	public final void apply() {
+	public void apply() {
 		for (T recipe : recipes) {
 			if (recipe != null) {
 				if (craftingProvider.addRecipe(recipe)) {

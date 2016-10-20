@@ -39,7 +39,7 @@ public class Drying {
     //Passes the list to the base list implementation, and adds the recipe
     private static class Add extends BaseListAddition<DryingRecipe> {
         public Add(DryingRecipe recipe) {
-            super(Drying.name, TinkerRegistry.getAllDryingRecipes());
+            super(Drying.name, TConstructHelper.dryingList);
             this.recipes.add(recipe);
         }
 
@@ -72,7 +72,7 @@ public class Drying {
     //Removes a recipe, apply is never the same for anything, so will always need to override it
     private static class Remove extends BaseListRemoval<DryingRecipe> {
         public Remove(List<DryingRecipe> list) {
-            super(Drying.name, TinkerRegistry.getAllDryingRecipes(), list);
+            super(Drying.name, TConstructHelper.dryingList, list);
         }
 
         @Override
