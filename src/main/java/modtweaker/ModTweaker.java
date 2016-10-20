@@ -1,5 +1,6 @@
 package modtweaker;
 
+import com.blamejared.ctgui.api.GuiRegistry;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
@@ -23,6 +24,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Arrays;
 
 @Mod(modid = ModProps.modid, version = ModProps.version, dependencies = ModProps.dependencies)
 public class ModTweaker {
@@ -38,6 +40,7 @@ public class ModTweaker {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger.info("Starting PreInitialization for " + ModProps.modid);
+        GuiRegistry.registerGui(Arrays.asList(3), new GuiHandlerMods());
     }
 
     @EventHandler

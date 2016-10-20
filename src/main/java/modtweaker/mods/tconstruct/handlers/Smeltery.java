@@ -99,7 +99,6 @@ public class Smeltery {
     // Adding a TConstruct Melting recipe
     @ZenMethod
     public static void addMelting(ILiquidStack output, IIngredient input, int temp, @Optional IItemStack block) {
-
         if (input == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameMelting));
             return;
