@@ -111,7 +111,6 @@ public class ImbuingStation {
         protected String getRecipeInfo(ImbuingRecipe recipe) {
             StringBuilder build = new StringBuilder();
             build.append(LogHelper.getStackDescription(recipe.getResult()) + ", ");
-            build.append(LogHelper.getStackDescription(recipe.toImbue()) + ", ");
             for (ItemStack stack : recipe.getIngredients()) {
                 build.append(LogHelper.getStackDescription(stack) + " ");
             }
