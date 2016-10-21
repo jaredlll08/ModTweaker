@@ -19,6 +19,7 @@ https://github.com/jaredlll08/ModTweaker2/wiki/Bug-Reporting-Guidelines
 
 Supported Mods
 ----------
+- Actually Additions
 - Applied Energistics 2
 - Auracascade
 - Blood Magic
