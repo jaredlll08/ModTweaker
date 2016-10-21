@@ -59,16 +59,16 @@ public class Compost {
 	}
 
 	@ZenMethod
-	public static void remove(IIngredient output) {
+	public static void remove(IIngredient input) {
 		List<CompostRecipe> recipes = new LinkedList<CompostRecipe>();
 
-		if (output == null) {
+		if (input == null) {
 			LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
 			return;
 		}
 
 		for (CompostRecipe recipe : ActuallyAdditionsAPI.COMPOST_RECIPES) {
-			if (matches(output, toIItemStack(recipe.output)))
+			if (matches(input, toIItemStack(recipe.input)))
 				recipes.add(recipe);
 		}
 
@@ -76,7 +76,7 @@ public class Compost {
 			MineTweakerAPI.apply(new Remove(recipes));
 		} else {
 			LogHelper.logWarning(String.format("No %s Recipe found for output %s. Command ignored!", Compost.name,
-					output.toString()));
+					input.toString()));
 		}
 
 	}

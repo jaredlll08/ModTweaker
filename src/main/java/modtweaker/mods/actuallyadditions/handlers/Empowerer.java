@@ -28,8 +28,8 @@ public class Empowerer {
 			IItemStack modifier2, IItemStack modifier3, IItemStack modifier4, int energyPerStand,
 			int time, @Optional float redValue, @Optional float greenValue, @Optional float blueValue) {
 
-		
-			float[] particleColor = new float[]{redValue,greenValue,blueValue};
+
+		float[] particleColor = new float[]{redValue,greenValue,blueValue};
 		MineTweakerAPI.apply(new Add(
 				new EmpowererRecipe(toStack(input), toStack(output), toStack(modifier1), toStack(modifier2), toStack(modifier3), toStack(modifier4), energyPerStand, time, particleColor)));
 	}
@@ -37,7 +37,7 @@ public class Empowerer {
 	private static class Add extends BaseListAddition<EmpowererRecipe> {
 		public Add(EmpowererRecipe recipe) {
 			super(Empowerer.name, ActuallyAdditionsAPI.EMPOWERER_RECIPES);
-			
+
 			this.recipes.add(recipe);
 		}
 
@@ -48,17 +48,20 @@ public class Empowerer {
 	}
 
 	@ZenMethod
-	public static void remove(IIngredient output) {
+	public static void remove(IIngredient input, IIngredient output) {
 		List<EmpowererRecipe> recipes = new LinkedList<EmpowererRecipe>();
 
-		if (output == null) {
+		if (output == null || input == null) {
 			LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
 			return;
 		}
 
 		for (EmpowererRecipe recipe : ActuallyAdditionsAPI.EMPOWERER_RECIPES) {
-			if (matches(output, toIItemStack(recipe.output)))
-				recipes.add(recipe);
+			if (matches(output, toIItemStack(recipe.output))){
+				if(matches(input, toIItemStack(recipe.input))){
+					recipes.add(recipe);
+				}
+			}
 		}
 
 		if (!recipes.isEmpty()) {
