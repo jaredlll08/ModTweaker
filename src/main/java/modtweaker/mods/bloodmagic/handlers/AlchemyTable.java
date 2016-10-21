@@ -50,7 +50,7 @@ public class AlchemyTable
 
     private static class Add extends BaseListAddition<AlchemyTableRecipe> {
         public Add(AlchemyTableRecipe recipe, List<AlchemyTableRecipe> list) {
-            super(SoulForge.name, list);
+            super(AlchemyTable.name, list);
             this.recipes.add(recipe);
         }
 
@@ -87,14 +87,14 @@ public class AlchemyTable
         }
         else
         {
-            LogHelper.logWarning(String.format("No %s Recipe found for output %s. Command ignored!", SoulForge.name, output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for output %s. Command ignored!", AlchemyTable.name, output.toString()));
         }
 
     }
 
     private static class Remove extends BaseListRemoval<AlchemyTableRecipe> {
         public Remove(List<AlchemyTableRecipe> list, List<AlchemyTableRecipe> recipes) {
-            super(SoulForge.name, list, recipes);
+            super(AlchemyTable.name, list, recipes);
         }
 
         @Override

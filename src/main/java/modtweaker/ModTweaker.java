@@ -5,6 +5,7 @@ import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import minetweaker.util.IEventHandler;
+import modtweaker.mods.actuallyadditions.ActuallyAdditions;
 import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.chisel.Chisel;
@@ -53,6 +54,7 @@ public class ModTweaker {
         TweakerPlugin.register("Botania", Botania.class);
         TweakerPlugin.register("chisel", Chisel.class);
         TweakerPlugin.register("BloodMagic", BloodMagic.class);
+        TweakerPlugin.register("actuallyadditions",ActuallyAdditions.class);
 
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
