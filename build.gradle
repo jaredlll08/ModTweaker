@@ -22,7 +22,7 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version=config.minecraft.version + "-" + config.mod.version
+version=config.mod.version
 group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ModTweaker2"
 
