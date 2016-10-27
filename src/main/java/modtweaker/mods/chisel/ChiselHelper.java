@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 
 public class ChiselHelper {
 

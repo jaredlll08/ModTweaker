@@ -3,10 +3,10 @@ package modtweaker.mods.tconstruct.handlers;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.DryingRecipe;
 import slimeknights.tconstruct.library.TinkerRegistry;
@@ -16,8 +16,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.LinkedList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.toIItemStack;
-import static modtweaker.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.toIItemStack;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 
 @ZenClass("mods.tconstruct.Drying")
 public class Drying {

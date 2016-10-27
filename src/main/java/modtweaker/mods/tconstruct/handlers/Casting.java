@@ -5,10 +5,10 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.IngredientAny;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
@@ -20,8 +20,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.LinkedList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.tconstruct.Casting")
 public class Casting {

@@ -1,23 +1,23 @@
 package modtweaker.mods.actuallyadditions.handlers;
 
-import static modtweaker.helpers.InputHelper.toIItemStack;
-import static modtweaker.helpers.InputHelper.toStack;
-import static modtweaker.helpers.StackHelper.matches;
-
-import java.util.LinkedList;
-import java.util.List;
-
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.EmpowererRecipe;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.blamejared.mtlib.helpers.InputHelper.toIItemStack;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.actuallyadditions.Empowerer")
 public class Empowerer {

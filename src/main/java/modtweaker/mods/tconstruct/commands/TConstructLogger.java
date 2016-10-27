@@ -1,23 +1,21 @@
 package modtweaker.mods.tconstruct.commands;
 
+import com.blamejared.mtlib.commands.CommandLoggerMulti;
+import com.blamejared.mtlib.helpers.LogHelper;
 import minetweaker.MineTweakerAPI;
-import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
-import modtweaker.helpers.LogHelper;
-import modtweaker.helpers.StringHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
-import slimeknights.tconstruct.library.DryingRecipe;
+import net.minecraft.item.ItemStack;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
-import slimeknights.tconstruct.library.smeltery.ICastingRecipe;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-public class TConstructLogger implements ICommandFunction {
+public class TConstructLogger extends CommandLoggerMulti {
     private static final List<String> validArguments = new LinkedList<String>();
 
     static {
@@ -28,42 +26,6 @@ public class TConstructLogger implements ICommandFunction {
 
     @Override
     public void execute(String[] arguments, IPlayer player) {
-        List<String> args = StringHelper.toLowerCase(Arrays.asList(arguments));
-
-        if (!validArguments.containsAll(args)) {
-            if (player != null) {
-                player.sendChat(MineTweakerImplementationAPI.platform.getMessage("Invalid arguments for command. Valid arguments: " + StringHelper.join(validArguments, ", ")));
-            }
-        } else {
-            if (args.isEmpty() || args.contains("Casting")) {
-                for (ICastingRecipe recipe : TConstructHelper.basinCasting) {
-                    MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addBasinRecipe(%s, %s, %s, %s, %d);",
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).cast),
-                            recipe.consumesCast(),
-                            recipe.getTime()));
-                }
-
-                for (ICastingRecipe recipe : TConstructHelper.tableCasting) {
-                    MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addTableRecipe(%s, %s, %s, %s, %d);",
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
-                            LogHelper.getStackDescription(((CastingRecipe) recipe).cast),
-                            recipe.consumesCast(),
-                            recipe.getTime()));
-                }
-            }
-
-            if (args.isEmpty() || args.contains("Drying")) {
-                for (DryingRecipe recipe : TinkerRegistry.getAllDryingRecipes()) {
-                    MineTweakerAPI.logCommand(String.format("mods.tconstruct.Drying.addRecipe(%s, %s, %d);",
-                            LogHelper.getStackDescription(recipe.input),
-                            LogHelper.getStackDescription(recipe.getResult()),
-                            recipe.time));
-                }
-            }
-
 //            if(args.isEmpty() || args.contains("Smeltery")) {
 //                for(MeltingRecipe recipe : TConstructHelper.smeltingList) {
 //                    int temperature = recipe.getTemperature();
@@ -76,11 +38,6 @@ public class TConstructLogger implements ICommandFunction {
 //                            LogHelper.getStackDescription(renderItem)));
 //                }
 
-            for (AlloyRecipe recipe : TConstructHelper.alloys) {
-                MineTweakerAPI.logCommand(String.format("mods.tconstruct.Smeltery.addAlloy(%s, %s);",
-                        LogHelper.getStackDescription(recipe.getResult()),
-                        LogHelper.getListDescription(recipe.getFluids())));
-            }
 
 //                for(FluidStack fuel : TConstructHelper.fuelList) {
 //                    MineTweakerAPI.logCommand(String.format("mods.tconstruct.Smeltery.addFuel(%s, %d, %d);",
@@ -88,10 +45,74 @@ public class TConstructLogger implements ICommandFunction {
 //                            fuel[0],
 //                            fuel.getValue()[1]));
 //                }
+        super.execute(arguments, player);
+    }
 
-            if (player != null) {
-                player.sendChat(MineTweakerImplementationAPI.platform.getMessage("List generated; see minetweaker.log in your minecraft dir"));
-            }
-        }
+
+    @Override
+    public Map<String, ICommandFunction> getLists() {
+        Map<String, ICommandFunction> logs = new HashMap<>();
+        logs.put("casting", (strings, player) -> {
+            TConstructHelper.basinCasting.forEach(recipe -> {
+                if(recipe instanceof CastingRecipe) {
+                    if(((CastingRecipe) recipe).cast != null) {
+                        for(ItemStack item : ((CastingRecipe) recipe).cast.getInputs()) {
+                            MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addBasinRecipe(%s, %s, %s, %s, %d);",
+                                    LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                                    LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                                    LogHelper.getStackDescription(item),
+                                    recipe.consumesCast(),
+                                    recipe.getTime()));
+                        }
+                    } else {
+                        MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addBasinRecipe(%s, %s, %s, %s, %d);",
+                                LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                                LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                                LogHelper.getStackDescription((Object) null),
+                                recipe.consumesCast(),
+                                recipe.getTime()));
+                    }
+                }
+
+
+            });
+            TConstructHelper.tableCasting.forEach(recipe ->
+            {
+                if(recipe instanceof CastingRecipe) {
+                    if(((CastingRecipe) recipe).cast != null) {
+                        for(ItemStack item : ((CastingRecipe) recipe).cast.getInputs()) {
+                            MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addTableRecipe(%s, %s, %s, %s, %d);",
+                                    LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                                    LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                                    LogHelper.getStackDescription(item),
+                                    recipe.consumesCast(),
+                                    recipe.getTime()));
+                        }
+                    } else {
+                        MineTweakerAPI.logCommand(String.format("mods.tconstruct.Casting.addTableRecipe(%s, %s, %s, %s, %d);",
+                                LogHelper.getStackDescription(((CastingRecipe) recipe).getResult()),
+                                LogHelper.getStackDescription(((CastingRecipe) recipe).getFluid()),
+                                LogHelper.getStackDescription((Object) null),
+                                recipe.consumesCast(),
+                                recipe.getTime()));
+                    }
+                }
+            });
+        });
+
+        logs.put("drying", (args, player) -> TinkerRegistry.getAllDryingRecipes().
+                forEach(recipe -> {
+                    for(ItemStack item : recipe.input.getInputs()) {
+                        MineTweakerAPI.logCommand(String.format("mods.tconstruct.Drying.addRecipe(%s, %s, %d);",
+                                LogHelper.getStackDescription(item),
+                                LogHelper.getStackDescription(recipe.getResult()),
+                                recipe.time));
+                    }
+                }));
+
+        logs.put("alloys", (strings, player) -> TConstructHelper.alloys.forEach(recipe -> MineTweakerAPI.logCommand(String.format("mods.tconstruct.Smeltery.addAlloy(%s, %s);",
+                LogHelper.getStackDescription(recipe.getResult()),
+                LogHelper.getListDescription(recipe.getFluids())))));
+        return logs;
     }
 }

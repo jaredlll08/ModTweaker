@@ -13,7 +13,6 @@ import modtweaker.mods.forestry.Forestry;
 import modtweaker.mods.randomthings.RandomThings;
 import modtweaker.mods.tconstruct.TConstruct;
 import modtweaker.proxy.CommonProxy;
-import modtweaker.utils.TweakerPlugin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;

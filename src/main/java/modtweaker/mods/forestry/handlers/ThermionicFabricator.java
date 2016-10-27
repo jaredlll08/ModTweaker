@@ -4,7 +4,7 @@ import forestry.api.recipes.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.forestry.ForestryListAddition;
 import modtweaker.mods.forestry.ForestryListRemoval;
 import modtweaker.mods.forestry.recipes.DescriptiveRecipe;
@@ -18,8 +18,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.LinkedList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
 public class ThermionicFabricator {

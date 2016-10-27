@@ -2,8 +2,8 @@ package modtweaker.mods.forestry;
 
 import forestry.api.recipes.ICraftingProvider;
 import forestry.api.recipes.IForestryRecipe;
-import modtweaker.helpers.LogHelper;
-import modtweaker.utils.BaseListRemoval;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,9 +2,9 @@ package modtweaker.mods.tconstruct.handlers;
 
 import gnu.trove.map.hash.THashMap;
 import minetweaker.MineTweakerAPI;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.tconstruct.TConstructHelper;
-import modtweaker.utils.BaseMapRemoval;
+import com.blamejared.mtlib.utils.BaseMapRemoval;
 import slimeknights.tconstruct.library.modifiers.IModifier;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

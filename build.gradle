@@ -1,5 +1,3 @@
-import groovy.io.FileType
-
 buildscript {
     repositories {
         jcenter()
@@ -37,16 +35,16 @@ compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 repositories {
-
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name 'Jared'
+        url 'http://blamejared.com/maven'
+    }
 }
-dependencies {
-	def list = []
 
-	def dir = new File("libs/")
-	dir.eachFileRecurse (FileType.FILES) { file ->
-		list << file
-	//	deobfCompile file.path
-	}
+dependencies {
+	    deobfCompile "com.blamejared:MTLib:1.0.0.5"
 }
 
 processResources

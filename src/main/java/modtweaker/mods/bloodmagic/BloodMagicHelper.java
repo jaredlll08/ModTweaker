@@ -7,7 +7,7 @@ import WayofTime.bloodmagic.api.registry.AlchemyTableRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.TartaricForgeRecipeRegistry;
 import com.google.common.collect.BiMap;
-import modtweaker.helpers.ReflectionHelper;
+import com.blamejared.mtlib.helpers.ReflectionHelper;
 
 import java.util.List;
 

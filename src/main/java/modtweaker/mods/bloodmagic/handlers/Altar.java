@@ -4,23 +4,26 @@ import WayofTime.bloodmagic.api.ItemStackWrapper;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry.AltarRecipe;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.ReflectionHelper;
+import com.blamejared.mtlib.utils.BaseMapAddition;
+import com.blamejared.mtlib.utils.BaseMapRemoval;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
-import modtweaker.helpers.ReflectionHelper;
 import modtweaker.mods.bloodmagic.BloodMagicHelper;
-import modtweaker.utils.BaseMapAddition;
-import modtweaker.utils.BaseMapRemoval;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import net.minecraft.item.ItemStack;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.bloodmagic.Altar")
 public class Altar

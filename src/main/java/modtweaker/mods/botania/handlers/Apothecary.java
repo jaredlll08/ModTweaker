@@ -3,9 +3,9 @@ package modtweaker.mods.botania.handlers;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;
@@ -15,8 +15,10 @@ import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 import java.util.LinkedList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
+import static com.blamejared.mtlib.helpers.InputHelper.toObjects;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.botania.Apothecary")
 public class Apothecary {

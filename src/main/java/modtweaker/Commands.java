@@ -8,7 +8,6 @@ import modtweaker.mods.randomthings.commands.RandomThingsLogger;
 import modtweaker.mods.tconstruct.commands.MaterialLogger;
 import modtweaker.mods.tconstruct.commands.ModifierLogger;
 import modtweaker.mods.tconstruct.commands.TConstructLogger;
-import modtweaker.utils.TweakerPlugin;
 
 public class Commands {
 

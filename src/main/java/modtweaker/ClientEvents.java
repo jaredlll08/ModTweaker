@@ -8,7 +8,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static modtweaker.helpers.LogHelper.print;
+import static com.blamejared.mtlib.helpers.LogHelper.print;
 
 public class ClientEvents {
 	public static int cooldown;

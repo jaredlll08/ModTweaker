@@ -9,7 +9,7 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.item.WeightedItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.mc1102.item.MCItemStack;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.forestry.ForestryListAddition;
 import modtweaker.mods.forestry.ForestryListRemoval;
 import modtweaker.mods.forestry.recipes.SqueezerRecipe;
@@ -22,8 +22,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.LinkedList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.Squeezer")
 public class Squeezer {

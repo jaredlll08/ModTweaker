@@ -6,8 +6,8 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
-import modtweaker.helpers.LogHelper;
-import modtweaker.helpers.StringHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.StringHelper;
 
 import java.util.Arrays;
 import java.util.LinkedList;

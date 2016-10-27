@@ -9,12 +9,12 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
-import modtweaker.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import modtweaker.mods.forestry.ForestryListAddition;
 import modtweaker.mods.forestry.ForestryListRemoval;
 import modtweaker.mods.forestry.recipes.FermenterRecipe;
-import modtweaker.utils.BaseMapAddition;
-import modtweaker.utils.BaseMapRemoval;
+import com.blamejared.mtlib.utils.BaseMapAddition;
+import com.blamejared.mtlib.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.Fermenter")
 public class Fermenter {

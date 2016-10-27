@@ -1,7 +1,7 @@
 package modtweaker.mods.tconstruct;
 
 import gnu.trove.map.hash.THashMap;
-import modtweaker.helpers.ReflectionHelper;
+import com.blamejared.mtlib.helpers.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;

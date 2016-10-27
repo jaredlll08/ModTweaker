@@ -2,11 +2,11 @@ package modtweaker.mods.botania.handlers;
 
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
-import modtweaker.helpers.InputHelper;
-import modtweaker.helpers.LogHelper;
-import modtweaker.helpers.StringHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.StringHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;

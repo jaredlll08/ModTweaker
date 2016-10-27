@@ -1,21 +1,21 @@
 package modtweaker.mods.bloodmagic.handlers;
 
+import WayofTime.bloodmagic.api.recipe.TartaricForgeRecipe;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
-import modtweaker.helpers.LogHelper;
 import modtweaker.mods.bloodmagic.BloodMagicHelper;
-import modtweaker.utils.BaseListAddition;
-import modtweaker.utils.BaseListRemoval;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import WayofTime.bloodmagic.api.recipe.TartaricForgeRecipe;
-
-import static modtweaker.helpers.InputHelper.*;
-import static modtweaker.helpers.StackHelper.matches;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.bloodmagic.SoulForge")
 public class SoulForge

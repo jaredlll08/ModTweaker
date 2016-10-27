@@ -1,32 +1,19 @@
 package modtweaker.commands;
 
-import minetweaker.MineTweakerAPI;
-import minetweaker.MineTweakerImplementationAPI;
-import minetweaker.api.player.IPlayer;
-import minetweaker.api.server.ICommandFunction;
-import modtweaker.ModTweaker;
+import com.blamejared.mtlib.commands.CommandLogger;
 import net.minecraft.entity.EntityList;
 
-import java.util.Set;
+import java.util.Collection;
 
-public class EntityMappingLogger implements ICommandFunction {
+public class EntityMappingLogger extends CommandLogger {
 
     @Override
-    public void execute(String[] arguments, IPlayer player) {
+    public Collection<? extends String> getList() {
+        return EntityList.NAME_TO_CLASS.keySet();
+    }
 
-        @SuppressWarnings("unchecked")
-        Set<String> keys = EntityList.NAME_TO_CLASS.keySet();
-
-        System.out.println("Mob Keys: " + keys.size());
-
-        for (String key : keys) {
-            ModTweaker.logger.info("Mob Key "  + key);
-            MineTweakerAPI.logCommand("Mob Key " + key);
-
-        }
-
-        if (player != null) {
-            player.sendChat(MineTweakerImplementationAPI.platform.getMessage("List generated; see minetweaker.log in your minecraft dir"));
-        }
+    @Override
+    public String getName() {
+        return "Mob Keys";
     }
 }

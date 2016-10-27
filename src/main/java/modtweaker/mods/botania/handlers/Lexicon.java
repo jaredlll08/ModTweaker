@@ -19,7 +19,7 @@ import vazkii.botania.common.lexicon.page.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static modtweaker.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 
 @ZenClass("mods.botania.Lexicon")
 public class Lexicon {

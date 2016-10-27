@@ -1,4 +1,4 @@
-package modtweaker.utils;
+package modtweaker;
 
 import net.minecraftforge.fml.common.Loader;
 
