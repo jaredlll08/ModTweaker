@@ -1,52 +1,32 @@
 package modtweaker.mods.chisel.commands;
 
-import minetweaker.MineTweakerAPI;
-import minetweaker.MineTweakerImplementationAPI;
-import minetweaker.api.player.IPlayer;
-import minetweaker.api.server.ICommandFunction;
-import modtweaker.mods.chisel.ChiselHelper;
+import com.blamejared.mtlib.commands.CommandLogger;
 import net.minecraft.item.Item;
 import team.chisel.api.carving.CarvingUtils;
-import team.chisel.api.carving.ICarvingGroup;
 import team.chisel.api.carving.ICarvingVariation;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-public class ChiselVariationLogger implements ICommandFunction {
+public class ChiselVariationLogger extends CommandLogger {
 
     @Override
-    public void execute(String[] arguments, IPlayer player) {
-        Map<ICarvingVariation, ICarvingGroup> variations = new HashMap<ICarvingVariation, ICarvingGroup>();
-        List<String> keys = CarvingUtils.getChiselRegistry().getSortedGroupNames();
-        if (arguments.length > 0) {
-            ICarvingGroup group = ChiselHelper.getGroup(arguments[0]);
-            if (group == null) {
-                MineTweakerAPI.getLogger().logError("Group not found (" + arguments[0] + ")");
-                return;
-            } else {
-                keys.clear();
-                keys.add(arguments[0]);
+    public Collection<? extends String> getList() {
+        List<String> var = new LinkedList<>();
+        for(String s : CarvingUtils.getChiselRegistry().getSortedGroupNames()) {
+            for(ICarvingVariation variation : CarvingUtils.getChiselRegistry().getGroup(s).getVariations()) {
+                String stringedVariation = "<" + Item.REGISTRY.getNameForObject(Item.getItemFromBlock(variation.getBlock())) + ":" + variation.getStack().getItemDamage() + ">";
+                stringedVariation += " " + s;
+                System.out.println("Chisel Variation " + stringedVariation);
+                var.add(stringedVariation);
             }
         }
-        for (String key : keys) {
-            ICarvingGroup group = CarvingUtils.getChiselRegistry().getGroup(key);
-            for (ICarvingVariation variation : group.getVariations())
-                variations.put(variation, group);
-        }
-        System.out.println("Chisel Variations: " + variations.size());
-        for (Entry<ICarvingVariation, ICarvingGroup> entry : variations.entrySet()) {
-            String stringedVariation = "<" + Item.REGISTRY.getNameForObject(Item.getItemFromBlock(entry.getKey().getBlock())) + ":" + entry.getKey().getStack().getItemDamage() + ">";
-            if (arguments.length == 0)
-                stringedVariation += " " + entry.getValue().getName();
-            System.out.println("Chisel Variation " + stringedVariation);
-            MineTweakerAPI.logCommand(stringedVariation);
-        }
+        return var;
+    }
 
-        if (player != null) {
-            player.sendChat(MineTweakerImplementationAPI.platform.getMessage("List generated; see minetweaker.log in your minecraft dir"));
-        }
+    @Override
+    public String getName() {
+        return "Chisel Variations";
     }
 }

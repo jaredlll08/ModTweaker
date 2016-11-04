@@ -2,9 +2,7 @@ package modtweaker;
 
 import com.blamejared.ctgui.api.GuiRegistry;
 import minetweaker.MineTweakerImplementationAPI;
-import minetweaker.MineTweakerImplementationAPI.ReloadEvent;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
-import minetweaker.util.IEventHandler;
 import modtweaker.mods.actuallyadditions.ActuallyAdditions;
 import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
@@ -19,7 +17,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,22 +54,15 @@ public class ModTweaker {
         TweakerPlugin.register("Botania", Botania.class);
         TweakerPlugin.register("chisel", Chisel.class);
         TweakerPlugin.register("BloodMagic", BloodMagic.class);
-        TweakerPlugin.register("actuallyadditions",ActuallyAdditions.class);
-
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        TweakerPlugin.register("actuallyadditions", ActuallyAdditions.class);
+        if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
         }
 
-        MineTweakerImplementationAPI.onReloadEvent(new IEventHandler<MineTweakerImplementationAPI.ReloadEvent>() {
-
-            @Override
-            public void handle(ReloadEvent event) {
-                proxy.registerCommands();
-            }
-        });
+        MineTweakerImplementationAPI.onReloadEvent(event1 -> proxy.registerCommands());
 
         File scripts = new File("scripts");
-        if (!scripts.exists()) {
+        if(!scripts.exists()) {
             scripts.mkdir();
         }
         MineTweakerImplementationAPI.setScriptProvider(new ScriptProviderDirectory(scripts));

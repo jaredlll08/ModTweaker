@@ -44,7 +44,7 @@ repositories {
 }
 
 dependencies {
-	    deobfCompile "com.blamejared:MTLib:1.0.0.5"
+	    deobfCompile "com.blamejared:MTLib:1.0.0.6"
 }
 
 processResources

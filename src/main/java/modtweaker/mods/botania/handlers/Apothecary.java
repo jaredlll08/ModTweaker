@@ -22,9 +22,9 @@ import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.botania.Apothecary")
 public class Apothecary {
-    
+
     protected static final String name = "Botania Petal";
-    
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ZenMethod
@@ -54,14 +54,14 @@ public class Apothecary {
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
         // Get list of existing recipes, matching with parameter
-        LinkedList<RecipePetals> result = new LinkedList<RecipePetals>();
-        
+        LinkedList<RecipePetals> result = new LinkedList<>();
+
         for(RecipePetals entry : BotaniaAPI.petalRecipes) {
             if(entry != null && entry.getOutput() != null && matches(output, toIItemStack(entry.getOutput()))) {
                 result.add(entry);
             }
         }
-        
+
         // Check if we found the recipes and apply the action
         if(!result.isEmpty()) {
             MineTweakerAPI.apply(new Remove(result));
