@@ -41,10 +41,20 @@ repositories {
         name 'Jared'
         url 'http://blamejared.com/maven'
     }
+    maven {
+        name = 'raoulvdberge'
+        url 'https://dl.bintray.com/raoulvdberge/dev/'
+    }
+    maven {
+        name = 'amadornes'
+        url "http://maven.amadornes.com/"
+    }
 }
 
 dependencies {
 	    deobfCompile "com.blamejared:MTLib:1.0.0.6"
+        deobfCompile "refinedstorage:refinedstorage:1.2.5-559"
+        deobfCompile "MCMultiPart:MCMultiPart:1.3.0:universal"
 }
 
 processResources
