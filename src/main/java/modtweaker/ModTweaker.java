@@ -4,27 +4,23 @@ import com.blamejared.ctgui.api.GuiRegistry;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import modtweaker.mods.actuallyadditions.ActuallyAdditions;
+import modtweaker.mods.appeng.AppliedEnergistics;
 import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.chisel.Chisel;
-import modtweaker.mods.embers.Embers;
+import modtweaker.mods.extrautils.ExtraUtilities;
 import modtweaker.mods.forestry.Forestry;
 import modtweaker.mods.randomthings.RandomThings;
+import modtweaker.mods.refinedstorage.RefinedStorage;
 import modtweaker.mods.tconstruct.TConstruct;
+import modtweaker.mods.embers.Embers;
 import modtweaker.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Mod.*;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -56,7 +52,12 @@ public class ModTweaker {
         TweakerPlugin.register("chisel", Chisel.class);
         TweakerPlugin.register("BloodMagic", BloodMagic.class);
         TweakerPlugin.register("actuallyadditions", ActuallyAdditions.class);
+        TweakerPlugin.register("refinedstorage", RefinedStorage.class);
         TweakerPlugin.register("embers", Embers.class);
+	
+		TweakerPlugin.register("ExtraUtils2", ExtraUtilities.class);
+		TweakerPlugin.register("appliedenergistics2", AppliedEnergistics.class);
+		
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
         }
