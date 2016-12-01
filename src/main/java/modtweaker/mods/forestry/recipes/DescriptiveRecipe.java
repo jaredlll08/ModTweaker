@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import javax.annotation.Nonnull;
+
 public class DescriptiveRecipe implements IDescriptiveRecipe {
 
     private final int width;
@@ -44,7 +46,13 @@ public class DescriptiveRecipe implements IDescriptiveRecipe {
     public Object[] getIngredients() {
         return recipe.getInput();
     }
-
+    
+    @Nonnull
+    @Override
+    public ItemStack func_77571_b() {
+        return recipe.getRecipeOutput();
+    }
+    
     @Override
     public boolean matches(InventoryCrafting inventoryCrafting, World world) {
         return recipe.matches(inventoryCrafting, world);

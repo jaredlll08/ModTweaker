@@ -1,24 +1,18 @@
 package modtweaker.mods.forestry.handlers;
 
-import forestry.api.recipes.IStillManager;
-import forestry.api.recipes.IStillRecipe;
-import forestry.api.recipes.RecipeManagers;
+import com.blamejared.mtlib.helpers.LogHelper;
+import forestry.api.recipes.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.liquid.ILiquidStack;
-import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.StillRecipe;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-import static com.blamejared.mtlib.helpers.InputHelper.toFluid;
-import static com.blamejared.mtlib.helpers.InputHelper.toILiquidStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.Still")
@@ -30,9 +24,9 @@ public class Still {
 	
 	/**
 	 * Adds recipe to Still
-	 * 
+	 *
 	 * @param fluidOutput recipe fluid amount
-	 * @param fluidInput recipe fluid input
+	 * @param fluidInput  recipe fluid input
 	 * @param timePerUnit time per crafting operation
 	 */
 	@ZenMethod
@@ -43,9 +37,10 @@ public class Still {
 		MineTweakerAPI.apply(new Add(new StillRecipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
 	}
 	
-	private static class Add extends ForestryListAddition<IStillRecipe, IStillManager> {
+	private static class Add extends ForestryListAddition<IStillRecipe> {
+		
 		public Add(IStillRecipe recipe) {
-			super("Forestry Still", RecipeManagers.stillManager);
+			super("Forestry Still", ForestryHelper.still);
 			recipes.add(recipe);
 		}
 		
@@ -61,20 +56,19 @@ public class Still {
 	 * Removes recipe from Still
 	 *
 	 * @param output = liquid output
-	 ** @param fluidInput = liquid input (optional)
+	 *               * @param fluidInput = liquid input (optional)
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional ILiquidStack fluidInput) {
 		List<IStillRecipe> recipes = new LinkedList<IStillRecipe>();
 		
-		for (IStillRecipe r : RecipeManagers.stillManager.recipes()) {
-			if (r != null && r.getOutput() != null && matches(output, toILiquidStack(r.getOutput()))) {
-				if (fluidInput != null) {
-					if (matches(fluidInput, toILiquidStack(r.getInput()))) {
+		for(IStillRecipe r : RecipeManagers.stillManager.recipes()) {
+			if(r != null && r.getOutput() != null && matches(output, toILiquidStack(r.getOutput()))) {
+				if(fluidInput != null) {
+					if(matches(fluidInput, toILiquidStack(r.getInput()))) {
 						recipes.add(r);
 					}
-				}
-				else
+				} else
 					recipes.add(r);
 			}
 		}
@@ -87,6 +81,7 @@ public class Still {
 	}
 	
 	private static class Remove extends ForestryListRemoval<IStillRecipe, IStillManager> {
+		
 		public Remove(List<IStillRecipe> recipes) {
 			super(Still.name, RecipeManagers.stillManager, recipes);
 		}

@@ -1,27 +1,17 @@
 package modtweaker.mods.forestry.handlers;
 
-import forestry.api.recipes.ICentrifugeManager;
-import forestry.api.recipes.ICentrifugeRecipe;
-import forestry.api.recipes.RecipeManagers;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.item.WeightedItemStack;
 import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import forestry.api.recipes.*;
+import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.*;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.CentrifugeRecipe;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static com.blamejared.mtlib.helpers.InputHelper.toIItemStack;
-import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 
@@ -35,22 +25,23 @@ public class Centrifuge {
 	/**
 	 * Adds recipe to Centrifuge
 	 *
-	 * @param output           recipe product
-	 * @param ingredients      required ingredients
-	 * @param packagingTime    amount of ticks per crafting operation
+	 * @param output        recipe product
+	 * @param ingredients   required ingredients
+	 * @param packagingTime amount of ticks per crafting operation
 	 */
 	@ZenMethod
 	public static void addRecipe(WeightedItemStack[] output, IItemStack ingredients, int packagingTime) {
 		Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
-		for (WeightedItemStack product : output) {
+		for(WeightedItemStack product : output) {
 			products.put(toStack(product.getStack()), product.getChance());
 		}
 		MineTweakerAPI.apply(new Add(new CentrifugeRecipe(packagingTime, toStack(ingredients), products)));
 	}
 	
-	private static class Add extends ForestryListAddition<ICentrifugeRecipe, ICentrifugeManager> {
+	private static class Add extends ForestryListAddition<ICentrifugeRecipe> {
+		
 		public Add(ICentrifugeRecipe recipe) {
-			super(Centrifuge.name, RecipeManagers.centrifugeManager);
+			super(Centrifuge.name, ForestryHelper.centrifuge);
 			recipes.add(recipe);
 		}
 		
@@ -64,7 +55,7 @@ public class Centrifuge {
 	
 	/**
 	 * Removes a recipe for the Centrifuge
-	 * 
+	 *
 	 * @param input type of item in input
 	 */
 	@ZenMethod

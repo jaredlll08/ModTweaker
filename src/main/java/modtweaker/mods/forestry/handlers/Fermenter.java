@@ -10,8 +10,7 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.FermenterRecipe;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import com.blamejared.mtlib.utils.BaseMapRemoval;
@@ -52,9 +51,9 @@ public class Fermenter {
 		MineTweakerAPI.apply(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
 	}
 
-	private static class Add extends ForestryListAddition<IFermenterRecipe, IFermenterManager> {
+	private static class Add extends ForestryListAddition<IFermenterRecipe> {
 		public Add(IFermenterRecipe recipe) {
-			super(Fermenter.name, RecipeManagers.fermenterManager);
+			super(Fermenter.name, ForestryHelper.fermenter);
 			recipes.add(recipe);
 		}
 
@@ -124,7 +123,7 @@ public class Fermenter {
 	private static class AddFuel extends BaseMapAddition<ItemStack, FermenterFuel> {
 		public AddFuel(FermenterFuel fuelEntry) {
 			super(Fermenter.nameFuel, FuelManager.fermenterFuel);
-			recipes.put(fuelEntry.item, fuelEntry);
+			recipes.put(fuelEntry.getItem(), fuelEntry);
 		}
 		
 		@Override
@@ -145,7 +144,7 @@ public class Fermenter {
 		Map<ItemStack, FermenterFuel> fuelItems = new HashMap<ItemStack, FermenterFuel>();
 		
 		for(Entry<ItemStack, FermenterFuel> fuelItem : FuelManager.fermenterFuel.entrySet()) {
-			if(fuelItem != null && matches(fermenterItem, toIItemStack(fuelItem.getValue().item))) {
+			if(fuelItem != null && matches(fermenterItem, toIItemStack(fuelItem.getValue().getItem()))) {
 				fuelItems.put(fuelItem.getKey(), fuelItem.getValue());
 			}
 		}

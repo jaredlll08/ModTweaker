@@ -1,31 +1,20 @@
 package modtweaker.mods.forestry.handlers;
 
-import forestry.api.fuels.FuelManager;
-import forestry.api.fuels.MoistenerFuel;
-import forestry.api.recipes.IMoistenerManager;
-import forestry.api.recipes.IMoistenerRecipe;
-import forestry.api.recipes.RecipeManagers;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
 import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import com.blamejared.mtlib.utils.*;
+import forestry.api.fuels.*;
+import forestry.api.recipes.*;
+import minetweaker.MineTweakerAPI;
+import minetweaker.api.item.*;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.MoistenerRecipe;
-import com.blamejared.mtlib.utils.BaseMapAddition;
-import com.blamejared.mtlib.utils.BaseMapRemoval;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
-import static com.blamejared.mtlib.helpers.InputHelper.toIItemStack;
-import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.Moistener")
@@ -48,9 +37,9 @@ public class Moistener {
 		MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(input), toStack(output), packagingTime)));
 	}
 
-	private static class Add extends ForestryListAddition<IMoistenerRecipe, IMoistenerManager> {
+	private static class Add extends ForestryListAddition<IMoistenerRecipe> {
 		public Add(IMoistenerRecipe recipe) {
-			super(Moistener.name, RecipeManagers.moistenerManager);
+			super(Moistener.name, ForestryHelper.moistener);
 			recipes.add(recipe);
 		}
 
@@ -116,7 +105,7 @@ public class Moistener {
 	private static class AddFuel extends BaseMapAddition<ItemStack, MoistenerFuel> {
 		public AddFuel(MoistenerFuel fuelEntry) {
 			super(Moistener.nameFuel, FuelManager.moistenerResource);
-			recipes.put(fuelEntry.item, fuelEntry);
+			recipes.put(fuelEntry.getItem(), fuelEntry);
 		}
 		
 		@Override
@@ -137,7 +126,7 @@ public class Moistener {
 		Map<ItemStack, MoistenerFuel> fuelItems = new HashMap<ItemStack, MoistenerFuel>();
 		
 		for(Entry<ItemStack, MoistenerFuel> fuelItem : FuelManager.moistenerResource.entrySet()) {
-			if(fuelItem != null && matches(moistenerItem, toIItemStack(fuelItem.getValue().item))) {
+			if(fuelItem != null && matches(moistenerItem, toIItemStack(fuelItem.getValue().getItem()))) {
 				fuelItems.put(fuelItem.getKey(), fuelItem.getValue());
 			}
 		}

@@ -1,26 +1,19 @@
 package modtweaker.mods.forestry.handlers;
 
-import forestry.api.recipes.ISqueezerManager;
-import forestry.api.recipes.ISqueezerRecipe;
-import forestry.api.recipes.RecipeManagers;
+import com.blamejared.mtlib.helpers.LogHelper;
+import forestry.api.recipes.*;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.item.WeightedItemStack;
+import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.mc1102.item.MCItemStack;
-import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.SqueezerRecipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
@@ -31,26 +24,27 @@ public class Squeezer {
 	public static final String name = "Forestry Squeezer";
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * Adds recipe to Squeezer
-	 * 
+	 *
 	 * @param fluidOutput recipe fluid amount
 	 * @param ingredients recipe ingredients
 	 * @param timePerItem time per crafting operation
-	 ** @param itemOutput recipe output (optional)
+	 *                    * @param itemOutput recipe output (optional)
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
-		if(itemOutput == null){
-			itemOutput = new WeightedItemStack(new MCItemStack(new ItemStack(Blocks.AIR)),0);
+		if(itemOutput == null) {
+			itemOutput = new WeightedItemStack(new MCItemStack(new ItemStack(Blocks.AIR)), 0);
 		}
 		MineTweakerAPI.apply(new Add(new SqueezerRecipe(timePerItem, toStacks(ingredients), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
 	}
 	
-	private static class Add extends ForestryListAddition<ISqueezerRecipe, ISqueezerManager> {
+	private static class Add extends ForestryListAddition<ISqueezerRecipe> {
+		
 		public Add(ISqueezerRecipe recipe) {
-			super(Squeezer.name, RecipeManagers.squeezerManager);
+			super(Squeezer.name, ForestryHelper.squeezer);
 			recipes.add(recipe);
 		}
 		
@@ -64,21 +58,21 @@ public class Squeezer {
 	
 	/**
 	 * Removes a recipe for the Centrifuge
-	 * 
+	 *
 	 * @param liquid liquid output
-	 ** @param ingredients list of ingredients (optional)
+	 *               * @param ingredients list of ingredients (optional)
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
 		List<ISqueezerRecipe> recipes = new LinkedList<ISqueezerRecipe>();
 		
-		for (ISqueezerRecipe r : RecipeManagers.squeezerManager.recipes()) {
-			if (r != null && r.getFluidOutput() != null && matches(liquid, toILiquidStack(r.getFluidOutput()))) {
+		for(ISqueezerRecipe r : RecipeManagers.squeezerManager.recipes()) {
+			if(r != null && r.getFluidOutput() != null && matches(liquid, toILiquidStack(r.getFluidOutput()))) {
 				// optional check for ingredients
-				if (ingredients != null) {
+				if(ingredients != null) {
 					boolean matched = false;
-					for (int i = 0; i < ingredients.length; i++) {
-						if ( matches(ingredients[i], toIItemStack(r.getResources()[i])) )
+					for(int i = 0; i < ingredients.length; i++) {
+						if(matches(ingredients[i], toIItemStack(r.getResources()[i])))
 							matched = true;
 						else {
 							matched = false;
@@ -87,22 +81,23 @@ public class Squeezer {
 						}
 					}
 					// if some ingredient doesn't match, the last one is false
-					if (matched)
+					if(matched)
 						recipes.add(r);
 				} else {
 					recipes.add(r);
 				}
 			}
 		}
-
+		
 		if(!recipes.isEmpty()) {
 			MineTweakerAPI.apply(new Remove(recipes));
 		} else {
 			LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Squeezer.name, LogHelper.getStackDescription(liquid)));
 		}
 	}
-
+	
 	private static class Remove extends ForestryListRemoval<ISqueezerRecipe, ISqueezerManager> {
+		
 		public Remove(List<ISqueezerRecipe> recipes) {
 			super(Squeezer.name, RecipeManagers.squeezerManager, recipes);
 		}

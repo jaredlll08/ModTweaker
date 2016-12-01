@@ -10,8 +10,7 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import com.blamejared.mtlib.helpers.LogHelper;
-import modtweaker.mods.forestry.ForestryListAddition;
-import modtweaker.mods.forestry.ForestryListRemoval;
+import modtweaker.mods.forestry.*;
 import modtweaker.mods.forestry.recipes.CarpenterRecipe;
 import modtweaker.mods.forestry.recipes.DescriptiveRecipe;
 import net.minecraft.item.ItemStack;
@@ -63,10 +62,10 @@ public class Carpenter {
         return mat;
     }
 
-    private static class Add extends ForestryListAddition<ICarpenterRecipe, ICarpenterManager> {
+    private static class Add extends ForestryListAddition<ICarpenterRecipe> {
 
         public Add(ICarpenterRecipe recipe) {
-            super(Carpenter.name, RecipeManagers.carpenterManager);
+            super(Carpenter.name, ForestryHelper.carpenter);
             recipes.add(recipe);
         }
 

@@ -4,6 +4,7 @@ import minetweaker.MineTweakerAPI;
 import modtweaker.mods.forestry.handlers.*;
 
 public class Forestry {
+	
 	public Forestry() {
 		MineTweakerAPI.registerClass(Fermenter.class);
 		MineTweakerAPI.registerClass(Still.class);
