@@ -13,13 +13,13 @@ public class AppliedEnergisticsHelper {
 	
 	
 	public static List<IInscriberRecipe> inscriber = null;
-//	public static List<IGrinderEntry> grinder = null;
+	public static List<IGrinderRecipe> grinder = null;
 	
 	
 	static {
 		try {
 			inscriber = new ArrayList<>(ReflectionHelper.getFinalObject(Api.INSTANCE.registries().inscriber(), "recipes"));
-//			grinder = new ArrayList<>(ReflectionHelper.getFinalObject(Api.INSTANCE.registries().grinder(), "recipes"));
+			grinder = new ArrayList<>(ReflectionHelper.getFinalObject(Api.INSTANCE.registries().grinder(), "recipes"));
 		} catch(Exception e) {
 		}
 	}
@@ -75,7 +75,7 @@ public class AppliedEnergisticsHelper {
 	/**
 	 * Compares two IGrinderEntry objects, if they are the same or have the same inputs
 	 */
-	public static boolean equals(IGrinderEntry r1, IGrinderEntry r2) {
+	public static boolean equals(IGrinderRecipe r1, IGrinderRecipe r2) {
 		if(r1 == r2) {
 			return true;
 		}

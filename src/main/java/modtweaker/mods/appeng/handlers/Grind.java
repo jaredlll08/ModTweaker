@@ -1,7 +1,7 @@
 package modtweaker.mods.appeng.handlers;
 
 import appeng.api.AEApi;
-import appeng.api.features.IGrinderEntry;
+import appeng.api.features.IGrinderRecipe;
 import appeng.core.features.registries.entries.AppEngGrinderRecipe;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
@@ -31,7 +31,7 @@ public class Grind {
 	 */
 	@ZenMethod
 	public static void addRecipe(WeightedItemStack[] outputs, IItemStack inputStack, int turns) {
-		IGrinderEntry recipe;
+		IGrinderRecipe recipe;
 		if(outputs.length == 1)
 			recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputs[0].getStack()), turns);
 		else if(outputs.length == 2)
@@ -44,7 +44,7 @@ public class Grind {
 		}
 		
 		// Check if the recipe is already present, we don't want to add duplicates
-		for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
+		for(IGrinderRecipe r : AEApi.instance().registries().grinder().getRecipes()) {
 			if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
 				LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(inputStack))));
 				return;
@@ -75,7 +75,7 @@ public class Grind {
 		}
 		
 		// Create recipe
-		IGrinderEntry recipe;
+		IGrinderRecipe recipe;
 		
 		if(outputStack2 != null && outputStack3 != null)
 			recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputStack), InputHelper.toStack(outputStack2), InputHelper.toStack(outputStack3), outputStack2Chance, outputStack3Chance, inputEnergy);
@@ -85,7 +85,7 @@ public class Grind {
 			recipe = new AppEngGrinderRecipe(InputHelper.toStack(inputStack), InputHelper.toStack(outputStack), inputEnergy);
 		
 		// Check if the recipe is already present, we don't want to add duplicates
-		for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
+		for(IGrinderRecipe r : AEApi.instance().registries().grinder().getRecipes()) {
 			if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
 				LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(inputStack))));
 				return;
@@ -104,7 +104,7 @@ public class Grind {
 		}
 		
 		// Create recipe
-		IGrinderEntry recipe;
+		IGrinderRecipe recipe;
 		
 		if(output2 != null && output3 != null)
 			recipe = new AppEngGrinderRecipe(InputHelper.toStack(input), InputHelper.toStack(output), InputHelper.toStack(output2), InputHelper.toStack(output3), chance2, chance3, energy);
@@ -114,7 +114,7 @@ public class Grind {
 			recipe = new AppEngGrinderRecipe(InputHelper.toStack(input), InputHelper.toStack(output), energy);
 		
 		// Check if the recipe is already present, we don't want to add duplicates
-		for(IGrinderEntry r : AEApi.instance().registries().grinder().getRecipes()) {
+		for(IGrinderRecipe r : AEApi.instance().registries().grinder().getRecipes()) {
 			if(r != null && AppliedEnergisticsHelper.equals(r, recipe)) {
 				LogHelper.logWarning(String.format("Duplicate %s Recipe found for %s. Command ignored!", name, LogHelper.getStackDescription(toStack(input))));
 				return;
@@ -124,20 +124,20 @@ public class Grind {
 		MineTweakerAPI.apply(new Add(recipe));
 	}
 	
-	private static class Add extends BaseListAddition<IGrinderEntry> {
+	private static class Add extends BaseListAddition<IGrinderRecipe> {
 		
-		public Add(IGrinderEntry recipe) {
-			super(Grind.name, AEApi.instance().registries().grinder().getRecipes());
+		public Add(IGrinderRecipe recipe) {
+			super(Grind.name, AppliedEnergisticsHelper.grinder);
 			recipes.add(recipe);
 		}
 		
 		@Override
-		public String getRecipeInfo(IGrinderEntry recipe) {
+		public String getRecipeInfo(IGrinderRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getInput());
 		}
 		
 		@Override
-		protected boolean equals(IGrinderEntry recipe, IGrinderEntry otherRecipe) {
+		protected boolean equals(IGrinderRecipe recipe, IGrinderRecipe otherRecipe) {
 			return AppliedEnergisticsHelper.equals(recipe, otherRecipe);
 		}
 	}
@@ -157,9 +157,9 @@ public class Grind {
 		}
 		
 		// Get list of existing recipes, matching with parameter
-		LinkedList<IGrinderEntry> result = new LinkedList<IGrinderEntry>();
+		LinkedList<IGrinderRecipe> result = new LinkedList<IGrinderRecipe>();
 		
-		for(IGrinderEntry entry : AEApi.instance().registries().grinder().getRecipes()) {
+		for(IGrinderRecipe entry : AEApi.instance().registries().grinder().getRecipes()) {
 			if(entry != null && entry.getOutput() != null && matches(input, toIItemStack(entry.getOutput()))) {
 				result.add(entry);
 			}
@@ -173,14 +173,14 @@ public class Grind {
 		}
 	}
 	
-	private static class Remove extends BaseListRemoval<IGrinderEntry> {
+	private static class Remove extends BaseListRemoval<IGrinderRecipe> {
 		
-		public Remove(LinkedList<IGrinderEntry> recipes) {
-			super(Grind.name, AEApi.instance().registries().grinder().getRecipes(), recipes);
+		public Remove(LinkedList<IGrinderRecipe> recipes) {
+			super(Grind.name, AppliedEnergisticsHelper.grinder, recipes);
 		}
 		
 		@Override
-		public String getRecipeInfo(IGrinderEntry recipe) {
+		public String getRecipeInfo(IGrinderRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getInput());
 		}
 	}

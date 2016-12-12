@@ -36,7 +36,12 @@ public class DescriptiveRecipe implements IDescriptiveRecipe {
     public ItemStack getRecipeOutput() {
         return recipe.getRecipeOutput();
     }
-
+    
+    @Nonnull
+    public ItemStack func_77571_b() {
+        return recipe.getRecipeOutput();
+    }
+    
     @Override
     public ItemStack[] getRemainingItems(InventoryCrafting inv) {
         return remainingItems;
@@ -47,11 +52,8 @@ public class DescriptiveRecipe implements IDescriptiveRecipe {
         return recipe.getInput();
     }
     
-    @Nonnull
-    @Override
-    public ItemStack func_77571_b() {
-        return recipe.getRecipeOutput();
-    }
+   
+    
     
     @Override
     public boolean matches(InventoryCrafting inventoryCrafting, World world) {
