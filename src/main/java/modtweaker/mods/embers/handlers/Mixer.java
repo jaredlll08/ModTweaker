@@ -53,7 +53,7 @@ public class Mixer {
 		if (input4 != null){
 			fluids.add(toFluid(input4));
 		}
-		MineTweakerAPI.apply(new Add(new FluidMixingRecipe(fluids.toArray(new FluidStack[]{null,null,null,null}), toFluid(output))));
+		MineTweakerAPI.apply(new Add(new FluidMixingRecipe(fluids.toArray(new FluidStack[fluids.size()]), toFluid(output))));
 	}
 
 	private static class Add extends BaseListAddition<FluidMixingRecipe> {
