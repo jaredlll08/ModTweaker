@@ -38,7 +38,6 @@ public class TConstructHelper {
             modifiers = ReflectionHelper.getStaticObject(TinkerRegistry.class, "modifiers");
             modifiers_clone = new THashMap<String, IModifier>(modifiers);
             fuelList = new ArrayList<>(TinkerRegistry.getSmelteryFuels());
-            ReflectionHelper.getFinalObject()
         } catch (Exception e) {
         }
     }
