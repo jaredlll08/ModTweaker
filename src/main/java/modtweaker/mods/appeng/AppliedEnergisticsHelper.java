@@ -13,7 +13,7 @@ public class AppliedEnergisticsHelper {
 	
 	
 	public static List<IInscriberRecipe> inscriber = null;
-	public static List<IGrinderRecipe> grinder = null;
+	public static List<IGrinderEntry> grinder = null;
 	
 	
 	static {
@@ -75,7 +75,7 @@ public class AppliedEnergisticsHelper {
 	/**
 	 * Compares two IGrinderEntry objects, if they are the same or have the same inputs
 	 */
-	public static boolean equals(IGrinderRecipe r1, IGrinderRecipe r2) {
+	public static boolean equals(IGrinderEntry r1, IGrinderEntry r2) {
 		if(r1 == r2) {
 			return true;
 		}
