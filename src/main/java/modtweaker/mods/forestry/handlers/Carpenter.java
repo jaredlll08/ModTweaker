@@ -40,7 +40,7 @@ public class Carpenter {
 		if(remainingItems == null) {
 			remainingItems = new IItemStack[0];
 		}
-		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), toStacks(remainingItems)))));
+		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), (Object[]) toStacks(remainingItems)))));
 	}
 	
 	private static IItemStack[][] transform(IItemStack[] arr, int N) {
