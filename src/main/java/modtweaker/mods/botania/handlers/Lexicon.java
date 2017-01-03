@@ -68,7 +68,7 @@ public class Lexicon {
     	List<IRecipe> recipes=new ArrayList<IRecipe>();
     	for(int i=0;i<outputs.length;i++)
     	{
-    		recipes.add(RecipeConverter.convert(new ShapedRecipe(outputs[i],inputs[i],null,false)));
+    		recipes.add(RecipeConverter.convert(new ShapedRecipe(outputs[i],inputs[i],null,null,false)));
     	}
     	LexiconPage page=new PageCraftingRecipe(name, recipes);
         MineTweakerAPI.apply(new AddPage(name,lexiconEntry,page,page_number));

@@ -1,6 +1,7 @@
 package modtweaker.mods.bloodmagic.handlers;
 
 import WayofTime.bloodmagic.api.recipe.TartaricForgeRecipe;
+import WayofTime.bloodmagic.compat.jei.forge.TartaricForgeRecipeJEI;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
@@ -33,7 +34,45 @@ public class SoulForge
             super(SoulForge.name, list);
             this.recipes.add(recipe);
         }
-
+    
+        @Override
+        public void apply() {
+            if(recipes.isEmpty()) {
+                return;
+            }
+        
+            for(TartaricForgeRecipe recipe : recipes) {
+                if(recipe != null) {
+                    if(list.add(recipe)) {
+                        successful.add(recipe);
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new TartaricForgeRecipeJEI(recipe));
+                    } else {
+                        LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error adding %s Recipe: null object", name));
+                }
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if(this.successful.isEmpty()) {
+                return;
+            }
+        
+            for(TartaricForgeRecipe recipe : successful) {
+                if(recipe != null) {
+                    if(!list.remove(recipe)) {
+                        LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
+                    }else{
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new TartaricForgeRecipeJEI(recipe));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }
+            }
+        }
         @Override
         public String getRecipeInfo(TartaricForgeRecipe recipe)
         {
@@ -76,7 +115,43 @@ public class SoulForge
         public Remove(List<TartaricForgeRecipe> list, List<TartaricForgeRecipe> recipes) {
             super(SoulForge.name, list, recipes);
         }
-
+        @Override
+        public void apply() {
+            if (recipes.isEmpty()) {
+                return;
+            }
+            for (TartaricForgeRecipe recipe : this.recipes) {
+                if (recipe != null) {
+                    if (this.list.remove(recipe)) {
+                    
+                        successful.add(recipe);
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new TartaricForgeRecipeJEI(recipe));
+                    } else {
+                        LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if (successful.isEmpty()) {
+                return;
+            }
+            for (TartaricForgeRecipe recipe : successful) {
+                if (recipe != null) {
+                    if (!list.add(recipe)) {
+                        LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }else{
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new TartaricForgeRecipeJEI(recipe));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error restoring %s Recipe: null object", name));
+                }
+            }
+        }
         @Override
         protected String getRecipeInfo(TartaricForgeRecipe recipe) {
             return LogHelper.getStackDescription(recipe.getRecipeOutput());

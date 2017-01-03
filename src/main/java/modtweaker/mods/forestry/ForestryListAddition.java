@@ -7,7 +7,7 @@ import forestry.api.recipes.IForestryRecipe;
 import java.util.*;
 
 public abstract class ForestryListAddition<T extends IForestryRecipe> extends BaseListAddition<T> {
-	private final List<T> recipeList;
+	public final List<T> recipeList;
 
 	protected ForestryListAddition(String name, List<T> recipeList) {
 		super(name, recipeList);

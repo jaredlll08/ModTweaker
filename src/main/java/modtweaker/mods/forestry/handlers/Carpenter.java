@@ -33,14 +33,10 @@ public class Carpenter {
 	 * @param packagingTime amount of ticks per crafting operation
 	 *                      * @param fluidInput      required mB of fluid (optional)
 	 *                      * @param box             required box in top slot (optional)
-	 *                      * @param remainingItems  no idea (optional)
 	 */
 	@ZenMethod
-	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box, @Optional IItemStack[] remainingItems) {
-		if(remainingItems == null) {
-			remainingItems = new IItemStack[0];
-		}
-		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), ShapedRecipeCustom.createShapedRecipe(toStack(output), (Object[]) toStacks(remainingItems)))));
+	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
+		MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), new ShapedRecipeCustom(toStack(output), toShapedObjects(ingredients)))));
 	}
 	
 	private static IItemStack[][] transform(IItemStack[] arr, int N) {
@@ -64,7 +60,17 @@ public class Carpenter {
 		
 		@Override
 		public void apply() {
-			super.apply();
+			for(ICarpenterRecipe recipe : recipes) {
+				if(recipe != null) {
+					if(RecipeManagers.carpenterManager.addRecipe(recipe)) {
+						successful.add(recipe);
+					} else {
+						LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
+					}
+				} else {
+					LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+				}
+			}
 			successful.forEach(ent -> {
 				if(!CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
 					CarpenterRecipeManager.getRecipeFluids().add(ent.getFluidResource().getFluid());
@@ -103,7 +109,7 @@ public class Carpenter {
 	public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
 		List<ICarpenterRecipe> recipes = new LinkedList<ICarpenterRecipe>();
 		
-		for(ICarpenterRecipe recipe : RecipeManagers.carpenterManager.recipes()) {
+		for(ICarpenterRecipe recipe : ForestryHelper.carpenter) {
 			if(recipe != null) {
 				ItemStack recipeResult = recipe.getCraftingGridRecipe().getRecipeOutput();
 				if(recipeResult != null && matches(output, toIItemStack(recipeResult))) {

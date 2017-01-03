@@ -49,12 +49,16 @@ repositories {
         name = 'amadornes'
         url "http://maven.amadornes.com/"
     }
+    maven {
+        url "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
-	    deobfCompile "com.blamejared:MTLib:1.0.0.6"
+	    deobfCompile "com.blamejared:MTLib:1.0.0.7"
         deobfCompile "refinedstorage:refinedstorage:1.2.5-559"
         deobfCompile "MCMultiPart:MCMultiPart:1.3.0:universal"
+        deobfCompile "mezz.jei:jei_1.10.2:3.14.2.398"
 }
 
 processResources

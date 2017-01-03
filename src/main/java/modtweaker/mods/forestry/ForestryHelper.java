@@ -20,7 +20,7 @@ public class ForestryHelper {
 	
 	static {
 		try {
-			carpenter = new ArrayList<>(ReflectionHelper.getStaticObject(CarpenterRecipeManager.class, "recipes"));
+			carpenter = new ArrayList<>(ReflectionHelper.getObject(RecipeManagers.carpenterManager, "recipes"));
 			centrifuge = new ArrayList<>(ReflectionHelper.getStaticObject(CentrifugeRecipeManager.class, "recipes"));
 			fermenter = new ArrayList<>(ReflectionHelper.getStaticObject(FermenterRecipeManager.class, "recipes"));
 			moistener = new ArrayList<>(ReflectionHelper.getStaticObject(MoistenerRecipeManager.class, "recipes"));

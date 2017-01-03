@@ -1,9 +1,10 @@
 package modtweaker.mods.bloodmagic.handlers;
 
-import WayofTime.bloodmagic.api.ItemStackWrapper;
+import WayofTime.bloodmagic.api.*;
 import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry.AltarRecipe;
+import WayofTime.bloodmagic.compat.jei.altar.AltarRecipeJEI;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.ReflectionHelper;
 import com.blamejared.mtlib.utils.BaseMapAddition;
@@ -13,13 +14,11 @@ import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
 import modtweaker.mods.bloodmagic.BloodMagicHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeModContainer;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import static com.blamejared.mtlib.helpers.InputHelper.*;
@@ -72,7 +71,76 @@ public class Altar
             super(Altar.name, map);
             this.recipes.put(inputs, altarRecipe);
         }
-
+    
+    
+        @Override
+        public void apply() {
+            if(recipes.isEmpty())
+                return;
+        
+            for(Entry<List<ItemStackWrapper>, AltarRecipe> entry : recipes.entrySet()) {
+                List<ItemStackWrapper> key = entry.getKey();
+                AltarRecipe value = entry.getValue();
+                AltarRecipe oldValue = map.put(key, value);
+            
+                if(oldValue != null) {
+                    LogHelper.logWarning(String.format("Overwritten %s Recipe for %s", name, getRecipeInfo( new AbstractMap.SimpleEntry<List<ItemStackWrapper>, AltarRecipe>(entry.getKey(), value))));
+                    overwritten.put(key, oldValue);
+                }
+            
+                successful.put(key, value);
+                List input = ItemStackWrapper.toStackList(value.getInput());
+                ItemStack output = (value).getOutput();
+                int requiredTier = (value).getMinTier().toInt();
+                int requiredLP = (value).getSyphon();
+                int consumptionRate = (value).getConsumeRate();
+                int drainRate = (value).getDrainRate();
+                if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
+                    output = BloodMagicAPI.getLifeEssenceBucket();
+                }
+    
+                AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
+                MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if(successful.isEmpty() && overwritten.isEmpty())
+                return;
+        
+            for(Entry<List<ItemStackWrapper>, AltarRecipe> entry : successful.entrySet()) {
+                List<ItemStackWrapper> key = entry.getKey();
+                AltarRecipe value = map.remove(key);
+            
+                if(value == null) {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }else {
+                    List input = ItemStackWrapper.toStackList(value.getInput());
+                    ItemStack output = (value).getOutput();
+                    int requiredTier = (value).getMinTier().toInt();
+                    int requiredLP = (value).getSyphon();
+                    int consumptionRate = (value).getConsumeRate();
+                    int drainRate = (value).getDrainRate();
+                    if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
+                        output = BloodMagicAPI.getLifeEssenceBucket();
+                    }
+    
+                    AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
+                    MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+                }
+            }
+        
+            for(Entry<List<ItemStackWrapper>, AltarRecipe> entry : overwritten.entrySet()) {
+                List<ItemStackWrapper> key = entry.getKey();
+                AltarRecipe value = entry.getValue();
+                AltarRecipe oldValue = map.put(key, value);
+            
+                if(oldValue != null) {
+                    LogHelper.logWarning(String.format("Overwritten %s Recipe which should not exist for %s", name, getRecipeInfo(new AbstractMap.SimpleEntry<List<ItemStackWrapper>, AltarRecipe>(entry.getKey(), value))));
+                }
+            }
+        }
         @Override
         public String getRecipeInfo(Entry<List<ItemStackWrapper>, AltarRecipe> recipe)
         {
@@ -120,7 +188,64 @@ public class Altar
         {
             super(Altar.name, map, inputs);
         }
-
+    
+    
+        @Override
+        public void apply() {
+            if(recipes.isEmpty())
+                return;
+        
+            for(List<ItemStackWrapper> key : recipes.keySet()) {
+                AltarRecipe oldValue = map.remove(key);
+            
+                if(oldValue != null) {
+                    successful.put(key, oldValue);
+                    List input = ItemStackWrapper.toStackList(oldValue.getInput());
+                    ItemStack output = (oldValue).getOutput();
+                    int requiredTier = (oldValue).getMinTier().toInt();
+                    int requiredLP = (oldValue).getSyphon();
+                    int consumptionRate = (oldValue).getConsumeRate();
+                    int drainRate = (oldValue).getDrainRate();
+                    if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
+                        output = BloodMagicAPI.getLifeEssenceBucket();
+                    }
+    
+                    AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
+                    MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe : null object", name));
+                }
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if(successful.isEmpty())
+                return;
+        
+            for(Entry<List<ItemStackWrapper>, AltarRecipe> entry : successful.entrySet()) {
+                if(entry != null) {
+                    AltarRecipe oldValue = map.put(entry.getKey(), entry.getValue());
+                    if(oldValue != null) {
+                        LogHelper.logWarning(String.format("Overwritten %s Recipe for %s while restoring.", name, getRecipeInfo(entry)));
+                    }else{
+                        List input = ItemStackWrapper.toStackList(oldValue.getInput());
+                        ItemStack output = (oldValue).getOutput();
+                        int requiredTier = (oldValue).getMinTier().toInt();
+                        int requiredLP = (oldValue).getSyphon();
+                        int consumptionRate = (oldValue).getConsumeRate();
+                        int drainRate = (oldValue).getDrainRate();
+                        if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
+                            output = BloodMagicAPI.getLifeEssenceBucket();
+                        }
+    
+                        AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+                    }
+                }
+            }
+        }
+        
         @Override
         public String getRecipeInfo(Entry<List<ItemStackWrapper>, AltarRecipe> recipe)
         {

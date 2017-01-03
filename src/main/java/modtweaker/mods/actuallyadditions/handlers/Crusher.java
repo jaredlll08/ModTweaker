@@ -28,7 +28,6 @@ public class Crusher {
 		MineTweakerAPI.apply(new Add(new CrusherRecipe(toStack(input), toStack(outputOne), toStack(outputTwo), outputTwoChance)));
 	}
 
-
 	private static class Add extends BaseListAddition<CrusherRecipe> {
 		public Add(CrusherRecipe recipe) {
 			super(Crusher.name, ActuallyAdditionsAPI.CRUSHER_RECIPES);
