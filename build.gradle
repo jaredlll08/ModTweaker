@@ -53,7 +53,7 @@ repositories {
         url "http://dvs1.progwml6.com/files/maven"
     }
     maven {
-        url "https://maven.chaosfield.at"
+        url "http://maven.chaosfield.at"
     }
     maven {
         url "http://tehnut.info/maven/"
@@ -68,11 +68,11 @@ dependencies {
     deobfCompile "refinedstorage:refinedstorage:1.2.5-559"
     deobfCompile "MCMultiPart:MCMultiPart:1.3.0:universal"
     deobfCompile "mezz.jei:jei_1.10.2:3.14.2.398"
-    //deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
-//    deobfCompile "appeng:appliedenergistics2:rv4-alpha-11:dev"
-//    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.9.4-2.1.0-69"
-//    deobfCompile "team.chisel:chisel:MC1.10.2-0.0.7.7"
-//    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.3.201:deobf"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
+    deobfCompile "appeng:appliedenergistics2:rv4-alpha-11:dev"
+    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.9.4-2.1.0-69"
+    deobfCompile "team.chisel:chisel:MC1.10.2-0.0.7.4"
+    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.3.201:deobf"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.6.1.476:deobf"
 
 }
