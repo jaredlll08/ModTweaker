@@ -4,7 +4,6 @@ import com.blamejared.ctgui.api.GuiRegistry;
 import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.runtime.providers.ScriptProviderDirectory;
 import modtweaker.mods.actuallyadditions.ActuallyAdditions;
-import modtweaker.mods.appeng.AppliedEnergistics;
 import modtweaker.mods.bloodmagic.BloodMagic;
 import modtweaker.mods.botania.Botania;
 import modtweaker.mods.chisel.Chisel;
@@ -56,7 +55,6 @@ public class ModTweaker {
         TweakerPlugin.register("embers", Embers.class);
 	
 		TweakerPlugin.register("ExtraUtils2", ExtraUtilities.class);
-		TweakerPlugin.register("appliedenergistics2", AppliedEnergistics.class);
 		
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
