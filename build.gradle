@@ -20,8 +20,8 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version = config.mod.version
-group = "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version=config.mod.version
+group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ModTweaker2"
 
 minecraft {
@@ -39,7 +39,7 @@ repositories {
     mavenCentral()
     maven {
         name 'Jared'
-        url 'http://maven.blamejared.com/'
+        url 'http://blamejared.com/maven'
     }
     maven {
         name = 'raoulvdberge'
@@ -52,46 +52,30 @@ repositories {
     maven {
         url "http://dvs1.progwml6.com/files/maven"
     }
-    maven {
-        url "http://maven.chaosfield.at"
-    }
-    maven {
-        url "http://tehnut.info/maven/"
-    }
-    maven {
-        url "http://maven.tterrag.com/"
-    }
 }
 
 dependencies {
-    deobfCompile "com.blamejared:MTLib:1.0.0.7"
-    deobfCompile "refinedstorage:refinedstorage:1.2.5-559"
-    deobfCompile "MCMultiPart:MCMultiPart:1.3.0:universal"
-    deobfCompile "mezz.jei:jei_1.10.2:3.14.2.398"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
-    deobfCompile "appeng:appliedenergistics2:rv4-alpha-11:dev"
-    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.9.4-2.1.0-69"
-    deobfCompile "team.chisel:chisel:MC1.10.2-0.0.7.4"
-    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.3.201:deobf"
-    deobfCompile "slimeknights:TConstruct:1.10.2-2.6.1.476:deobf"
-
+	    deobfCompile "com.blamejared:MTLib:1.0.0.7"
+        deobfCompile "refinedstorage:refinedstorage:1.2.5-559"
+        deobfCompile "MCMultiPart:MCMultiPart:1.3.0:universal"
+        deobfCompile "mezz.jei:jei_1.10.2:3.14.2.398"
 }
 
 processResources
-        {
-            inputs.property "version", project.version
-            inputs.property "mcversion", config.minecraft.version
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", config.minecraft.version
 
-            from(sourceSets.main.resources.srcDirs) {
-                include 'mcmod.info'
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':config.minecraft.version
+    }
 
-                expand 'version': project.version, 'mcversion': config.minecraft.version
-            }
-
-            from(sourceSets.main.resources.srcDirs) {
-                exclude 'mcmod.info'
-            }
-        }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
