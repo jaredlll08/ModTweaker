@@ -3,27 +3,29 @@ package modtweaker.mods.forestry;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import forestry.api.recipes.IForestryRecipe;
+import minetweaker.MineTweakerAPI;
 
 import java.util.*;
 
 public abstract class ForestryListAddition<T extends IForestryRecipe> extends BaseListAddition<T> {
-	public final List<T> recipeList;
-
+	private final List<T> recipeList;
+	
 	protected ForestryListAddition(String name, List<T> recipeList) {
 		super(name, recipeList);
 		this.recipeList = recipeList;
 		
 	}
-
+	
 	@Override
 	protected abstract String getRecipeInfo(T recipe);
-
+	
 	@Override
 	public void apply() {
 		for (T recipe : recipes) {
 			if (recipe != null) {
 				if (recipeList.add(recipe)) {
 					successful.add(recipe);
+					MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
 				} else {
 					LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
 				}
@@ -32,13 +34,15 @@ public abstract class ForestryListAddition<T extends IForestryRecipe> extends Ba
 			}
 		}
 	}
-
+	
 	@Override
 	public final void undo() {
 		for (T recipe : successful) {
 			if (recipe != null) {
 				if (!recipeList.remove(recipe)) {
 					LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
+				}else{
+					MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
 				}
 			} else {
 				LogHelper.logError(String.format("Error removing %s Recipe: null object", name));

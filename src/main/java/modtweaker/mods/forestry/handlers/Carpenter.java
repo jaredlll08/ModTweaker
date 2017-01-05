@@ -58,26 +58,26 @@ public class Carpenter {
 			recipes.add(recipe);
 		}
 		
-		@Override
-		public void apply() {
-			for(ICarpenterRecipe recipe : recipes) {
-				if(recipe != null) {
-					if(RecipeManagers.carpenterManager.addRecipe(recipe)) {
-						successful.add(recipe);
-					} else {
-						LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
-					}
-				} else {
-					LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
-				}
-			}
-			successful.forEach(ent -> {
-				if(!CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
-					CarpenterRecipeManager.getRecipeFluids().add(ent.getFluidResource().getFluid());
-				}
-			});
-			
-		}
+//		@Override
+//		public void apply() {
+//			for(ICarpenterRecipe recipe : recipes) {
+//				if(recipe != null) {
+//					if(RecipeManagers.carpenterManager.addRecipe(recipe)) {
+//						successful.add(recipe);
+//					} else {
+//						LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
+//					}
+//				} else {
+//					LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+//				}
+//			}
+//			successful.forEach(ent -> {
+//				if(!CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
+//					CarpenterRecipeManager.getRecipeFluids().add(ent.getFluidResource().getFluid());
+//				}
+//			});
+//
+//		}
 		
 		@Override
 		protected String getRecipeInfo(ICarpenterRecipe recipe) {
@@ -139,11 +139,12 @@ public class Carpenter {
 		@Override
 		public void apply() {
 			super.apply();
-			successful.forEach(ent -> {
-				if(CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
-					CarpenterRecipeManager.getRecipeFluids().remove(ent.getFluidResource().getFluid());
-				}
-			});
+//			successful.forEach(ent -> {
+//				if(CarpenterRecipeManager.getRecipeFluids().contains(ent.getFluidResource().getFluid())) {
+//					RecipeManagers.carpenterManager.removeRecipe()
+//					CarpenterRecipeManager.getRecipeFluids().remove(ent.getFluidResource().getFluid());
+//				}
+//			});
 		}
 		
 		@Override
