@@ -10,6 +10,7 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.DryingRecipe;
 import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.plugin.jei.DryingRecipeWrapper;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -42,7 +43,46 @@ public class Drying {
             super(Drying.name, TConstructHelper.dryingList);
             this.recipes.add(recipe);
         }
-
+    
+        @Override
+        public void apply() {
+            if(recipes.isEmpty()) {
+                return;
+            }
+        
+            for(DryingRecipe recipe : recipes) {
+                if(recipe != null) {
+                    if(list.add(recipe)) {
+                        successful.add(recipe);
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new DryingRecipeWrapper(recipe));
+                    } else {
+                        LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error adding %s Recipe: null object", name));
+                }
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if(this.successful.isEmpty()) {
+                return;
+            }
+        
+            for(DryingRecipe recipe : successful) {
+                if(recipe != null) {
+                    if(!list.remove(recipe)) {
+                        LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
+                    }else{
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new DryingRecipeWrapper(recipe));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }
+            }
+        }
+    
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
             return LogHelper.getStackDescription(recipe.getResult());
@@ -74,7 +114,45 @@ public class Drying {
         public Remove(List<DryingRecipe> list) {
             super(Drying.name, TConstructHelper.dryingList, list);
         }
-
+    
+        @Override
+        public void apply() {
+            if (recipes.isEmpty()) {
+                return;
+            }
+            for (DryingRecipe recipe : this.recipes) {
+                if (recipe != null) {
+                    if (this.list.remove(recipe)) {
+                    
+                        successful.add(recipe);
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new DryingRecipeWrapper(recipe));
+                    } else {
+                        LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+                }
+            }
+        }
+    
+        @Override
+        public void undo() {
+            if (successful.isEmpty()) {
+                return;
+            }
+            for (DryingRecipe recipe : successful) {
+                if (recipe != null) {
+                    if (!list.add(recipe)) {
+                        LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
+                    }else{
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new DryingRecipeWrapper(recipe));
+                    }
+                } else {
+                    LogHelper.logError(String.format("Error restoring %s Recipe: null object", name));
+                }
+            }
+        }
+    
         @Override
         protected String getRecipeInfo(DryingRecipe recipe) {
             return LogHelper.getStackDescription(recipe.getResult());
