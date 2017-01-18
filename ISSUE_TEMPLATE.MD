@@ -24,6 +24,7 @@ ____
 - Forge:
 - Crafttweaker: 
 - ModTweaker:
+- MTLib:
 
 #### Your most recent log file where the issue was present: 
 
