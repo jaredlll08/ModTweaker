@@ -54,7 +54,7 @@ public class ModTweaker {
         TweakerPlugin.register("refinedstorage", RefinedStorage.class);
         TweakerPlugin.register("embers", Embers.class);
 	
-		TweakerPlugin.register("ExtraUtils2", ExtraUtilities.class);
+		TweakerPlugin.register("extrautils2", ExtraUtilities.class);
 		
         if(FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ClientEvents());
