@@ -5,11 +5,11 @@ ModTweaker is an addon for MineTweaker 3. Minetweaker lets you adjust recipes, r
 
 Stable Releases on Curse
 ----------
-http://minecraft.curseforge.com/mc-mods/220954-modtweaker
+https://minecraft.curseforge.com/projects/modtweaker
 
 Development build on jenkins
 ----------
-http://ci.tterrag.com/job/ModTweaker2
+http://ci.blamejared.com/job/Modtweaker/
 
 
 Guidelines for Bugreporting
