@@ -109,7 +109,7 @@ public class Carpenter {
 	public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
 		List<ICarpenterRecipe> recipes = new LinkedList<ICarpenterRecipe>();
 		
-		for(ICarpenterRecipe recipe : ForestryHelper.carpenter) {
+		for(ICarpenterRecipe recipe : RecipeManagers.carpenterManager.recipes()) {
 			if(recipe != null) {
 				ItemStack recipeResult = recipe.getCraftingGridRecipe().getRecipeOutput();
 				if(recipeResult != null && matches(output, toIItemStack(recipeResult))) {
