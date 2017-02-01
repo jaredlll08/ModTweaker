@@ -54,7 +54,7 @@ public class Carpenter {
 	private static class Add extends ForestryListAddition<ICarpenterRecipe> {
 		
 		public Add(ICarpenterRecipe recipe) {
-			super(Carpenter.name, ForestryHelper.carpenter);
+			super(Carpenter.name, RecipeManagers.carpenterManager);
 			recipes.add(recipe);
 		}
 		
