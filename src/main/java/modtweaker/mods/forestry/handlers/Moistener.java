@@ -39,7 +39,7 @@ public class Moistener {
 
 	private static class Add extends ForestryListAddition<IMoistenerRecipe> {
 		public Add(IMoistenerRecipe recipe) {
-			super(Moistener.name, ForestryHelper.moistener);
+			super(Moistener.name, RecipeManagers.moistenerManager);
 			recipes.add(recipe);
 		}
 

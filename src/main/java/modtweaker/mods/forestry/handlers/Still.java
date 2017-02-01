@@ -40,7 +40,7 @@ public class Still {
 	private static class Add extends ForestryListAddition<IStillRecipe> {
 		
 		public Add(IStillRecipe recipe) {
-			super("Forestry Still", ForestryHelper.still);
+			super("Forestry Still", RecipeManagers.stillManager);
 			recipes.add(recipe);
 		}
 		

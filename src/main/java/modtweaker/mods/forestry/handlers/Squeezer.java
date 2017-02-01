@@ -44,7 +44,7 @@ public class Squeezer {
 	private static class Add extends ForestryListAddition<ISqueezerRecipe> {
 		
 		public Add(ISqueezerRecipe recipe) {
-			super(Squeezer.name, ForestryHelper.squeezer);
+			super(Squeezer.name, RecipeManagers.squeezerManager);
 			recipes.add(recipe);
 		}
 		

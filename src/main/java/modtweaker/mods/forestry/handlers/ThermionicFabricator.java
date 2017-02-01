@@ -63,7 +63,7 @@ public class ThermionicFabricator {
 	private static class AddSmelting extends ForestryListAddition<IFabricatorSmeltingRecipe> {
 		
 		public AddSmelting(IFabricatorSmeltingRecipe recipe) {
-			super(ThermionicFabricator.nameSmelting, ForestryHelper.fabricatorSmelting);
+			super(ThermionicFabricator.nameSmelting, RecipeManagers.fabricatorSmeltingManager);
 			recipes.add(recipe);
 		}
 		
@@ -76,7 +76,7 @@ public class ThermionicFabricator {
 	private static class AddCast extends ForestryListAddition<IFabricatorRecipe> {
 		
 		public AddCast(IFabricatorRecipe recipe) {
-			super(ThermionicFabricator.nameCasting, ForestryHelper.fabricator);
+			super(ThermionicFabricator.nameCasting, RecipeManagers.fabricatorManager);
 			recipes.add(recipe);
 		}
 		

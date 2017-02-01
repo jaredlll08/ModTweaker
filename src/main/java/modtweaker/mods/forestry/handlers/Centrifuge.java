@@ -41,7 +41,7 @@ public class Centrifuge {
 	private static class Add extends ForestryListAddition<ICentrifugeRecipe> {
 		
 		public Add(ICentrifugeRecipe recipe) {
-			super(Centrifuge.name, ForestryHelper.centrifuge);
+			super(Centrifuge.name, RecipeManagers.centrifugeManager);
 			recipes.add(recipe);
 		}
 		

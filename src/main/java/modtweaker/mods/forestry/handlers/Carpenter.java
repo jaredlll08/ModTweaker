@@ -54,7 +54,7 @@ public class Carpenter {
 	private static class Add extends ForestryListAddition<ICarpenterRecipe> {
 		
 		public Add(ICarpenterRecipe recipe) {
-			super(Carpenter.name, ForestryHelper.carpenter);
+			super(Carpenter.name, RecipeManagers.carpenterManager);
 			recipes.add(recipe);
 		}
 		
@@ -109,7 +109,7 @@ public class Carpenter {
 	public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
 		List<ICarpenterRecipe> recipes = new LinkedList<ICarpenterRecipe>();
 		
-		for(ICarpenterRecipe recipe : ForestryHelper.carpenter) {
+		for(ICarpenterRecipe recipe : RecipeManagers.carpenterManager.recipes()) {
 			if(recipe != null) {
 				ItemStack recipeResult = recipe.getCraftingGridRecipe().getRecipeOutput();
 				if(recipeResult != null && matches(output, toIItemStack(recipeResult))) {

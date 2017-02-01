@@ -53,7 +53,7 @@ public class Fermenter {
 
 	private static class Add extends ForestryListAddition<IFermenterRecipe> {
 		public Add(IFermenterRecipe recipe) {
-			super(Fermenter.name, ForestryHelper.fermenter);
+			super(Fermenter.name, RecipeManagers.fermenterManager);
 			recipes.add(recipe);
 		}
 
