@@ -5,6 +5,7 @@ import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.IFermenterManager;
 import forestry.api.recipes.IFermenterRecipe;
 import forestry.api.recipes.RecipeManagers;
+import forestry.factory.recipes.jei.fermenter.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -55,6 +56,7 @@ public class Fermenter {
 		public Add(IFermenterRecipe recipe) {
 			super(Fermenter.name, RecipeManagers.fermenterManager);
 			recipes.add(recipe);
+			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new FermenterRecipeWrapper(recipe, recipe.getResource()));
 		}
 
 		@Override
@@ -97,6 +99,9 @@ public class Fermenter {
 
 		public Remove(List<IFermenterRecipe> recipes) {
 			super(Fermenter.name, RecipeManagers.fermenterManager, recipes);
+//		for(IFermenterRecipe recipe: recipes){
+//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new FermenterRecipeWrapper(recipe, recipe.getResource()));
+//		}
 		}
 
 		@Override

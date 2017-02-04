@@ -13,6 +13,7 @@ import java.util.*;
 
 import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
+import forestry.factory.recipes.jei.centrifuge.*;
 
 
 @ZenClass("mods.forestry.Centrifuge")
@@ -43,6 +44,7 @@ public class Centrifuge {
 		public Add(ICentrifugeRecipe recipe) {
 			super(Centrifuge.name, RecipeManagers.centrifugeManager);
 			recipes.add(recipe);
+			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CentrifugeRecipeWrapper(recipe));
 		}
 		
 		@Override
@@ -79,6 +81,9 @@ public class Centrifuge {
 		
 		public Remove(List<ICentrifugeRecipe> recipes) {
 			super(Centrifuge.name, RecipeManagers.centrifugeManager, recipes);
+//		for(ICentrifugeRecipe recipe: recipes){
+//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CentrifugeRecipeWrapper(recipe));
+//		}
 		}
 		
 		@Override

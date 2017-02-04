@@ -2,6 +2,7 @@ package modtweaker.mods.forestry.handlers;
 
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
+import forestry.factory.recipes.jei.still.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.liquid.ILiquidStack;
@@ -42,6 +43,7 @@ public class Still {
 		public Add(IStillRecipe recipe) {
 			super("Forestry Still", RecipeManagers.stillManager);
 			recipes.add(recipe);
+			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new StillRecipeWrapper(recipe));
 		}
 		
 		@Override
@@ -84,6 +86,9 @@ public class Still {
 		
 		public Remove(List<IStillRecipe> recipes) {
 			super(Still.name, RecipeManagers.stillManager, recipes);
+//		for(IStillRecipe recipe: recipes){
+//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new StillRecipeWrapper(recipe));
+//		}
 		}
 		
 		@Override

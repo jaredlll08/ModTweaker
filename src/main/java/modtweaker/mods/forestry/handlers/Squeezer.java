@@ -102,6 +102,9 @@ public class Squeezer {
 		
 		public Remove(List<ISqueezerRecipe> recipes) {
 			super(Squeezer.name, RecipeManagers.squeezerManager, recipes);
+//		for(ISqueezerRecipe recipe: recipes){
+//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new SqueezerRecipeWrapper(recipe));
+//		}
 		}
 		
 		@Override
