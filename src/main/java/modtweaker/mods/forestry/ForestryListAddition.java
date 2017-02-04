@@ -15,7 +15,7 @@ public abstract class ForestryListAddition<T extends IForestryRecipe> extends Ba
 		super(name, new ArrayList(manager.recipes()));
 		this.manager = manager;
 	}
-	
+
 	@Override
 	protected abstract String getRecipeInfo(T recipe);
 	
@@ -25,7 +25,6 @@ public abstract class ForestryListAddition<T extends IForestryRecipe> extends Ba
 			if (recipe != null) {
 				if (manager.addRecipe(recipe)){
 					successful.add(recipe);
-					MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
 				} else {
 					LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
 				}

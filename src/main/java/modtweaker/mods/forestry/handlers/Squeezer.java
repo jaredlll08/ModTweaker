@@ -2,6 +2,7 @@ package modtweaker.mods.forestry.handlers;
 
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
+import forestry.factory.recipes.jei.squeezer.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -46,6 +47,7 @@ public class Squeezer {
 		public Add(ISqueezerRecipe recipe) {
 			super(Squeezer.name, RecipeManagers.squeezerManager);
 			recipes.add(recipe);
+			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new SqueezerRecipeWrapper(recipe));
 		}
 		
 		@Override
