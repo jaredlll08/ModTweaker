@@ -5,6 +5,7 @@ import forestry.api.recipes.*;
 import forestry.core.recipes.ShapedRecipeCustom;
 import forestry.factory.recipes.CarpenterRecipeManager;
 import forestry.factory.recipes.jei.carpenter.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -57,7 +58,6 @@ public class Carpenter {
 		public Add(ICarpenterRecipe recipe) {
 			super(Carpenter.name, RecipeManagers.carpenterManager);
 			recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CarpenterRecipeWrapper(recipe));
 		}
 		
 //		@Override
@@ -84,6 +84,11 @@ public class Carpenter {
 		@Override
 		protected String getRecipeInfo(ICarpenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getCraftingGridRecipe().getRecipeOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICarpenterRecipe recipe){
+			return new CarpenterRecipeWrapper(recipe);
 		}
 	}
 	
@@ -136,9 +141,6 @@ public class Carpenter {
 		
 		public Remove(List<ICarpenterRecipe> recipes) {
 			super(Carpenter.name, RecipeManagers.carpenterManager, recipes);
-//		for(ICarpenterRecipe recipe: recipes){
-//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CarpenterRecipeWrapper(recipe));
-//		}
 		}
 		
 		@Override
@@ -155,6 +157,11 @@ public class Carpenter {
 		@Override
 		protected String getRecipeInfo(ICarpenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getCraftingGridRecipe().getRecipeOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICarpenterRecipe recipe){
+			return new CarpenterRecipeWrapper(recipe);
 		}
 	}
 }

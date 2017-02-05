@@ -2,6 +2,7 @@ package modtweaker.mods.forestry.handlers;
 
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import modtweaker.mods.forestry.*;
@@ -44,12 +45,16 @@ public class Centrifuge {
 		public Add(ICentrifugeRecipe recipe) {
 			super(Centrifuge.name, RecipeManagers.centrifugeManager);
 			recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new CentrifugeRecipeWrapper(recipe));
 		}
 		
 		@Override
 		protected String getRecipeInfo(ICentrifugeRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getInput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICentrifugeRecipe recipe){
+			return new CentrifugeRecipeWrapper(recipe);
 		}
 	}
 	
@@ -81,14 +86,16 @@ public class Centrifuge {
 		
 		public Remove(List<ICentrifugeRecipe> recipes) {
 			super(Centrifuge.name, RecipeManagers.centrifugeManager, recipes);
-//		for(ICentrifugeRecipe recipe: recipes){
-//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new CentrifugeRecipeWrapper(recipe));
-//		}
 		}
 		
 		@Override
 		protected String getRecipeInfo(ICentrifugeRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getInput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICentrifugeRecipe recipe){
+			return new CentrifugeRecipeWrapper(recipe);
 		}
 	}
 }

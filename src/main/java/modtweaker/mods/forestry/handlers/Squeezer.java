@@ -3,6 +3,7 @@ package modtweaker.mods.forestry.handlers;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
 import forestry.factory.recipes.jei.squeezer.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -54,6 +55,11 @@ public class Squeezer {
 		public String getRecipeInfo(ISqueezerRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getFluidOutput());
 		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ISqueezerRecipe recipe){
+			return new SqueezerRecipeWrapper(recipe);
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,14 +108,16 @@ public class Squeezer {
 		
 		public Remove(List<ISqueezerRecipe> recipes) {
 			super(Squeezer.name, RecipeManagers.squeezerManager, recipes);
-//		for(ISqueezerRecipe recipe: recipes){
-//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new SqueezerRecipeWrapper(recipe));
-//		}
 		}
 		
 		@Override
 		public String getRecipeInfo(ISqueezerRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getFluidOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ISqueezerRecipe recipe){
+			return new SqueezerRecipeWrapper(recipe);
 		}
 	}
 }

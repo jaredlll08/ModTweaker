@@ -6,6 +6,7 @@ import forestry.api.recipes.IFermenterManager;
 import forestry.api.recipes.IFermenterRecipe;
 import forestry.api.recipes.RecipeManagers;
 import forestry.factory.recipes.jei.fermenter.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -56,12 +57,16 @@ public class Fermenter {
 		public Add(IFermenterRecipe recipe) {
 			super(Fermenter.name, RecipeManagers.fermenterManager);
 			recipes.add(recipe);
-			MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new FermenterRecipeWrapper(recipe, recipe.getResource()));
 		}
 
 		@Override
 		public String getRecipeInfo(IFermenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFermenterRecipe recipe){
+			return new FermenterRecipeWrapper(recipe, recipe.getResource());
 		}
 	}
 
@@ -99,14 +104,16 @@ public class Fermenter {
 
 		public Remove(List<IFermenterRecipe> recipes) {
 			super(Fermenter.name, RecipeManagers.fermenterManager, recipes);
-//		for(IFermenterRecipe recipe: recipes){
-//			MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new FermenterRecipeWrapper(recipe, recipe.getResource()));
-//		}
 		}
 
 		@Override
 		protected String getRecipeInfo(IFermenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFermenterRecipe recipe){
+			return new FermenterRecipeWrapper(recipe, recipe.getResource());
 		}
 	}
 	
