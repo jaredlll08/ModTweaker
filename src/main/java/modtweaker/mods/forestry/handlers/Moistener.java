@@ -4,6 +4,7 @@ import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.*;
 import forestry.api.fuels.*;
 import forestry.api.recipes.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import modtweaker.mods.forestry.*;
@@ -47,6 +48,12 @@ public class Moistener {
 		public String getRecipeInfo(IMoistenerRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getProduct());
 		}
+
+		//It's not clear to me how the moistener recipes should be wrapped
+		@Override
+		public IRecipeWrapper wrapRecipe(IMoistenerRecipe recipe){
+			return null;
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,6 +87,12 @@ public class Moistener {
 		@Override
 		public String getRecipeInfo(IMoistenerRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getProduct());
+		}
+
+		//It's not clear to me how the moistener recipes should be wrapped
+		@Override
+		public IRecipeWrapper wrapRecipe(IMoistenerRecipe recipe){
+			return null;
 		}
 	}
 

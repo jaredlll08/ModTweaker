@@ -4,6 +4,8 @@ import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
 import forestry.core.recipes.ShapedRecipeCustom;
 import forestry.factory.recipes.CarpenterRecipeManager;
+import forestry.factory.recipes.jei.carpenter.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -83,6 +85,11 @@ public class Carpenter {
 		protected String getRecipeInfo(ICarpenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getCraftingGridRecipe().getRecipeOutput());
 		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICarpenterRecipe recipe){
+			return new CarpenterRecipeWrapper(recipe);
+		}
 	}
 	
 	/**
@@ -150,6 +157,11 @@ public class Carpenter {
 		@Override
 		protected String getRecipeInfo(ICarpenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getCraftingGridRecipe().getRecipeOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(ICarpenterRecipe recipe){
+			return new CarpenterRecipeWrapper(recipe);
 		}
 	}
 }
