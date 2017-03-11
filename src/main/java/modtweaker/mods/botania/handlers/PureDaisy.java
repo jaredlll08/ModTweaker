@@ -10,8 +10,7 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipePureDaisy;
 
@@ -26,7 +25,7 @@ public class PureDaisy {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     @ZenMethod
-    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput) {
+    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, @Optional int time) {
         if(blockInput == null || blockOutput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -42,7 +41,7 @@ public class PureDaisy {
         if(input instanceof ItemStack) input = Block.getBlockFromItem(((ItemStack)input).getItem());
         ItemStack output = InputHelper.toStack(blockOutput);
         
-        RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), output.getItemDamage());
+        RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
         
         MineTweakerAPI.apply(new Add(recipe));
     }
@@ -63,7 +62,7 @@ public class PureDaisy {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
-        List<RecipePureDaisy> recipes = new LinkedList<RecipePureDaisy>();
+        List<RecipePureDaisy> recipes = new LinkedList<>();
         
         for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
             IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutputState().getBlock(), 1));
