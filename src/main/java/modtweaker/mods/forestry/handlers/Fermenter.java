@@ -5,6 +5,8 @@ import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.IFermenterManager;
 import forestry.api.recipes.IFermenterRecipe;
 import forestry.api.recipes.RecipeManagers;
+import forestry.factory.recipes.jei.fermenter.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.item.IItemStack;
@@ -61,6 +63,11 @@ public class Fermenter {
 		public String getRecipeInfo(IFermenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
 		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFermenterRecipe recipe){
+			return new FermenterRecipeWrapper(recipe, recipe.getResource());
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,6 +109,11 @@ public class Fermenter {
 		@Override
 		protected String getRecipeInfo(IFermenterRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFermenterRecipe recipe){
+			return new FermenterRecipeWrapper(recipe, recipe.getResource());
 		}
 	}
 	

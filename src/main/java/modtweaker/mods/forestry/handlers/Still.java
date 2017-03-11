@@ -2,6 +2,8 @@ package modtweaker.mods.forestry.handlers;
 
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
+import forestry.factory.recipes.jei.still.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.liquid.ILiquidStack;
@@ -48,6 +50,11 @@ public class Still {
 		public String getRecipeInfo(IStillRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
 		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IStillRecipe recipe){
+			return new StillRecipeWrapper(recipe);
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +96,11 @@ public class Still {
 		@Override
 		public String getRecipeInfo(IStillRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IStillRecipe recipe){
+			return new StillRecipeWrapper(recipe);
 		}
 	}
 }

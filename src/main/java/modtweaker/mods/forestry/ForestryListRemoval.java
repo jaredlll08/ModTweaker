@@ -4,6 +4,7 @@ import forestry.api.recipes.ICraftingProvider;
 import forestry.api.recipes.IForestryRecipe;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListRemoval;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 
 import java.util.ArrayList;
@@ -26,7 +27,10 @@ public abstract class ForestryListRemoval<T extends IForestryRecipe, C extends I
 			if (recipe != null) {
 				if (craftingProvider.removeRecipe(recipe)) {
 					successful.add(recipe);
-					MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+					IRecipeWrapper wrapped = wrapRecipe(recipe);
+					if (wrapped != null){
+						MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(wrapped);
+					}
 				} else {
 					LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
 				}
@@ -43,11 +47,16 @@ public abstract class ForestryListRemoval<T extends IForestryRecipe, C extends I
 				if (!craftingProvider.addRecipe(recipe)) {
 					LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
 				}else{
-					MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
+					IRecipeWrapper wrapped = wrapRecipe(recipe);
+					if (wrapped != null){
+						MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(wrapped);
+					}
 				}
 			} else {
 				LogHelper.logError(String.format("Error restoring %s Recipe: null object", name));
 			}
 		}
 	}
+
+	public abstract IRecipeWrapper wrapRecipe(T recipe);
 }

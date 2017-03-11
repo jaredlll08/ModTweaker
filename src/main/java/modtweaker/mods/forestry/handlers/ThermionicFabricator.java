@@ -2,6 +2,8 @@ package modtweaker.mods.forestry.handlers;
 
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
+import forestry.factory.recipes.jei.fabricator.*;
+import mezz.jei.api.recipe.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import modtweaker.mods.forestry.*;
@@ -71,6 +73,12 @@ public class ThermionicFabricator {
 		public String getRecipeInfo(IFabricatorSmeltingRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getResource());
 		}
+
+		//It's not clear to me how the smelting recipes should be wrapped
+		@Override
+		public IRecipeWrapper wrapRecipe(IFabricatorSmeltingRecipe recipe){
+			return null;
+		}
 	}
 	
 	private static class AddCast extends ForestryListAddition<IFabricatorRecipe> {
@@ -83,6 +91,11 @@ public class ThermionicFabricator {
 		@Override
 		public String getRecipeInfo(IFabricatorRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getRecipeOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFabricatorRecipe recipe){
+			return new FabricatorRecipeWrapper(recipe);
 		}
 	}
 	
@@ -142,6 +155,12 @@ public class ThermionicFabricator {
 		public String getRecipeInfo(IFabricatorSmeltingRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getResource());
 		}
+
+		//It's not clear to me how the smelting recipes should be wrapped
+		@Override
+		public IRecipeWrapper wrapRecipe(IFabricatorSmeltingRecipe recipe){
+			return null;
+		}
 	}
 	
 	private static class RemoveCasts extends ForestryListRemoval<IFabricatorRecipe, IFabricatorManager> {
@@ -153,6 +172,11 @@ public class ThermionicFabricator {
 		@Override
 		public String getRecipeInfo(IFabricatorRecipe recipe) {
 			return LogHelper.getStackDescription(recipe.getRecipeOutput());
+		}
+
+		@Override
+		public IRecipeWrapper wrapRecipe(IFabricatorRecipe recipe){
+			return new FabricatorRecipeWrapper(recipe);
 		}
 	}
 }
