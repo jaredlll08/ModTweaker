@@ -39,7 +39,9 @@ public class ChiselHelper {
     }
 
     public static ICarvingVariation makeVariation(IItemStack stack) {
-        return new CarvingVariation(Block.getBlockFromItem(toStack(stack).getItem()));
+        Block block = Block.getBlockFromItem(toStack(stack).getItem());
+        IBlockState state = block.getStateFromMeta(toStack(stack).getItemDamage());
+        return CarvingUtils.getDefaultVariationFor(state, 0);
     }
 
     public static ICarvingGroup makeGroup(String name) {
