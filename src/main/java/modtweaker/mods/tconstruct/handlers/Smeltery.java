@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
+import slimeknights.tconstruct.library.smeltery.*;
 import slimeknights.tconstruct.plugin.jei.*;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.*;
@@ -179,13 +179,13 @@ public class Smeltery {
 			return;
 		}
 		
-		List<MeltingRecipe> recipes = new LinkedList<MeltingRecipe>();
+		List<MeltingRecipe> recipes = new LinkedList<>();
 		
 		for(IItemStack in : input.getItems()) {
 			if(block == null && !isABlock(toStack(in))) {
 				LogHelper.logWarning(String.format("Item %s is not a block and no block renderer is provided for %s recipe. Input ignored!", in.toString(), nameMelting));
 			} else {
-				recipes.add(new MeltingRecipe(toStack(in), toFluid(output)));
+				recipes.add(new MeltingRecipe(toStack(in), toFluid(output), temp));
 			}
 		}
 		
@@ -205,7 +205,7 @@ public class Smeltery {
 		@Override
 		public void apply() {
 			for(MeltingRecipe recipe : recipes) {
-				TinkerRegistry.registerMelting(recipe.input, recipe.fluid.getFluid(), recipe.fluid.amount);
+				TinkerRegistry.registerMelting(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid, recipe.temp));
 				successful.add(recipe);
 				MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new SmeltingRecipeWrapper(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid)));
 			}
@@ -214,8 +214,8 @@ public class Smeltery {
 		@Override
 		public void undo() {
 			for(MeltingRecipe recipe : successful) {
-				TConstructHelper.smeltingList.remove(recipe.fluid);
-				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new SmeltingRecipeWrapper(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid)));
+				TConstructHelper.smeltingList.remove(recipe);
+				MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new SmeltingRecipeWrapper(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid, recipe.temp)));
 			}
 		}
 		
@@ -278,12 +278,14 @@ public class Smeltery {
 		
 		public final ItemStack input;
 		public final FluidStack fluid;
-		
-		protected MeltingRecipe(ItemStack input, FluidStack fluid) {
-			this.input = input;
-			this.fluid = fluid;
-		}
-	}
+		public final int temp;
+        
+        public MeltingRecipe(ItemStack input, FluidStack fluid, int temp) {
+            this.input = input;
+            this.fluid = fluid;
+            this.temp = temp;
+        }
+    }
 	
 	/**********************************************
 	 * TConstruct Fuel Recipes
