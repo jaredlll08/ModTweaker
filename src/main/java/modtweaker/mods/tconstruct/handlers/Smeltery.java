@@ -173,7 +173,7 @@ public class Smeltery {
 	
 	// Adding a TConstruct Melting recipe
 	@ZenMethod
-	public static void addMelting(ILiquidStack output, IIngredient input, int temp, @Optional IItemStack block) {
+	public static void addMelting(ILiquidStack output, IIngredient input, int temp) {
 		if(input == null || output == null) {
 			LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameMelting));
 			return;
@@ -182,11 +182,7 @@ public class Smeltery {
 		List<MeltingRecipe> recipes = new LinkedList<>();
 		
 		for(IItemStack in : input.getItems()) {
-			if(block == null && !isABlock(toStack(in))) {
-				LogHelper.logWarning(String.format("Item %s is not a block and no block renderer is provided for %s recipe. Input ignored!", in.toString(), nameMelting));
-			} else {
 				recipes.add(new MeltingRecipe(toStack(in), toFluid(output), temp));
-			}
 		}
 		
 		if(!recipes.isEmpty()) {
