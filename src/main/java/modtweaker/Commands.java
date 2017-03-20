@@ -4,6 +4,8 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.player.IPlayer;
 import minetweaker.api.server.ICommandFunction;
 import modtweaker.commands.EntityMappingLogger;
+import modtweaker.mods.botania.commands.*;
+import modtweaker.mods.botania.lexicon.commands.*;
 import modtweaker.mods.chisel.commands.ChiselGroupLogger;
 import modtweaker.mods.chisel.commands.ChiselVariationLogger;
 import modtweaker.mods.randomthings.commands.RandomThingsLogger;
@@ -36,6 +38,14 @@ public class Commands {
             if(TweakerPlugin.isLoaded("chisel")) {
                 MineTweakerAPI.server.addMineTweakerCommand("chiselGroups", new String[]{"/minetweaker chiselGroups", "    Outputs a list of chisel groups"}, new ChiselGroupLogger());
                 MineTweakerAPI.server.addMineTweakerCommand("chiselVariations", new String[]{"/minetweaker chiselVariations", "    Outputs a list of chisel variations"}, new ChiselVariationLogger());
+            }
+            if (TweakerPlugin.isLoaded("Botania")) {
+                MineTweakerAPI.server.addMineTweakerCommand("lexiconCategories", new String[] { "/minetweaker lexiconCategories", "    Outputs a list of lexicon categories" }, new LexiconCategoryLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("lexiconPages", new String[] { "/minetweaker lexiconPages", "/minetweaker lexiconPages [ENTRY]", "    Outputs a list of lexicon pages for the entry" }, new LexiconPageLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("botaniaBrews", new String[] { "/minetweaker botaniaBrews", "    Outputs a list of keys for botania brews" }, new BotaniaBrewLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("lexiconKnowledgeTypes", new String[] { "/minetweaker lexiconKnowledgeTypes", "    Outputs a list of keys for lexicon knowledge types" }, new LexiconKnowledgeTypesLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("botaniaOrechid", new String[] { "/minetweaker botaniaOrechid", "    Outputs a list of keys for botania orechid weights" }, new BotaniaOrechidLogger());
+                MineTweakerAPI.server.addMineTweakerCommand("botania", new String[] { "/minetweaker botania [HANDLER]", "    Outputs a list of all Botania recipes." }, new BotaniaLogger());
             }
         }
     }
