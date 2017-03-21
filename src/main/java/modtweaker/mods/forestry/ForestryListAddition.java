@@ -57,5 +57,4 @@ public abstract class ForestryListAddition<T extends IForestryRecipe> extends Ba
 		}
 	}
 
-	public abstract IRecipeWrapper wrapRecipe(T recipe);
 }

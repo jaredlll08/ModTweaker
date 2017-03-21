@@ -58,5 +58,4 @@ public abstract class ForestryListRemoval<T extends IForestryRecipe, C extends I
 		}
 	}
 
-	public abstract IRecipeWrapper wrapRecipe(T recipe);
 }
