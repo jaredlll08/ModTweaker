@@ -54,7 +54,7 @@ public class Drying {
                 if(recipe != null) {
                     if(list.add(recipe)) {
                         successful.add(recipe);
-                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new DryingRecipeWrapper(recipe));
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
                     } else {
                         LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
                     }
@@ -75,7 +75,7 @@ public class Drying {
                     if(!list.remove(recipe)) {
                         LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
                     }else{
-                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new DryingRecipeWrapper(recipe));
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
                     }
                 } else {
                     LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
@@ -125,7 +125,7 @@ public class Drying {
                     if (this.list.remove(recipe)) {
                     
                         successful.add(recipe);
-                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new DryingRecipeWrapper(recipe));
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
                     } else {
                         LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
                     }
@@ -145,7 +145,7 @@ public class Drying {
                     if (!list.add(recipe)) {
                         LogHelper.logError(String.format("Error restoring %s Recipe for %s", name, getRecipeInfo(recipe)));
                     }else{
-                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new DryingRecipeWrapper(recipe));
+                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(recipe);
                     }
                 } else {
                     LogHelper.logError(String.format("Error restoring %s Recipe: null object", name));
