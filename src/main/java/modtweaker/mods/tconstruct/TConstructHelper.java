@@ -27,7 +27,8 @@ public class TConstructHelper {
     public static List<FluidStack> fuelList = new ArrayList<FluidStack>();
     public static Map<String, IModifier> modifiers = new THashMap<String, IModifier>();
     public static Map<String, IModifier> modifiers_clone = null;
-
+    public static Map<String, FluidStack> entityMeltingRegistry;
+    
     static {
         try {
             alloys = ReflectionHelper.getStaticObject(TinkerRegistry.class, "alloyRegistry");
@@ -36,6 +37,8 @@ public class TConstructHelper {
             basinCasting = ReflectionHelper.getStaticObject(TinkerRegistry.class, "basinCastRegistry");
             tableCasting = ReflectionHelper.getStaticObject(TinkerRegistry.class, "tableCastRegistry");
             modifiers = ReflectionHelper.getStaticObject(TinkerRegistry.class, "modifiers");
+            entityMeltingRegistry = ReflectionHelper.getStaticObject(TinkerRegistry.class, "entityMeltingRegistry");
+    
             modifiers_clone = new THashMap<String, IModifier>(modifiers);
             fuelList = new ArrayList<>(TinkerRegistry.getSmelteryFuels());
         } catch (Exception e) {
