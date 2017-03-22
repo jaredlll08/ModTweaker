@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
+import slimeknights.tconstruct.library.smeltery.*;
 import slimeknights.tconstruct.plugin.jei.SmeltingRecipeWrapper;
 import stanhebben.zenscript.annotations.*;
 
@@ -185,9 +185,9 @@ public class Smeltery {
         @Override
         public void apply() {
             for(MeltingRecipe recipe : recipes) {
-                TinkerRegistry.registerMelting(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid, recipe.temp));
+                TinkerRegistry.registerMelting(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input, recipe.fluid.amount), recipe.fluid, recipe.temp));
                 successful.add(recipe);
-                MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid));
+                MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input, recipe.fluid.amount), recipe.fluid));
             }
         }
         
@@ -195,7 +195,7 @@ public class Smeltery {
         public void undo() {
             for(MeltingRecipe recipe : successful) {
                 TConstructHelper.smeltingList.remove(recipe);
-                MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input), recipe.fluid, recipe.temp));
+                MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(new slimeknights.tconstruct.library.smeltery.MeltingRecipe(RecipeMatch.of(recipe.input, recipe.fluid.amount), recipe.fluid, recipe.temp));
             }
         }
         
