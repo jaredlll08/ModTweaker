@@ -38,7 +38,6 @@ public class ModTweaker {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger.info("Starting PreInitialization for " + ModProps.modid);
-        GuiRegistry.registerGui(Arrays.asList(3), new GuiHandlerMods());
     }
 
     @EventHandler
