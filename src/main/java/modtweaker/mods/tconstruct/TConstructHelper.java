@@ -12,9 +12,7 @@ import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.library.smeltery.ICastingRecipe;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TConstructHelper {
     public static List<AlloyRecipe> alloys = null;
@@ -24,7 +22,7 @@ public class TConstructHelper {
     public static List<DryingRecipe> dryingList = null;
 
     //        public static Map<ItemMetaWrapper, Integer> temperatureList = null;
-    public static List<FluidStack> fuelList = new ArrayList<FluidStack>();
+    public static Map<FluidStack, Integer> fuelMap = new HashMap<>();
     public static Map<String, IModifier> modifiers = new THashMap<String, IModifier>();
     public static Map<String, IModifier> modifiers_clone = null;
     public static Map<String, FluidStack> entityMeltingRegistry;
@@ -38,9 +36,9 @@ public class TConstructHelper {
             tableCasting = ReflectionHelper.getStaticObject(TinkerRegistry.class, "tableCastRegistry");
             modifiers = ReflectionHelper.getStaticObject(TinkerRegistry.class, "modifiers");
             entityMeltingRegistry = ReflectionHelper.getStaticObject(TinkerRegistry.class, "entityMeltingRegistry");
+            fuelMap = ReflectionHelper.getStaticObject(TinkerRegistry.class, "smelteryFuels");
     
             modifiers_clone = new THashMap<String, IModifier>(modifiers);
-            fuelList = new ArrayList<>(TinkerRegistry.getSmelteryFuels());
         } catch (Exception e) {
         }
     }

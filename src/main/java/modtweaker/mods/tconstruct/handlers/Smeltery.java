@@ -11,9 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.*;
+import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.plugin.jei.SmeltingRecipeWrapper;
 import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.Optional;
 
 import java.util.*;
 
@@ -272,25 +273,24 @@ public class Smeltery {
      **********************************************/
     
     @ZenMethod
-    public static void addFuel(ILiquidStack liquid) {
+    public static void addFuel(ILiquidStack liquid, @Optional  int temp) {
         if(liquid == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", nameFuel));
             return;
         }
-        
-        List<FluidStack> stacks = new ArrayList<FluidStack>();
-        stacks.add(toFluid(liquid));
-        MineTweakerAPI.apply(new AddFuel(stacks));
+        Map<FluidStack, Integer> recipes = new HashMap<>();
+        recipes.put(toFluid(liquid), temp !=0 ? temp : toFluid(liquid).getFluid().getTemperature());
+        MineTweakerAPI.apply(new AddFuel(recipes));
     }
     
-    public static class AddFuel extends BaseListAddition<FluidStack> {
+    public static class AddFuel extends BaseMapAddition<FluidStack, Integer> {
         
-        public AddFuel(List<FluidStack> recipes) {
-            super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
+        protected AddFuel(Map<FluidStack, Integer> recipes) {
+            super(Smeltery.nameFuel, TConstructHelper.fuelMap, recipes);
         }
         
         @Override
-        public String getRecipeInfo(FluidStack recipe) {
+        protected String getRecipeInfo(Map.Entry<FluidStack, Integer> recipe) {
             return LogHelper.getStackDescription(recipe);
         }
     }
@@ -298,14 +298,12 @@ public class Smeltery {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @ZenMethod
     public static void removeFuel(IIngredient input) {
-        List<FluidStack> recipes = new ArrayList<FluidStack>();
-        
-        for(FluidStack fuel : TConstructHelper.fuelList) {
-            if(fuel != null && matches(input, toILiquidStack(fuel))) {
-                recipes.add(fuel);
+        Map<FluidStack, Integer> recipes = new HashMap<>();
+        for(Map.Entry<FluidStack, Integer> entry : TConstructHelper.fuelMap.entrySet()) {
+            if(entry != null && matches(input, toILiquidStack(entry.getKey()))) {
+                recipes.put(entry.getKey(), entry.getValue());
             }
         }
-        
         if(!recipes.isEmpty()) {
             MineTweakerAPI.apply(new RemoveFuel(recipes));
         } else {
@@ -313,14 +311,15 @@ public class Smeltery {
         }
     }
     
-    public static class RemoveFuel extends BaseListRemoval<FluidStack> {
+    
+    public static class RemoveFuel extends BaseMapRemoval<FluidStack, Integer> {
         
-        public RemoveFuel(List<FluidStack> recipes) {
-            super(Smeltery.nameFuel, TConstructHelper.fuelList, recipes);
+        protected RemoveFuel(Map<FluidStack, Integer> recipes) {
+            super(Smeltery.nameFuel, TConstructHelper.fuelMap, recipes);
         }
         
         @Override
-        protected String getRecipeInfo(FluidStack recipe) {
+        protected String getRecipeInfo(Map.Entry<FluidStack, Integer> recipe) {
             return LogHelper.getStackDescription(recipe);
         }
     }
