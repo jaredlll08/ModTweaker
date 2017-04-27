@@ -5,18 +5,15 @@ import WayofTime.bloodmagic.api.altar.EnumAltarTier;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry;
 import WayofTime.bloodmagic.api.registry.AltarRecipeRegistry.AltarRecipe;
 import WayofTime.bloodmagic.compat.jei.altar.AltarRecipeJEI;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.helpers.ReflectionHelper;
-import com.blamejared.mtlib.utils.BaseMapAddition;
-import com.blamejared.mtlib.utils.BaseMapRemoval;
+import com.blamejared.mtlib.helpers.*;
+import com.blamejared.mtlib.utils.*;
 import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IIngredient;
-import minetweaker.api.item.IItemStack;
+import minetweaker.api.item.*;
+import modtweaker.JEIAddonPlugin;
 import modtweaker.mods.bloodmagic.BloodMagicHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeModContainer;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -116,18 +113,18 @@ public class Altar
                 if(value == null) {
                     LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
                 }else {
-                    List input = ItemStackWrapper.toStackList(value.getInput());
-                    ItemStack output = (value).getOutput();
-                    int requiredTier = (value).getMinTier().toInt();
-                    int requiredLP = (value).getSyphon();
-                    int consumptionRate = (value).getConsumeRate();
-                    int drainRate = (value).getDrainRate();
-                    if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
-                        output = BloodMagicAPI.getLifeEssenceBucket();
-                    }
-    
-                    AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
-                    MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+                    successful.put(key, value);
+                    List<AltarRecipeJEI> list = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:altar")).get(0));
+                    final AltarRecipeJEI[] recipe = {null};
+                    list.forEach(rec -> {
+                        ItemStack input = ((List<ItemStack>) ReflectionHelper.getFinalObject(rec, "input")).get(0);
+                        ItemStack output = ReflectionHelper.getFinalObject(rec, "output");
+                        if(input.isItemEqual(value.getInput().get(0).toStack()) && output.isItemEqual(value.getOutput())) {
+                            recipe[0] = rec;
+                        }
+                    });
+                    if(recipe[0] != null)
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe[0]);
                 }
             }
         
@@ -197,21 +194,19 @@ public class Altar
         
             for(List<ItemStackWrapper> key : recipes.keySet()) {
                 AltarRecipe oldValue = map.remove(key);
-            
                 if(oldValue != null) {
                     successful.put(key, oldValue);
-                    List input = ItemStackWrapper.toStackList(oldValue.getInput());
-                    ItemStack output = (oldValue).getOutput();
-                    int requiredTier = (oldValue).getMinTier().toInt();
-                    int requiredLP = (oldValue).getSyphon();
-                    int consumptionRate = (oldValue).getConsumeRate();
-                    int drainRate = (oldValue).getDrainRate();
-                    if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
-                        output = BloodMagicAPI.getLifeEssenceBucket();
-                    }
-    
-                    AltarRecipeJEI recipe = new AltarRecipeJEI(input, output, requiredTier, requiredLP, consumptionRate, drainRate);
-                    MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe);
+                    List<AltarRecipeJEI> list = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:altar")).get(0));
+                    final AltarRecipeJEI[] recipe = {null};
+                    list.forEach(rec -> {
+                        ItemStack input = ((List<ItemStack>) ReflectionHelper.getFinalObject(rec, "input")).get(0);
+                        ItemStack output = ReflectionHelper.getFinalObject(rec, "output");
+                        if(input.isItemEqual(oldValue.getInput().get(0).toStack()) && output.isItemEqual(oldValue.getOutput())) {
+                            recipe[0] = rec;
+                        }
+                    });
+                    if(recipe[0] != null)
+                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipe[0]);
                 } else {
                     LogHelper.logError(String.format("Error removing %s Recipe : null object", name));
                 }
@@ -229,12 +224,12 @@ public class Altar
                     if(oldValue != null) {
                         LogHelper.logWarning(String.format("Overwritten %s Recipe for %s while restoring.", name, getRecipeInfo(entry)));
                     }else{
-                        List input = ItemStackWrapper.toStackList(oldValue.getInput());
-                        ItemStack output = (oldValue).getOutput();
-                        int requiredTier = (oldValue).getMinTier().toInt();
-                        int requiredLP = (oldValue).getSyphon();
-                        int consumptionRate = (oldValue).getConsumeRate();
-                        int drainRate = (oldValue).getDrainRate();
+                        List input = ItemStackWrapper.toStackList(entry.getValue().getInput());
+                        ItemStack output = (entry).getValue().getOutput();
+                        int requiredTier = (entry).getValue().getMinTier().toInt();
+                        int requiredLP = (entry).getValue().getSyphon();
+                        int consumptionRate = (entry).getValue().getConsumeRate();
+                        int drainRate = (entry).getValue().getDrainRate();
                         if(output.getItem() == ForgeModContainer.getInstance().universalBucket && requiredLP == 1000) {
                             output = BloodMagicAPI.getLifeEssenceBucket();
                         }
