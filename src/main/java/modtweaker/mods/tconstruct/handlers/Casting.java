@@ -162,35 +162,38 @@ public class Casting {
         
         @Override
         public IRecipeWrapper wrapRecipe(ICastingRecipe recipe) {
-            IFocus<ItemStack> focus = JEIAddonPlugin.recipeRegistry.createFocus(IFocus.Mode.OUTPUT, ((CastingRecipe) recipe).getResult());
-            List<IRecipeCategory> categories = JEIAddonPlugin.recipeRegistry.getRecipeCategories(focus);
-            Iterator var4 = categories.iterator();
-            outer:
-            while(true) {
-                IRecipeCategory category;
-                do {
-                    if(!var4.hasNext()) {
-                        if(table) {
-                            return new CastingRecipeWrapper((CastingRecipe) recipe, JEIAddonPlugin.castingTable);
-                        } else {
-                            return new CastingRecipeWrapper((CastingRecipe) recipe, JEIAddonPlugin.castingBasin);
+            if(JEIAddonPlugin.recipeRegistry != null && ((CastingRecipe) recipe).getResult() != null) {
+                IFocus<ItemStack> focus = JEIAddonPlugin.recipeRegistry.createFocus(IFocus.Mode.OUTPUT, ((CastingRecipe) recipe).getResult());
+                List<IRecipeCategory> categories = JEIAddonPlugin.recipeRegistry.getRecipeCategories(focus);
+                Iterator var4 = categories.iterator();
+                while(true) {
+                    IRecipeCategory category;
+                    do {
+                        if(!var4.hasNext()) {
+                            if(table) {
+                                return new CastingRecipeWrapper((CastingRecipe) recipe, JEIAddonPlugin.castingTable);
+                            } else {
+                                return new CastingRecipeWrapper((CastingRecipe) recipe, JEIAddonPlugin.castingBasin);
+                            }
                         }
-                    }
-                    
-                    category = (IRecipeCategory) var4.next();
-                } while(!category.getUid().equals("tconstruct.casting_table"));
                 
-                List<IRecipeWrapper> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(category, focus);
-                Iterator var7 = wrappers.iterator();
+                        category = (IRecipeCategory) var4.next();
+                    } while(!category.getUid().equals("tconstruct.casting_table"));
+            
+                    List<IRecipeWrapper> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(category, focus);
+                    Iterator var7 = wrappers.iterator();
+            
+                    while(var7.hasNext()) {
+                        CastingRecipeWrapper wrapper = (CastingRecipeWrapper) var7.next();
+                        if(StackHelper.matches(new MCItemStack(wrapper.lazyInitOutput().get(0)), new MCItemStack(((CastingRecipe) recipe).getResult()))) {
+                            return wrapper;
+                        }
                 
-                while(var7.hasNext()) {
-                    CastingRecipeWrapper wrapper = (CastingRecipeWrapper) var7.next();
-                    if(StackHelper.matches(new MCItemStack(wrapper.lazyInitOutput().get(0)), new MCItemStack(((CastingRecipe) recipe).getResult()))) {
-                        return wrapper;
                     }
-                    
                 }
             }
+            return null;
         }
+        
     }
 }
