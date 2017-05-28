@@ -1,66 +1,57 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-ext.configFile = file "build.properties"
-configFile.withReader {
-    def prop = new Properties()
-    prop.load(it)
-    project.ext.config = new ConfigSlurper().parse prop
-}
+version = "1.0.0"
+group = "com.blamejared.modtweaker"
+archivesBaseName = "modtweaker"
 
-version=config.mod.version
-group= "modtweaker" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ModTweaker2"
-
-minecraft {
-    version = "${config.forge.version}"
-    runDir = "eclipse"
-    replace "@modVersion@", config.mod.version
-    mappings = "stable_29"
-}
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
+
+minecraft {
+    version = "1.11.2-13.20.0.2309"
+    runDir = "run"
+    mappings = "snapshot_20161220"
+    useDepAts = true
+}
+
 repositories {
-    mavenLocal()
-    mavenCentral()
+    maven {
+        url "http://dvs1.progwml6.com/files/maven"
+    }
+
+    maven {
+        url "http://maven.blamejared.com"
+    }
 }
 
 dependencies {
+    deobfCompile "mezz.jei:jei_1.11.2:4.3.6.280"
+    deobfCompile "MineTweaker3:MineTweaker3-MC1112-Main:1.11.2-3.0.25.99"
+    deobfCompile "com.blamejared:MTLib:2.+"
 }
 
-processResources
-{
+processResources {
     inputs.property "version", project.version
-    inputs.property "mcversion", config.minecraft.version
+    inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':config.minecraft.version
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-tasks.build.dependsOn deobfJar

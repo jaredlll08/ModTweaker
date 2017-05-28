@@ -7,7 +7,9 @@
       "mcversion": "${mcversion}",
       "url": "https://minecraft.curseforge.com/projects/ModTweaker",
       "updateUrl": "https://minecraft.curseforge.com/projects/ModTweaker/files",
-      "authorList": ["Jaredlll08", "SnowShock35"],
+      "authorList": [
+        "Jaredlll08"
+      ],
       "credits": "Joshie and SpitefulFox for writing ModTweaker, Yulife for documentation.",
       "logoFile": "",
       "screenshots": [],
