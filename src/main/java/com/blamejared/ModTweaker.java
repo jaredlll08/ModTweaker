@@ -1,6 +1,7 @@
 package com.blamejared;
 
 import com.blamejared.api.annotations.*;
+import com.blamejared.brackets.PotionBracketHandler;
 import minetweaker.MineTweakerAPI;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -18,15 +19,24 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) throws IOException {
-        File output = new File("output.txt");
+        File output = new File("scripts" + File.separator, "Modtweaker Documentation.md");
         BufferedWriter writer = new BufferedWriter(new FileWriter(output));
-        
+        List<Class> zenClasses = new ArrayList<>();
+        e.getAsmData().getAll(ZenClass.class.getCanonicalName()).forEach(asmData -> {
+            try {
+                if(Class.forName(asmData.getClassName()).isAnnotationPresent(Handler.class)) {
+                    return;
+                }
+            } catch(ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        });
         e.getAsmData().getAll(Handler.class.getCanonicalName()).forEach(data -> {
             try {
                 Class clazz = Class.forName(data.getClassName());
                 Handler handl = (Handler) clazz.getAnnotation(Handler.class);
                 if(Loader.isModLoaded(handl.value())) {
-                    MineTweakerAPI.registerClass(clazz);
+                    zenClasses.add(clazz);
                     boolean document = false;
                     for(Method method : clazz.getDeclaredMethods()) {
                         if(method.isAnnotationPresent(Document.class)) {
@@ -77,11 +87,14 @@ public class ModTweaker {
                 e1.printStackTrace();
             }
         });
+        zenClasses.forEach(MineTweakerAPI::registerClass);
         writer.close();
     }
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
+        PotionBracketHandler.rebuildRegistry();
+        MineTweakerAPI.registerBracketHandler(new PotionBracketHandler());
     }
     
     @Mod.EventHandler
