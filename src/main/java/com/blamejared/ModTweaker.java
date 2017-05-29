@@ -77,7 +77,7 @@ public class ModTweaker {
                                 });
                                 builder.reverse().delete(0, 2).reverse();
                                 builder.append(");");
-                                builder.append("```\n");
+                                builder.append("```\n\n");
                                 writer.write(builder.toString());
                             }
                         }
