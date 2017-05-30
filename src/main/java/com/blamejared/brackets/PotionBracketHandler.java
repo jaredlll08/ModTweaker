@@ -4,11 +4,6 @@ import com.blamejared.api.potions.*;
 import minetweaker.*;
 import minetweaker.annotations.BracketHandler;
 import minetweaker.api.item.IngredientAny;
-import minetweaker.api.minecraft.MineTweakerMC;
-import minetweaker.mc1112.brackets.ItemBracketHandler;
-import net.minecraft.block.Block;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import stanhebben.zenscript.compiler.IEnvironmentGlobal;
 import stanhebben.zenscript.expression.*;
@@ -44,8 +39,6 @@ public class PotionBracketHandler implements IBracketHandler {
     
     public static IPotion getPotion(String name) {
         Potion pot = potionNames.get(name);
-        System.out.println(potionNames);
-        System.out.println(name);
         if(pot == null){
             return null;
         }
