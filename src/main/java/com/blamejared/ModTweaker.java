@@ -69,7 +69,7 @@ public class ModTweaker {
                                     builder.append(", ");
                                 });
                                 builder.reverse().delete(0, 2).reverse();
-                                builder.append("\n```");
+                                builder.append("\n\n```");
                                 builder.append(zen.value()).append(".");
                                 builder.append(method.getName()).append("(");
                                 paramMap.forEach((key, val) -> {
