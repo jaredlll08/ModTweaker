@@ -1,6 +1,6 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
@@ -32,6 +32,7 @@ public class ThermionicFabricator {
      * @param meltingPoint point at where itemInput melts down
      */
     @ZenMethod
+    @Document({"fluidOutput", "itemInput", "meltingPoint"})
     public static void addSmelting(int fluidOutput, IItemStack itemInput, int meltingPoint) {
         //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
         MineTweakerAPI.apply(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), FluidRegistry.getFluidStack("glass", fluidOutput), meltingPoint)));
@@ -70,6 +71,7 @@ public class ThermionicFabricator {
      * @param itemInput = item input
      */
     @ZenMethod
+    @Document({"itemInput"})
     public static void removeSmelting(IIngredient itemInput) {
         List<IFabricatorSmeltingRecipe> recipes = new LinkedList<IFabricatorSmeltingRecipe>();
         

@@ -1,14 +1,12 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.*;
 import forestry.api.fuels.*;
 import forestry.api.recipes.*;
 import forestry.factory.recipes.FermenterRecipe;
-import forestry.factory.recipes.jei.fermenter.FermenterRecipeWrapper;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -42,6 +40,7 @@ public class Fermenter {
      * @param fluidOutputModifier Output multiplier (this is usually a from the input fluid)
      */
     @ZenMethod
+    @Document({"fluidOutput", "resource", "fluidInput", "fermentationValue", "fluidOutputModifier"})
     public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
         MineTweakerAPI.apply(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
     }
@@ -72,6 +71,7 @@ public class Fermenter {
      * @param input type of item in input
      */
     @ZenMethod
+    @Document({"input"})
     public static void removeRecipe(IIngredient input) {
         List<IFermenterRecipe> recipes = new LinkedList<IFermenterRecipe>();
         
@@ -122,6 +122,7 @@ public class Fermenter {
      * @param burnDuration    Amount of work cycles a single item of this fuel lasts before expiring.
      */
     @ZenMethod
+    @Document({"item", " fermentPerCycle", "burnDuration"})
     public static void addFuel(IItemStack item, int fermentPerCycle, int burnDuration) {
         MineTweakerAPI.apply(new AddFuel(new FermenterFuel(toStack(item), fermentPerCycle, burnDuration)));
     }
@@ -147,6 +148,7 @@ public class Fermenter {
      * @param fermenterItem Item that is a valid fuel for the fermenter
      */
     @ZenMethod
+    @Document({"fermenterItem"})
     public static void removeFuel(IIngredient fermenterItem) {
         Map<ItemStack, FermenterFuel> fuelItems = new HashMap<ItemStack, FermenterFuel>();
         

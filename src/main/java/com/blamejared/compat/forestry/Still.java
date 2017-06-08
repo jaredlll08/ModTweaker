@@ -1,6 +1,6 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
@@ -32,6 +32,7 @@ public class Still {
      * @param timePerUnit time per crafting operation
      */
     @ZenMethod
+    @Document({"fluidOutput", "fluidInput", "timePerUnit"})
     public static void addRecipe(ILiquidStack fluidOutput, ILiquidStack fluidInput, int timePerUnit) {
         fluidOutput.amount(fluidOutput.getAmount() / 100);
         fluidInput.amount(fluidInput.getAmount() / 100);
@@ -66,6 +67,7 @@ public class Still {
      *               * @param fluidInput = liquid input (optional)
      */
     @ZenMethod
+    @Document({"output", "fluidInput"})
     public static void removeRecipe(IIngredient output, @Optional ILiquidStack fluidInput) {
         List<IStillRecipe> recipes = new LinkedList<IStillRecipe>();
         

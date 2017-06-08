@@ -1,6 +1,6 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
@@ -38,6 +38,7 @@ public class Squeezer {
      *                    * @param itemOutput recipe output (optional)
      */
     @ZenMethod
+    @Document({"fluidOutput", "ingredients", "timePerItem", "itemOutput"})
     public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
         if(itemOutput == null) {
             itemOutput = new WeightedItemStack(new MCItemStack(new ItemStack(Blocks.AIR)), 0);
@@ -77,6 +78,7 @@ public class Squeezer {
      *               * @param ingredients list of ingredients (optional)
      */
     @ZenMethod
+    @Document({"liquid", "ingredients"})
     public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
         List<ISqueezerRecipe> recipes = new LinkedList<ISqueezerRecipe>();
         

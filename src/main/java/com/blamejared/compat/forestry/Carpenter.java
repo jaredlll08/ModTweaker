@@ -1,6 +1,6 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
@@ -23,11 +23,13 @@ import static com.blamejared.mtlib.helpers.StackHelper.matches;
 public class Carpenter {
     
     @ZenMethod
+    @Document({"output", "ingredients", "packagingTime", "fluidInput", "box"})
     public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
         MineTweakerAPI.apply(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), new ShapedRecipeCustom(toStack(output), toShapedObjects(ingredients)))));
     }
     
     @ZenMethod
+    @Document({"output", "fluidInput"})
     public static void removeRecipe(IIngredient output, @Optional IIngredient fluidInput) {
         List<ICarpenterRecipe> recipes = new LinkedList<>();
         

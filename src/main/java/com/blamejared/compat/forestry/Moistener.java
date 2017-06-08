@@ -1,13 +1,12 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.*;
 import forestry.api.fuels.*;
 import forestry.api.recipes.*;
 import forestry.factory.recipes.MoistenerRecipe;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import net.minecraft.item.ItemStack;
@@ -36,6 +35,7 @@ public class Moistener {
      * @param packagingTime amount of ticks per crafting operation
      */
     @ZenMethod
+    @Document({"output", "input", "packagingTime"})
     public static void addRecipe(IItemStack output, IItemStack input, int packagingTime) {
         MineTweakerAPI.apply(new Add(new MoistenerRecipe(toStack(input), toStack(output), packagingTime)));
     }
@@ -66,6 +66,7 @@ public class Moistener {
      * @param output recipe product
      */
     @ZenMethod
+    @Document({"output"})
     public static void removeRecipe(IIngredient output) {
         List<IMoistenerRecipe> recipes = new LinkedList<IMoistenerRecipe>();
         for(IMoistenerRecipe recipe : RecipeManagers.moistenerManager.recipes()) {
@@ -109,6 +110,7 @@ public class Moistener {
      * @param stage          What stage this product represents. Resources with lower stage value will be consumed first. (First Stage is 0)
      */
     @ZenMethod
+    @Document({"item", "product", "moistenerValue", "stage"})
     public static void addFuel(IItemStack item, IItemStack product, int moistenerValue, int stage) {
         if(stage >= 0) {
             MineTweakerAPI.apply(new AddFuel(new MoistenerFuel(toStack(item), toStack(product), moistenerValue, stage)));
@@ -138,6 +140,7 @@ public class Moistener {
      * @param moistenerItem Item that is a valid fuel for the moistener
      */
     @ZenMethod
+    @Document({"moistenerItem"})
     public static void removeFuel(IIngredient moistenerItem) {
         Map<ItemStack, MoistenerFuel> fuelItems = new HashMap<ItemStack, MoistenerFuel>();
         

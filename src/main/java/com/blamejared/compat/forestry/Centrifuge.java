@@ -1,6 +1,6 @@
 package com.blamejared.compat.forestry;
 
-import com.blamejared.api.annotations.Handler;
+import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
@@ -32,6 +32,7 @@ public class Centrifuge {
      * @param packagingTime amount of ticks per crafting operation
      */
     @ZenMethod
+    @Document({"output", "ingredients", "packagingTime"})
     public static void addRecipe(WeightedItemStack[] output, IItemStack ingredients, int packagingTime) {
         Map<ItemStack, Float> products = new HashMap<ItemStack, Float>();
         for(WeightedItemStack product : output) {
@@ -66,6 +67,7 @@ public class Centrifuge {
      * @param input type of item in input
      */
     @ZenMethod
+    @Document({"input"})
     public static void removeRecipe(IIngredient input) {
         List<ICentrifugeRecipe> recipes = new LinkedList<ICentrifugeRecipe>();
         
