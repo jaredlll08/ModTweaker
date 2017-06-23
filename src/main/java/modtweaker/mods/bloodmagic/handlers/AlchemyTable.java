@@ -79,31 +79,33 @@ public class AlchemyTable {
 					if(!list.remove(recipe)) {
 						LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
 					} else {
-                        List<AlchemyTableRecipeJEI> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:salchemyTable")).get(0));
-                        final AlchemyTableRecipeJEI[] recipeToRemove = {null};
-                        wrappers.forEach(wrap -> {
-                            ArrayList<Object> wrapperStacks = wrap.getRecipe().getInput();
-                            int size = recipe.getInput().size();
-                            if(wrapperStacks.size() == size) {
-                                boolean valid = true;
-                                for(int i = 0; i < size; i++) {
-                                    if(wrapperStacks.get(i) instanceof ItemStack) {
-                                        ItemStack wrapperStack = (ItemStack) wrapperStacks.get(i);
-                                        ItemStack recipeStack = (ItemStack) recipe.getInput().get(i);
-                                        if(!wrapperStack.isItemEqual(recipeStack)) {
+                        if (JEIAddonPlugin.recipeRegistry != null) {
+                            List<AlchemyTableRecipeJEI> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:salchemyTable")).get(0));
+                            final AlchemyTableRecipeJEI[] recipeToRemove = {null};
+                            wrappers.forEach(wrap -> {
+                                ArrayList<Object> wrapperStacks = wrap.getRecipe().getInput();
+                                int size = recipe.getInput().size();
+                                if (wrapperStacks.size() == size) {
+                                    boolean valid = true;
+                                    for (int i = 0; i < size; i++) {
+                                        if (wrapperStacks.get(i) instanceof ItemStack) {
+                                            ItemStack wrapperStack = (ItemStack) wrapperStacks.get(i);
+                                            ItemStack recipeStack = (ItemStack) recipe.getInput().get(i);
+                                            if (!wrapperStack.isItemEqual(recipeStack)) {
+                                                valid = false;
+                                            }
+                                        } else {
                                             valid = false;
                                         }
-                                    } else {
-                                        valid = false;
+                                    }
+                                    if (valid) {
+                                        recipeToRemove[0] = wrap;
                                     }
                                 }
-                                if(valid) {
-                                    recipeToRemove[0] = wrap;
-                                }
-                            }
-                            
-                        });
-                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipeToRemove[0]);
+
+                            });
+                            MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipeToRemove[0]);
+                        }
 					}
 				} else {
 					LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
@@ -179,31 +181,33 @@ public class AlchemyTable {
                 if(recipe != null) {
                     if(this.list.remove(recipe)) {
                         successful.add(recipe);
-                        List<AlchemyTableRecipeJEI> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:salchemyTable")).get(0));
-                        final AlchemyTableRecipeJEI[] recipeToRemove = {null};
-                        wrappers.forEach(wrap -> {
-                            ArrayList<Object> wrapperStacks = wrap.getRecipe().getInput();
-                            int size = recipe.getInput().size();
-                            if(wrapperStacks.size() == size) {
-                                boolean valid = true;
-                                for(int i = 0; i < size; i++) {
-                                    if(wrapperStacks.get(i) instanceof ItemStack) {
-                                        ItemStack wrapperStack = (ItemStack) wrapperStacks.get(i);
-                                        ItemStack recipeStack = (ItemStack) recipe.getInput().get(i);
-                                        if(!wrapperStack.isItemEqual(recipeStack)) {
+                        if (JEIAddonPlugin.recipeRegistry != null) {
+                            List<AlchemyTableRecipeJEI> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(JEIAddonPlugin.recipeRegistry.getRecipeCategories(Arrays.asList("BloodMagic:salchemyTable")).get(0));
+                            final AlchemyTableRecipeJEI[] recipeToRemove = {null};
+                            wrappers.forEach(wrap -> {
+                                ArrayList<Object> wrapperStacks = wrap.getRecipe().getInput();
+                                int size = recipe.getInput().size();
+                                if (wrapperStacks.size() == size) {
+                                    boolean valid = true;
+                                    for (int i = 0; i < size; i++) {
+                                        if (wrapperStacks.get(i) instanceof ItemStack) {
+                                            ItemStack wrapperStack = (ItemStack) wrapperStacks.get(i);
+                                            ItemStack recipeStack = (ItemStack) recipe.getInput().get(i);
+                                            if (!wrapperStack.isItemEqual(recipeStack)) {
+                                                valid = false;
+                                            }
+                                        } else {
                                             valid = false;
                                         }
-                                    } else {
-                                        valid = false;
+                                    }
+                                    if (valid) {
+                                        recipeToRemove[0] = wrap;
                                     }
                                 }
-                                if(valid) {
-                                    recipeToRemove[0] = wrap;
-                                }
-                            }
-                            
-                        });
-                        MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipeToRemove[0]);
+
+                            });
+                            MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(recipeToRemove[0]);
+                        }
                     } else {
                         LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
                     }
