@@ -4,7 +4,7 @@ import com.blamejared.api.annotations.*;
 import com.blamejared.compat.forestry.util.*;
 import com.blamejared.mtlib.helpers.LogHelper;
 import forestry.api.recipes.*;
-import forestry.factory.recipes.FabricatorSmeltingRecipe;
+import forestry.factory.recipes.*;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import net.minecraftforge.fluids.FluidRegistry;

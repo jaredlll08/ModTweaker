@@ -22,18 +22,9 @@ public class ModTweaker {
         File output = new File("scripts" + File.separator, "Modtweaker Documentation.md");
         BufferedWriter writer = new BufferedWriter(new FileWriter(output));
         List<Class> zenClasses = new ArrayList<>();
-        e.getAsmData().getAll(ZenClass.class.getCanonicalName()).forEach(asmData -> {
-            try {
-                if(Class.forName(asmData.getClassName()).isAnnotationPresent(Handler.class)) {
-                    return;
-                }
-            } catch(ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        });
         e.getAsmData().getAll(Handler.class.getCanonicalName()).forEach(data -> {
             try {
-                Class clazz = Class.forName(data.getClassName());
+                Class clazz = Class.forName(data.getClassName(), false, getClass().getClassLoader());
                 Handler handl = (Handler) clazz.getAnnotation(Handler.class);
                 if(Loader.isModLoaded(handl.value())) {
                     zenClasses.add(clazz);

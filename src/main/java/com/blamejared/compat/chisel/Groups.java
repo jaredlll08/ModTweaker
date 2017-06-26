@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import stanhebben.zenscript.annotations.*;
 import team.chisel.api.carving.*;
+import team.chisel.common.carving.GroupList;
 
 import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 
