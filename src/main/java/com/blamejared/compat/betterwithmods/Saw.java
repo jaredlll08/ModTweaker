@@ -9,6 +9,7 @@ import com.blamejared.compat.betterwithmods.util.BMAdd;
 import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.google.common.collect.Lists;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -31,13 +32,13 @@ public class Saw {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             SawRecipe r = new SawRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-            ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Saw Recipe", SawManager.INSTANCE, Lists.newArrayList(r)));
+            CraftTweakerAPI.apply(new BMAdd("Set Saw Recipe", SawManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
 
     @ZenMethod
-    public static void remove(IItemStack output) {
-        ModTweaker.LATE_ADDITIONS.add(new BMRemove("Remove Saw Recipe", SawManager.INSTANCE, InputHelper.toStack(output)));
+    public static void remove(IItemStack input) {
+        CraftTweakerAPI.apply(new BMRemove("Remove Saw Recipe", SawManager.INSTANCE, InputHelper.toStack(input)));
     }
 
 }

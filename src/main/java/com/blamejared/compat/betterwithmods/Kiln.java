@@ -11,6 +11,7 @@ import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.google.common.collect.Lists;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -33,19 +34,19 @@ public class Kiln {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-            ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
+            CraftTweakerAPI.apply(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
 
     @ZenMethod
-    public static void remove(IItemStack output) {
-        ModTweaker.LATE_ADDITIONS.add(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(output)));
+    public static void remove(IItemStack input) {
+        CraftTweakerAPI.apply(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(input)));
     }
 
 
     @ZenMethod
     public static void registerBlock(IItemStack block) {
-        ModTweaker.LATE_ADDITIONS.add(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
+        CraftTweakerAPI.apply(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
     }
 
 

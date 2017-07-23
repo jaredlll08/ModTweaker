@@ -7,6 +7,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseMapAddition;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -21,7 +22,7 @@ public class Buoyancy {
     public static void set(IItemStack stack, float value) {
         StackMap<Float> map = new StackMap(1.0);
         map.put(new Stack(InputHelper.toStack(stack)),value);
-        ModTweaker.LATE_ADDITIONS.add(new Set(map));
+        CraftTweakerAPI.apply(new Set(map));
     }
 
     public static class Set extends BaseMapAddition<Stack, Float> {

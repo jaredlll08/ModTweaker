@@ -6,8 +6,8 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import net.minecraft.item.ItemStack;
 
 public class BMRemove extends BaseListRemoval<BlockMetaRecipe> {
-    public BMRemove(String name, BlockMetaManager recipes, ItemStack output) {
-        super(name, recipes.getRecipes(), recipes.removeRecipes(output));
+    public BMRemove(String name, BlockMetaManager recipes, ItemStack input) {
+        super(name, recipes.getRecipes(), recipes.removeRecipes(input));
     }
 
     @Override

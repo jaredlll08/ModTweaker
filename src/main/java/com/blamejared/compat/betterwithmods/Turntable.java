@@ -38,7 +38,7 @@ public class Turntable {
     }
 
     @ZenMethod
-    public static void removeRecipe(IItemStack inputBlock) {
+    public static void remove(IItemStack inputBlock) {
         if (!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
         CraftTweakerAPI.apply(new Remove(InputHelper.toStack(inputBlock)));
