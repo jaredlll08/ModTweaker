@@ -24,16 +24,16 @@ public class StokedCrucible {
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         StokedCrucibleRecipe r = new StokedCrucibleRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        CraftTweakerAPI.apply(new BulkAdd("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), r));
+        ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, @Optional IItemStack secondary) {
-        CraftTweakerAPI.apply(new BulkRemove("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY));
     }
 
     @ZenMethod
     public static void remove(IItemStack output, @Optional IItemStack secondary, @NotNull IIngredient[] inputs) {
-        CraftTweakerAPI.apply(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

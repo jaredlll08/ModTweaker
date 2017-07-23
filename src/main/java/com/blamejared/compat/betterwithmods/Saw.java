@@ -32,13 +32,13 @@ public class Saw {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             SawRecipe r = new SawRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-            CraftTweakerAPI.apply(new BMAdd("Set Saw Recipe", SawManager.INSTANCE, Lists.newArrayList(r)));
+            ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Saw Recipe", SawManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
 
     @ZenMethod
     public static void remove(IItemStack input) {
-        CraftTweakerAPI.apply(new BMRemove("Remove Saw Recipe", SawManager.INSTANCE, InputHelper.toStack(input)));
+        ModTweaker.LATE_REMOVALS.add(new BMRemove("Remove Saw Recipe", SawManager.INSTANCE, InputHelper.toStack(input)));
     }
 
 }

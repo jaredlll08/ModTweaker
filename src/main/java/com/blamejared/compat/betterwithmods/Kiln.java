@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Mod;
 import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -34,19 +35,19 @@ public class Kiln {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-            CraftTweakerAPI.apply(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
+            ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
 
     @ZenMethod
     public static void remove(IItemStack input) {
-        CraftTweakerAPI.apply(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(input)));
+        ModTweaker.LATE_REMOVALS.add(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(input)));
     }
 
 
     @ZenMethod
     public static void registerBlock(IItemStack block) {
-        CraftTweakerAPI.apply(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
+        ModTweaker.LATE_ADDITIONS.add(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
     }
 
 

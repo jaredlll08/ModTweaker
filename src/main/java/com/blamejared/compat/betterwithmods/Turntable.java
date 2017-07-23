@@ -41,7 +41,7 @@ public class Turntable {
     public static void remove(IItemStack inputBlock) {
         if (!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
-        CraftTweakerAPI.apply(new Remove(InputHelper.toStack(inputBlock)));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(inputBlock)));
     }
 
     public static class Remove extends BaseListRemoval<TurntableRecipe> {

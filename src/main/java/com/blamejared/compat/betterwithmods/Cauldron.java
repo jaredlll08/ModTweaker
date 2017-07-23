@@ -24,17 +24,17 @@ public class Cauldron {
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         CauldronRecipe r = new CauldronRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        CraftTweakerAPI.apply(new BulkAdd("Set Cauldron Recipe", CauldronManager.getInstance(), r));
+        ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Cauldron Recipe", CauldronManager.getInstance(), r));
     }
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        CraftTweakerAPI.apply(new BulkRemove("Set Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Set Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
     }
 
     @ZenMethod
     public static void remove(IItemStack output,@Optional IItemStack secondary, IIngredient[] inputs) {
-        CraftTweakerAPI.apply(new BulkRemove("Remove Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output),  secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output),  secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 
 }
