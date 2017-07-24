@@ -1,8 +1,12 @@
 package com.blamejared;
 
 import com.blamejared.api.annotations.*;
+import com.blamejared.brackets.MaterialBracketHandler;
 import com.blamejared.brackets.PotionBracketHandler;
+import com.blamejared.compat.tconstruct.TConstructHelper;
+import com.blamejared.compat.tconstruct.commands.TConstructLogger;
 import minetweaker.MineTweakerAPI;
+import minetweaker.MineTweakerImplementationAPI;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 import stanhebben.zenscript.annotations.Optional;
@@ -86,10 +90,13 @@ public class ModTweaker {
     public void init(FMLInitializationEvent e) {
         PotionBracketHandler.rebuildRegistry();
         MineTweakerAPI.registerBracketHandler(new PotionBracketHandler());
+        MineTweakerAPI.registerBracketHandler(new MaterialBracketHandler());
     }
     
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
-    
+        MineTweakerImplementationAPI.addMineTweakerCommand("tconstruct", new String[]{
+                "/minetweaker tconstruct [ casting | alloys | drying | modifiers | materials ]",
+                "    Lists all Tinker's Construct recipes from a specific category"}, new TConstructLogger());
     }
 }
