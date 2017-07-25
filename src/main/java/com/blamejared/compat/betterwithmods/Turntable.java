@@ -23,37 +23,39 @@ import java.util.List;
 @ZenClass("mods.betterwithmods.Turntable")
 @Handler("betterwithmods")
 public class Turntable {
-
+    
     @ZenMethod
     public static void add(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
-        if (InputHelper.isABlock(inputBlock))
+        if(InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
         ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(inputBlock), InputHelper.toStack(outputBlock), Lists.newArrayList(InputHelper.toStacks(additionalOutput))));
     }
-
+    
     public static class Add extends BMAdd {
+        
         public Add(ItemStack input, ItemStack output, List<ItemStack> scraps) {
             super(TurntableRecipeCategory.UID, TurntableManager.INSTANCE, Lists.newArrayList(new TurntableRecipe(input, output, scraps)));
         }
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack inputBlock) {
-        if (!InputHelper.isABlock(inputBlock))
+        if(!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
         ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(inputBlock)));
     }
-
+    
     public static class Remove extends BaseListRemoval<TurntableRecipe> {
+        
         protected Remove(ItemStack input) {
             super("Remove Turntable Recipe", TurntableManager.INSTANCE.getRecipes(), TurntableManager.INSTANCE.removeTurntableRecipe(input));
         }
-
+        
         @Override
         protected String getRecipeInfo(TurntableRecipe recipe) {
             return recipe.getStack().getDisplayName();
         }
     }
-
-
+    
+    
 }

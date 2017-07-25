@@ -17,23 +17,24 @@ import java.util.Map;
 @ZenClass("mods.betterwithmods.Buoyancy")
 @Handler("betterwithmods")
 public class Buoyancy {
-
+    
     @ZenMethod
     public static void set(IItemStack stack, float value) {
         StackMap<Float> map = new StackMap(1.0);
-        map.put(new Stack(InputHelper.toStack(stack)),value);
+        map.put(new Stack(InputHelper.toStack(stack)), value);
         CraftTweakerAPI.apply(new Set(map));
     }
-
+    
     public static class Set extends BaseMapAddition<Stack, Float> {
+        
         protected Set(StackMap<Float> map) {
             super("Set Item Buoyancy", HCBuoy.buoyancy, map);
         }
-
+        
         @Override
         protected String getRecipeInfo(Map.Entry<Stack, Float> recipe) {
             return recipe.getKey().toString() + " -> " + recipe.getValue();
         }
-
+        
     }
 }

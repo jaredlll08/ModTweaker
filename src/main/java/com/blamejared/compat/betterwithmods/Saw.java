@@ -24,21 +24,21 @@ import java.util.Arrays;
 @ZenClass("mods.betterwithmods.Saw")
 @Handler("betterwithmods")
 public class Saw {
-
+    
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IItemStack input) {
         ItemStack stack = InputHelper.toStack(input);
-        if (InputHelper.isABlock(stack)) {
+        if(InputHelper.isABlock(stack)) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             SawRecipe r = new SawRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
             ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Saw Recipe", SawManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack input) {
         ModTweaker.LATE_REMOVALS.add(new BMRemove("Remove Saw Recipe", SawManager.INSTANCE, InputHelper.toStack(input)));
     }
-
+    
 }

@@ -21,20 +21,20 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.betterwithmods.StokedCauldron")
 @Handler("betterwithmods")
 public class StokedCauldron {
-
+    
     @ZenMethod
     public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        StokedCauldronRecipe r = new StokedCauldronRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput),InputHelper.toObjects(inputs));
-       ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Stoked Cauldron Recipe", StokedCauldronManager.getInstance(),r));
+        StokedCauldronRecipe r = new StokedCauldronRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
+        ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Stoked Cauldron Recipe", StokedCauldronManager.getInstance(), r));
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack output) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Cauldron Recipe", StokedCauldronManager.getInstance(),InputHelper.toStack(output), ItemStack.EMPTY));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Cauldron Recipe", StokedCauldronManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack output, IIngredient[] inputs) {
-       ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Cauldron Recipe", StokedCauldronManager.getInstance(),InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Cauldron Recipe", StokedCauldronManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

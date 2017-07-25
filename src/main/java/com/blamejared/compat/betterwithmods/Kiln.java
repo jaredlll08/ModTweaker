@@ -27,38 +27,39 @@ import java.util.Arrays;
 @ZenClass("mods.betterwithmods.Kiln")
 @Handler("betterwithmods")
 public class Kiln {
-
+    
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IItemStack input) {
         ItemStack stack = InputHelper.toStack(input);
-        if (InputHelper.isABlock(stack)) {
+        if(InputHelper.isABlock(stack)) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             ItemStack[] outputs = InputHelper.toStacks(output);
             KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
             ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
         }
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack input) {
         ModTweaker.LATE_REMOVALS.add(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(input)));
     }
-
-
+    
+    
     @ZenMethod
     public static void registerBlock(IItemStack block) {
         ModTweaker.LATE_ADDITIONS.add(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
     }
-
-
+    
+    
     public static class KilnBlock extends BaseUndoable {
+        
         private IBlockState state;
-
+        
         protected KilnBlock(IBlockState state) {
             super("Set Kiln Structure Block");
             this.state = state;
         }
-
+        
         @Override
         public void apply() {
             KilnStructureManager.registerKilnBlock(state);
