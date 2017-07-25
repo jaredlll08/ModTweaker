@@ -42,6 +42,9 @@ repositories {
     maven {
         url "http://www.ryanliptak.com/maven/"
     }
+    maven {
+        url "https://maven.chaosfield.at/"
+    }
 }
 
 dependencies {
@@ -49,6 +52,8 @@ dependencies {
     deobfCompile "com.blamejared:MTLib:3.0.0.1"
     deobfCompile "cofh:ThermalExpansion:1.12-5.3.3.15:deobf"
     deobfCompile "betterwithmods:BetterWithMods:1.12-1.3.7-14"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12-r113"
+
 }
 
 processResources {
