@@ -2,6 +2,7 @@ package com.blamejared;
 
 import com.blamejared.api.annotations.Handler;
 import crafttweaker.*;
+import de.ellpeck.actuallyadditions.mod.ActuallyAdditions;
 import mezz.jei.JustEnoughItems;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -22,8 +23,7 @@ public class ModTweaker {
         e.getAsmData().getAll(Handler.class.getCanonicalName()).forEach(data -> {
             try {
                 Class clazz = Class.forName(data.getClassName(), false, getClass().getClassLoader());
-                Handler handl = (Handler) clazz.getAnnotation(Handler.class);
-                if(Loader.isModLoaded(handl.value())) {
+                if(Loader.isModLoaded(((Handler) clazz.getAnnotation(Handler.class)).value())) {
                     CraftTweakerAPI.registerClass(clazz);
                 }
             } catch(ClassNotFoundException e1) {
@@ -42,8 +42,11 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
-        LATE_REMOVALS.forEach(CraftTweakerAPI::apply);
-        LATE_ADDITIONS.forEach(CraftTweakerAPI::apply);
-    
+        try {
+            LATE_REMOVALS.forEach(CraftTweakerAPI::apply);
+            LATE_ADDITIONS.forEach(CraftTweakerAPI::apply);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
