@@ -41,23 +41,23 @@ public class Casting {
 
     // Adding a TConstruct Basic Casting recipe
     @ZenMethod
-    @Document({"output", "liquid", "cast", "consumeCast", "switchOutput", "timeInTicks"})
-    public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional boolean switchOutput, @Optional int timeInTicks) {
+    @Document({"output", "liquid", "cast", "consumeCast", "timeInTicks"})
+    public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional int timeInTicks) {
         if(TConstructHelper.castingRecipeCategory == null)
             TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
-        addRecipe(output, liquid, cast, consumeCast, switchOutput, timeInTicks, TConstructHelper.basinCasting, TConstructHelper.castingRecipeCategory.castingBasin);
+        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.basinCasting, TConstructHelper.castingRecipeCategory.castingBasin);
     }
 
     // Adding a TConstruct Table Casting recipe
     @ZenMethod
-    @Document({"output", "liquid", "cast", "consumeCast", "switchOutput", "timeInTicks"})
-    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional boolean switchOutput, @Optional int timeInTicks) {
+    @Document({"output", "liquid", "cast", "consumeCast", "timeInTicks"})
+    public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional int timeInTicks) {
         if(TConstructHelper.castingRecipeCategory == null)
             TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
-        addRecipe(output, liquid, cast, consumeCast, switchOutput, timeInTicks, TConstructHelper.tableCasting, TConstructHelper.castingRecipeCategory.castingTable);
+        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.tableCasting, TConstructHelper.castingRecipeCategory.castingTable);
     }
 
-    public static void addRecipe(IItemStack output, ILiquidStack liquid, IItemStack cast, boolean consumeCast, boolean switchOutput, int timeInTicks, LinkedList<ICastingRecipe> list, IDrawable castingOn) {
+    public static void addRecipe(IItemStack output, ILiquidStack liquid, IItemStack cast, boolean consumeCast, int timeInTicks, LinkedList<ICastingRecipe> list, IDrawable castingOn) {
         if(liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -74,7 +74,7 @@ public class Casting {
             timeInTicks = CastingRecipe.calcCooldownTime(fluid.getFluid(), fluid.amount);
         }
 
-        CastingRecipe recipe = new CastingRecipe(toStack(output), match, fluid, timeInTicks, consumeCast, switchOutput);
+        CastingRecipe recipe = new CastingRecipe(toStack(output), match, fluid, timeInTicks, consumeCast, false);
         MineTweakerAPI.apply(new Add(recipe, list, castingOn));
     }
 

@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * Created by Jared for 1.10.2.
- * Adapted by Rinart73 on 24.07.17 for 1.11.2
+ * Adapted by Rinart73 on 7/24/2017 for 1.11.2
  */
 public class TConstructHelper {
     public static List<AlloyRecipe> alloys = null;
@@ -84,9 +84,7 @@ public class TConstructHelper {
         }
     }
 
-    private TConstructHelper() {
-
-    }
+    private TConstructHelper() {}
 
     //Returns a Drying Recipe, using reflection as the constructor is not visible
     public static DryingRecipe getDryingRecipe(RecipeMatch input, ItemStack output, int time) {

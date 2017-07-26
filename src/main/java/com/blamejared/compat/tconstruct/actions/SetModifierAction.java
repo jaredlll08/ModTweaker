@@ -2,12 +2,11 @@ package com.blamejared.compat.tconstruct.actions;
 
 import minetweaker.IUndoableAction;
 import com.blamejared.brackets.util.IMaterial;
-import slimeknights.tconstruct.library.materials.HandleMaterialStats;
-import slimeknights.tconstruct.library.materials.IMaterialStats;
-import slimeknights.tconstruct.library.materials.Material;
+import slimeknights.tconstruct.library.materials.*;
 
 /**
  * Created by Jared on 6/16/2016.
+ * Adapted by Rinart73 on 24.07.17 for 1.11.2
  */
 public class SetModifierAction implements IUndoableAction {
 
@@ -20,7 +19,17 @@ public class SetModifierAction implements IUndoableAction {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;
-        this.oldValue = ((HandleMaterialStats) ((Material) material.getInternal()).getStats("handle")).modifier;
+        IMaterialStats oldStat = ((Material) material.getInternal()).getStats(stat);
+        if (oldStat instanceof HandleMaterialStats)
+            this.oldValue = ((HandleMaterialStats) oldStat).modifier;
+        else if (oldStat instanceof BowStringMaterialStats)
+            this.oldValue = ((BowStringMaterialStats) oldStat).modifier;
+        else if (oldStat instanceof ArrowShaftMaterialStats)
+            this.oldValue = ((ArrowShaftMaterialStats) oldStat).modifier;
+        else if (oldStat instanceof FletchingMaterialStats)
+            this.oldValue = ((FletchingMaterialStats) oldStat).modifier;
+        else
+            this.oldValue = -1;
     }
 
     private static void set(Material material, String stat, float modifier) {
@@ -29,8 +38,18 @@ public class SetModifierAction implements IUndoableAction {
             HandleMaterialStats handleStat = (HandleMaterialStats) oldStat;
             HandleMaterialStats newHandle = new HandleMaterialStats(modifier, handleStat.durability);
             material.addStats(newHandle);
+        } else if (oldStat instanceof BowStringMaterialStats) {
+            BowStringMaterialStats newBowString = new BowStringMaterialStats(modifier);
+            material.addStats(newBowString);
+        } else if (oldStat instanceof ArrowShaftMaterialStats) {
+            ArrowShaftMaterialStats arrowShaftStat = (ArrowShaftMaterialStats) oldStat;
+            ArrowShaftMaterialStats newArrowShaft = new ArrowShaftMaterialStats(modifier, arrowShaftStat.bonusAmmo);
+            material.addStats(newArrowShaft);
+        } else if (oldStat instanceof FletchingMaterialStats) {
+            FletchingMaterialStats fletchingStat = (FletchingMaterialStats) oldStat;
+            FletchingMaterialStats newFletching = new FletchingMaterialStats(fletchingStat.accuracy, modifier);
+            material.addStats(newFletching);
         }
-
     }
 
     @Override

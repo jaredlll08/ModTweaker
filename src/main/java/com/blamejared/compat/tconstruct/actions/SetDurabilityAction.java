@@ -6,6 +6,7 @@ import slimeknights.tconstruct.library.materials.*;
 
 /**
  * Created by Jared on 6/16/2016.
+ * Adapted by Rinart73 on 24.07.17 for 1.11.2
  */
 public class SetDurabilityAction implements IUndoableAction {
 
@@ -18,7 +19,15 @@ public class SetDurabilityAction implements IUndoableAction {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;
-        this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats("head")).durability;
+        IMaterialStats oldStat = ((Material) material.getInternal()).getStats(stat);
+        if (oldStat instanceof HeadMaterialStats)
+            this.oldValue = ((HeadMaterialStats) oldStat).durability;
+        else if (oldStat instanceof HandleMaterialStats)
+            this.oldValue = ((HandleMaterialStats) oldStat).durability;
+        else if (oldStat instanceof ExtraMaterialStats)
+            this.oldValue = ((ExtraMaterialStats) oldStat).extraDurability;
+        else
+            this.oldValue = -1;
     }
 
     private static void set(Material material, String stat, int durability) {
@@ -55,12 +64,12 @@ public class SetDurabilityAction implements IUndoableAction {
 
     @Override
     public String describe() {
-        return "Setting durability of " + material.getName() + " to " + newValue + " for " + stat;
+        return "Setting Durability of " + material.getName() + " to " + newValue + " for " + stat;
     }
 
     @Override
     public String describeUndo() {
-        return "Reverting durability of " + material.getName() + " to " + oldValue + " for " + stat;
+        return "Reverting Durability of " + material.getName() + " to " + oldValue + " for " + stat;
     }
 
     @Override

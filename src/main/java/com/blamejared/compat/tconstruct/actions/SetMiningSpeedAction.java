@@ -20,7 +20,7 @@ public class SetMiningSpeedAction implements IUndoableAction {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;
-        this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats("head")).miningspeed;
+        this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats(stat)).miningspeed;
     }
 
     private static void set(Material material, String stat, float miningSpeed) {

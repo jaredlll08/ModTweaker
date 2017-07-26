@@ -1,36 +1,35 @@
 package com.blamejared.compat.tconstruct.actions;
 
-import minetweaker.IUndoableAction;
 import com.blamejared.brackets.util.IMaterial;
-import slimeknights.tconstruct.library.materials.HeadMaterialStats;
+import minetweaker.IUndoableAction;
+import slimeknights.tconstruct.library.materials.ArrowShaftMaterialStats;
 import slimeknights.tconstruct.library.materials.IMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
 
 /**
- * Created by Jared on 6/16/2016.
+ * Created by Rinart73 on 7/25/2017.
  */
-public class SetHarvestLevelAction implements IUndoableAction {
+public class SetBonusAmmoAction implements IUndoableAction {
 
     private final IMaterial material;
     private final String stat;
     private final int newValue;
     private final int oldValue;
 
-    public SetHarvestLevelAction(IMaterial material, String stat, int newValue) {
+    public SetBonusAmmoAction(IMaterial material, String stat, int newValue) {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;
-        this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats(stat)).harvestLevel;
+        this.oldValue = ((ArrowShaftMaterialStats) ((Material) material.getInternal()).getStats(stat)).bonusAmmo;
     }
 
-    private static void set(Material material, String stat, int level) {
+    private static void set(Material material, String stat, int bonusAmmo) {
         IMaterialStats oldStat = material.getStats(stat);
-        if (oldStat instanceof HeadMaterialStats) {
-            HeadMaterialStats headStat = (HeadMaterialStats) oldStat;
-            HeadMaterialStats newHead = new HeadMaterialStats(headStat.durability, headStat.miningspeed, headStat.attack, level);
-            material.addStats(newHead);
+        if (oldStat instanceof ArrowShaftMaterialStats) {
+            ArrowShaftMaterialStats arrowShaftStat = (ArrowShaftMaterialStats) oldStat;
+            ArrowShaftMaterialStats newArrowShaft = new ArrowShaftMaterialStats(arrowShaftStat.modifier, bonusAmmo);
+            material.addStats(newArrowShaft);
         }
-
     }
 
     @Override
@@ -50,12 +49,12 @@ public class SetHarvestLevelAction implements IUndoableAction {
 
     @Override
     public String describe() {
-        return "Setting Harvest Level of " + material.getName() + " to " + newValue + " for " + stat;
+        return "Setting Bonus Ammo of " + material.getName() + " to " + newValue + " for " + stat;
     }
 
     @Override
     public String describeUndo() {
-        return "Reverting Harvest Level of " + material.getName() + " to " + oldValue + " for " + stat;
+        return "Reverting Bonus Ammo of " + material.getName() + " to " + oldValue + " for " + stat;
     }
 
     @Override
