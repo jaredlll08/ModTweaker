@@ -2,6 +2,7 @@ package com.blamejared;
 
 import com.blamejared.api.annotations.Handler;
 import crafttweaker.*;
+import crafttweaker.mc1120.commands.*;
 import de.ellpeck.actuallyadditions.mod.ActuallyAdditions;
 import mezz.jei.JustEnoughItems;
 import net.minecraftforge.fml.common.*;
@@ -34,6 +35,7 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
+        
     }
     
     @Mod.EventHandler
