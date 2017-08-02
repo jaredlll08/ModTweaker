@@ -23,7 +23,7 @@ public class SetAttackAction implements IUndoableAction {
         this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats(stat)).attack;
     }
 
-    private static void set(Material material, String stat, float attack) {
+    private void set(Material material, String stat, float attack) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof HeadMaterialStats) {
             HeadMaterialStats headStat = (HeadMaterialStats) oldStat;

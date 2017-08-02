@@ -8,7 +8,7 @@ import stanhebben.zenscript.annotations.*;
 @ZenClass("modtweaker.material.IMaterialDefinition")
 public interface IMaterialDefinition {
 
-    @ZenOperator(OperatorType.MUL)
+    @ZenGetter("material")
     public IMaterial asMaterial();
 
     @ZenGetter("name")

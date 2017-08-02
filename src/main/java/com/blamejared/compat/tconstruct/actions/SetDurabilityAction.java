@@ -30,7 +30,7 @@ public class SetDurabilityAction implements IUndoableAction {
             this.oldValue = -1;
     }
 
-    private static void set(Material material, String stat, int durability) {
+    private void set(Material material, String stat, int durability) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof HeadMaterialStats) {
             HeadMaterialStats headStat = (HeadMaterialStats) oldStat;

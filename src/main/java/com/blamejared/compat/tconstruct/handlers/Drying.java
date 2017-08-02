@@ -11,7 +11,6 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.DryingRecipe;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.plugin.jei.DryingRecipeCategory;
 import stanhebben.zenscript.annotations.*;
 
 import java.util.LinkedList;
@@ -58,7 +57,7 @@ public class Drying {
 
         @Override
         public String getJEICategory(DryingRecipe recipe) {
-            return DryingRecipeCategory.CATEGORY;
+            return "tconstruct.dryingrack";
         }
     }
 
@@ -96,7 +95,7 @@ public class Drying {
 
         @Override
         public String getJEICategory(DryingRecipe recipe) {
-            return DryingRecipeCategory.CATEGORY;
+            return "tconstruct.dryingrack";
         }
     }
 }

@@ -4,6 +4,8 @@ import gnu.trove.map.hash.THashMap;
 import com.blamejared.mtlib.helpers.ReflectionHelper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.recipe.IRecipeCategory;
+import minetweaker.MineTweakerAPI;
+import minetweaker.api.compat.DummyJEIRecipeRegistry;
 import minetweaker.api.entity.IEntityDefinition;
 import minetweaker.mods.jei.JEIAddonPlugin;
 import net.minecraft.entity.Entity;
@@ -47,6 +49,9 @@ public class TConstructHelper {
     //allows to delete casting recipes from JEI
     public static Map<ICastingRecipe, CastingRecipeWrapper> castingRecipeWrappers = new HashMap<>();
 
+    //is JEI installed
+    public static boolean isJei = false;
+
 
     static {
         try {
@@ -60,23 +65,29 @@ public class TConstructHelper {
             fuelMap = ReflectionHelper.getStaticObject(TinkerRegistry.class, "smelteryFuels");
 
             //Get ResourceLocations for Entities class paths and names
-            for(ResourceLocation r : EntityList.getEntityNameList()) {
+            for (ResourceLocation r : EntityList.getEntityNameList()) {
                 Class<? extends Entity> clazz = EntityList.getClass(r);
-                if(clazz == null) continue;
+                if (clazz == null) continue;
                 entityLocationsByClassPath.put(clazz.getName(), r);
             }
 
+            //check if JEI is installed
+            if(!(MineTweakerAPI.getIjeiRecipeRegistry() instanceof DummyJEIRecipeRegistry))
+                isJei = true;
+
             //Get all CastingRecipeWrapper-s and get CastingRecipes for them
             //It's a terrible and slow way(~4ms), but TConstruct leaves no way to get CastingRecipeWrapper from CastingRecipe
-            ArrayList<String> categoryName = new ArrayList<>();
-            categoryName.add(CastingRecipeCategory.CATEGORY);
-            List<IRecipeCategory> categories = JEIAddonPlugin.recipeRegistry.getRecipeCategories(categoryName);
-            if(categories.size() != 0) {
-                List<CastingRecipeWrapper> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(categories.get(0));
-                for(CastingRecipeWrapper wrapper : wrappers) {
-                    Object recipe = ReflectionHelper.getObject(wrapper, "recipe");
-                    if(recipe instanceof ICastingRecipe)
-                        castingRecipeWrappers.put((ICastingRecipe) recipe, wrapper);
+            if(isJei) {
+                ArrayList<String> categoryName = new ArrayList<>();
+                categoryName.add(CastingRecipeCategory.CATEGORY);
+                List<IRecipeCategory> categories = JEIAddonPlugin.recipeRegistry.getRecipeCategories(categoryName);
+                if (categories.size() != 0) {
+                    List<CastingRecipeWrapper> wrappers = JEIAddonPlugin.recipeRegistry.getRecipeWrappers(categories.get(0));
+                    for (CastingRecipeWrapper wrapper : wrappers) {
+                        Object recipe = ReflectionHelper.getObject(wrapper, "recipe");
+                        if (recipe instanceof ICastingRecipe)
+                            castingRecipeWrappers.put((ICastingRecipe) recipe, wrapper);
+                    }
                 }
             }
 

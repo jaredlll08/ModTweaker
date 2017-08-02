@@ -39,11 +39,6 @@ public class MaterialBracketHandler implements IBracketHandler {
 
     @Override
     public IZenSymbol resolve(IEnvironmentGlobal environment, List<Token> tokens) {
-        // any symbol
-        if (tokens.size() == 1 && tokens.get(0).getValue().equals("*")) {
-            return symbolAny;
-        }
-
         if (tokens.size() > 2) {
             if (tokens.get(0).getValue().equals("material") && tokens.get(1).getValue().equals(":")) {
                 return find(environment, tokens, 2, tokens.size());
@@ -64,7 +59,7 @@ public class MaterialBracketHandler implements IBracketHandler {
             MineTweakerAPI.logInfo("Material wasn't null");
             return new MaterialReferenceSymbol(environment, valueBuilder.toString());
         }
-        MineTweakerAPI.logInfo("Material was null");
+        MineTweakerAPI.logError("Material was null");
 
         return null;
     }

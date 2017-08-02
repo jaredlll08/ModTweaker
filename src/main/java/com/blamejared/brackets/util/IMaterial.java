@@ -12,7 +12,7 @@ import stanhebben.zenscript.annotations.ZenSetter;
 @ZenClass("modtweaker.materials.IMaterial")
 public interface IMaterial {
 
-    @ZenGetter
+    @ZenGetter("name")
     String getName();
 
     @ZenMethod

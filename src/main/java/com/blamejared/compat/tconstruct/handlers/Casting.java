@@ -4,7 +4,7 @@ import com.blamejared.api.annotations.*;
 import com.blamejared.compat.tconstruct.TConstructHelper;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
-import mezz.jei.api.gui.IDrawable;
+//import mezz.jei.api.gui.IDrawable;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.*;
 import minetweaker.api.liquid.ILiquidStack;
@@ -13,7 +13,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.smeltery.*;
-import slimeknights.tconstruct.plugin.jei.CastingRecipeCategory;
 import slimeknights.tconstruct.plugin.jei.CastingRecipeWrapper;
 import slimeknights.tconstruct.plugin.jei.JEIPlugin;
 import stanhebben.zenscript.annotations.Optional;
@@ -43,21 +42,29 @@ public class Casting {
     @ZenMethod
     @Document({"output", "liquid", "cast", "consumeCast", "timeInTicks"})
     public static void addBasinRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional int timeInTicks) {
-        if(TConstructHelper.castingRecipeCategory == null)
-            TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
-        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.basinCasting, TConstructHelper.castingRecipeCategory.castingBasin);
+        Object castingOn = null;
+        if(TConstructHelper.isJei) {
+            if(TConstructHelper.castingRecipeCategory == null)
+                TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
+            castingOn = TConstructHelper.castingRecipeCategory.castingBasin;
+        }
+        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.basinCasting, castingOn);
     }
 
     // Adding a TConstruct Table Casting recipe
     @ZenMethod
     @Document({"output", "liquid", "cast", "consumeCast", "timeInTicks"})
     public static void addTableRecipe(IItemStack output, ILiquidStack liquid, @Optional IItemStack cast, @Optional boolean consumeCast, @Optional int timeInTicks) {
-        if(TConstructHelper.castingRecipeCategory == null)
-            TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
-        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.tableCasting, TConstructHelper.castingRecipeCategory.castingTable);
+        Object castingOn = null;
+        if(TConstructHelper.isJei) {
+            if(TConstructHelper.castingRecipeCategory == null)
+                TConstructHelper.castingRecipeCategory = TConstructHelper.getCastingRecipeCategory(JEIPlugin.jeiHelpers.getGuiHelper());
+            castingOn = TConstructHelper.castingRecipeCategory.castingTable;
+        }
+        addRecipe(output, liquid, cast, consumeCast, timeInTicks, TConstructHelper.tableCasting, castingOn);
     }
 
-    public static void addRecipe(IItemStack output, ILiquidStack liquid, IItemStack cast, boolean consumeCast, int timeInTicks, LinkedList<ICastingRecipe> list, IDrawable castingOn) {
+    public static void addRecipe(IItemStack output, ILiquidStack liquid, IItemStack cast, boolean consumeCast, int timeInTicks, LinkedList<ICastingRecipe> list, Object castingOn) {
         if(liquid == null || output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -82,10 +89,10 @@ public class Casting {
     //Passes the list to the base list implementation, and adds the recipe
     private static class Add extends BaseListAddition<ICastingRecipe> {
 
-        IDrawable castingOn;
+        Object castingOn;
         CastingRecipeWrapper wrapper;
 
-        public Add(CastingRecipe recipe, LinkedList<ICastingRecipe> list, IDrawable castingOn) {
+        public Add(CastingRecipe recipe, LinkedList<ICastingRecipe> list, Object castingOn) {
             super(Casting.name, list);
             this.recipes.add(recipe);
             this.castingOn = castingOn;
@@ -97,9 +104,11 @@ public class Casting {
                 if(recipe != null) {
                     if(list.add(recipe)) {
                         successful.add(recipe);
-                        wrapper = new CastingRecipeWrapper((CastingRecipe) recipe, castingOn);
-                        MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(wrapper);
-                        TConstructHelper.castingRecipeWrappers.put(recipe, wrapper);
+                        if(TConstructHelper.isJei) {
+                            wrapper = new CastingRecipeWrapper((CastingRecipe) recipe, (mezz.jei.api.gui.IDrawable)castingOn);
+                            MineTweakerAPI.getIjeiRecipeRegistry().addRecipe(wrapper);
+                            TConstructHelper.castingRecipeWrappers.put(recipe, wrapper);
+                        }
                     } else {
                         LogHelper.logError(String.format("Error adding %s Recipe for %s", name, getRecipeInfo(recipe)));
                     }
@@ -115,7 +124,7 @@ public class Casting {
                 if(recipe != null) {
                     if(!list.remove(recipe)) {
                         LogHelper.logError(String.format("Error removing %s Recipe for %s", name, this.getRecipeInfo(recipe)));
-                    } else {
+                    } else if(TConstructHelper.isJei) {
                         MineTweakerAPI.getIjeiRecipeRegistry().removeRecipe(wrapper);
                         TConstructHelper.castingRecipeWrappers.remove(recipe);
                     }
@@ -132,7 +141,7 @@ public class Casting {
 
         @Override
         public String getJEICategory(ICastingRecipe recipe) {
-            return CastingRecipeCategory.CATEGORY;
+            return "tconstruct.casting_table";
         }
     }
 
@@ -141,17 +150,17 @@ public class Casting {
     @ZenMethod
     @Document({"output", "liquid", "cast"})
     public static void removeBasinRecipe(IIngredient output, @Optional IIngredient liquid, @Optional IItemStack cast) {
-        removeRecipe(output, liquid, cast, TConstructHelper.basinCasting, TConstructHelper.castingRecipeCategory.castingBasin);
+        removeRecipe(output, liquid, cast, TConstructHelper.basinCasting);
     }
 
     // Removing a TConstruct Table Casting recipe
     @ZenMethod
     @Document({"output", "liquid", "cast"})
     public static void removeTableRecipe(IIngredient output, @Optional IIngredient liquid, @Optional IItemStack cast) {
-        removeRecipe(output, liquid, cast, TConstructHelper.tableCasting, TConstructHelper.castingRecipeCategory.castingTable);
+        removeRecipe(output, liquid, cast, TConstructHelper.tableCasting);
     }
 
-    public static void removeRecipe(IIngredient output, IIngredient liquid, IItemStack cast, LinkedList<ICastingRecipe> list, IDrawable castingOn) {
+    public static void removeRecipe(IIngredient output, IIngredient liquid, IItemStack cast, LinkedList<ICastingRecipe> list) {
         if(output == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -189,7 +198,7 @@ public class Casting {
         }
 
         if(!recipes.isEmpty()) {
-            MineTweakerAPI.apply(new Remove(list, recipes, castingOn));
+            MineTweakerAPI.apply(new Remove(list, recipes));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for output %s, material %s and cast %s. Command ignored!", Casting.name, output.toString(), liquid.toString(), cast != null ? cast.toString() : null));
         }
@@ -198,11 +207,8 @@ public class Casting {
     // Removes all matching recipes, apply is never the same for anything, so will always need to override it
     private static class Remove extends BaseListRemoval<ICastingRecipe> {
 
-        IDrawable castingOn;
-
-        public Remove(List<ICastingRecipe> list, List<ICastingRecipe> recipes, IDrawable castingOn) {
+        public Remove(List<ICastingRecipe> list, List<ICastingRecipe> recipes) {
             super(Casting.name, list, recipes);
-            this.castingOn = castingOn;
         }
 
         @Override
@@ -247,7 +253,7 @@ public class Casting {
 
         @Override
         public String getJEICategory(ICastingRecipe recipe) {
-            return CastingRecipeCategory.CATEGORY;
+            return "tconstruct.casting_table";
         }
 
     }

@@ -131,7 +131,7 @@ public class MCMaterial implements IMaterial {
 
     @Override
     public void setBonusDamageBow(float bonusDamage) {
-        MineTweakerAPI.apply(new SetRangeAction(this, MaterialTypes.BOW, bonusDamage));
+        MineTweakerAPI.apply(new SetBonusDamageAction(this, MaterialTypes.BOW, bonusDamage));
     }
 
     @Override

@@ -23,7 +23,7 @@ public class SetRangeAction implements IUndoableAction {
         this.oldValue = ((BowMaterialStats) ((Material) material.getInternal()).getStats(stat)).range;
     }
 
-    private static void set(Material material, String stat, float range) {
+    private void set(Material material, String stat, float range) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof BowMaterialStats) {
             BowMaterialStats bowStat = (BowMaterialStats) oldStat;

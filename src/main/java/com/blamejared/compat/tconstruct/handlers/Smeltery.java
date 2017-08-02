@@ -14,8 +14,6 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.AlloyRecipe;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
-import slimeknights.tconstruct.plugin.jei.AlloyRecipeCategory;
-import slimeknights.tconstruct.plugin.jei.SmeltingRecipeCategory;
 import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.annotations.Optional;
 
@@ -140,7 +138,7 @@ public class Smeltery {
 
         @Override
         public String getJEICategory(AlloyRecipe recipe) {
-            return AlloyRecipeCategory.CATEGORY;
+            return "tconstruct.alloy";
         }
     }
 
@@ -178,7 +176,7 @@ public class Smeltery {
 
         @Override
         public String getJEICategory(AlloyRecipe recipe) {
-            return AlloyRecipeCategory.CATEGORY;
+            return "tconstruct.alloy";
         }
     }
 
@@ -225,7 +223,7 @@ public class Smeltery {
 
         @Override
         public String getJEICategory(MeltingRecipe recipe) {
-            return SmeltingRecipeCategory.CATEGORY;
+            return "tconstruct.smeltery";
         }
     }
 
@@ -261,7 +259,7 @@ public class Smeltery {
 
         @Override
         public String getJEICategory(MeltingRecipe recipe) {
-            return SmeltingRecipeCategory.CATEGORY;
+            return "tconstruct.smeltery";
         }
     }
 

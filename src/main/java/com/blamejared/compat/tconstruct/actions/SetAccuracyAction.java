@@ -23,7 +23,7 @@ public class SetAccuracyAction implements IUndoableAction {
         this.oldValue = ((FletchingMaterialStats) ((Material) material.getInternal()).getStats(stat)).accuracy;
     }
 
-    private static void set(Material material, String stat, float accuracy) {
+    private void set(Material material, String stat, float accuracy) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof FletchingMaterialStats) {
             FletchingMaterialStats fletchingStat = (FletchingMaterialStats) oldStat;

@@ -32,7 +32,7 @@ public class SetModifierAction implements IUndoableAction {
             this.oldValue = -1;
     }
 
-    private static void set(Material material, String stat, float modifier) {
+    private void set(Material material, String stat, float modifier) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof HandleMaterialStats) {
             HandleMaterialStats handleStat = (HandleMaterialStats) oldStat;

@@ -23,7 +23,7 @@ public class SetHarvestLevelAction implements IUndoableAction {
         this.oldValue = ((HeadMaterialStats) ((Material) material.getInternal()).getStats(stat)).harvestLevel;
     }
 
-    private static void set(Material material, String stat, int level) {
+    private void set(Material material, String stat, int level) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof HeadMaterialStats) {
             HeadMaterialStats headStat = (HeadMaterialStats) oldStat;

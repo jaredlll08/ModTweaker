@@ -23,7 +23,7 @@ public class SetBonusAmmoAction implements IUndoableAction {
         this.oldValue = ((ArrowShaftMaterialStats) ((Material) material.getInternal()).getStats(stat)).bonusAmmo;
     }
 
-    private static void set(Material material, String stat, int bonusAmmo) {
+    private void set(Material material, String stat, int bonusAmmo) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof ArrowShaftMaterialStats) {
             ArrowShaftMaterialStats arrowShaftStat = (ArrowShaftMaterialStats) oldStat;

@@ -23,7 +23,7 @@ public class SetBonusDamageAction implements IUndoableAction {
         this.oldValue = ((BowMaterialStats) ((Material) material.getInternal()).getStats(stat)).bonusDamage;
     }
 
-    private static void set(Material material, String stat, float bonusDamage) {
+    private void set(Material material, String stat, float bonusDamage) {
         IMaterialStats oldStat = material.getStats(stat);
         if (oldStat instanceof BowMaterialStats) {
             BowMaterialStats bowStat = (BowMaterialStats) oldStat;
