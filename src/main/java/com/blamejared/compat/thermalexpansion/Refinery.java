@@ -5,6 +5,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
@@ -12,7 +13,8 @@ import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.*;
 
 @ZenClass("mods.thermalexpansion.Refinery")
-@Handler("thermalexpansion")
+@ModOnly("thermalexpansion")
+@ZenRegister
 public class Refinery {
     
     @ZenMethod

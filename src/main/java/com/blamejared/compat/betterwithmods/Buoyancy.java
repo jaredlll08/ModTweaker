@@ -8,6 +8,7 @@ import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,7 +16,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.Map;
 
 @ZenClass("mods.betterwithmods.Buoyancy")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Buoyancy {
     
     @ZenMethod

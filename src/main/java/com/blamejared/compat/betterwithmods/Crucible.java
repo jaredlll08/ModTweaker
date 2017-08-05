@@ -9,6 +9,7 @@ import com.blamejared.compat.betterwithmods.util.BulkAdd;
 import com.blamejared.compat.betterwithmods.util.BulkRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,8 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.betterwithmods.Crucible")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Crucible {
     
     @ZenMethod

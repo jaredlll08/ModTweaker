@@ -5,13 +5,15 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.parser.expression.ParsedExpression;
 
 @ZenClass("mods.thermalexpansion.InductionSmelter")
-@Handler("thermalexpansion")
+@ModOnly("thermalexpansion")
+@ZenRegister
 public class InductionSmelter {
     
     @ZenMethod

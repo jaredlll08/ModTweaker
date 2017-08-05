@@ -5,6 +5,7 @@ import com.blamejared.api.annotations.*;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.CompostRecipe;
@@ -14,7 +15,8 @@ import stanhebben.zenscript.annotations.*;
 import java.util.*;
 
 @ZenClass("mods.actuallyadditions.Compost")
-@Handler("actuallyadditions")
+@ModOnly("actuallyadditions")
+@ZenRegister
 public class Compost {
     
     @ZenMethod

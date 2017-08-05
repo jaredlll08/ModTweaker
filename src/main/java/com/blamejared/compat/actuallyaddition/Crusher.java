@@ -4,6 +4,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.*;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.CrusherRecipe;
@@ -12,8 +13,9 @@ import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
 
-@Handler("actuallyadditions")
 @ZenClass("mods.actuallyadditions.Crusher")
+@ModOnly("actuallyadditions")
+@ZenRegister
 public class Crusher {
     
     @ZenMethod

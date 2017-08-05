@@ -4,6 +4,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.*;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.LensConversionRecipe;
@@ -12,7 +13,8 @@ import stanhebben.zenscript.annotations.*;
 import java.util.*;
 
 @ZenClass("mods.actuallyadditions.AtomicReconstructor")
-@Handler("actuallyadditions")
+@ModOnly("actuallyadditions")
+@ZenRegister
 public class AtomicReconstructor {
     
     @ZenMethod

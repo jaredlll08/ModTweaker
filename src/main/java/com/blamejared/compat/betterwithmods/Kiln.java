@@ -12,6 +12,7 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.google.common.collect.Lists;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +26,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.Arrays;
 
 @ZenClass("mods.betterwithmods.Kiln")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Kiln {
     
     @ZenMethod

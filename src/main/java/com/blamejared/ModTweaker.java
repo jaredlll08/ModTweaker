@@ -21,16 +21,6 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) throws IOException {
-        e.getAsmData().getAll(Handler.class.getCanonicalName()).forEach(data -> {
-            try {
-                Class clazz = Class.forName(data.getClassName(), false, getClass().getClassLoader());
-                if(Loader.isModLoaded(((Handler) clazz.getAnnotation(Handler.class)).value())) {
-                    CraftTweakerAPI.registerClass(clazz);
-                }
-            } catch(ClassNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        });
     }
     
     @Mod.EventHandler

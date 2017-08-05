@@ -10,6 +10,7 @@ import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.google.common.collect.Lists;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -22,7 +23,8 @@ import java.util.Arrays;
 
 
 @ZenClass("mods.betterwithmods.Saw")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Saw {
     
     @ZenMethod

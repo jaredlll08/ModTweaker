@@ -5,12 +5,14 @@ import com.blamejared.ModTweaker;
 import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
 
 @ZenClass("mods.thermalexpansion.Insolator")
-@Handler("thermalexpansion")
+@ModOnly("thermalexpansion")
+@ZenRegister
 public class Insolator {
     
     @ZenMethod

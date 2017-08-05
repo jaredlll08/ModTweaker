@@ -12,6 +12,7 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.google.common.collect.Lists;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -21,7 +22,8 @@ import java.util.List;
 
 
 @ZenClass("mods.betterwithmods.Turntable")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Turntable {
     
     @ZenMethod

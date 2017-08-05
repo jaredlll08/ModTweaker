@@ -9,6 +9,7 @@ import com.blamejared.api.annotations.Handler;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -23,7 +24,8 @@ import java.util.Collections;
 import java.util.Iterator;
 
 @ZenClass("mods.betterwithmods.Anvil")
-@Handler("betterwithmods")
+@ModOnly("betterwithmods")
+@ZenRegister
 public class Anvil {
     
     @ZenMethod
