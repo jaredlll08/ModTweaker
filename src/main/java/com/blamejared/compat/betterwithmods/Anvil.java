@@ -97,10 +97,14 @@ public class Anvil {
             return null;
         else {
             ArrayList prep = new ArrayList();
-            prep.add("abcd");
-            prep.add("efgh");
-            prep.add("ijkl");
-            prep.add("mnop");
+            if(ingredients.length > 0)
+                prep.add("abcd");
+            if(ingredients.length > 1)
+                prep.add("efgh");
+            if(ingredients.length > 2)
+                prep.add("ijkl");
+            if(ingredients.length > 3)
+                prep.add("mnop");
             char[][] map = new char[][]{{'a', 'b', 'c', 'd'}, {'e', 'f', 'g', 'h'}, {'i', 'j', 'k', 'l'}, {'m', 'n', 'o', 'p'}};
             for(int x = 0; x < ingredients.length; x++) {
                 if(ingredients[x] != null) {

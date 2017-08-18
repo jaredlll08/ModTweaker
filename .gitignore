@@ -28,7 +28,7 @@
 # Gradle
 /.gradle
 /build
-
+/classes/
 # Eclipse
 /.classpath
 /.project
