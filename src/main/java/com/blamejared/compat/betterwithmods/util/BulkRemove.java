@@ -3,19 +3,40 @@ package com.blamejared.compat.betterwithmods.util;
 
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
-import com.blamejared.mtlib.utils.BaseListRemoval;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseUndoable;
 import net.minecraft.item.ItemStack;
 
 
-public class BulkRemove<T extends BulkRecipe> extends BaseListRemoval<T> {
-    
-    public BulkRemove(String name, CraftingManagerBulk<T> recipes, ItemStack output, ItemStack secondary, Object... inputs) {
-        super(name, recipes.getRecipes(), recipes.findRecipeForRemoval(output, secondary, inputs));
+public class BulkRemove<T extends BulkRecipe> extends BaseUndoable {
+    private CraftingManagerBulk<T> manager;
+    private final ItemStack output;
+    private final ItemStack secondary;
+    private final Object[] inputs;
+
+    public BulkRemove(String name, CraftingManagerBulk<T> manager, ItemStack output, ItemStack secondary, Object... inputs) {
+        super(name);
+        this.manager = manager;
+        this.output = output;
+        this.secondary = secondary;
+        this.inputs = inputs;
     }
-    
+
     @Override
-    protected String getRecipeInfo(BulkRecipe recipe) {
+    public void apply() {
+        for (T recipe : manager.findRecipeForRemoval(output, secondary, inputs)) {
+            if (recipe != null) {
+                if (!manager.getRecipes().remove(recipe)) {
+                    LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
+                }
+            } else {
+                LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
+            }
+        }
+
+    }
+
+    private String getRecipeInfo(T recipe) {
         return recipe.getOutput().getDisplayName();
     }
-    
 }
