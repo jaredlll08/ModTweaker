@@ -51,7 +51,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.12:4.7.2.76"
     deobfCompile "com.blamejared:MTLib:3.0.0.1"
     deobfCompile "cofh:ThermalExpansion:1.12-5.3.3.15:deobf"
-    deobfCompile "betterwithmods:BetterWithMods:1.12-2.0.7-100"
+    deobfCompile "betterwithmods:BetterWithMods:1.12-2.0.8-110"
     deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12-r113"
 
 }

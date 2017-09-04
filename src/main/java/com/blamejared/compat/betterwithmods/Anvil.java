@@ -135,13 +135,13 @@ public class Anvil {
         public void apply() {
             if(ingredients != null) {
                 IRecipe removal = new ShapedAnvilRecipe(new ResourceLocation("crafttweaker", this.name), InputHelper.toStack(output), toShapedAnvilObjects(ingredients));
-                for(Iterator<IRecipe> iterator = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iterator.hasNext(); ) {
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
                     IRecipe recipe = iterator.next();
                     if(recipe.getRecipeOutput().isItemEqual(removal.getRecipeOutput()) && removal.getIngredients().equals(recipe.getIngredients()))
                         iterator.remove();
                 }
             } else {
-                for(Iterator<IRecipe> iterator = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iterator.hasNext(); ) {
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
                     IRecipe recipe = iterator.next();
                     if(recipe.getRecipeOutput().isItemEqual(InputHelper.toStack(output))) {
                         iterator.remove();
@@ -172,13 +172,13 @@ public class Anvil {
         public void apply() {
             if(ingredients != null) {
                 IRecipe removal = new ShapelessAnvilRecipe(new ResourceLocation("crafttweaker", this.name), InputHelper.toStack(output), InputHelper.toObjects(ingredients));
-                for(Iterator<IRecipe> iterator = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iterator.hasNext(); ) {
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
                     IRecipe recipe = iterator.next();
                     if(recipe.getRecipeOutput().isItemEqual(removal.getRecipeOutput()) && removal.getIngredients().equals(recipe.getIngredients()))
                         iterator.remove();
                 }
             } else {
-                for(Iterator<IRecipe> iterator = AnvilCraftingManager.VANILLA_CRAFTING.iterator(); iterator.hasNext(); ) {
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
                     IRecipe recipe = iterator.next();
                     if(recipe.getRecipeOutput().isItemEqual(InputHelper.toStack(output))) {
                         iterator.remove();
