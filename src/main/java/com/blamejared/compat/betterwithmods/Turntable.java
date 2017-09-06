@@ -28,7 +28,7 @@ public class Turntable {
     
     @ZenMethod
     public static void add(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
-        if(InputHelper.isABlock(inputBlock))
+        if(!InputHelper.isABlock(inputBlock))
             LogHelper.logError("Input must be a block", new IllegalArgumentException());
         ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(inputBlock), InputHelper.toStack(outputBlock), Lists.newArrayList(InputHelper.toStacks(additionalOutput))));
     }
