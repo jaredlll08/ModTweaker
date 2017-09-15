@@ -31,7 +31,7 @@ public class Resonator {
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        ModTweaker.LATE_ADDITIONS.add(new Remove(InputHelper.toStack(output)));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(output)));
     }
 
     private static class Add extends BaseUndoable {

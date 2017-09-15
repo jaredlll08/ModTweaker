@@ -38,24 +38,29 @@ repositories {
     maven {
         url "http://chickenbones.net/maven/"
     }
-
     maven {
         url "http://www.ryanliptak.com/maven/"
     }
     maven {
         url "https://maven.chaosfield.at/"
     }
+
+    maven {
+        url = "http://maven.ic2.player.to/"
+    }
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.12:4.7.+"
+    deobfCompile "mezz.jei:jei_1.12.1:4.7.+"
     deobfCompile "com.blamejared:MTLib:3.0.0.1"
-    deobfCompile "cofh:ThermalExpansion:1.12-5.3.+:deobf"
+    deobfCompile ("cofh:ThermalExpansion:1.12-5.3.+:deobf") {
+        exclude group: 'mezz.jei'
+    }
     deobfCompile "betterwithmods:BetterWithMods:1.12-2.0.8-110"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12-r113"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.1-r+"
     deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.+"
     deobfCompile "slimeknights:TConstruct:1.12-2.7.3.30"
-
+    deobfCompile 'net.sengir.forestry:forestry_1.12.1:5.+'
 }
 
 processResources {
