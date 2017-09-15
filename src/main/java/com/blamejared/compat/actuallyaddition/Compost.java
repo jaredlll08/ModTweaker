@@ -1,18 +1,22 @@
 package com.blamejared.compat.actuallyaddition;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.api.annotations.*;
-import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.*;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.*;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.CompostRecipe;
 import net.minecraft.block.Block;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @ZenClass("mods.actuallyadditions.Compost")
 @ModOnly("actuallyadditions")

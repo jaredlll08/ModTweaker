@@ -2,13 +2,15 @@ package com.blamejared.compat.thermalexpansion;
 
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import com.blamejared.ModTweaker;
-import com.blamejared.api.annotations.Handler;
-import com.blamejared.mtlib.helpers.*;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
-import crafttweaker.annotations.*;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.thermalexpansion.Compactor")
 @ModOnly("thermalexpansion")
