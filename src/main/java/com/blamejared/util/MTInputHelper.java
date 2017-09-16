@@ -4,8 +4,10 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import crafttweaker.api.item.IIngredient;
 import gnu.trove.set.TCharSet;
 import gnu.trove.set.hash.TCharHashSet;
+import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MTInputHelper {
     public static Object[] toShapedObjects(IIngredient[][] ingredients) {
@@ -51,6 +53,13 @@ public class MTInputHelper {
 
             return prep.toArray();
         }
+    }
+
+    public static <R> NonNullList<R> toNonNullList(R[] items){
+        NonNullList<R> nonNullList = NonNullList.create();
+        Collections.addAll(nonNullList, items);
+
+        return nonNullList;
     }
 
 }

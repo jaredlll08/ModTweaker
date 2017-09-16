@@ -2,7 +2,6 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
 import com.blamejared.util.MTInputHelper;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -19,11 +18,10 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static com.blamejared.mtlib.helpers.InputHelper.*;
+import static com.blamejared.mtlib.helpers.InputHelper.toFluid;
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 
 @ZenClass("mods.forestry.Carpenter")
 @ModOnly("forestry")
@@ -59,26 +57,20 @@ public class Carpenter {
 		}
 		return mat;
 	}
-	
-	private static class Add extends BaseUndoable {
-        private ICarpenterRecipe recipe;
 
-        public Add(ICarpenterRecipe recipe) {
-			super(Carpenter.name);
-            this.recipe = recipe;
-        }
+
+	private static class Add extends BaseAddForestry<ICarpenterRecipe>{
+
+		protected Add(ICarpenterRecipe recipe) {
+			super(Carpenter.name, RecipeManagers.carpenterManager, recipe);
+		}
 
 		@Override
-		public void apply() {
-            RecipeManagers.carpenterManager.addRecipe(recipe);
-        }
-
-        @Override
-        protected String getRecipeInfo() {
-            return recipe.getBox().getDisplayName();
-        }
+		protected String getRecipeInfo() {
+			return recipe.getBox().getDisplayName();
+		}
 	}
-	
+
 	/**
 	 * Adds shapeless recipe to Carpenter
 	 *
@@ -104,39 +96,33 @@ public class Carpenter {
         ModTweaker.LATE_REMOVALS.add(new Remove(output, fluidInput));
     }
 	
-	private static class Remove extends BaseUndoable {
+	private static class Remove extends BaseRemoveForestry<ICarpenterRecipe> {
 
         private ItemStack output;
         private FluidStack fluidInput;
 
         public Remove(IItemStack output, ILiquidStack fluidInput) {
-			super(Carpenter.name);
+			super(Carpenter.name, RecipeManagers.carpenterManager);
             this.output = InputHelper.toStack(output);
             this.fluidInput = toFluid(fluidInput);
         }
-		
+
 		@Override
-		public void apply() {
-            List<ICarpenterRecipe> toRemove = new ArrayList<>();
+		boolean checkIsRecipe(ICarpenterRecipe recipe) {
+			if (recipe.getBox().isItemEqual(output)){
+				if (fluidInput == null){
+					return true;
+				}else {
+					if (fluidInput.isFluidEqual(recipe.getFluidResource())){
+						return true;
+					}
+				}
+			}
 
-            for (ICarpenterRecipe iCarpenterRecipe : RecipeManagers.carpenterManager.recipes()) {
-                if (iCarpenterRecipe.getBox().isItemEqual(output)){
-                    if (fluidInput == null){
-                        toRemove.add(iCarpenterRecipe);
-                    }else {
-                        if (fluidInput.isFluidEqual(iCarpenterRecipe.getFluidResource())){
-                            toRemove.add(iCarpenterRecipe);
-                        }
-                    }
-                }
-            }
+			return false;
+		}
 
-            for (ICarpenterRecipe iCarpenterRecipe : toRemove) {
-                RecipeManagers.carpenterManager.removeRecipe(iCarpenterRecipe);
-            }
-        }
-
-        @Override
+		@Override
         protected String getRecipeInfo() {
             return output.getDisplayName();
         }
