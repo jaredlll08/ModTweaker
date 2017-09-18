@@ -67,7 +67,7 @@ public class Carpenter {
 
 		@Override
 		protected String getRecipeInfo() {
-			return recipe.getBox().getDisplayName();
+			return recipe.getCraftingGridRecipe().getOutput().getDisplayName();
 		}
 	}
 
