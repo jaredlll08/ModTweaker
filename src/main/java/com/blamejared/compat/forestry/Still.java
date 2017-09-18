@@ -35,9 +35,6 @@ public class Still {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, ILiquidStack fluidInput, int timePerUnit) {
-		fluidOutput.amount(fluidOutput.getAmount() / 100);
-		fluidInput.amount(fluidInput.getAmount() / 100);
-		
 		ModTweaker.LATE_ADDITIONS.add(new Add(new StillRecipe(timePerUnit, toFluid(fluidInput), toFluid(fluidOutput))));
 	}
 	

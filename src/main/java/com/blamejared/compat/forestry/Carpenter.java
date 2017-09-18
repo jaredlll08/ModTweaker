@@ -71,18 +71,6 @@ public class Carpenter {
 		}
 	}
 
-	/**
-	 * Adds shapeless recipe to Carpenter
-	 *
-	 * @param output           recipe product
-	 * @param ingredients      required ingredients
-	 * @param packagingTime    amount of ticks per crafting operation
-	 ** @param fluidInput      required mB of fluid (optional)
-	 ** @param box             required box in top slot (optional)
-	 ** @param remainingItems  no idea (optional)
-	 */
-	//TODO
-	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**

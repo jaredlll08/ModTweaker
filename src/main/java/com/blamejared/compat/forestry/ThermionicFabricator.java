@@ -47,7 +47,7 @@ public class ThermionicFabricator {
         //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
         FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidOutput);
         if (fluid == null){
-            LogHelper.logWarning("Liquid Class is null for the Thermionic Fabricator");
+            LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
             return;
         }
         ModTweaker.LATE_ADDITIONS.add(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), fluid, meltingPoint)));
@@ -68,7 +68,7 @@ public class ThermionicFabricator {
     public static void addCast(IItemStack output, IIngredient[][] ingredients, int fluidInput, @Optional IItemStack plan) {
         FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidInput);
         if (fluid == null){
-            LogHelper.logWarning("Liquid Class is null for the Thermionic Fabricator");
+            LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
             return;
         }
 
