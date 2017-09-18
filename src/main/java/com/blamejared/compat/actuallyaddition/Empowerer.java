@@ -1,17 +1,21 @@
 package com.blamejared.compat.actuallyaddition;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.api.annotations.*;
-import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.*;
-import crafttweaker.annotations.*;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.BaseListRemoval;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.EmpowererRecipe;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @ZenClass("mods.actuallyadditions.Empowerer")
 @ModOnly("actuallyadditions")

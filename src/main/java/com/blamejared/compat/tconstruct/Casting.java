@@ -1,11 +1,13 @@
 package com.blamejared.compat.tconstruct;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.compat.tconstruct.recipes.*;
-import com.blamejared.mtlib.helpers.*;
+import com.blamejared.compat.tconstruct.recipes.CastingRecipeTweaker;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.*;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
@@ -16,10 +18,12 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
-import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.annotations.Optional;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @ZenClass("mods.tconstruct.Casting")
 @ZenRegister

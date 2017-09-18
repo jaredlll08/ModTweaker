@@ -2,20 +2,24 @@ package com.blamejared.compat.tconstruct;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.DryingRecipeTweaker;
-import com.blamejared.mtlib.helpers.*;
+import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.*;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.mantle.util.RecipeMatch;
-import slimeknights.tconstruct.library.*;
+import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @ZenClass("mods.tconstruct.Drying")
 @ZenRegister
