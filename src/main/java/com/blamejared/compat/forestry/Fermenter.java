@@ -2,8 +2,10 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import com.blamejared.mtlib.utils.BaseMapRemoval;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -89,7 +91,7 @@ public class Fermenter {
 		}
 
 		@Override
-		boolean checkIsRecipe(IFermenterRecipe recipe) {
+		public boolean checkIsRecipe(IFermenterRecipe recipe) {
 			// check for input items
 			if(recipe != null && matches(input, toIItemStack(recipe.getResource()))) {
 				return true;

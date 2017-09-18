@@ -2,7 +2,8 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.util.MTInputHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -20,8 +21,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Arrays;
 
-import static com.blamejared.mtlib.helpers.InputHelper.toFluid;
-import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 
 @ZenClass("mods.forestry.Carpenter")
 @ModOnly("forestry")
@@ -43,7 +43,7 @@ public class Carpenter {
 	 */
 	@ZenMethod
 	public static void addRecipe(IItemStack output, IIngredient[][] ingredients, int packagingTime, @Optional ILiquidStack fluidInput, @Optional IItemStack box) {
-		ModTweaker.LATE_ADDITIONS.add(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), new ShapedRecipeCustom(toStack(output), MTInputHelper.toShapedObjects(ingredients)))));
+		ModTweaker.LATE_ADDITIONS.add(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), new ShapedRecipeCustom(toStack(output), toShapedObjects(ingredients)))));
 	}
 	
 	private static IItemStack[][] transform(IItemStack[] arr, int N) {
@@ -59,7 +59,7 @@ public class Carpenter {
 	}
 
 
-	private static class Add extends BaseAddForestry<ICarpenterRecipe>{
+	private static class Add extends BaseAddForestry<ICarpenterRecipe> {
 
 		protected Add(ICarpenterRecipe recipe) {
 			super(Carpenter.name, RecipeManagers.carpenterManager, recipe);
@@ -96,7 +96,7 @@ public class Carpenter {
         }
 
 		@Override
-		boolean checkIsRecipe(ICarpenterRecipe recipe) {
+        public boolean checkIsRecipe(ICarpenterRecipe recipe) {
 			if (recipe.getBox().isItemEqual(output)){
 				if (fluidInput == null){
 					return true;

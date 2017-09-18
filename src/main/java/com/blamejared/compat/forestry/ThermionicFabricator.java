@@ -2,7 +2,8 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.util.MTInputHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -21,8 +22,7 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import static com.blamejared.mtlib.helpers.InputHelper.toIItemStack;
-import static com.blamejared.mtlib.helpers.InputHelper.toStack;
+import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 @ZenClass("mods.forestry.ThermionicFabricator")
@@ -72,7 +72,7 @@ public class ThermionicFabricator {
             return;
         }
 
-        ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output),  MTInputHelper.toShapedObjects(ingredients));
+        ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output),  toShapedObjects(ingredients));
         NonNullList<NonNullList<ItemStack>> ingredientsList = patternRecipe.getRawIngredients();
 
         IFabricatorRecipe recipe = new FabricatorRecipe(toStack(plan), fluid, toStack(output), ingredientsList, patternRecipe.getOreDicts(), patternRecipe.getWidth(), patternRecipe.getHeight());
@@ -144,7 +144,7 @@ public class ThermionicFabricator {
         }
 
         @Override
-        boolean checkIsRecipe(IFabricatorSmeltingRecipe recipe) {
+        public boolean checkIsRecipe(IFabricatorSmeltingRecipe recipe) {
             return recipe != null && matches(itemInput, toIItemStack(recipe.getResource()));
         }
     }
@@ -164,7 +164,7 @@ public class ThermionicFabricator {
         }
 
         @Override
-        boolean checkIsRecipe(IFabricatorRecipe recipe) {
+        public boolean checkIsRecipe(IFabricatorRecipe recipe) {
             return recipe != null && matches(product, toIItemStack(recipe.getRecipeOutput()));
         }
     }

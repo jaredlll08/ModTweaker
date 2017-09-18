@@ -2,7 +2,8 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.util.MTInputHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -43,7 +44,7 @@ public class Squeezer {
 		if(itemOutput == null) {
 			itemOutput = new WeightedItemStack(new MCItemStack(ItemStack.EMPTY), 0);
 		}
-		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, MTInputHelper.toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
+		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
 	}
 	
 	private static class Add extends BaseAddForestry<ISqueezerRecipe> {
@@ -89,7 +90,7 @@ public class Squeezer {
 
 
         @Override
-        boolean checkIsRecipe(ISqueezerRecipe recipe) {
+		public boolean checkIsRecipe(ISqueezerRecipe recipe) {
             // optional check for ingredients
             if(ingredients != null) {
                 boolean matched = false;

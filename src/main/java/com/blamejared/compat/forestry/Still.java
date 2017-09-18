@@ -2,6 +2,8 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -80,7 +82,7 @@ public class Still {
 		}
 
 		@Override
-		boolean checkIsRecipe(IStillRecipe r) {
+        public boolean checkIsRecipe(IStillRecipe r) {
 			if(r != null && matches(output, toILiquidStack(r.getOutput()))) {
 				if(fluidInput != null) {
 					if(matches(fluidInput, toILiquidStack(r.getInput()))) {

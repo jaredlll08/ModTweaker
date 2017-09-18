@@ -2,6 +2,8 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -86,7 +88,7 @@ public class Centrifuge {
 		}
 
 		@Override
-		boolean checkIsRecipe(ICentrifugeRecipe recipe) {
+		public boolean checkIsRecipe(ICentrifugeRecipe recipe) {
 			return recipe != null && matches(input, toIItemStack(recipe.getInput()));
 		}
 	}

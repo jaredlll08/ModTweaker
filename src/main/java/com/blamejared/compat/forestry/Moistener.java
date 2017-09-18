@@ -2,8 +2,10 @@ package com.blamejared.compat.forestry;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseAddForestry;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import com.blamejared.mtlib.utils.BaseMapRemoval;
+import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -84,7 +86,7 @@ public class Moistener {
 		}
 
 		@Override
-		boolean checkIsRecipe(IMoistenerRecipe recipe) {
+		public boolean checkIsRecipe(IMoistenerRecipe recipe) {
             return recipe != null && matches(output, toIItemStack(recipe.getProduct()));
         }
 	}
