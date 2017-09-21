@@ -70,7 +70,7 @@ public class Resonator {
 
         @Override
         public void apply() {
-            TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> resonatorRecipe.output.equals(output));
+            TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> resonatorRecipe.output.isItemEqual(output));
         }
 
         @Override
