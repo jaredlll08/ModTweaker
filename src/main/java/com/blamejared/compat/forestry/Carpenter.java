@@ -97,7 +97,7 @@ public class Carpenter {
 
 		@Override
         public boolean checkIsRecipe(ICarpenterRecipe recipe) {
-			if (recipe.getBox().isItemEqual(output)){
+			if (recipe.getCraftingGridRecipe().getOutput().isItemEqual(output)){
 				if (fluidInput == null){
 					return true;
 				}else {
