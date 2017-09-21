@@ -41,14 +41,7 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
-		if(itemOutput == null) {
-			itemOutput = new WeightedItemStack(new MCItemStack(ItemStack.EMPTY), 0);
-		}
-
-        System.out.println("itemOutput = " + itemOutput);
-        System.out.println("itemOutputStack = " + itemOutput.getStack());
-
-		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
+		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), itemOutput != null ? toStack(itemOutput.getStack()) : ItemStack.EMPTY, itemOutput != null ? itemOutput.getChance() : 0)));
 	}
 	
 	private static class Add extends BaseAddForestry<ISqueezerRecipe> {

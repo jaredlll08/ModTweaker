@@ -16,7 +16,11 @@ import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.IFermenterRecipe;
 import forestry.api.recipes.RecipeManagers;
 import forestry.factory.recipes.FermenterRecipe;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -50,7 +54,9 @@ public class Fermenter {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
-		ModTweaker.LATE_ADDITIONS.add(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
+		RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput)));
+
+        // RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(new ItemStack(Blocks.OBSIDIAN, 1), 100, 2, FluidRegistry.LAVA, new FluidStack(FluidRegistry.WATER, 200)));
 	}
 
 	private static class Add extends BaseAddForestry<IFermenterRecipe> {
@@ -62,7 +68,14 @@ public class Fermenter {
 		public String getRecipeInfo() {
 			return LogHelper.getStackDescription(recipe.getOutput());
 		}
-	}
+
+        @Override
+        public void apply() {
+            System.out.println("Fermenter recipe is getting applied");
+
+            RecipeManagers.fermenterManager.addRecipe(recipe);
+        }
+    }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
