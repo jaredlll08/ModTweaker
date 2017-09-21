@@ -11,6 +11,7 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.oredict.IOreDictEntry;
 import forestry.api.fuels.FermenterFuel;
 import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.IFermenterRecipe;
@@ -27,6 +28,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import static com.blamejared.mtlib.helpers.InputHelper.*;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
@@ -54,8 +56,7 @@ public class Fermenter {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
-		RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput)));
-
+		ModTweaker.SEMI_LATE_STUFF.add(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
         // RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(new ItemStack(Blocks.OBSIDIAN, 1), 100, 2, FluidRegistry.LAVA, new FluidStack(FluidRegistry.WATER, 200)));
 	}
 
@@ -68,13 +69,6 @@ public class Fermenter {
 		public String getRecipeInfo() {
 			return LogHelper.getStackDescription(recipe.getOutput());
 		}
-
-        @Override
-        public void apply() {
-            System.out.println("Fermenter recipe is getting applied");
-
-            RecipeManagers.fermenterManager.addRecipe(recipe);
-        }
     }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +80,7 @@ public class Fermenter {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
-		ModTweaker.LATE_REMOVALS.add(new Remove(input));
+		ModTweaker.SEMI_LATE_STUFF.add(new Remove(input));
 	}
 
 	private static class Remove extends BaseRemoveForestry<IFermenterRecipe> {
@@ -105,15 +99,36 @@ public class Fermenter {
 
 		@Override
 		public boolean checkIsRecipe(IFermenterRecipe recipe) {
-			// check for input items
-			if(recipe != null && matches(input, toIItemStack(recipe.getResource()))) {
-				return true;
+            if (isInOreDictOreIsThatOreDict(input, recipe.getResourceOreName())) {
+                System.out.println("Recipe Matches: " + recipe.getResource() + " or " + recipe.getResourceOreName());
+                return true;
+            }
+
+		    // check for input items
+			if(matches(input, toIItemStack(recipe.getResource()))) {
+                return true;
 			}
 
 			// check for input liquids
-			return recipe != null && matches(input, toILiquidStack(recipe.getFluidResource()));
+			return matches(input, toILiquidStack(recipe.getFluidResource()));
 		}
 	}
+
+	private static boolean isInOreDictOreIsThatOreDict(IIngredient ingredient, String oredict){
+        if (ingredient instanceof IOreDictEntry){
+            return Objects.equals(oredict, ((IOreDictEntry) ingredient).getName());
+        }
+
+        if (ingredient instanceof IItemStack){
+            System.out.println("oredict = " + oredict);
+            for (IOreDictEntry iOreDictEntry : ((IItemStack) ingredient).getOres()) {
+                System.out.println("    iOreDictEntry = " + iOreDictEntry.getName());
+                if (iOreDictEntry.getName().equals(oredict)) return true;
+            }
+        }
+
+        return false;
+    }
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
