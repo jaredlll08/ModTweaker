@@ -8,6 +8,7 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import forestry.api.recipes.IFabricatorRecipe;
 import forestry.api.recipes.IFabricatorSmeltingRecipe;
 import forestry.api.recipes.RecipeManagers;
@@ -43,14 +44,14 @@ public class ThermionicFabricator {
      * @param meltingPoint point at where itemInput melts down
      */
     @ZenMethod
-    public static void addSmelting(int fluidOutput, IItemStack itemInput, int meltingPoint) {
+    public static void addSmelting(ILiquidStack liquidStack, IItemStack itemInput, int meltingPoint) {
         //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
-        FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidOutput);
-        if (fluid == null){
-            LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
-            return;
-        }
-        ModTweaker.LATE_ADDITIONS.add(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), fluid, meltingPoint)));
+        // FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidOutput);
+        // if (fluid == null){
+        //     LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
+        //     return;
+        // }
+        ModTweaker.LATE_ADDITIONS.add(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), toFluid(liquidStack), meltingPoint)));
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,17 +66,17 @@ public class ThermionicFabricator {
      *                    * @param remainingItems  no idea(optional)
      */
     @ZenMethod
-    public static void addCast(IItemStack output, IIngredient[][] ingredients, int fluidInput, @Optional IItemStack plan) {
-        FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidInput);
-        if (fluid == null){
-            LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
-            return;
-        }
+    public static void addCast(IItemStack output, IIngredient[][] ingredients, ILiquidStack liquidStack, @Optional IItemStack plan) {
+        // FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidInput);
+        // if (fluid == null){
+        //     LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
+        //     return;
+        // }
 
         ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output),  toShapedObjects(ingredients));
         NonNullList<NonNullList<ItemStack>> ingredientsList = patternRecipe.getRawIngredients();
 
-        IFabricatorRecipe recipe = new FabricatorRecipe(toStack(plan), fluid, toStack(output), ingredientsList, patternRecipe.getOreDicts(), patternRecipe.getWidth(), patternRecipe.getHeight());
+        IFabricatorRecipe recipe = new FabricatorRecipe(toStack(plan), toFluid(liquidStack), toStack(output), ingredientsList, patternRecipe.getOreDicts(), patternRecipe.getWidth(), patternRecipe.getHeight());
         ModTweaker.LATE_ADDITIONS.add(new AddCast(recipe));
     }
 
