@@ -62,7 +62,7 @@ public class Still {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient output, @Optional ILiquidStack fluidInput) {
-		ModTweaker.LATE_ADDITIONS.add(new Remove(output, fluidInput));
+		ModTweaker.LATE_REMOVALS.add(new Remove(output, fluidInput));
 	}
 	
 	private static class Remove extends BaseRemoveForestry<IStillRecipe> {
@@ -78,7 +78,7 @@ public class Still {
 		
 		@Override
 		public String getRecipeInfo() {
-			return fluidInput.toString() + " --> "  + output.toString();
+			return String.valueOf(fluidInput) + " --> "  + String.valueOf(output);
 		}
 
 		@Override
