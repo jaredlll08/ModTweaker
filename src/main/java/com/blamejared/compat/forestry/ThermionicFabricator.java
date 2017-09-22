@@ -39,18 +39,12 @@ public class ThermionicFabricator {
     /**
      * Adds smelting recipe to Thermionic Fabricator
      *
-     * @param fluidOutput  recipe fluid amount
+     * @param liquidStack  fluid that should be used as melting result, currently only "glass" is recommended
      * @param itemInput    recipe input input
      * @param meltingPoint point at where itemInput melts down
      */
     @ZenMethod
     public static void addSmelting(ILiquidStack liquidStack, IItemStack itemInput, int meltingPoint) {
-        //The machines internal tank accept only liquid glass, therefor this function only accept the amount and hardcode the fluid to glass
-        // FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidOutput);
-        // if (fluid == null){
-        //     LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
-        //     return;
-        // }
         ModTweaker.LATE_ADDITIONS.add(new AddSmelting(new FabricatorSmeltingRecipe(toStack(itemInput), toFluid(liquidStack), meltingPoint)));
     }
     
@@ -61,18 +55,12 @@ public class ThermionicFabricator {
      *
      * @param output      recipe output item
      * @param ingredients list of input items
-     * @param fluidInput  recipe fluid input
+     * @param liquidStack  fluid that should be used in the recipe, currently only "glass" is recommended
      *                    * @param plan            recipe plan item (optional)
      *                    * @param remainingItems  no idea(optional)
      */
     @ZenMethod
     public static void addCast(IItemStack output, IIngredient[][] ingredients, ILiquidStack liquidStack, @Optional IItemStack plan) {
-        // FluidStack fluid = FluidRegistry.getFluidStack("glass", fluidInput);
-        // if (fluid == null){
-        //     LogHelper.logWarning("Liquid Glass is null for the Thermionic Fabricator");
-        //     return;
-        // }
-
         ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output),  toShapedObjects(ingredients));
         NonNullList<NonNullList<ItemStack>> ingredientsList = patternRecipe.getRawIngredients();
 
