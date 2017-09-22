@@ -78,7 +78,7 @@ public class Still {
 		
 		@Override
 		public String getRecipeInfo() {
-			return fluidInput != null ? fluidInput.getDisplayName() : "null" + " --> "  + output.getDisplayName();
+			return fluidInput != null ? fluidInput.getDisplayName() + " --> ": "" + output.getDisplayName();
 		}
 
 		@Override
