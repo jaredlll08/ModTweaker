@@ -58,7 +58,7 @@ public class Fermenter {
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
 		ModTweaker.SEMI_LATE_STUFF.add(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
         // RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(new ItemStack(Blocks.OBSIDIAN, 1), 100, 2, FluidRegistry.LAVA, new FluidStack(FluidRegistry.WATER, 200)));
-	}
+}
 
 	private static class Add extends BaseAddForestry<IFermenterRecipe> {
 		public Add(IFermenterRecipe recipe) {
@@ -67,7 +67,7 @@ public class Fermenter {
 
 		@Override
 		public String getRecipeInfo() {
-			return LogHelper.getStackDescription(recipe.getOutput());
+			return recipe.getOutput().getName();
 		}
     }
 
@@ -94,13 +94,12 @@ public class Fermenter {
 
 		@Override
 		protected String getRecipeInfo() {
-			return input.toString();
+			return LogHelper.getStackDescription(input);
 		}
 
 		@Override
 		public boolean checkIsRecipe(IFermenterRecipe recipe) {
             if (isInOreDictOreIsThatOreDict(input, recipe.getResourceOreName())) {
-                System.out.println("Recipe Matches: " + recipe.getResource() + " or " + recipe.getResourceOreName());
                 return true;
             }
 
@@ -120,9 +119,7 @@ public class Fermenter {
         }
 
         if (ingredient instanceof IItemStack){
-            System.out.println("oredict = " + oredict);
             for (IOreDictEntry iOreDictEntry : ((IItemStack) ingredient).getOres()) {
-                System.out.println("    iOreDictEntry = " + iOreDictEntry.getName());
                 if (iOreDictEntry.getName().equals(oredict)) return true;
             }
         }

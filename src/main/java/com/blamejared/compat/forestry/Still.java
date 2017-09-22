@@ -61,16 +61,16 @@ public class Still {
 	 *               * @param fluidInput = liquid input (optional)
 	 */
 	@ZenMethod
-	public static void removeRecipe(IIngredient output, @Optional ILiquidStack fluidInput) {
+	public static void removeRecipe(ILiquidStack output, @Optional ILiquidStack fluidInput) {
 		ModTweaker.LATE_REMOVALS.add(new Remove(output, fluidInput));
 	}
 	
 	private static class Remove extends BaseRemoveForestry<IStillRecipe> {
 
-		private final IIngredient output;
+		private final ILiquidStack output;
 		private final ILiquidStack fluidInput;
 
-		public Remove(IIngredient output, ILiquidStack fluidInput) {
+		public Remove(ILiquidStack output, ILiquidStack fluidInput) {
 			super(Still.name, RecipeManagers.stillManager);
 			this.output = output;
 			this.fluidInput = fluidInput;
@@ -78,7 +78,7 @@ public class Still {
 		
 		@Override
 		public String getRecipeInfo() {
-			return String.valueOf(fluidInput) + " --> "  + String.valueOf(output);
+			return fluidInput != null ? fluidInput.getDisplayName() : "null" + " --> "  + output.getDisplayName();
 		}
 
 		@Override
