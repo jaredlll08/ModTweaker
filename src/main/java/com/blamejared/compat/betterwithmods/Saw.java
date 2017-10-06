@@ -4,7 +4,6 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.common.registry.blockmeta.managers.SawManager;
 import betterwithmods.common.registry.blockmeta.recipe.SawRecipe;
 import com.blamejared.ModTweaker;
-import com.blamejared.api.annotations.Handler;
 import com.blamejared.compat.betterwithmods.util.BMAdd;
 import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;

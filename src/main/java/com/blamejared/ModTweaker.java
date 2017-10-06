@@ -1,15 +1,16 @@
 package com.blamejared;
 
-import com.blamejared.api.annotations.Handler;
-import crafttweaker.*;
-import crafttweaker.mc1120.commands.*;
-import de.ellpeck.actuallyadditions.mod.ActuallyAdditions;
-import mezz.jei.JustEnoughItems;
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.event.*;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.blamejared.reference.Reference.*;
 
@@ -18,18 +19,25 @@ public class ModTweaker {
     
     public static final List<IAction> LATE_REMOVALS = new LinkedList<>();
     public static final List<IAction> LATE_ADDITIONS = new LinkedList<>();
-    
+
+    public static final List<IAction> SEMI_LATE_STUFF = new LinkedList<>();
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) throws IOException {
     }
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        
+        try {
+            SEMI_LATE_STUFF.forEach(CraftTweakerAPI::apply);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
     
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
+
     }
     
     @Mod.EventHandler
