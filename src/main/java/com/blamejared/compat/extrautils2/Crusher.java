@@ -3,6 +3,7 @@ package com.blamejared.compat.extrautils2;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.StackHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.rwtema.extrautils2.api.machine.IMachineRecipe;
 import com.rwtema.extrautils2.api.machine.MachineSlotFluid;
@@ -33,7 +34,7 @@ public class Crusher {
 
     @ZenMethod
     public static void remove(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input)));
+        ModTweaker.LATE_REMOVALS.add(new Remove(input));
     }
 
     private static class Add extends BaseUndoable {
@@ -65,9 +66,9 @@ public class Crusher {
 
     private static class Remove extends BaseUndoable {
 
-        private ItemStack input;
+        private IItemStack input;
 
-        public Remove(ItemStack input) {
+        public Remove(IItemStack input) {
             super("Crusher");
             this.input = input;
         }
@@ -79,7 +80,7 @@ public class Crusher {
             for (IMachineRecipe recipe : XUMachineCrusher.INSTANCE.recipes_registry) {
                 for (Pair<Map<MachineSlotItem, List<ItemStack>>, Map<MachineSlotFluid, List<FluidStack>>> mapMapPair : recipe.getJEIInputItemExamples()) {
                     for (ItemStack stack : mapMapPair.getKey().get(XUMachineCrusher.INPUT)) {
-                        if (input != null && input.isItemEqual(stack)) {
+                        if (StackHelper.matches(input, InputHelper.toIItemStack(stack))) {
                             toRemove.add(recipe);
                         }
                     }

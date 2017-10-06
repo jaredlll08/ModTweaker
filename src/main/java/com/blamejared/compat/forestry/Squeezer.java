@@ -41,10 +41,7 @@ public class Squeezer {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack[] ingredients, int timePerItem, @Optional WeightedItemStack itemOutput) {
-		if(itemOutput == null) {
-			itemOutput = new WeightedItemStack(new MCItemStack(ItemStack.EMPTY), 0);
-		}
-		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), toStack(itemOutput.getStack()), itemOutput.getChance())));
+		ModTweaker.LATE_ADDITIONS.add(new Add(new SqueezerRecipe(timePerItem, toNonNullList(toStacks(ingredients)), toFluid(fluidOutput), itemOutput != null ? toStack(itemOutput.getStack()) : ItemStack.EMPTY, itemOutput != null ? itemOutput.getChance() : 0)));
 	}
 	
 	private static class Add extends BaseAddForestry<ISqueezerRecipe> {
@@ -68,16 +65,16 @@ public class Squeezer {
 	 *               * @param ingredients list of ingredients (optional)
 	 */
 	@ZenMethod
-	public static void removeRecipe(IIngredient liquid, @Optional IIngredient[] ingredients) {
+	public static void removeRecipe(ILiquidStack liquid, @Optional IIngredient[] ingredients) {
 		ModTweaker.LATE_REMOVALS.add(new Remove(liquid, ingredients));
 	}
 	
 	private static class Remove extends BaseRemoveForestry<ISqueezerRecipe> {
 
-        private final IIngredient liquid;
+        private final ILiquidStack liquid;
         private final IIngredient[] ingredients;
 
-        public Remove(IIngredient liquid, IIngredient[] ingredients) {
+        public Remove(ILiquidStack liquid, IIngredient[] ingredients) {
 			super(Squeezer.name, RecipeManagers.squeezerManager);
             this.liquid = liquid;
             this.ingredients = ingredients;
@@ -85,7 +82,7 @@ public class Squeezer {
 		
 		@Override
 		public String getRecipeInfo() {
-			return liquid.toString();
+			return liquid.getDisplayName();
 		}
 
 

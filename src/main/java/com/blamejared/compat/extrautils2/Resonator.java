@@ -3,6 +3,7 @@ package com.blamejared.compat.extrautils2;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.StackHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.rwtema.extrautils2.tile.TileResonator;
 import crafttweaker.annotations.ModOnly;
@@ -31,7 +32,7 @@ public class Resonator {
 
     @ZenMethod
     public static void remove(IItemStack output) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(output)));
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
 
     private static class Add extends BaseUndoable {
@@ -61,16 +62,16 @@ public class Resonator {
 
     private static class Remove extends BaseUndoable {
 
-        private ItemStack output;
+        private IItemStack output;
 
-        public Remove(ItemStack output) {
+        public Remove(IItemStack output) {
             super("Resonator");
             this.output = output;
         }
 
         @Override
         public void apply() {
-            TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> resonatorRecipe.output.equals(output));
+            TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> StackHelper.matches(output, InputHelper.toIItemStack(resonatorRecipe.output)));
         }
 
         @Override
