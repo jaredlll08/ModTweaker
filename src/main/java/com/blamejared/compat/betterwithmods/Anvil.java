@@ -91,35 +91,36 @@ public class Anvil {
             return output.getDisplayName();
         }
     }
-    
+
     public static Object[] toShapedAnvilObjects(IIngredient[][] ingredients) {
         if(ingredients == null)
             return null;
         else {
             ArrayList prep = new ArrayList();
-            if(ingredients.length > 0)
-                prep.add("abcd");
-            if(ingredients.length > 1)
-                prep.add("efgh");
-            if(ingredients.length > 2)
-                prep.add("ijkl");
-            if(ingredients.length > 3)
-                prep.add("mnop");
-            char[][] map = new char[][]{{'a', 'b', 'c', 'd'}, {'e', 'f', 'g', 'h'}, {'i', 'j', 'k', 'l'}, {'m', 'n', 'o', 'p'}};
-            for(int x = 0; x < ingredients.length; x++) {
-                if(ingredients[x] != null) {
-                    for(int y = 0; y < ingredients[x].length; y++) {
-                        if(ingredients[x][y] != null && x < map.length && y < map[x].length) {
-                            prep.add(map[x][y]);
+            char chr = 'a';
+            for (int y = 0; y < 4; y++) {
+                StringBuilder matrix = new StringBuilder();
+                for (int x = 0; x < 4; x++) {
+                    if(x < ingredients.length && ingredients[x] != null && y < ingredients[x].length) {
+                        if(ingredients[x][y] != null) {
+                            prep.add(chr);
                             prep.add(InputHelper.toObject(ingredients[x][y]));
+                            matrix.append(chr);
+                            chr++;
+                        }
+                        else
+                        {
+                            matrix.append(' ');
                         }
                     }
                 }
+                if(matrix.length() > 0)
+                    prep.add(y, matrix.toString());
             }
             return prep.toArray();
         }
     }
-    
+
     public static class RemoveShaped extends BaseUndoable {
         
         private final IItemStack output;

@@ -25,7 +25,7 @@ import java.util.List;
 @ModOnly("betterwithmods")
 @ZenRegister
 public class Turntable {
-    
+
     @ZenMethod
     public static void add(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
         if(!InputHelper.isABlock(inputBlock))
