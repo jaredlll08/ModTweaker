@@ -51,6 +51,9 @@ repositories {
 }
 
 dependencies {
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.7.+"
+    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.0.7.+"
+    deobfCompile "CraftTweaker2:ZenScript:4.0.7.+"
     deobfCompile "mezz.jei:jei_1.12.1:4.7.+"
     deobfCompile "com.blamejared:MTLib:3.0.+"
     deobfCompile ("cofh:ThermalExpansion:1.12-5.3.+:deobf") {
