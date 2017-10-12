@@ -10,8 +10,9 @@ import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import com.google.common.collect.Lists;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.*;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +28,15 @@ import java.util.Arrays;
 @ModOnly("betterwithmods")
 @ZenRegister
 public class Kiln {
-    
+
+
+    @ZenMethod
+    public static void add(IItemStack[] output, @NotNull IIngredient input) {
+        for (IItemStack stack : input.getItems())
+            add(output, stack);
+    }
+
+
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IItemStack input) {
         ItemStack stack = InputHelper.toStack(input);
