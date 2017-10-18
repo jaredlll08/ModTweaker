@@ -9,24 +9,26 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @ZenClass("mods.tconstruct.Drying")
 @ZenRegister
 @ModOnly("tconstruct")
 public class Drying {
     
-    public static final List<IItemStack> DRYING_RECIPES = new LinkedList<>();
+    public static final Map<IItemStack, IItemStack> DRYING_RECIPES = new LinkedHashMap<>();
     private static boolean init = false;
     
     private static void init() {
@@ -43,9 +45,9 @@ public class Drying {
     }
     
     @ZenMethod
-    public static void removeRecipe(IItemStack output) {
+    public static void removeRecipe(IItemStack output, @Optional IItemStack input) {
         init();
-        CraftTweakerAPI.apply(new Remove(output));
+        CraftTweakerAPI.apply(new Remove(output, input));
     }
     
     private static class Add extends BaseUndoable {
@@ -74,15 +76,18 @@ public class Drying {
     private static class Remove extends BaseUndoable {
         
         private IItemStack output;
+        private IItemStack input;
         
-        protected Remove(IItemStack output) {
+        
+        protected Remove(IItemStack output, IItemStack input) {
             super("Drying");
             this.output = output;
+            this.input = input;
         }
         
         @Override
         public void apply() {
-            DRYING_RECIPES.add(output);
+            DRYING_RECIPES.put(output, input);
         }
         
         @Override
@@ -96,9 +101,14 @@ public class Drying {
         if(event.getRecipe() instanceof DryingRecipeTweaker) {
             return;
         }
-        for(IItemStack stack : DRYING_RECIPES) {
-            if(stack.matches(InputHelper.toIItemStack(event.getRecipe().getResult()))) {
-                event.setCanceled(true);
+        for(Map.Entry<IItemStack, IItemStack> ent : DRYING_RECIPES.entrySet()) {
+            if(ent.getKey().matches(InputHelper.toIItemStack(event.getRecipe().getResult()))) {
+                if(ent.getValue() != null) {
+                    if(event.getRecipe().input.matches(NonNullList.withSize(1, (ItemStack) ent.getValue().getInternal())).isPresent()) {
+                        event.setCanceled(true);
+                    }
+                } else
+                    event.setCanceled(true);
             }
         }
     }

@@ -22,16 +22,15 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @ZenClass("mods.tconstruct.Casting")
 @ZenRegister
 @ModOnly("tconstruct")
 public class Casting {
     
-    public static final List<IItemStack> REMOVED_RECIPES_TABLE = new LinkedList<>();
-    public static final List<IItemStack> REMOVED_RECIPES_BASIN = new LinkedList<>();
+    public static final Map<IItemStack, ILiquidStack> REMOVED_RECIPES_TABLE = new LinkedHashMap<>();
+    public static final Map<IItemStack, ILiquidStack> REMOVED_RECIPES_BASIN = new LinkedHashMap<>();
     
     private static boolean init = false;
     
@@ -55,34 +54,36 @@ public class Casting {
     }
     
     @ZenMethod
-    public static void removeTableRecipe(IItemStack output) {
+    public static void removeTableRecipe(IItemStack output, @Optional ILiquidStack input) {
         init();
-        CraftTweakerAPI.apply(new Remove(output, true));
+        CraftTweakerAPI.apply(new Remove(output, input, true));
     }
     
     @ZenMethod
-    public static void removeBasinRecipe(IItemStack output) {
+    public static void removeBasinRecipe(IItemStack output, @Optional ILiquidStack input) {
         init();
-        CraftTweakerAPI.apply(new Remove(output, false));
+        CraftTweakerAPI.apply(new Remove(output, input, false));
     }
     
     private static class Remove extends BaseUndoable {
         
         private IItemStack output;
+        private ILiquidStack input;
         private boolean table;
         
-        protected Remove(IItemStack output, boolean table) {
+        protected Remove(IItemStack output, ILiquidStack input, boolean table) {
             super("Casting");
             this.output = output;
+            this.input = input;
             this.table = table;
         }
         
         @Override
         public void apply() {
             if(table)
-                REMOVED_RECIPES_TABLE.add(output);
+                REMOVED_RECIPES_TABLE.put(output, input);
             else
-                REMOVED_RECIPES_BASIN.add(output);
+                REMOVED_RECIPES_BASIN.put(output, input);
         }
         
         @Override
@@ -96,14 +97,23 @@ public class Casting {
         if(event.getRecipe() instanceof CastingRecipeTweaker || !(event.getRecipe() instanceof CastingRecipe)) {
             return;
         }
-        for(IItemStack stack : REMOVED_RECIPES_TABLE) {
+        for(Map.Entry<IItemStack, ILiquidStack> ent : REMOVED_RECIPES_TABLE.entrySet()) {
+            IItemStack stack = ent.getKey();
             if(stack == null || ((CastingRecipe) event.getRecipe()).getResult() == null) {
                 continue;
             }
-            if(stack.matches(InputHelper.toIItemStack(((CastingRecipe) event.getRecipe()).getResult()))) {
-                event.setCanceled(true);
+            if(ent.getValue() == null) {
+                if(stack.matches(InputHelper.toIItemStack(((CastingRecipe) event.getRecipe()).getResult()))) {
+                    event.setCanceled(true);
+                }
+            } else {
+                if(stack.matches(InputHelper.toIItemStack(((CastingRecipe) event.getRecipe()).getResult())) && ((CastingRecipe) event.getRecipe()).getFluid().isFluidEqual(((FluidStack) ent.getValue().getInternal()))) {
+                    event.setCanceled(true);
+                }
             }
+            
         }
+        
     }
     
     @SubscribeEvent
@@ -111,14 +121,24 @@ public class Casting {
         if(event.getRecipe() instanceof CastingRecipeTweaker || !(event.getRecipe() instanceof CastingRecipe)) {
             return;
         }
-        for(IItemStack stack : REMOVED_RECIPES_BASIN) {
+        for(Map.Entry<IItemStack, ILiquidStack> ent : REMOVED_RECIPES_BASIN.entrySet()) {
+            IItemStack stack = ent.getKey();
             if(stack == null || ((CastingRecipe) event.getRecipe()).getResult() == null) {
                 continue;
             }
+            
             if(stack.matches(InputHelper.toIItemStack(((CastingRecipe) event.getRecipe()).getResult()))) {
-                event.setCanceled(true);
+                if(ent.getValue() != null) {
+                    if(((CastingRecipe) event.getRecipe()).getFluid().isFluidEqual(((FluidStack) ent.getValue().getInternal()))) {
+                        event.setCanceled(true);
+                    }
+                } else
+                    event.setCanceled(true);
             }
+            
+            
         }
+        
     }
     
     private static class Add extends BaseUndoable {

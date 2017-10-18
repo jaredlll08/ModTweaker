@@ -9,23 +9,24 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.liquid.ILiquidStack;
+import jdk.internal.util.xml.impl.Input;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @ZenClass("mods.tconstruct.Alloy")
 @ZenRegister
 @ModOnly("tconstruct")
 public class Alloy {
     
-    public static final List<ILiquidStack> REMOVED_RECIPES = new LinkedList<>();
+    public static final Map<ILiquidStack, List<ILiquidStack>> REMOVED_RECIPES = new LinkedHashMap<>();
     private static boolean init = false;
     
     private static void init() {
@@ -42,9 +43,16 @@ public class Alloy {
     }
     
     @ZenMethod
-    public static void removeRecipe(ILiquidStack output) {
+    public static void removeRecipe(ILiquidStack output, @Optional ILiquidStack[] input) {
         init();
-        CraftTweakerAPI.apply(new Alloy.Remove(output));
+        List<ILiquidStack> in = new ArrayList<>();
+        if(input == null || input.length == 0) {
+            in = null;
+        } else {
+            Collections.addAll(in, input);
+        }
+        
+        CraftTweakerAPI.apply(new Alloy.Remove(output, in));
     }
     
     private static class Add extends BaseUndoable {
@@ -72,15 +80,22 @@ public class Alloy {
     private static class Remove extends BaseUndoable {
         
         private ILiquidStack output;
+        private List<ILiquidStack> inputs;
         
         protected Remove(ILiquidStack output) {
             super("Alloy");
             this.output = output;
         }
         
+        protected Remove(ILiquidStack output, List<ILiquidStack> inputs) {
+            super("Alloy");
+            this.output = output;
+            this.inputs = inputs;
+        }
+        
         @Override
         public void apply() {
-            REMOVED_RECIPES.add(output);
+            REMOVED_RECIPES.put(output, inputs);
         }
         
         @Override
@@ -94,9 +109,29 @@ public class Alloy {
         if(event.getRecipe() instanceof AlloyRecipeTweaker) {
             return;
         }
-        for(ILiquidStack stack : REMOVED_RECIPES) {
-            if(event.getRecipe().getResult().isFluidEqual(((FluidStack)stack.getInternal()))) {
-                event.setCanceled(true);
+        for(Map.Entry<ILiquidStack, List<ILiquidStack>> entry : REMOVED_RECIPES.entrySet()) {
+            
+            if(event.getRecipe().getResult().isFluidEqual(((FluidStack) entry.getKey().getInternal()))) {
+                if(entry.getValue() != null) {
+                    List<ILiquidStack> in = entry.getValue();
+                    List<FluidStack> rin = event.getRecipe().getFluids();
+                    if(rin.size() == in.size()) {
+                        boolean valid = true;
+                        for(int i = 0; i < in.size(); i++) {
+                            ILiquidStack stack = in.get(i);
+                            FluidStack lStack = rin.get(i);
+                            if(!lStack.isFluidEqual(((FluidStack) stack.getInternal()))) {
+                                valid = false;
+                                
+                            }
+                        }
+                        if(valid) {
+                            event.setCanceled(true);
+                        }
+                    }
+                } else {
+                    event.setCanceled(true);
+                }
             }
         }
     }

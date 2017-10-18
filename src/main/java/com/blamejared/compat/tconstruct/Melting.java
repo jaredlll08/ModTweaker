@@ -9,6 +9,7 @@ import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +26,7 @@ import java.util.*;
 @ModOnly("tconstruct")
 public class Melting {
     
-    public static final List<ILiquidStack> REMOVED_RECIPES = new LinkedList<>();
+    public static final Map<ILiquidStack, IItemStack> REMOVED_RECIPES = new LinkedHashMap<>();
     private static boolean init = false;
     
     private static void init() {
@@ -42,9 +43,9 @@ public class Melting {
     }
     
     @ZenMethod
-    public static void removeRecipe(ILiquidStack output) {
+    public static void removeRecipe(ILiquidStack output, @Optional IItemStack input) {
         init();
-        CraftTweakerAPI.apply(new Melting.Remove(output));
+        CraftTweakerAPI.apply(new Melting.Remove(output, input));
     }
     
     private static class Add extends BaseUndoable {
@@ -77,15 +78,17 @@ public class Melting {
     private static class Remove extends BaseUndoable {
         
         private ILiquidStack output;
+        private IItemStack input;
         
-        protected Remove(ILiquidStack output) {
+        protected Remove(ILiquidStack output, IItemStack input) {
             super("Melting");
             this.output = output;
+            this.input = input;
         }
         
         @Override
         public void apply() {
-            REMOVED_RECIPES.add(output);
+            REMOVED_RECIPES.put(output, input);
         }
         
         @Override
@@ -99,9 +102,14 @@ public class Melting {
         if(event.getRecipe() instanceof MeltingRecipeTweaker) {
             return;
         }
-        for(ILiquidStack stack : REMOVED_RECIPES) {
-            if(event.getRecipe().getResult().isFluidEqual(((FluidStack) stack.getInternal()))) {
-                event.setCanceled(true);
+        for(Map.Entry<ILiquidStack, IItemStack> ent : REMOVED_RECIPES.entrySet()) {
+            if(event.getRecipe().getResult().isFluidEqual(((FluidStack) ent.getKey().getInternal()))) {
+                if(ent.getValue() != null) {
+                    if(event.getRecipe().input.matches(NonNullList.withSize(1, (ItemStack) ent.getValue().getInternal())).isPresent()) {
+                        event.setCanceled(true);
+                    }
+                } else
+                    event.setCanceled(true);
             }
         }
     }
