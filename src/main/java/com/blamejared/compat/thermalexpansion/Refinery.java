@@ -1,10 +1,11 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.RefineryManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -65,6 +66,10 @@ public class Refinery {
         
         @Override
         public void apply() {
+            if(!RefineryManager.recipeExists(input)) {
+                CraftTweakerAPI.logError("No Refinery recipe exists for: " + input);
+                return;
+            }
             RefineryManager.removeRecipe(input);
         }
         

@@ -1,10 +1,11 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -85,6 +86,11 @@ public class Compactor {
         
         @Override
         public void apply() {
+            if(!CompactorManager.recipeExists(input, mode)) {
+                CraftTweakerAPI.logError("No Compactor recipe exists for: " + input);
+                return;
+            }
+            
             CompactorManager.removeRecipe(input, mode);
         }
         

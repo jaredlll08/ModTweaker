@@ -4,6 +4,7 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -23,6 +24,7 @@ public class Infuser {
     
     @ZenMethod
     public static void removeRecipe(IItemStack input) {
+        
         ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input)));
     }
     
@@ -61,6 +63,10 @@ public class Infuser {
         
         @Override
         public void apply() {
+            if(!ChargerManager.recipeExists(input)) {
+                CraftTweakerAPI.logError("No Infuser recipe exists for: " + input);
+                return;
+            }
             ChargerManager.removeRecipe(input);
         }
         

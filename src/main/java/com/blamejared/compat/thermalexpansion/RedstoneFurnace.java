@@ -4,6 +4,7 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,10 @@ public class RedstoneFurnace {
         
         @Override
         public void apply() {
+            if(!FurnaceManager.recipeExists(input)) {
+                CraftTweakerAPI.logError("No Furnace recipe exists for: " + input);
+                return;
+            }
             FurnaceManager.removeRecipe(input);
         }
         

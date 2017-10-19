@@ -1,10 +1,11 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -67,6 +68,10 @@ public class SawMill {
         
         @Override
         public void apply() {
+            if(!SawmillManager.recipeExists(input)) {
+                CraftTweakerAPI.logError("No Sawmill recipe exists for: " + input);
+                return;
+            }
             SawmillManager.removeRecipe(input);
         }
         

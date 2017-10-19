@@ -4,6 +4,7 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -83,6 +84,10 @@ public class Transposer {
         
         @Override
         public void apply() {
+            if(!TransposerManager.extractRecipeExists(input)) {
+                CraftTweakerAPI.logError("No Transposer Extraction recipe exists for: " + input);
+                return;
+            }
             TransposerManager.removeExtractRecipe(input);
         }
         
@@ -132,6 +137,10 @@ public class Transposer {
         
         @Override
         public void apply() {
+            if(!TransposerManager.fillRecipeExists(input, fluid)) {
+                CraftTweakerAPI.logError("No Transposer Fill recipe exists for: " + input);
+                return;
+            }
             TransposerManager.removeFillRecipe(input, fluid);
         }
         

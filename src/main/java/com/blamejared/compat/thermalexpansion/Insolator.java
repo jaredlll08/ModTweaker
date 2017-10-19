@@ -1,10 +1,11 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -69,6 +70,10 @@ public class Insolator {
         
         @Override
         public void apply() {
+            if(!InsolatorManager.recipeExists(primaryInput, secondaryInput)) {
+                CraftTweakerAPI.logError("No Insolator recipe exists for: " + primaryInput + " and " + secondaryInput);
+                return;
+            }
             InsolatorManager.removeRecipe(primaryInput, secondaryInput);
         }
         

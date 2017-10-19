@@ -4,6 +4,7 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -32,7 +33,9 @@ public class Centrifuge {
     
     @ZenMethod
     public static void removeRecipe(IItemStack input) {
+        
         ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input)));
+        
     }
     
     private static class Add extends BaseUndoable {
@@ -74,6 +77,10 @@ public class Centrifuge {
         
         @Override
         public void apply() {
+            if(!CentrifugeManager.recipeExists(input)) {
+                CraftTweakerAPI.logError("No Centrifuge recipe exists for: " + input);
+                return;
+            }
             CentrifugeManager.removeRecipe(input);
         }
         
