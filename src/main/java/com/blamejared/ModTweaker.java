@@ -47,6 +47,7 @@ public class ModTweaker {
             LATE_ADDITIONS.forEach(CraftTweakerAPI::apply);
         } catch(Exception e) {
             e.printStackTrace();
+            CraftTweakerAPI.logError("Error while applying actions", e);
         }
     }
 }
