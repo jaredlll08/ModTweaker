@@ -6,11 +6,11 @@ import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
 
-public class MCMaterial implements IMaterial {
+public class TICMaterial implements ITICMaterial {
     
     private final Material material;
     
-    public MCMaterial(Material material) {
+    public TICMaterial(Material material) {
         this.material = material;
     }
     
@@ -20,7 +20,7 @@ public class MCMaterial implements IMaterial {
     }
     
     @Override
-    public boolean matches(IMaterial var1) {
+    public boolean matches(ITICMaterial var1) {
         return var1.getName().equals(getName());
     }
     
@@ -30,8 +30,8 @@ public class MCMaterial implements IMaterial {
     }
     
     @Override
-    public IMaterialDefinition getDefinition() {
-        return new MCMaterialDefinition(material);
+    public ITICMaterialDefinition getDefinition() {
+        return new TICMaterialDefinition(material);
     }
     
     @Override

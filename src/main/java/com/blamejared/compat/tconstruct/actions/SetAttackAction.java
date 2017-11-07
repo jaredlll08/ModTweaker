@@ -1,6 +1,6 @@
 package com.blamejared.compat.tconstruct.actions;
 
-import com.blamejared.compat.tconstruct.materials.IMaterial;
+import com.blamejared.compat.tconstruct.materials.ITICMaterial;
 import crafttweaker.IAction;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.IMaterialStats;
@@ -8,11 +8,11 @@ import slimeknights.tconstruct.library.materials.Material;
 
 public class SetAttackAction implements IAction {
     
-    private final IMaterial material;
+    private final ITICMaterial material;
     private final String stat;
     private final float newValue;
     
-    public SetAttackAction(IMaterial material, String stat, float newValue) {
+    public SetAttackAction(ITICMaterial material, String stat, float newValue) {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;

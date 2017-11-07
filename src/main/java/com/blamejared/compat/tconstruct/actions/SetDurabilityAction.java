@@ -1,16 +1,16 @@
 package com.blamejared.compat.tconstruct.actions;
 
-import com.blamejared.compat.tconstruct.materials.IMaterial;
+import com.blamejared.compat.tconstruct.materials.ITICMaterial;
 import crafttweaker.IAction;
 import slimeknights.tconstruct.library.materials.*;
 
 public class SetDurabilityAction implements IAction {
     
-    private final IMaterial material;
+    private final ITICMaterial material;
     private final String stat;
     private final int newValue;
     
-    public SetDurabilityAction(IMaterial material, String stat, int newValue) {
+    public SetDurabilityAction(ITICMaterial material, String stat, int newValue) {
         this.material = material;
         this.stat = stat;
         this.newValue = newValue;

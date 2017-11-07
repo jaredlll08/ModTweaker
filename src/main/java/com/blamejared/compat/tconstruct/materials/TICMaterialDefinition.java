@@ -1,29 +1,25 @@
 package com.blamejared.compat.tconstruct.materials;
 
-import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
 
-/**
- * Created by Jared on 6/16/2016.
- */
-
-public class MCMaterialDefinition implements IMaterialDefinition {
+public class TICMaterialDefinition implements ITICMaterialDefinition {
+    
     private final Material material;
-
-    public MCMaterialDefinition(Material material) {
+    
+    public TICMaterialDefinition(Material material) {
         this.material = material;
     }
-
+    
     @Override
-    public IMaterial asMaterial() {
-        return new MCMaterial(material);
+    public ITICMaterial asMaterial() {
+        return new TICMaterial(material);
     }
-
+    
     @Override
     public String getName() {
         return material.getLocalizedName();
     }
-
+    
     @Override
     public String getDisplayName() {
         return material.getLocalizedName();
