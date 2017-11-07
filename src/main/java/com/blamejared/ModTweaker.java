@@ -20,7 +20,6 @@ public class ModTweaker {
     public static final List<IAction> LATE_REMOVALS = new LinkedList<>();
     public static final List<IAction> LATE_ADDITIONS = new LinkedList<>();
 
-    public static final List<IAction> SEMI_LATE_STUFF = new LinkedList<>();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) throws IOException {
@@ -28,11 +27,6 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent e) {
-        try {
-            SEMI_LATE_STUFF.forEach(CraftTweakerAPI::apply);
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
     }
     
     @Mod.EventHandler

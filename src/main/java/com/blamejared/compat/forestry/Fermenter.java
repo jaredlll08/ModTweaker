@@ -56,7 +56,7 @@ public class Fermenter {
 	 */
 	@ZenMethod
 	public static void addRecipe(ILiquidStack fluidOutput, IItemStack resource, ILiquidStack fluidInput, int fermentationValue, float fluidOutputModifier) {
-		ModTweaker.SEMI_LATE_STUFF.add(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
+		ModTweaker.LATE_ADDITIONS.add(new Add(new FermenterRecipe(toStack(resource), fermentationValue, fluidOutputModifier, getFluid(fluidOutput), toFluid(fluidInput))));
         // RecipeManagers.fermenterManager.addRecipe(new FermenterRecipe(new ItemStack(Blocks.OBSIDIAN, 1), 100, 2, FluidRegistry.LAVA, new FluidStack(FluidRegistry.WATER, 200)));
 }
 
@@ -80,7 +80,7 @@ public class Fermenter {
 	 */
 	@ZenMethod
 	public static void removeRecipe(IIngredient input) {
-		ModTweaker.SEMI_LATE_STUFF.add(new Remove(input));
+		ModTweaker.LATE_REMOVALS.add(new Remove(input));
 	}
 
 	private static class Remove extends BaseRemoveForestry<IFermenterRecipe> {
