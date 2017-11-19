@@ -9,6 +9,7 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.WeightedItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +23,12 @@ public class Refinery {
     
     @ZenMethod
     public static void addRecipe(ILiquidStack output, IItemStack outputItem, ILiquidStack input, int energy) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toFluid(output), InputHelper.toFluid(input), InputHelper.toStack(outputItem), energy));
+        addRecipe(output,outputItem.weight(1),input,energy);
+    }
+    
+    @ZenMethod
+    public static void addRecipe(ILiquidStack output, WeightedItemStack outputItem, ILiquidStack input, int energy) {
+    	ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toFluid(output), InputHelper.toFluid(input), InputHelper.toStack(outputItem.getStack()), energy, (int) outputItem.getPercent()));
     }
     
     @ZenMethod
@@ -34,19 +40,20 @@ public class Refinery {
         
         private FluidStack output, input;
         private ItemStack outputItem;
-        private int energy;
+        private int energy, itemChance;
         
-        public Add(FluidStack output, FluidStack input, ItemStack outputItem, int energy) {
+        public Add(FluidStack output, FluidStack input, ItemStack outputItem, int energy, int itemChance) {
             super("Refinery");
             this.output = output;
             this.input = input;
             this.outputItem = outputItem;
             this.energy = energy;
+            this.itemChance = itemChance;
         }
         
         @Override
         public void apply() {
-            RefineryManager.addRecipe(energy, input, output, outputItem);
+            RefineryManager.addRecipe(energy, input, output, outputItem, itemChance);
         }
         
         @Override
