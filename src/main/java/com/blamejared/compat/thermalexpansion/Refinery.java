@@ -8,7 +8,7 @@ import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,8 +21,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Refinery {
     
     @ZenMethod
-    public static void addRecipe(ILiquidStack output, IItemStack outputItem, ILiquidStack input, int energy) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toFluid(output), InputHelper.toFluid(input), InputHelper.toStack(outputItem), energy));
+    public static void addRecipe(ILiquidStack output, WeightedItemStack outputItem, ILiquidStack input, int energy) {
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toFluid(output), InputHelper.toFluid(input), outputItem, energy));
     }
     
     @ZenMethod
@@ -33,10 +33,10 @@ public class Refinery {
     private static class Add extends BaseUndoable {
         
         private FluidStack output, input;
-        private ItemStack outputItem;
+        private WeightedItemStack outputItem;
         private int energy;
         
-        public Add(FluidStack output, FluidStack input, ItemStack outputItem, int energy) {
+        public Add(FluidStack output, FluidStack input, WeightedItemStack outputItem, int energy) {
             super("Refinery");
             this.output = output;
             this.input = input;
@@ -46,7 +46,7 @@ public class Refinery {
         
         @Override
         public void apply() {
-            RefineryManager.addRecipe(energy, input, output, outputItem);
+            RefineryManager.addRecipe(energy, input, output, InputHelper.toStack(outputItem.getStack()), (int) outputItem.getPercent());
         }
         
         @Override
