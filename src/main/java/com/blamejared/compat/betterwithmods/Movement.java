@@ -1,6 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
-import betterwithmods.module.hardcore.HCMovement;
+import betterwithmods.module.hardcore.needs.HCMovement;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
