@@ -1,6 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
-import betterwithmods.module.hardcore.HCBuoy;
+import betterwithmods.module.hardcore.world.HCBuoy;
 import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
 import com.blamejared.mtlib.helpers.InputHelper;
