@@ -23,7 +23,7 @@ public class SetCategoryIcon implements IAction {
 	
 	@Override
 	public String describe() {
-        return "Setting Lexicon Category priority: " + category.getUnlocalizedName();
+        return "Setting Lexicon Category icon: " + category.getUnlocalizedName();
 	}
 
 }

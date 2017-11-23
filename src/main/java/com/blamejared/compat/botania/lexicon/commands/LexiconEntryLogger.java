@@ -14,7 +14,7 @@ import vazkii.botania.api.lexicon.LexiconEntry;
 public class LexiconEntryLogger extends CraftTweakerCommand{
 
 	public LexiconEntryLogger() {
-		super("lexentries");
+		super("botlexentries");
 	}
 	
     @Override

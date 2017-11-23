@@ -66,7 +66,7 @@ public class RuneAltar {
         if (!recipes.isEmpty()) {
             CraftTweakerAPI.apply(new Remove(recipes));
         } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ElvenTrade.name, output.toString()));
+            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", RuneAltar.name, output.toString()));
         }
     }
 
