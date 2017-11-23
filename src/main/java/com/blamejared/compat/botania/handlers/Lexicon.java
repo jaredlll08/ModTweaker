@@ -8,6 +8,7 @@ import static com.blamejared.mtlib.helpers.InputHelper.toStacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.compat.botania.BotaniaHelper;
 import com.blamejared.compat.botania.lexicon.AddCategory;
 import com.blamejared.compat.botania.lexicon.AddEntry;
@@ -346,6 +347,7 @@ public class Lexicon {
 
     @ZenMethod
     public static void removePage(String entry, int page_number) {
+    	Botania.LATE.add(() -> {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
     	if(lexiconEntry==null)
     	{
@@ -358,6 +360,7 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new RemovePage(lexiconEntry,page_number));
+        });
     }
 
     @ZenMethod
@@ -374,6 +377,7 @@ public class Lexicon {
     }
     @ZenMethod
     public static void removeEntry(String entry) {
+    	Botania.LATE.add(() -> {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
     	if(lexiconEntry==null)
     	{
@@ -381,10 +385,12 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new RemoveEntry(lexiconEntry));
+    	});
     }
     
     @ZenMethod
     public static void setEntryKnowledgeType(String entry, String knowledgeType) {
+    	Botania.LATE.add(() -> {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(entry);
     	KnowledgeType type=BotaniaHelper.findKnowledgeType(knowledgeType);
     	if(lexiconEntry==null)
@@ -398,6 +404,7 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new SetEntryKnowledgeType(lexiconEntry,type));
+    	});
     }
     
     @ZenMethod
@@ -408,6 +415,7 @@ public class Lexicon {
     
     @ZenMethod
     public static void removeCategory(String name) {
+    	Botania.LATE.add(() -> {
     	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
     	if(lexiconCategory==null)
     	{
@@ -415,10 +423,12 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new RemoveCategory(lexiconCategory));
+    	});
     }
 
     @ZenMethod
     public static void setCategoryPriority(String name, int priority) {
+    	Botania.LATE.add(() -> {
     	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
     	if(lexiconCategory==null)
     	{
@@ -426,10 +436,12 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new SetCategoryPriority(lexiconCategory,priority));
+    	});
     }
     
     @ZenMethod
     public static void setCategoryIcon(String name, String icon) {
+    	Botania.LATE.add(() -> {
     	LexiconCategory lexiconCategory=BotaniaHelper.findCatagory(name);
     	if(lexiconCategory==null)
     	{
@@ -437,10 +449,12 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new SetCategoryIcon(lexiconCategory,icon));
+    	});
     }
 
     @ZenMethod
     public static void addRecipeMapping(IItemStack stack, String Entry, int page) {
+    	Botania.LATE.add(() -> {
     	LexiconEntry lexiconEntry=BotaniaHelper.findEntry(Entry);
     	if(LexiconRecipeMappings.getDataForStack(toStack(stack))!=null)
     	{
@@ -458,15 +472,18 @@ public class Lexicon {
     		return;
     	}
         CraftTweakerAPI.apply(new AddRecipeMapping(toStack(stack),lexiconEntry,page));
+    	});
     }
 
     @ZenMethod
     public static void removeRecipeMapping(IItemStack stack) {
+    	Botania.LATE.add(() -> {
     	if(LexiconRecipeMappings.getDataForStack(toStack(stack))==null)
     	{
     		CraftTweakerAPI.getLogger().logError("There isn't a recipe mapping for "+stack);
     		return;
     	}
         CraftTweakerAPI.apply(new RemoveRecipeMapping(toStack(stack)));
+    	});
     }
 }

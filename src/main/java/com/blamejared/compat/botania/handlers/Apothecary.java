@@ -8,6 +8,7 @@ import static com.blamejared.mtlib.helpers.StackHelper.matches;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
@@ -58,6 +59,7 @@ public class Apothecary {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
+    	Botania.LATE.add(() -> {
         // Get list of existing recipes, matching with parameter
         LinkedList<RecipePetals> result = new LinkedList<>();
 
@@ -72,7 +74,7 @@ public class Apothecary {
             CraftTweakerAPI.apply(new Remove(result));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", Apothecary.name, output.toString()));
-        }
+        }});
     }
 
     @ZenMethod

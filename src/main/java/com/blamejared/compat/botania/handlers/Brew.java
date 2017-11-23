@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StringHelper;
@@ -62,6 +63,7 @@ public class Brew {
     
     @ZenMethod
     public static void removeRecipe(String brewName) {
+    	Botania.LATE.add(() -> {
         List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
         Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
         
@@ -76,7 +78,7 @@ public class Brew {
             CraftTweakerAPI.apply(new Remove(recipes));
         } else {
             LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
-        }
+        }});
     }
     
     public static class Remove extends BaseListRemoval<RecipeBrew> {

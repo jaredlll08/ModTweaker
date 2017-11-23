@@ -3,6 +3,7 @@ package com.blamejared.compat.botania.handlers;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StackHelper;
@@ -69,6 +70,7 @@ public class PureDaisy {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
+    	Botania.LATE.add(() -> {
         List<RecipePureDaisy> recipes = new LinkedList<>();
         
         for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
@@ -83,7 +85,7 @@ public class PureDaisy {
             CraftTweakerAPI.apply(new Remove(recipes));
         } else {
             
-        }
+        }});
     }
     
     private static class Remove extends BaseListRemoval<RecipePureDaisy> {

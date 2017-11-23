@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
@@ -54,6 +55,7 @@ public class ElvenTrade {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
+    	Botania.LATE.add(() -> {
         // Get list of existing recipes, matching with parameter
         LinkedList<RecipeElvenTrade> recipes = new LinkedList<RecipeElvenTrade>();
         
@@ -68,7 +70,7 @@ public class ElvenTrade {
             CraftTweakerAPI.apply(new Remove(recipes));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ElvenTrade.name, output.toString()));
-        }
+        }});
         
     }
     public static IItemStack[] toStacks(ItemStack[] iIngredient) {
