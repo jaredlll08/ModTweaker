@@ -7,7 +7,6 @@ import crafttweaker.IAction;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +20,8 @@ public class ModTweaker {
     
     
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e) throws IOException {
+    public void preInit(FMLPreInitializationEvent e) {
+    	if(Loader.isModLoaded("botania")) Botania.register();
     }
     
     @Mod.EventHandler

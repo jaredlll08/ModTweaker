@@ -22,7 +22,8 @@ import net.minecraft.item.ItemStack;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
 public class Botania {
-    public Botania() {
+	
+    public static void register() {
         CraftTweakerAPI.registerClass(Apothecary.class);
         CraftTweakerAPI.registerClass(Brew.class);
         CraftTweakerAPI.registerClass(ElvenTrade.class);
