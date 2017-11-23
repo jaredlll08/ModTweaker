@@ -1,5 +1,6 @@
 package com.blamejared;
 
+import com.blamejared.compat.botania.Botania;
 import com.blamejared.compat.tconstruct.TConstruct;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
@@ -47,6 +48,9 @@ public class ModTweaker {
     public void onFMLServerStarting(FMLServerStartingEvent event) {
         if(Loader.isModLoaded("tconstruct")) {
             TConstruct.registerCommands();
+        }
+        if(Loader.isModLoaded("botania")) {
+        	Botania.registerCommands();
         }
     }
 }
