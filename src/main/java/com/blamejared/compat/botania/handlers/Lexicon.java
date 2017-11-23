@@ -22,6 +22,8 @@ import com.blamejared.compat.botania.lexicon.SetCategoryPriority;
 import com.blamejared.compat.botania.lexicon.SetEntryKnowledgeType;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.entity.EntityList;
@@ -51,6 +53,8 @@ import vazkii.botania.common.lexicon.page.PageRuneRecipe;
 import vazkii.botania.common.lexicon.page.PageText;
 
 @ZenClass("mods.botania.Lexicon")
+@ModOnly("botania")
+@ZenRegister
 public class Lexicon {
 
     @ZenMethod

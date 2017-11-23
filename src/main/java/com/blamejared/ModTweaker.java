@@ -1,16 +1,25 @@
 package com.blamejared;
 
-import com.blamejared.compat.botania.Botania;
-import com.blamejared.compat.tconstruct.TConstruct;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.IAction;
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.event.*;
+import static com.blamejared.reference.Reference.DEPENDENCIES;
+import static com.blamejared.reference.Reference.MODID;
+import static com.blamejared.reference.Reference.NAME;
+import static com.blamejared.reference.Reference.VERSION;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.blamejared.reference.Reference.*;
+import com.blamejared.compat.botania.Botania;
+import com.blamejared.compat.tconstruct.TConstruct;
+
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = MODID, name = NAME, version = VERSION, dependencies = DEPENDENCIES)
 public class ModTweaker {
@@ -21,7 +30,6 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-    	if(Loader.isModLoaded("botania")) Botania.register();
     }
     
     @Mod.EventHandler

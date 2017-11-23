@@ -13,6 +13,8 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -22,6 +24,8 @@ import vazkii.botania.api.recipe.RecipePetals;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
 @ZenClass("mods.botania.Apothecary")
+@ModOnly("botania")
+@ZenRegister
 public class Apothecary {
 
     protected static final String name = "Botania Petal";

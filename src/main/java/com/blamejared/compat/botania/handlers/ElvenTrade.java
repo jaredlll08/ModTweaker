@@ -13,6 +13,8 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.mc1120.item.MCItemStack;
@@ -23,6 +25,8 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipeElvenTrade;
 
 @ZenClass("mods.botania.ElvenTrade")
+@ModOnly("botania")
+@ZenRegister
 public class ElvenTrade {
     
     protected static final String name = "Botania Eleven Trade";

@@ -2,12 +2,16 @@ package com.blamejared.compat.botania.handlers;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.oredict.IOreDictEntry;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;
 
 @ZenClass("mods.botania.Orechid")
+@ModOnly("botania")
+@ZenRegister
 public class Orechid {
     @ZenMethod
     public static void addOre(IOreDictEntry oreDict, int weight) {

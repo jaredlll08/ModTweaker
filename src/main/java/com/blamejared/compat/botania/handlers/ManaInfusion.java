@@ -13,6 +13,8 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -22,6 +24,8 @@ import vazkii.botania.api.recipe.RecipeManaInfusion;
 
 
 @ZenClass("mods.botania.ManaInfusion")
+@ModOnly("botania")
+@ZenRegister
 public class ManaInfusion {
     
     protected static final String name = "Botania Mana Infusion";

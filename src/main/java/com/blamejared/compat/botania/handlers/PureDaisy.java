@@ -10,6 +10,8 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
@@ -21,6 +23,8 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipePureDaisy;
 
 @ZenClass("mods.botania.PureDaisy")
+@ModOnly("botania")
+@ZenRegister
 public class PureDaisy {
     
     public static final String name = "Botania PureDaisy";

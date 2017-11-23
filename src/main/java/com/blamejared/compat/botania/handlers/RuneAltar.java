@@ -13,6 +13,8 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 
 import crafttweaker.CraftTweakerAPI;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -21,6 +23,8 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.recipe.RecipeRuneAltar;
 
 @ZenClass("mods.botania.RuneAltar")
+@ModOnly("botania")
+@ZenRegister
 public class RuneAltar {
 
     protected static final String name = "Botania Rune Altar";
