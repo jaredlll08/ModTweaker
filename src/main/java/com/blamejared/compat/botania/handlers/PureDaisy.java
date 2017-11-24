@@ -1,9 +1,10 @@
 package com.blamejared.compat.botania.handlers;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.blamejared.compat.botania.Botania;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StackHelper;
@@ -70,32 +71,41 @@ public class PureDaisy {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
-    	Botania.LATE.add(() -> {
-        List<RecipePureDaisy> recipes = new LinkedList<>();
-        
-        for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
-            IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutputState().getBlock(), 1));
-            
-            if(StackHelper.matches(output, out)) {
-                recipes.add(recipe);
-            }
-        }
-        
-        if(!recipes.isEmpty()) {
-            CraftTweakerAPI.apply(new Remove(recipes));
-        } else {
-            
-        }});
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
     private static class Remove extends BaseListRemoval<RecipePureDaisy> {
-        public Remove(List<RecipePureDaisy> recipes) {
-            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes, recipes);
+    	
+    	final IIngredient output;
+    	
+        public Remove(IIngredient output) {
+            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes, Collections.emptyList());
+            this.output = output;
         }
         
         @Override
         protected String getRecipeInfo(RecipePureDaisy recipe) {
             return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
+        }
+        
+        @Override
+        public void apply() {
+            List<RecipePureDaisy> recipes = new LinkedList<>();
+            
+            for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
+                IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutputState().getBlock(), 1));
+                
+                if(StackHelper.matches(output, out)) {
+                    recipes.add(recipe);
+                }
+            }
+            
+            if(!recipes.isEmpty()) {
+                this.recipes.addAll(recipes);
+                super.apply();
+            } else {
+            	LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", PureDaisy.name, output.toString()));
+            }
         }
     }
 }

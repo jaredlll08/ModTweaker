@@ -4,10 +4,10 @@ import static com.blamejared.mtlib.helpers.InputHelper.toObjects;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
-import com.blamejared.compat.botania.Botania;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
@@ -55,22 +55,7 @@ public class ElvenTrade {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
-    	Botania.LATE.add(() -> {
-        // Get list of existing recipes, matching with parameter
-        LinkedList<RecipeElvenTrade> recipes = new LinkedList<RecipeElvenTrade>();
-        
-        for(RecipeElvenTrade entry : BotaniaAPI.elvenTradeRecipes) {
-            if(entry != null && entry.getOutputs() != null && matches(output, toStacks(entry.getOutputs().toArray(new ItemStack[entry.getOutputs().size()])))) {
-                recipes.add(entry);
-            }
-        }
-        
-        // Check if we found the recipes and apply the action
-        if(!recipes.isEmpty()) {
-            CraftTweakerAPI.apply(new Remove(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ElvenTrade.name, output.toString()));
-        }});
+    	ModTweaker.LATE_REMOVALS.add(new Remove(output));
         
     }
     public static IItemStack[] toStacks(ItemStack[] iIngredient) {
@@ -84,13 +69,37 @@ public class ElvenTrade {
     }
 
     private static class Remove extends BaseListRemoval<RecipeElvenTrade> {
-        public Remove(List<RecipeElvenTrade> recipes) {
-            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes, recipes);
+    	
+    	final IIngredient output;
+    	
+        public Remove(IIngredient output) {
+            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes, Collections.emptyList());
+            this.output = output;
         }
     
         @Override
         public String getRecipeInfo(RecipeElvenTrade recipe) {
             return LogHelper.getStackDescription(recipe.getOutputs());
+        }
+        
+        @Override
+        public void apply() {
+            // Get list of existing recipes, matching with parameter
+            LinkedList<RecipeElvenTrade> recipes = new LinkedList<RecipeElvenTrade>();
+            
+            for(RecipeElvenTrade entry : BotaniaAPI.elvenTradeRecipes) {
+                if(entry != null && entry.getOutputs() != null && matches(output, toStacks(entry.getOutputs().toArray(new ItemStack[entry.getOutputs().size()])))) {
+                    recipes.add(entry);
+                }
+            }
+            
+            // Check if we found the recipes and apply the action
+            if(!recipes.isEmpty()) {
+                this.recipes.addAll(recipes);
+                super.apply();
+            } else {
+                LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", ElvenTrade.name, output.toString()));
+            }
         }
     }
 }

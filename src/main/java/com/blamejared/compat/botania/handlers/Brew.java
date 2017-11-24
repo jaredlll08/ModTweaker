@@ -1,11 +1,12 @@
 package com.blamejared.compat.botania.handlers;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.blamejared.compat.botania.Botania;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StringHelper;
@@ -63,33 +64,41 @@ public class Brew {
     
     @ZenMethod
     public static void removeRecipe(String brewName) {
-    	Botania.LATE.add(() -> {
-        List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
-        Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
-        
-        for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {
-            matcher.reset(recipe.getBrew().getKey());
-            if(matcher.matches()) {
-                recipes.add(recipe);
-            }
-        }
-        
-        if(!recipes.isEmpty()) {
-            CraftTweakerAPI.apply(new Remove(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
-        }});
+    	ModTweaker.LATE_REMOVALS.add(new Remove(brewName));
     }
     
     public static class Remove extends BaseListRemoval<RecipeBrew> {
         
-        protected Remove(List<RecipeBrew> recipes) {
-            super(Brew.name, BotaniaAPI.brewRecipes, recipes);
+    	final String brewName;
+    	
+        protected Remove(String brewName) {
+            super(Brew.name, BotaniaAPI.brewRecipes, Collections.emptyList());
+            this.brewName = brewName;
         }
         
         @Override
         protected String getRecipeInfo(RecipeBrew recipe) {
             return recipe.getBrew().getKey();
+        }
+        
+        @Override
+        public void apply() {
+            List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
+            Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
+            
+            for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {
+                matcher.reset(recipe.getBrew().getKey());
+                if(matcher.matches()) {
+                    recipes.add(recipe);
+                }
+            }
+            
+            if(!recipes.isEmpty()) {
+                this.recipes.addAll(recipes);
+                super.apply();
+            } else {
+                LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
+            }
         }
     }
 }

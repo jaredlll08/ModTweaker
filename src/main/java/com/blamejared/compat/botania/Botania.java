@@ -1,8 +1,5 @@
 package com.blamejared.compat.botania;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.blamejared.compat.botania.commands.BotaniaBrewLogger;
 import com.blamejared.compat.botania.commands.BotaniaLogger;
 import com.blamejared.compat.botania.commands.BotaniaOrechidLogger;
@@ -16,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
 public class Botania {
-	
-	public static final List<Runnable> LATE = new ArrayList<>();
 	
     public static boolean isSubtile(ItemStack stack) {
         return stack.getItem() instanceof ItemBlockSpecialFlower;

@@ -1,26 +1,36 @@
 package com.blamejared.compat.botania.lexicon;
 
+import com.blamejared.compat.botania.BotaniaHelper;
+
+import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconEntry;
 
 public class RemoveEntry implements IAction {
-	
-	LexiconEntry Entry;
 
-    public RemoveEntry(LexiconEntry Entry) {
-        this.Entry=Entry;
-    }
+	LexiconEntry lexEntry;
+	final String entry;
 
-    @Override
-	public void apply() {
-		Entry.category.entries.remove(Entry);
-		BotaniaAPI.getAllEntries().remove(Entry);
+	public RemoveEntry(String entry) {
+		this.entry = entry;
 	}
-	
+
+	@Override
+	public void apply() {
+		lexEntry = BotaniaHelper.findEntry(entry);
+		if (lexEntry == null) {
+			CraftTweakerAPI.getLogger().logError("Cannot find lexicon entry " + entry);
+			return;
+		}
+		lexEntry.category.entries.remove(lexEntry);
+		BotaniaAPI.getAllEntries().remove(lexEntry);
+	}
+
 	@Override
 	public String describe() {
-        return "Removing Lexicon Entry: " + Entry.getUnlocalizedName();
+		if(lexEntry == null) return "Cannot find lexicon entry " + entry;
+		return "Removing Lexicon Entry: " + lexEntry.getUnlocalizedName();
 	}
-	
+
 }

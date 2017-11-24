@@ -5,10 +5,11 @@ import static com.blamejared.mtlib.helpers.InputHelper.toObjects;
 import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 import static com.blamejared.mtlib.helpers.StackHelper.matches;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.blamejared.compat.botania.Botania;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseListAddition;
 import com.blamejared.mtlib.utils.BaseListRemoval;
@@ -54,32 +55,41 @@ public class RuneAltar {
 
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
-    	Botania.LATE.add(() -> {
-        // Get list of existing recipes, matching with parameter
-        List<RecipeRuneAltar> recipes = new LinkedList<RecipeRuneAltar>();
-
-        for (RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
-            if (r != null && r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
-                recipes.add(r);
-            }
-        }
-
-        // Check if we found the recipes and apply the action
-        if (!recipes.isEmpty()) {
-            CraftTweakerAPI.apply(new Remove(recipes));
-        } else {
-            LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", RuneAltar.name, output.toString()));
-        }});
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
 
     private static class Remove extends BaseListRemoval<RecipeRuneAltar> {
-        public Remove(List<RecipeRuneAltar> recipes) {
-            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, recipes);
+    	
+    	final IIngredient output;
+    	
+        public Remove(IIngredient output) {
+            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, Collections.emptyList());
+            this.output = output;
         }
 
         @Override
         public String getRecipeInfo(RecipeRuneAltar recipe) {
             return LogHelper.getStackDescription(recipe.getOutput());
+        }
+        
+        @Override
+        public void apply() {
+            // Get list of existing recipes, matching with parameter
+            List<RecipeRuneAltar> recipes = new LinkedList<RecipeRuneAltar>();
+
+            for (RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
+                if (r != null && r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
+                    recipes.add(r);
+                }
+            }
+
+            // Check if we found the recipes and apply the action
+            if (!recipes.isEmpty()) {
+                this.recipes.addAll(recipes);
+                super.apply();
+            } else {
+                LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", RuneAltar.name, output.toString()));
+            }
         }
     }
 }

@@ -38,7 +38,6 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
-    if(Loader.isModLoaded("botania")) for(Runnable r : Botania.LATE) r.run();
     }
     
     @Mod.EventHandler
