@@ -5,21 +5,21 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class AddCategory implements IAction {
-	
+
 	LexiconCategory category;
 
-    public AddCategory(LexiconCategory category) {
-        this.category=category;
-    }
+	public AddCategory(LexiconCategory category) {
+		this.category = category;
+	}
 
-    @Override
+	@Override
 	public void apply() {
-    	BotaniaAPI.addCategory(category);
+		BotaniaAPI.addCategory(category);
 	}
 
 	@Override
 	public String describe() {
-        return "Adding Lexicon Category: " + category.getUnlocalizedName();
+		return "Adding Lexicon Category: " + category.getUnlocalizedName();
 	}
 
 }

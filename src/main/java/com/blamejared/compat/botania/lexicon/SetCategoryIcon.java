@@ -8,29 +8,29 @@ import net.minecraft.util.ResourceLocation;
 import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class SetCategoryIcon implements IAction {
-	
+
 	LexiconCategory category;
 	ResourceLocation oldIcon;
 	ResourceLocation newIcon;
 	final String name;
 
-    public SetCategoryIcon(String name, String icon) {
-        this.name=name;
-        this.newIcon=new ResourceLocation(icon);
-    }
+	public SetCategoryIcon(String name, String icon) {
+		this.name = name;
+		this.newIcon = new ResourceLocation(icon);
+	}
 
-    @Override
+	@Override
 	public void apply() {
-    	category = BotaniaHelper.findCatagory(name);
+		category = BotaniaHelper.findCatagory(name);
 		if (category == null) {
 			CraftTweakerAPI.getLogger().logError("Cannot find lexicon category " + name);
 			return;
 		}
-    	oldIcon=category.getIcon();
-    	category.setIcon(newIcon);
-    	CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category icon: " + category.getUnlocalizedName());
+		oldIcon = category.getIcon();
+		category.setIcon(newIcon);
+		CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category icon: " + category.getUnlocalizedName());
 	}
-	
+
 	@Override
 	public String describe() {
 		return "";

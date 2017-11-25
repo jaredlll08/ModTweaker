@@ -11,12 +11,12 @@ public class RemoveCategory implements IAction {
 
 	final String name;
 	LexiconCategory category;
-	
-    public RemoveCategory(String name) {
-        this.name=name;
-    }
 
-    @Override
+	public RemoveCategory(String name) {
+		this.name = name;
+	}
+
+	@Override
 	public void apply() {
 		category = BotaniaHelper.findCatagory(name);
 		if (category == null) {
@@ -27,10 +27,9 @@ public class RemoveCategory implements IAction {
 		CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Category: " + category.getUnlocalizedName());
 	}
 
-
 	@Override
 	public String describe() {
-        return "";
+		return "";
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.blamejared.compat.botania.commands;
 
-import java.util.Set;
-
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
 import net.minecraft.command.ICommandSender;
@@ -18,10 +16,7 @@ public class BotaniaOrechidLogger extends CraftTweakerCommand {
 	@Override
 	public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
 
-		Set<String> keys = BotaniaAPI.oreWeights.keySet();
-		System.out.println("Orechid Keys: " + keys.size());
 		for (String str : BotaniaAPI.oreWeights.keySet()) {
-			System.out.println("Orechid Key: " + str);
 			CraftTweakerAPI.logCommand(str + ": " + BotaniaAPI.oreWeights.get(str));
 		}
 		if (sender != null) {
