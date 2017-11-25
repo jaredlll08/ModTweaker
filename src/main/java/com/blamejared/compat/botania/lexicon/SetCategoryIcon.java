@@ -28,12 +28,12 @@ public class SetCategoryIcon implements IAction {
 		}
     	oldIcon=category.getIcon();
     	category.setIcon(newIcon);
+    	CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category icon: " + category.getUnlocalizedName());
 	}
 	
 	@Override
 	public String describe() {
-		if(category == null) return "Cannot find lexicon category " + name;
-        return "Setting Lexicon Category icon: " + category.getUnlocalizedName();
+		return "";
 	}
 
 }

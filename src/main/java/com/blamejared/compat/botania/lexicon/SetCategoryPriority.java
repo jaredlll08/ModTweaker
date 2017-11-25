@@ -27,11 +27,12 @@ public class SetCategoryPriority implements IAction {
 		}
     	oldPriority=category.getSortingPriority();
     	category.setPriority(newPriority);
+    	CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category priority: " + category.getUnlocalizedName());
 	}
 	
 	@Override
 	public String describe() {
-        return "Setting Lexicon Category priority: " + category.getUnlocalizedName();
+        return "";
 	}
 	
 }

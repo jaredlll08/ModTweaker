@@ -25,12 +25,12 @@ public class RemoveEntry implements IAction {
 		}
 		lexEntry.category.entries.remove(lexEntry);
 		BotaniaAPI.getAllEntries().remove(lexEntry);
+		CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Entry: " + lexEntry.getUnlocalizedName());
 	}
 
 	@Override
 	public String describe() {
-		if(lexEntry == null) return "Cannot find lexicon entry " + entry;
-		return "Removing Lexicon Entry: " + lexEntry.getUnlocalizedName();
+		return "";
 	}
 
 }

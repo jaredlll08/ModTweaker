@@ -28,84 +28,90 @@ import vazkii.botania.api.recipe.RecipePureDaisy;
 @ModOnly("botania")
 @ZenRegister
 public class PureDaisy {
-    
-    public static final String name = "Botania PureDaisy";
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    @ZenMethod
-    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, @Optional int time) {
-        if(blockInput == null || blockOutput == null) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
-            return;
-        }
-        
-        Object input = InputHelper.toObject(blockInput);
-        
-        if(input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack)input))) {
-            LogHelper.logError(String.format("Input must be a block or an oredict entry."));
-            return;
-        }
-        
-        if(input instanceof ItemStack) input = Block.getBlockFromItem(((ItemStack)input).getItem());
-        ItemStack output = InputHelper.toStack(blockOutput);
-        
-        RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
-        
-        CraftTweakerAPI.apply(new Add(recipe));
-    }
-    
-    private static class Add extends BaseListAddition<RecipePureDaisy> {
-        public Add(RecipePureDaisy recipe) {
-            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes);
-            recipes.add(recipe);
-        }
-        
-        @Override
-        protected String getRecipeInfo(RecipePureDaisy recipe) {
-            return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
-        }
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static final String name = "Botania PureDaisy";
 
-    @ZenMethod
-    public static void removeRecipe(IIngredient output) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(output));
-    }
-    
-    private static class Remove extends BaseListRemoval<RecipePureDaisy> {
-    	
-    	final IIngredient output;
-    	
-        public Remove(IIngredient output) {
-            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes, Collections.emptyList());
-            this.output = output;
-        }
-        
-        @Override
-        protected String getRecipeInfo(RecipePureDaisy recipe) {
-            return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
-        }
-        
-        @Override
-        public void apply() {
-            List<RecipePureDaisy> recipes = new LinkedList<>();
-            
-            for(RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
-                IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutputState().getBlock(), 1));
-                
-                if(StackHelper.matches(output, out)) {
-                    recipes.add(recipe);
-                }
-            }
-            
-            if(!recipes.isEmpty()) {
-                this.recipes.addAll(recipes);
-                super.apply();
-            } else {
-            	LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", PureDaisy.name, output.toString()));
-            }
-        }
-    }
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@ZenMethod
+	public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, @Optional int time) {
+		if (blockInput == null || blockOutput == null) {
+			LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+			return;
+		}
+
+		Object input = InputHelper.toObject(blockInput);
+
+		if (input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack) input))) {
+			LogHelper.logError(String.format("Input must be a block or an oredict entry."));
+			return;
+		}
+
+		if (input instanceof ItemStack) input = Block.getBlockFromItem(((ItemStack) input).getItem());
+		ItemStack output = InputHelper.toStack(blockOutput);
+
+		RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
+
+		CraftTweakerAPI.apply(new Add(recipe));
+	}
+
+	private static class Add extends BaseListAddition<RecipePureDaisy> {
+		public Add(RecipePureDaisy recipe) {
+			super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes);
+			recipes.add(recipe);
+		}
+
+		@Override
+		protected String getRecipeInfo(RecipePureDaisy recipe) {
+			return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@ZenMethod
+	public static void removeRecipe(IIngredient output) {
+		ModTweaker.LATE_REMOVALS.add(new Remove(output));
+	}
+
+	private static class Remove extends BaseListRemoval<RecipePureDaisy> {
+
+		final IIngredient output;
+
+		public Remove(IIngredient output) {
+			super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes, Collections.emptyList());
+			this.output = output;
+		}
+
+		@Override
+		protected String getRecipeInfo(RecipePureDaisy recipe) {
+			return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
+		}
+
+		@Override
+		public void apply() {
+			List<RecipePureDaisy> recipes = new LinkedList<>();
+
+			for (RecipePureDaisy recipe : BotaniaAPI.pureDaisyRecipes) {
+				IItemStack out = InputHelper.toIItemStack(new ItemStack(recipe.getOutputState().getBlock(), 1));
+
+				if (StackHelper.matches(output, out)) {
+					recipes.add(recipe);
+				}
+			}
+
+			if (!recipes.isEmpty()) {
+				this.recipes.addAll(recipes);
+				super.apply();
+			} else {
+				LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", PureDaisy.name, output.toString()));
+			}
+			CraftTweakerAPI.getLogger().logInfo(super.describe());
+		}
+
+		@Override
+		public String describe() {
+			return "";
+		}
+	}
 }

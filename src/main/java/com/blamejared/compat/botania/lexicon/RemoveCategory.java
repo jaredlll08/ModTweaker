@@ -24,13 +24,13 @@ public class RemoveCategory implements IAction {
 			return;
 		}
 		BotaniaAPI.getAllCategories().remove(category);
+		CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Category: " + category.getUnlocalizedName());
 	}
 
 
 	@Override
 	public String describe() {
-		if(category == null) return "Cannot find lexicon category " + name;
-        return "Removing Lexicon Category: " + category.getUnlocalizedName();
+        return "";
 	}
 
 }

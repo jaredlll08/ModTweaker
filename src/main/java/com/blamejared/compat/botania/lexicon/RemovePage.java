@@ -33,17 +33,12 @@ public class RemovePage implements IAction {
 
 		this.page = lexEntry.pages.get(page_number);
 		lexEntry.pages.remove(page);
+		CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Page: " + lexEntry.pages.get(page_number).getUnlocalizedName());
 	}
 
 	@Override
 	public String describe() {
-		if (lexEntry == null) {
-			return "Cannot find lexicon entry " + entry;
-		}
-		if (page_number >= lexEntry.pages.size()) {
-			return "Page Number " + page_number + " out of bounds for " + entry;
-		}
-		return "Removing Lexicon Page: " + lexEntry.pages.get(page_number).getUnlocalizedName();
+		return "";
 	}
 
 }

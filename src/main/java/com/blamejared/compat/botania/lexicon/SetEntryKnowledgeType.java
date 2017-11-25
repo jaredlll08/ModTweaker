@@ -34,11 +34,11 @@ public class SetEntryKnowledgeType implements IAction {
 		}
 		oldType = lexEntry.getKnowledgeType();
 		lexEntry.setKnowledgeType(newType);
+		CraftTweakerAPI.getLogger().logInfo("Setting Knowledge type for: " + lexEntry.getUnlocalizedName());
 	}
 
 	@Override
 	public String describe() {
-		if(lexEntry == null) return "Setting knowledge type for entry " + entry + " has errored!";
-		return "Setting Knowledge type for: " + lexEntry.getUnlocalizedName();
+		return "";
 	}
 }

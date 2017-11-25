@@ -26,79 +26,85 @@ import vazkii.botania.api.recipe.RecipeBrew;
 @ModOnly("botania")
 @ZenRegister
 public class Brew {
-    
-    public static final String name = "Botania Brew";
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    @ZenMethod
-    public static void addRecipe(IIngredient[] inputItems, String brewName) {
-        if(inputItems == null || inputItems.length == 0 || brewName == null || brewName.length() == 0) {
-            LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
-            return;
-        }
-        
-        if(!BotaniaAPI.brewMap.containsKey(brewName)) {
-            LogHelper.logError(String.format("Unknown brew name \"%s\" for %s recipe.", brewName, name));
-        }
-        
-        RecipeBrew recipe = new RecipeBrew(BotaniaAPI.brewMap.get(brewName), InputHelper.toObjects(inputItems));
-        
-        CraftTweakerAPI.apply(new Add(recipe));
-    }
-    
-    private static class Add extends BaseListAddition<RecipeBrew> {
 
-        protected Add(RecipeBrew recipe) {
-            super(Brew.name, BotaniaAPI.brewRecipes);
-            recipes.add(recipe);
-        }
+	public static final String name = "Botania Brew";
 
-        @Override
-        protected String getRecipeInfo(RecipeBrew recipe) {
-            return recipe.getBrew().getKey();
-        }    
-    }
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    @ZenMethod
-    public static void removeRecipe(String brewName) {
-    	ModTweaker.LATE_REMOVALS.add(new Remove(brewName));
-    }
-    
-    public static class Remove extends BaseListRemoval<RecipeBrew> {
-        
-    	final String brewName;
-    	
-        protected Remove(String brewName) {
-            super(Brew.name, BotaniaAPI.brewRecipes, Collections.emptyList());
-            this.brewName = brewName;
-        }
-        
-        @Override
-        protected String getRecipeInfo(RecipeBrew recipe) {
-            return recipe.getBrew().getKey();
-        }
-        
-        @Override
-        public void apply() {
-            List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
-            Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
-            
-            for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {
-                matcher.reset(recipe.getBrew().getKey());
-                if(matcher.matches()) {
-                    recipes.add(recipe);
-                }
-            }
-            
-            if(!recipes.isEmpty()) {
-                this.recipes.addAll(recipes);
-                super.apply();
-            } else {
-                LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
-            }
-        }
-    }
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@ZenMethod
+	public static void addRecipe(IIngredient[] inputItems, String brewName) {
+		if (inputItems == null || inputItems.length == 0 || brewName == null || brewName.length() == 0) {
+			LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
+			return;
+		}
+
+		if (!BotaniaAPI.brewMap.containsKey(brewName)) {
+			LogHelper.logError(String.format("Unknown brew name \"%s\" for %s recipe.", brewName, name));
+		}
+
+		RecipeBrew recipe = new RecipeBrew(BotaniaAPI.brewMap.get(brewName), InputHelper.toObjects(inputItems));
+
+		CraftTweakerAPI.apply(new Add(recipe));
+	}
+
+	private static class Add extends BaseListAddition<RecipeBrew> {
+
+		protected Add(RecipeBrew recipe) {
+			super(Brew.name, BotaniaAPI.brewRecipes);
+			recipes.add(recipe);
+		}
+
+		@Override
+		protected String getRecipeInfo(RecipeBrew recipe) {
+			return recipe.getBrew().getKey();
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@ZenMethod
+	public static void removeRecipe(String brewName) {
+		ModTweaker.LATE_REMOVALS.add(new Remove(brewName));
+	}
+
+	public static class Remove extends BaseListRemoval<RecipeBrew> {
+
+		final String brewName;
+
+		protected Remove(String brewName) {
+			super(Brew.name, BotaniaAPI.brewRecipes, Collections.emptyList());
+			this.brewName = brewName;
+		}
+
+		@Override
+		protected String getRecipeInfo(RecipeBrew recipe) {
+			return recipe.getBrew().getKey();
+		}
+
+		@Override
+		public void apply() {
+			List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
+			Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
+
+			for (RecipeBrew recipe : BotaniaAPI.brewRecipes) {
+				matcher.reset(recipe.getBrew().getKey());
+				if (matcher.matches()) {
+					recipes.add(recipe);
+				}
+			}
+
+			if (!recipes.isEmpty()) {
+				this.recipes.addAll(recipes);
+				super.apply();
+			} else {
+				LogHelper.logWarning(String.format("No %s recipe found for %s. Command ignored!", name, brewName));
+			}
+			CraftTweakerAPI.getLogger().logInfo(super.describe());
+		}
+
+		@Override
+		public String describe() {
+			return "";
+		}
+	}
 }
