@@ -2,9 +2,9 @@ package com.blamejared.compat.botania.commands;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
+import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
 import vazkii.botania.api.BotaniaAPI;
 
 public class BotaniaOrechidLogger extends CraftTweakerCommand {
@@ -20,7 +20,7 @@ public class BotaniaOrechidLogger extends CraftTweakerCommand {
 			CraftTweakerAPI.logCommand(str + ": " + BotaniaAPI.oreWeights.get(str));
 		}
 		if (sender != null) {
-			sender.sendMessage(new TextComponentString("List generated; see crafttweaker.log in your minecraft dir"));
+			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
 		}
 	}
 

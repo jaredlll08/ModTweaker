@@ -36,7 +36,7 @@ public class RemoveRecipeMapping implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to remove recipe mapping for " + toStack(iStack);
 	}
 
 }

@@ -95,7 +95,7 @@ public class RuneAltar {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove Rune Altar recipe for " + output.getItems();
 		}
 	}
 }

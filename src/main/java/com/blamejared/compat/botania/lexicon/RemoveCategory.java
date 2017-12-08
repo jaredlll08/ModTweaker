@@ -29,7 +29,7 @@ public class RemoveCategory implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to remove Lexicon Category " + name;
 	}
 
 }

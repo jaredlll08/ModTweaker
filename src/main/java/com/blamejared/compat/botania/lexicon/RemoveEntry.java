@@ -30,7 +30,7 @@ public class RemoveEntry implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to remove Lexicon Entry " + entry;
 	}
 
 }

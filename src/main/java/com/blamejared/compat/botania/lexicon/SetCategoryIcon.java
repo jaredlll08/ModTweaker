@@ -33,7 +33,7 @@ public class SetCategoryIcon implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to set the icon for Lexicon Category " + name + " to " + newIcon;
 	}
 
 }

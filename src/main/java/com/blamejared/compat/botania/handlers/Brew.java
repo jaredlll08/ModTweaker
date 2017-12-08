@@ -104,7 +104,7 @@ public class Brew {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove brewing recipe for " + brewName;
 		}
 	}
 }

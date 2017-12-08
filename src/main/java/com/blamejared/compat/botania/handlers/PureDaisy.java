@@ -111,7 +111,7 @@ public class PureDaisy {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove Pure Daisy recipe for " + output.getItems();
 		}
 	}
 }

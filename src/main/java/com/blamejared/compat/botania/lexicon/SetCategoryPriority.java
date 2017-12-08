@@ -32,7 +32,7 @@ public class SetCategoryPriority implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to set the priority for Lexicon Category " + name + " to " + newPriority;
 	}
 
 }

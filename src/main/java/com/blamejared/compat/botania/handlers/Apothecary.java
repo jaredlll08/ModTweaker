@@ -104,7 +104,7 @@ public class Apothecary {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove apothecary recipe for " + output.getItems();
 		}
 	}
 }

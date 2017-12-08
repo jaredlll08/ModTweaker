@@ -38,7 +38,7 @@ public class RemovePage implements IAction {
 
 	@Override
 	public String describe() {
-		return "";
+		return "Attempting to remove Lexicon Page " + page_number + " from Entry " + entry ;
 	}
 
 }

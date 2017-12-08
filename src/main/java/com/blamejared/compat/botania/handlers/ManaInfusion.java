@@ -106,7 +106,7 @@ public class ManaInfusion {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove mana infusion recipe for " + output.getItems();
 		}
 	}
 }

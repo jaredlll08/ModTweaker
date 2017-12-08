@@ -106,7 +106,7 @@ public class ElvenTrade {
 
 		@Override
 		public String describe() {
-			return "";
+			return "Attempting to remove Elven Trade recipe for " + output.getItems();
 		}
 	}
 }

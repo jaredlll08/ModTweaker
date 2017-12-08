@@ -7,9 +7,9 @@ import com.blamejared.compat.botania.BotaniaHelper;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
+import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.api.lexicon.LexiconPage;
@@ -41,7 +41,7 @@ public class LexiconPageLogger extends CraftTweakerCommand {
 		}
 
 		if (sender != null) {
-			sender.sendMessage(new TextComponentString("List generated; see crafttweaker.log in your minecraft dir"));
+			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
 		}
 	}
 

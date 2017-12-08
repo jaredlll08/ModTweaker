@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.CraftTweakerCommand;
+import crafttweaker.mc1120.commands.SpecialMessagesChat;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -88,7 +89,7 @@ public class BotaniaLogger extends CraftTweakerCommand {
 		}
 
 		if (sender != null) {
-			sender.sendMessage(new TextComponentString("List generated; see crafttweaker.log in your minecraft dir"));
+			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
 		}
 	}
 
