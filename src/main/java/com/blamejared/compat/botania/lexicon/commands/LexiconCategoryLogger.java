@@ -9,24 +9,24 @@ import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class LexiconCategoryLogger extends CraftTweakerCommand {
-
-	public LexiconCategoryLogger() {
-		super("botlexcats");
-	}
-
-	@Override
-	public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
-		CraftTweakerAPI.logCommand("Botania Lexicon Categories");
-		for (LexiconCategory category : BotaniaAPI.getAllCategories()) {
-			CraftTweakerAPI.logCommand(category.getUnlocalizedName());
-		}
-
-		if (sender != null) {
-			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
-		}
-	}
-
-	@Override
-	protected void init() {
-	}
+    
+    public LexiconCategoryLogger() {
+        super("botlexcats");
+    }
+    
+    @Override
+    public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
+        CraftTweakerAPI.logCommand("Botania Lexicon Categories");
+        for(LexiconCategory category : BotaniaAPI.getAllCategories()) {
+            CraftTweakerAPI.logCommand(category.getUnlocalizedName());
+        }
+        
+        if(sender != null) {
+            sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
+        }
+    }
+    
+    @Override
+    protected void init() {
+    }
 }

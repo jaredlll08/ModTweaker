@@ -13,64 +13,66 @@ import vazkii.botania.api.BotaniaAPI;
 @ModOnly("botania")
 @ZenRegister
 public class Orechid {
-	@ZenMethod
-	public static void addOre(IOreDictEntry oreDict, int weight) {
-		CraftTweakerAPI.apply(new Add(oreDict.getName(), weight));
-	}
-
-	@ZenMethod
-	public static void addOre(String oreDict, int weight) {
-		CraftTweakerAPI.apply(new Add(oreDict, weight));
-	}
-
-	private static class Add implements IAction {
-		String oreDict;
-		int weight;
-
-		public Add(String ore, int prop) {
-			oreDict = ore;
-			weight = prop;
-		}
-
-		@Override
-		public void apply() {
-			BotaniaAPI.addOreWeight(oreDict, weight);
-		}
-
-		@Override
-		public String describe() {
-			return "Adding Orechid Ore Weight: " + oreDict + ":" + weight;
-		}
-
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	@ZenMethod
-	public static void removeOre(IOreDictEntry oreDict) {
-		CraftTweakerAPI.apply(new Remove(oreDict.getName()));
-	}
-
-	@ZenMethod
-	public static void removeOre(String oreDict) {
-		CraftTweakerAPI.apply(new Remove(oreDict));
-	}
-
-	private static class Remove implements IAction {
-		String oreDict;
-
-		public Remove(String ore) {
-			oreDict = ore;
-		}
-
-		@Override
-		public void apply() {
-			BotaniaAPI.oreWeights.remove(oreDict);
-		}
-
-		@Override
-		public String describe() {
-			return "Removing Orechid Ore: " + oreDict;
-		}
-	}
+    
+    @ZenMethod
+    public static void addOre(IOreDictEntry oreDict, int weight) {
+        CraftTweakerAPI.apply(new Add(oreDict.getName(), weight));
+    }
+    
+    @ZenMethod
+    public static void addOre(String oreDict, int weight) {
+        CraftTweakerAPI.apply(new Add(oreDict, weight));
+    }
+    
+    private static class Add implements IAction {
+        
+        String oreDict;
+        int weight;
+        
+        public Add(String ore, int prop) {
+            oreDict = ore;
+            weight = prop;
+        }
+        
+        @Override
+        public void apply() {
+            BotaniaAPI.addOreWeight(oreDict, weight);
+        }
+        
+        @Override
+        public String describe() {
+            return "Adding Orechid Ore Weight: " + oreDict + ":" + weight;
+        }
+        
+    }
+    
+    
+    @ZenMethod
+    public static void removeOre(IOreDictEntry oreDict) {
+        CraftTweakerAPI.apply(new Remove(oreDict.getName()));
+    }
+    
+    @ZenMethod
+    public static void removeOre(String oreDict) {
+        CraftTweakerAPI.apply(new Remove(oreDict));
+    }
+    
+    private static class Remove implements IAction {
+        
+        String oreDict;
+        
+        public Remove(String ore) {
+            oreDict = ore;
+        }
+        
+        @Override
+        public void apply() {
+            BotaniaAPI.oreWeights.remove(oreDict);
+        }
+        
+        @Override
+        public String describe() {
+            return "Removing Orechid Ore: " + oreDict;
+        }
+    }
 }

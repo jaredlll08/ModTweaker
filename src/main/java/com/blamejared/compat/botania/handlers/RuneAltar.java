@@ -28,74 +28,73 @@ import vazkii.botania.api.recipe.RecipeRuneAltar;
 @ModOnly("botania")
 @ZenRegister
 public class RuneAltar {
-
-	protected static final String name = "Botania Rune Altar";
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	@ZenMethod
-	public static void addRecipe(IItemStack output, IIngredient[] input, int mana) {
-		CraftTweakerAPI.apply(new Add(new RecipeRuneAltar(toStack(output), mana, toObjects(input))));
-	}
-
-	private static class Add extends BaseListAddition<RecipeRuneAltar> {
-		public Add(RecipeRuneAltar recipe) {
-			super(RuneAltar.name, BotaniaAPI.runeAltarRecipes);
-
-			recipes.add(recipe);
-		}
-
-		@Override
-		public String getRecipeInfo(RecipeRuneAltar recipe) {
-			return LogHelper.getStackDescription(recipe.getOutput());
-		}
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	@ZenMethod
-	public static void removeRecipe(IIngredient output) {
-		ModTweaker.LATE_REMOVALS.add(new Remove(output));
-	}
-
-	private static class Remove extends BaseListRemoval<RecipeRuneAltar> {
-
-		final IIngredient output;
-
-		public Remove(IIngredient output) {
-			super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, Collections.emptyList());
-			this.output = output;
-		}
-
-		@Override
-		public String getRecipeInfo(RecipeRuneAltar recipe) {
-			return LogHelper.getStackDescription(recipe.getOutput());
-		}
-
-		@Override
-		public void apply() {
-			// Get list of existing recipes, matching with parameter
-			List<RecipeRuneAltar> recipes = new LinkedList<RecipeRuneAltar>();
-
-			for (RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
-				if (r != null && r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
-					recipes.add(r);
-				}
-			}
-
-			// Check if we found the recipes and apply the action
-			if (!recipes.isEmpty()) {
-				this.recipes.addAll(recipes);
-				super.apply();
-			} else {
-				LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", RuneAltar.name, output.toString()));
-			}
-			CraftTweakerAPI.getLogger().logInfo(super.describe());
-		}
-
-		@Override
-		public String describe() {
-			return "Attempting to remove Rune Altar recipe for " + output.getItems();
-		}
-	}
+    
+    protected static final String name = "Botania Rune Altar";
+    
+    
+    @ZenMethod
+    public static void addRecipe(IItemStack output, IIngredient[] input, int mana) {
+        CraftTweakerAPI.apply(new Add(new RecipeRuneAltar(toStack(output), mana, toObjects(input))));
+    }
+    
+    private static class Add extends BaseListAddition<RecipeRuneAltar> {
+        
+        public Add(RecipeRuneAltar recipe) {
+            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes);
+            
+            recipes.add(recipe);
+        }
+        
+        @Override
+        public String getRecipeInfo(RecipeRuneAltar recipe) {
+            return LogHelper.getStackDescription(recipe.getOutput());
+        }
+    }
+    
+    
+    @ZenMethod
+    public static void removeRecipe(IIngredient output) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
+    }
+    
+    private static class Remove extends BaseListRemoval<RecipeRuneAltar> {
+        
+        final IIngredient output;
+        
+        public Remove(IIngredient output) {
+            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, Collections.emptyList());
+            this.output = output;
+        }
+        
+        @Override
+        public String getRecipeInfo(RecipeRuneAltar recipe) {
+            return LogHelper.getStackDescription(recipe.getOutput());
+        }
+        
+        @Override
+        public void apply() {
+            // Get list of existing recipes, matching with parameter
+            List<RecipeRuneAltar> recipes = new LinkedList<RecipeRuneAltar>();
+            
+            for(RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
+                if(r != null && r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {
+                    recipes.add(r);
+                }
+            }
+            
+            // Check if we found the recipes and apply the action
+            if(!recipes.isEmpty()) {
+                this.recipes.addAll(recipes);
+                super.apply();
+            } else {
+                LogHelper.logWarning(String.format("No %s Recipe found for %s. Command ignored!", RuneAltar.name, output.toString()));
+            }
+            CraftTweakerAPI.getLogger().logInfo(super.describe());
+        }
+        
+        @Override
+        public String describe() {
+            return "Attempting to remove Rune Altar recipe for " + output.getItems();
+        }
+    }
 }

@@ -8,23 +8,23 @@ import net.minecraft.server.MinecraftServer;
 import vazkii.botania.api.BotaniaAPI;
 
 public class BotaniaBrewLogger extends CraftTweakerCommand {
-
-	public BotaniaBrewLogger() {
-		super("botbrews");
-	}
-
-	@Override
-	public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
-		for (String key : BotaniaAPI.brewMap.keySet()) {
-			CraftTweakerAPI.logCommand(key);
-		}
-
-		if (sender != null) {
-			sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
-		}
-	}
-
-	@Override
-	protected void init() {
-	}
+    
+    public BotaniaBrewLogger() {
+        super("botbrews");
+    }
+    
+    @Override
+    public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
+        for(String key : BotaniaAPI.brewMap.keySet()) {
+            CraftTweakerAPI.logCommand(key);
+        }
+        
+        if(sender != null) {
+            sender.sendMessage(SpecialMessagesChat.getLinkToCraftTweakerLog("List generated;", sender));
+        }
+    }
+    
+    @Override
+    protected void init() {
+    }
 }
