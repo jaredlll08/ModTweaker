@@ -54,3 +54,4 @@
 /.nb-gradle/private/
 /common
 
+*.launch
