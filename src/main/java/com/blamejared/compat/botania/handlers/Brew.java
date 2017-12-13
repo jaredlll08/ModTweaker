@@ -29,7 +29,6 @@ public class Brew {
     
     public static final String name = "Botania Brew";
     
-    
     @ZenMethod
     public static void addRecipe(IIngredient[] inputItems, String brewName) {
         if(inputItems == null || inputItems.length == 0 || brewName == null || brewName.length() == 0) {
@@ -40,23 +39,8 @@ public class Brew {
         if(!BotaniaAPI.brewMap.containsKey(brewName)) {
             LogHelper.logError(String.format("Unknown brew name \"%s\" for %s recipe.", brewName, name));
         }
-        
-        RecipeBrew recipe = new RecipeBrew(BotaniaAPI.brewMap.get(brewName), InputHelper.toObjects(inputItems));
-        
-        CraftTweakerAPI.apply(new Add(recipe));
-    }
     
-    private static class Add extends BaseListAddition<RecipeBrew> {
-        
-        protected Add(RecipeBrew recipe) {
-            super(Brew.name, BotaniaAPI.brewRecipes);
-            recipes.add(recipe);
-        }
-        
-        @Override
-        protected String getRecipeInfo(RecipeBrew recipe) {
-            return recipe.getBrew().getKey();
-        }
+        ModTweaker.LATE_ADDITIONS.add(new Add(new RecipeBrew(BotaniaAPI.brewMap.get(brewName), InputHelper.toObjects(inputItems))));
     }
     
     
@@ -65,12 +49,24 @@ public class Brew {
         ModTweaker.LATE_REMOVALS.add(new Remove(brewName));
     }
     
+    private static class Add extends BaseListAddition<RecipeBrew> {
+        
+        protected Add(RecipeBrew recipe) {
+            super(Brew.name, BotaniaAPI.brewRecipes, Collections.singletonList(recipe));
+        }
+        
+        @Override
+        protected String getRecipeInfo(RecipeBrew recipe) {
+            return recipe.getBrew().getKey();
+        }
+    }
+    
     public static class Remove extends BaseListRemoval<RecipeBrew> {
         
         final String brewName;
         
         protected Remove(String brewName) {
-            super(Brew.name, BotaniaAPI.brewRecipes, Collections.emptyList());
+            super(Brew.name, BotaniaAPI.brewRecipes);
             this.brewName = brewName;
         }
         
@@ -81,7 +77,7 @@ public class Brew {
         
         @Override
         public void apply() {
-            List<RecipeBrew> recipes = new LinkedList<RecipeBrew>();
+            List<RecipeBrew> recipes = new LinkedList<>();
             Matcher matcher = Pattern.compile(StringHelper.wildcardToRegex(brewName)).matcher("");
             
             for(RecipeBrew recipe : BotaniaAPI.brewRecipes) {

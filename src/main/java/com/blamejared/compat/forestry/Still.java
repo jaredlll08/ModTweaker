@@ -85,9 +85,7 @@ public class Still {
         public boolean checkIsRecipe(IStillRecipe r) {
 			if(r != null && matches(output, toILiquidStack(r.getOutput()))) {
 				if(fluidInput != null) {
-					if(matches(fluidInput, toILiquidStack(r.getInput()))) {
-						return true;
-					}
+                    return matches(fluidInput, toILiquidStack(r.getInput()));
 				} else
 					return true;
 			}

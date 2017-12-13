@@ -101,9 +101,7 @@ public class Carpenter {
 				if (fluidInput == null){
 					return true;
 				}else {
-					if (fluidInput.isFluidEqual(recipe.getFluidResource())){
-						return true;
-					}
+                    return fluidInput.isFluidEqual(recipe.getFluidResource());
 				}
 			}
 

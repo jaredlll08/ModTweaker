@@ -1,5 +1,6 @@
 package com.blamejared.compat.botania.handlers;
 
+import com.blamejared.ModTweaker;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.annotations.ModOnly;
@@ -16,13 +17,24 @@ public class Orechid {
     
     @ZenMethod
     public static void addOre(IOreDictEntry oreDict, int weight) {
-        CraftTweakerAPI.apply(new Add(oreDict.getName(), weight));
+        ModTweaker.LATE_ADDITIONS.add(new Add(oreDict.getName(), weight));
     }
     
     @ZenMethod
     public static void addOre(String oreDict, int weight) {
-        CraftTweakerAPI.apply(new Add(oreDict, weight));
+        ModTweaker.LATE_ADDITIONS.add(new Add(oreDict, weight));
     }
+    
+    @ZenMethod
+    public static void removeOre(IOreDictEntry oreDict) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(oreDict.getName()));
+    }
+    
+    @ZenMethod
+    public static void removeOre(String oreDict) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(oreDict));
+    }
+    
     
     private static class Add implements IAction {
         
@@ -44,17 +56,6 @@ public class Orechid {
             return "Adding Orechid Ore Weight: " + oreDict + ":" + weight;
         }
         
-    }
-    
-    
-    @ZenMethod
-    public static void removeOre(IOreDictEntry oreDict) {
-        CraftTweakerAPI.apply(new Remove(oreDict.getName()));
-    }
-    
-    @ZenMethod
-    public static void removeOre(String oreDict) {
-        CraftTweakerAPI.apply(new Remove(oreDict));
     }
     
     private static class Remove implements IAction {

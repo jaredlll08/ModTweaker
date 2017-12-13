@@ -74,7 +74,7 @@ public class Lexicon {
         }
         RecipeBrew page_recipe = new RecipeBrew(BotaniaAPI.getBrewFromKey(brew), toObjects(recipe));
         LexiconPage page = new PageBrew(page_recipe, name, bottomText);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -93,7 +93,7 @@ public class Lexicon {
             recipes.add(new ResourceLocation(s));
         }
         LexiconPage page = new PageCraftingRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -111,14 +111,14 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipeElvenTrade> recipes = new ArrayList<RecipeElvenTrade>();
+        List<RecipeElvenTrade> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             //TODO test
             recipes.add(new RecipeElvenTrade(toStacks(outputs), toObjects(inputs[i])));
         }
         
         LexiconPage page = new PageElvenRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -137,7 +137,7 @@ public class Lexicon {
             return;
         }
         LexiconPage page = new PageEntity(entity, entity, size);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -152,7 +152,7 @@ public class Lexicon {
             return;
         }
         LexiconPage page = new PageImage(name, resource);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -167,7 +167,7 @@ public class Lexicon {
             return;
         }
         LexiconPage page = new PageLoreText(name);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -185,12 +185,12 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipeManaInfusion> recipes = new ArrayList<RecipeManaInfusion>();
+        List<RecipeManaInfusion> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             recipes.add(new RecipeManaInfusion(toStack(outputs[i]), toObject(inputs[i]), mana[i]));
         }
         LexiconPage page = new PageManaInfusionRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -208,14 +208,14 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipeManaInfusion> recipes = new ArrayList<RecipeManaInfusion>();
+        List<RecipeManaInfusion> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             RecipeManaInfusion current_recipe = new RecipeManaInfusion(toStack(outputs[i]), toObject(inputs[i]), mana[i]);
             current_recipe.setCatalyst(RecipeManaInfusion.alchemyState);
             recipes.add(current_recipe);
         }
         LexiconPage page = new PageManaInfusionRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -233,14 +233,14 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipeManaInfusion> recipes = new ArrayList<RecipeManaInfusion>();
+        List<RecipeManaInfusion> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             RecipeManaInfusion current_recipe = new RecipeManaInfusion(toStack(outputs[i]), toObject(inputs[i]), mana[i]);
             current_recipe.setCatalyst(RecipeManaInfusion.conjurationState);
             recipes.add(current_recipe);
         }
         LexiconPage page = new PageManaInfusionRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -258,12 +258,12 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipePetals> recipes = new ArrayList<RecipePetals>();
+        List<RecipePetals> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             recipes.add(new RecipePetals(toStack(outputs[i]), toObjects(inputs[i])));
         }
         LexiconPage page = new PagePetalRecipe<>(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -281,12 +281,12 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Length of input and output must match");
             return;
         }
-        List<RecipeRuneAltar> recipes = new ArrayList<RecipeRuneAltar>();
+        List<RecipeRuneAltar> recipes = new ArrayList<>();
         for(int i = 0; i < outputs.length; i++) {
             recipes.add(new RecipeRuneAltar(toStack(outputs[i]), mana[i], toObjects(inputs[i])));
         }
         LexiconPage page = new PageRuneRecipe(name, recipes);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -301,7 +301,7 @@ public class Lexicon {
             return;
         }
         LexiconPage page = new PageText(name);
-        CraftTweakerAPI.apply(new AddPage(name, lexiconEntry, page, page_number));
+        ModTweaker.LATE_ADDITIONS.add(new AddPage(name, lexiconEntry, page, page_number));
     }
     
     @ZenMethod
@@ -318,7 +318,7 @@ public class Lexicon {
         }
         LexiconEntry lexiconEntry = new LexiconEntry(entry, lexiconCategory);
         lexiconEntry.setIcon(toStack(stack));
-        CraftTweakerAPI.apply(new AddEntry(lexiconEntry));
+        ModTweaker.LATE_ADDITIONS.add(new AddEntry(lexiconEntry));
     }
     
     @ZenMethod
@@ -334,7 +334,7 @@ public class Lexicon {
     @ZenMethod
     public static void addCategory(String name) {
         LexiconCategory lexiconCategory = new LexiconCategory(name);
-        CraftTweakerAPI.apply(new AddCategory(lexiconCategory));
+        ModTweaker.LATE_ADDITIONS.add(new AddCategory(lexiconCategory));
     }
     
     @ZenMethod
@@ -367,7 +367,7 @@ public class Lexicon {
             CraftTweakerAPI.getLogger().logError("Not enough pages in " + Entry);
             return;
         }
-        CraftTweakerAPI.apply(new AddRecipeMapping(toStack(stack), lexiconEntry, page));
+        ModTweaker.LATE_ADDITIONS.add(new AddRecipeMapping(toStack(stack), lexiconEntry, page));
     }
     
     @ZenMethod

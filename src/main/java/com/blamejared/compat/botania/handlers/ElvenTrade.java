@@ -35,22 +35,8 @@ public class ElvenTrade {
     
     @ZenMethod
     public static void addRecipe(IItemStack[] outputs, IIngredient[] input) {
-        CraftTweakerAPI.apply(new Add(new RecipeElvenTrade(InputHelper.toStacks(outputs), toObjects(input))));
+        ModTweaker.LATE_ADDITIONS.add(new Add(new RecipeElvenTrade(InputHelper.toStacks(outputs), toObjects(input))));
     }
-    
-    private static class Add extends BaseListAddition<RecipeElvenTrade> {
-        
-        public Add(RecipeElvenTrade recipe) {
-            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes);
-            recipes.add(recipe);
-        }
-        
-        @Override
-        public String getRecipeInfo(RecipeElvenTrade recipe) {
-            return LogHelper.getStackDescription(recipe.getOutputs());
-        }
-    }
-    
     
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
@@ -68,12 +54,24 @@ public class ElvenTrade {
         return stacks.toArray(new IItemStack[stacks.size()]);
     }
     
+    private static class Add extends BaseListAddition<RecipeElvenTrade> {
+        
+        public Add(RecipeElvenTrade recipe) {
+            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes, Collections.singletonList(recipe));
+        }
+        
+        @Override
+        public String getRecipeInfo(RecipeElvenTrade recipe) {
+            return LogHelper.getStackDescription(recipe.getOutputs());
+        }
+    }
+    
     private static class Remove extends BaseListRemoval<RecipeElvenTrade> {
         
         final IIngredient output;
         
         public Remove(IIngredient output) {
-            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes, Collections.emptyList());
+            super(ElvenTrade.name, BotaniaAPI.elvenTradeRecipes);
             this.output = output;
         }
         
@@ -85,7 +83,7 @@ public class ElvenTrade {
         @Override
         public void apply() {
             // Get list of existing recipes, matching with parameter
-            LinkedList<RecipeElvenTrade> recipes = new LinkedList<RecipeElvenTrade>();
+            LinkedList<RecipeElvenTrade> recipes = new LinkedList<>();
             
             for(RecipeElvenTrade entry : BotaniaAPI.elvenTradeRecipes) {
                 if(entry != null && entry.getOutputs() != null && matches(output, toStacks(entry.getOutputs().toArray(new ItemStack[entry.getOutputs().size()])))) {

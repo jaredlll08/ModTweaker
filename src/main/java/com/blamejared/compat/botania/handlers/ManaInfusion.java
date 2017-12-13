@@ -33,22 +33,29 @@ public class ManaInfusion {
     
     @ZenMethod
     public static void addInfusion(IItemStack output, IIngredient input, int mana) {
-        CraftTweakerAPI.apply(new Add(new RecipeManaInfusion(toStack(output), toObject(input), mana)));
+        ModTweaker.LATE_ADDITIONS.add(new Add(new RecipeManaInfusion(toStack(output), toObject(input), mana)));
     }
     
     @ZenMethod
     public static void addAlchemy(IItemStack output, IIngredient input, int mana) {
         RecipeManaInfusion recipe = new RecipeManaInfusion(toStack(output), toObject(input), mana);
         recipe.setCatalyst(RecipeManaInfusion.alchemyState);
-        CraftTweakerAPI.apply(new Add(recipe));
+        ModTweaker.LATE_ADDITIONS.add(new Add(recipe));
     }
     
     @ZenMethod
     public static void addConjuration(IItemStack output, IIngredient input, int mana) {
         RecipeManaInfusion recipe = new RecipeManaInfusion(toStack(output), toObject(input), mana);
         recipe.setCatalyst(RecipeManaInfusion.conjurationState);
-        CraftTweakerAPI.apply(new Add(recipe));
+        ModTweaker.LATE_ADDITIONS.add(new Add(recipe));
     }
+    
+    
+    @ZenMethod
+    public static void removeRecipe(IIngredient output) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
+    }
+    
     
     private static class Add extends BaseListAddition<RecipeManaInfusion> {
         
@@ -61,12 +68,6 @@ public class ManaInfusion {
         public String getRecipeInfo(RecipeManaInfusion recipe) {
             return LogHelper.getStackDescription(recipe.getOutput());
         }
-    }
-    
-    
-    @ZenMethod
-    public static void removeRecipe(IIngredient output) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
     private static class Remove extends BaseListRemoval<RecipeManaInfusion> {
@@ -86,7 +87,7 @@ public class ManaInfusion {
         @Override
         public void apply() {
             // Get list of existing recipes, matching with parameter
-            List<RecipeManaInfusion> recipes = new LinkedList<RecipeManaInfusion>();
+            List<RecipeManaInfusion> recipes = new LinkedList<>();
             
             for(RecipeManaInfusion r : BotaniaAPI.manaInfusionRecipes) {
                 if(r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {

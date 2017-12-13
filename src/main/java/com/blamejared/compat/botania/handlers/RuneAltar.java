@@ -34,21 +34,7 @@ public class RuneAltar {
     
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient[] input, int mana) {
-        CraftTweakerAPI.apply(new Add(new RecipeRuneAltar(toStack(output), mana, toObjects(input))));
-    }
-    
-    private static class Add extends BaseListAddition<RecipeRuneAltar> {
-        
-        public Add(RecipeRuneAltar recipe) {
-            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes);
-            
-            recipes.add(recipe);
-        }
-        
-        @Override
-        public String getRecipeInfo(RecipeRuneAltar recipe) {
-            return LogHelper.getStackDescription(recipe.getOutput());
-        }
+        ModTweaker.LATE_ADDITIONS.add(new Add(new RecipeRuneAltar(toStack(output), mana, toObjects(input))));
     }
     
     
@@ -57,12 +43,26 @@ public class RuneAltar {
         ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
+    
+    private static class Add extends BaseListAddition<RecipeRuneAltar> {
+        
+        public Add(RecipeRuneAltar recipe) {
+            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, Collections.singletonList(recipe));
+            
+        }
+        
+        @Override
+        public String getRecipeInfo(RecipeRuneAltar recipe) {
+            return LogHelper.getStackDescription(recipe.getOutput());
+        }
+    }
+    
     private static class Remove extends BaseListRemoval<RecipeRuneAltar> {
         
         final IIngredient output;
         
         public Remove(IIngredient output) {
-            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes, Collections.emptyList());
+            super(RuneAltar.name, BotaniaAPI.runeAltarRecipes);
             this.output = output;
         }
         
@@ -74,7 +74,7 @@ public class RuneAltar {
         @Override
         public void apply() {
             // Get list of existing recipes, matching with parameter
-            List<RecipeRuneAltar> recipes = new LinkedList<RecipeRuneAltar>();
+            List<RecipeRuneAltar> recipes = new LinkedList<>();
             
             for(RecipeRuneAltar r : BotaniaAPI.runeAltarRecipes) {
                 if(r != null && r.getOutput() != null && matches(output, toIItemStack(r.getOutput()))) {

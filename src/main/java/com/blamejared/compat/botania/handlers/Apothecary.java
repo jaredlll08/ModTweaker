@@ -31,30 +31,15 @@ public class Apothecary {
     
     protected static final String name = "Botania Petal";
     
-    
     @ZenMethod
     public static void addRecipe(IItemStack output, IIngredient[] input) {
-        CraftTweakerAPI.apply(new Add(new RecipePetals(toStack(output), toObjects(input))));
+        ModTweaker.LATE_ADDITIONS.add(new Add(new RecipePetals(toStack(output), toObjects(input))));
     }
     
     @ZenMethod
     public static void addRecipe(String output, IIngredient[] input) {
         addRecipe(toIItemStack(ItemBlockSpecialFlower.ofType(output)), input);
     }
-    
-    private static class Add extends BaseListAddition<RecipePetals> {
-        
-        public Add(RecipePetals recipe) {
-            super("Botania Petal", BotaniaAPI.petalRecipes);
-            recipes.add(recipe);
-        }
-        
-        @Override
-        public String getRecipeInfo(RecipePetals recipe) {
-            return LogHelper.getStackDescription(recipe.getOutput());
-        }
-    }
-    
     
     @ZenMethod
     public static void removeRecipe(IIngredient output) {
@@ -64,6 +49,18 @@ public class Apothecary {
     @ZenMethod
     public static void removeRecipe(String output) {
         removeRecipe(toIItemStack(ItemBlockSpecialFlower.ofType(output)));
+    }
+    
+    private static class Add extends BaseListAddition<RecipePetals> {
+        
+        public Add(RecipePetals recipe) {
+            super("Botania Petal", BotaniaAPI.petalRecipes, Collections.singletonList(recipe));
+        }
+        
+        @Override
+        public String getRecipeInfo(RecipePetals recipe) {
+            return LogHelper.getStackDescription(recipe.getOutput());
+        }
     }
     
     private static class Remove extends BaseListRemoval<RecipePetals> {

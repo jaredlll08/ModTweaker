@@ -42,7 +42,7 @@ public class PureDaisy {
         Object input = InputHelper.toObject(blockInput);
         
         if(input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack) input))) {
-            LogHelper.logError(String.format("Input must be a block or an oredict entry."));
+            LogHelper.logError("Input must be a block or an oredict entry.");
             return;
         }
         
@@ -51,27 +51,25 @@ public class PureDaisy {
         ItemStack output = InputHelper.toStack(blockOutput);
         
         RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
-        
-        CraftTweakerAPI.apply(new Add(recipe));
+    
+        ModTweaker.LATE_ADDITIONS.add(new Add(recipe));
+    }
+    
+    @ZenMethod
+    public static void removeRecipe(IIngredient output) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
     private static class Add extends BaseListAddition<RecipePureDaisy> {
         
         public Add(RecipePureDaisy recipe) {
-            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes);
-            recipes.add(recipe);
+            super(PureDaisy.name, BotaniaAPI.pureDaisyRecipes, Collections.singletonList(recipe));
         }
         
         @Override
         protected String getRecipeInfo(RecipePureDaisy recipe) {
             return LogHelper.getStackDescription(new ItemStack(recipe.getOutputState().getBlock(), 1));
         }
-    }
-    
-    
-    @ZenMethod
-    public static void removeRecipe(IIngredient output) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
     private static class Remove extends BaseListRemoval<RecipePureDaisy> {
