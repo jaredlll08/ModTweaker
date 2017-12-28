@@ -1,6 +1,6 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
@@ -11,9 +11,8 @@ import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.*;
-import stanhebben.zenscript.annotations.Optional;
 
-import java.util.*;
+import java.util.Arrays;
 
 @ZenClass("mods.thermalexpansion.Centrifuge")
 @ModOnly("thermalexpansion")

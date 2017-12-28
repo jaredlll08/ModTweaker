@@ -9,11 +9,12 @@ import net.minecraft.item.ItemStack;
 
 
 public class BulkRemove<T extends BulkRecipe> extends BaseUndoable {
+    
     private CraftingManagerBulk<T> manager;
     private final ItemStack output;
     private final ItemStack secondary;
     private final Object[] inputs;
-
+    
     public BulkRemove(String name, CraftingManagerBulk<T> manager, ItemStack output, ItemStack secondary, Object... inputs) {
         super(name);
         this.manager = manager;
@@ -21,21 +22,21 @@ public class BulkRemove<T extends BulkRecipe> extends BaseUndoable {
         this.secondary = secondary;
         this.inputs = inputs;
     }
-
+    
     @Override
     public void apply() {
-        for (T recipe : manager.findRecipeForRemoval(output, secondary, inputs)) {
-            if (recipe != null) {
-                if (!manager.getRecipes().remove(recipe)) {
+        for(T recipe : manager.findRecipeForRemoval(output, secondary, inputs)) {
+            if(recipe != null) {
+                if(!manager.getRecipes().remove(recipe)) {
                     LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(recipe)));
                 }
             } else {
                 LogHelper.logError(String.format("Error removing %s Recipe: null object", name));
             }
         }
-
+        
     }
-
+    
     private String getRecipeInfo(T recipe) {
         return recipe.getOutput().getDisplayName();
     }

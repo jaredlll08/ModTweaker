@@ -89,25 +89,23 @@ public class Anvil {
             return output.getDisplayName();
         }
     }
-
+    
     public static Object[] toShapedAnvilObjects(IIngredient[][] ingredients) {
         if(ingredients == null)
             return null;
         else {
             ArrayList prep = new ArrayList();
             char chr = 'a';
-            for (int y = 0; y < 4; y++) {
+            for(int y = 0; y < 4; y++) {
                 StringBuilder matrix = new StringBuilder();
-                for (int x = 0; x < 4; x++) {
+                for(int x = 0; x < 4; x++) {
                     if(x < ingredients.length && ingredients[x] != null && y < ingredients[x].length) {
                         if(ingredients[x][y] != null) {
                             prep.add(chr);
                             prep.add(InputHelper.toObject(ingredients[x][y]));
                             matrix.append(chr);
                             chr++;
-                        }
-                        else
-                        {
+                        } else {
                             matrix.append(' ');
                         }
                     }
@@ -118,7 +116,7 @@ public class Anvil {
             return prep.toArray();
         }
     }
-
+    
     public static class RemoveShaped extends BaseUndoable {
         
         private final IItemStack output;

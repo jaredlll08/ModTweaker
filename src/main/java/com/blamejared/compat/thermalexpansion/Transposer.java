@@ -1,6 +1,6 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;

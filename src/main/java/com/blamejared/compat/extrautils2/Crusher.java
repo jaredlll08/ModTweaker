@@ -27,21 +27,22 @@ import java.util.Map;
 @ModOnly("extrautils2")
 @ZenRegister
 public class Crusher {
+    
     @ZenMethod
     public static void add(IItemStack output, IItemStack input, @Optional IItemStack secondaryOutput, @Optional float secondaryChance) {
         ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), InputHelper.toStack(secondaryOutput), secondaryChance));
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack input) {
         ModTweaker.LATE_REMOVALS.add(new Remove(input));
     }
-
+    
     private static class Add extends BaseUndoable {
-
+        
         private ItemStack output, input, secondaryOutput;
         private float secondaryChance;
-
+        
         public Add(ItemStack output, ItemStack input, ItemStack secondaryOutput, float secondaryChance) {
             super("Crusher");
             this.output = output;
@@ -52,50 +53,50 @@ public class Crusher {
                 this.secondaryChance = 100;
             }
         }
-
+        
         @Override
         public void apply() {
             XUMachineCrusher.addRecipe(input, output, secondaryOutput, secondaryChance);
         }
-
+        
         @Override
         protected String getRecipeInfo() {
             return LogHelper.getStackDescription(output);
         }
     }
-
+    
     private static class Remove extends BaseUndoable {
-
+        
         private IItemStack input;
-
+        
         public Remove(IItemStack input) {
             super("Crusher");
             this.input = input;
         }
-
+        
         @Override
         public void apply() {
             List<IMachineRecipe> toRemove = new ArrayList<>();
-
-            for (IMachineRecipe recipe : XUMachineCrusher.INSTANCE.recipes_registry) {
-                for (Pair<Map<MachineSlotItem, List<ItemStack>>, Map<MachineSlotFluid, List<FluidStack>>> mapMapPair : recipe.getJEIInputItemExamples()) {
-                    for (ItemStack stack : mapMapPair.getKey().get(XUMachineCrusher.INPUT)) {
-                        if (StackHelper.matches(input, InputHelper.toIItemStack(stack))) {
+            
+            for(IMachineRecipe recipe : XUMachineCrusher.INSTANCE.recipes_registry) {
+                for(Pair<Map<MachineSlotItem, List<ItemStack>>, Map<MachineSlotFluid, List<FluidStack>>> mapMapPair : recipe.getJEIInputItemExamples()) {
+                    for(ItemStack stack : mapMapPair.getKey().get(XUMachineCrusher.INPUT)) {
+                        if(StackHelper.matches(input, InputHelper.toIItemStack(stack))) {
                             toRemove.add(recipe);
                         }
                     }
                 }
             }
-
-            for (IMachineRecipe iMachineRecipe : toRemove) {
+            
+            for(IMachineRecipe iMachineRecipe : toRemove) {
                 XUMachineCrusher.INSTANCE.recipes_registry.removeRecipe(iMachineRecipe);
             }
         }
-
+        
         @Override
         protected String getRecipeInfo() {
             return LogHelper.getStackDescription(input);
         }
     }
-
+    
 }

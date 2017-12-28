@@ -55,19 +55,19 @@ public class ThermionicFabricator {
      *
      * @param output      recipe output item
      * @param ingredients list of input items
-     * @param liquidStack  fluid that should be used in the recipe, currently only "glass" is recommended
+     * @param liquidStack fluid that should be used in the recipe, currently only "glass" is recommended
      *                    * @param plan            recipe plan item (optional)
      *                    * @param remainingItems  no idea(optional)
      */
     @ZenMethod
     public static void addCast(IItemStack output, IIngredient[][] ingredients, ILiquidStack liquidStack, @Optional IItemStack plan) {
-        ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output),  toShapedObjects(ingredients));
+        ShapedRecipeCustom patternRecipe = new ShapedRecipeCustom(toStack(output), toShapedObjects(ingredients));
         NonNullList<NonNullList<ItemStack>> ingredientsList = patternRecipe.getRawIngredients();
-
+        
         IFabricatorRecipe recipe = new FabricatorRecipe(toStack(plan), toFluid(liquidStack), toStack(output), ingredientsList, patternRecipe.getOreDicts(), patternRecipe.getWidth(), patternRecipe.getHeight());
         ModTweaker.LATE_ADDITIONS.add(new AddCast(recipe));
     }
-
+    
     /*
     Implements the actions to add a recipe
     Since the machine has two crafting Steps, this is a constructors for both
@@ -119,9 +119,9 @@ public class ThermionicFabricator {
     }
     
     private static class RemoveSmelting extends BaseRemoveForestry<IFabricatorSmeltingRecipe> {
-
+        
         private IIngredient itemInput;
-
+        
         public RemoveSmelting(IIngredient itemInput) {
             super(ThermionicFabricator.nameSmelting, RecipeManagers.fabricatorSmeltingManager);
             this.itemInput = itemInput;
@@ -131,7 +131,7 @@ public class ThermionicFabricator {
         public String getRecipeInfo() {
             return itemInput.toString();
         }
-
+        
         @Override
         public boolean checkIsRecipe(IFabricatorSmeltingRecipe recipe) {
             return recipe != null && matches(itemInput, toIItemStack(recipe.getResource()));
@@ -139,9 +139,9 @@ public class ThermionicFabricator {
     }
     
     private static class RemoveCasts extends BaseRemoveForestry<IFabricatorRecipe> {
-
+        
         private IIngredient product;
-
+        
         public RemoveCasts(IIngredient product) {
             super(ThermionicFabricator.nameCasting, RecipeManagers.fabricatorManager);
             this.product = product;
@@ -151,7 +151,7 @@ public class ThermionicFabricator {
         public String getRecipeInfo() {
             return product.toString();
         }
-
+        
         @Override
         public boolean checkIsRecipe(IFabricatorRecipe recipe) {
             return recipe != null && matches(product, toIItemStack(recipe.getRecipeOutput()));

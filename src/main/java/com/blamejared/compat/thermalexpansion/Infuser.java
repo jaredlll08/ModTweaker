@@ -1,15 +1,13 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
-import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.*;
 
 @ZenClass("mods.thermalexpansion.Infuser")

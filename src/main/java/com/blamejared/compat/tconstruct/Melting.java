@@ -6,7 +6,7 @@ import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
-import crafttweaker.api.entity.*;
+import crafttweaker.api.entity.IEntityDefinition;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
-import stanhebben.zenscript.annotations.*;
 import stanhebben.zenscript.annotations.Optional;
+import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
 

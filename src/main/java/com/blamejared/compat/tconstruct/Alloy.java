@@ -2,12 +2,10 @@ package com.blamejared.compat.tconstruct;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.AlloyRecipeTweaker;
-import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
+import crafttweaker.annotations.*;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,8 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
 

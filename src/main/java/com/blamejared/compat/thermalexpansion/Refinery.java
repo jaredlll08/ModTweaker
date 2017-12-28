@@ -1,19 +1,15 @@
 package com.blamejared.compat.thermalexpansion;
 
-import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import com.blamejared.ModTweaker;
-import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.*;
+import crafttweaker.annotations.*;
+import crafttweaker.api.item.WeightedItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
 @ZenClass("mods.thermalexpansion.Refinery")
 @ModOnly("thermalexpansion")

@@ -28,15 +28,15 @@ import java.util.Arrays;
 @ModOnly("betterwithmods")
 @ZenRegister
 public class Kiln {
-
-
+    
+    
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IIngredient input) {
-        for (IItemStack stack : input.getItems())
+        for(IItemStack stack : input.getItems())
             add(output, stack);
     }
-
-
+    
+    
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IItemStack input) {
         ItemStack stack = InputHelper.toStack(input);

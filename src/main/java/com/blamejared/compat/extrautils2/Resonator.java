@@ -18,29 +18,31 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ModOnly("extrautils2")
 @ZenRegister
 public class Resonator {
+    
     /**
      * Adds recipes to the resonator
-     * @param output output item
-     * @param input input item
-     * @param energy energy -> 1 GP are 100 here
+     *
+     * @param output      output item
+     * @param input       input item
+     * @param energy      energy -> 1 GP are 100 here
      * @param addOwnerTag (no idea)
      */
     @ZenMethod
     public static void add(IItemStack output, IItemStack input, int energy, @Optional boolean addOwnerTag) {
         ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, addOwnerTag));
     }
-
+    
     @ZenMethod
     public static void remove(IItemStack output) {
         ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
-
+    
     private static class Add extends BaseUndoable {
-
+        
         private ItemStack output, input;
         private int energy;
         private boolean ownerTag;
-
+        
         public Add(ItemStack output, ItemStack input, int energy, boolean ownerTag) {
             super("Resonator");
             this.output = output;
@@ -48,36 +50,36 @@ public class Resonator {
             this.energy = energy;
             this.ownerTag = ownerTag;
         }
-
+        
         @Override
         public void apply() {
             TileResonator.register(input, output, energy, ownerTag);
         }
-
+        
         @Override
         protected String getRecipeInfo() {
             return LogHelper.getStackDescription(output);
         }
     }
-
+    
     private static class Remove extends BaseUndoable {
-
+        
         private IItemStack output;
-
+        
         public Remove(IItemStack output) {
             super("Resonator");
             this.output = output;
         }
-
+        
         @Override
         public void apply() {
             TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> StackHelper.matches(output, InputHelper.toIItemStack(resonatorRecipe.output)));
         }
-
+        
         @Override
         protected String getRecipeInfo() {
             return LogHelper.getStackDescription(output);
         }
     }
-
+    
 }
