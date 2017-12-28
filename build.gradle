@@ -50,6 +50,9 @@ repositories {
     maven {
         url "http://maven.tterrag.com"
     }
+    maven {
+        url = "https://dl.bintray.com/raoulvdberge/dev/"
+    }
 }
 
 dependencies {
@@ -79,6 +82,10 @@ dependencies {
     }
 
     deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.9"
+
+    deobfCompile("refinedstorage:refinedstorage:1.5.9-1242+") {
+        exclude group: 'mezz.jei'
+    }
 }
 
 processResources {
