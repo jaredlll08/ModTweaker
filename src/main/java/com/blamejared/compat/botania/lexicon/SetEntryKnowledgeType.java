@@ -39,6 +39,6 @@ public class SetEntryKnowledgeType implements IAction {
     
     @Override
     public String describe() {
-        return "Attempting to set the knowledge type for Lexicon Entry " + entry + " to " + knowledgeType;
+        return "Attempting to set the knowledge type for Lexicon entry " + entry + " to " + knowledgeType;
     }
 }

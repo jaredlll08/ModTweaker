@@ -12,10 +12,10 @@ import vazkii.botania.api.lexicon.LexiconRecipeMappings.EntryData;
 
 public class RemoveRecipeMapping implements IAction {
     
-    ItemStack stack;
-    IItemStack iStack;
-    LexiconEntry entry;
-    int page;
+    private ItemStack stack;
+    private IItemStack iStack;
+    private LexiconEntry entry;
+    private int page;
     
     public RemoveRecipeMapping(IItemStack stack) {
         this.iStack = stack;

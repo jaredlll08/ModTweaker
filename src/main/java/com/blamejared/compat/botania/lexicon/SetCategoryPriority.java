@@ -4,14 +4,15 @@ import com.blamejared.compat.botania.BotaniaHelper;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.mc1120.brackets.BracketHandlerItem;
 import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class SetCategoryPriority implements IAction {
     
-    LexiconCategory category;
-    int oldPriority;
-    int newPriority;
-    final String name;
+    private LexiconCategory category;
+    private int oldPriority;
+    private int newPriority;
+    private final String name;
     
     public SetCategoryPriority(String name, int priority) {
         this.name = name;

@@ -34,7 +34,7 @@ public class BotaniaLogger extends CraftTweakerCommand {
     @Override
     public void executeCommand(MinecraftServer server, ICommandSender sender, String[] arguments) {
         
-        List<String> args = StringHelper.toLowerCase(Arrays.asList(arguments));
+        List<String> args = Arrays.asList(arguments);
         
         if(args.contains("apothecary")) {
             for(RecipePetals recipe : BotaniaAPI.petalRecipes) {

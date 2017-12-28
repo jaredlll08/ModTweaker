@@ -33,7 +33,12 @@ public class PureDaisy {
     
     
     @ZenMethod
-    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, @Optional int time) {
+    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput) {
+        addRecipe(blockInput, blockOutput, 150);
+    }
+    
+    @ZenMethod
+    public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, int time) {
         if(blockInput == null || blockOutput == null) {
             LogHelper.logError(String.format("Required parameters missing for %s Recipe.", name));
             return;
@@ -51,7 +56,7 @@ public class PureDaisy {
         ItemStack output = InputHelper.toStack(blockOutput);
         
         RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
-    
+        
         ModTweaker.LATE_ADDITIONS.add(new Add(recipe));
     }
     

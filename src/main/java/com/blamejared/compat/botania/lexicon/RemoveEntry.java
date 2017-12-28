@@ -9,8 +9,8 @@ import vazkii.botania.api.lexicon.LexiconEntry;
 
 public class RemoveEntry implements IAction {
     
-    LexiconEntry lexEntry;
-    final String entry;
+    private LexiconEntry lexEntry;
+    private final String entry;
     
     public RemoveEntry(String entry) {
         this.entry = entry;
@@ -25,12 +25,12 @@ public class RemoveEntry implements IAction {
         }
         lexEntry.category.entries.remove(lexEntry);
         BotaniaAPI.getAllEntries().remove(lexEntry);
-        CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Entry: " + lexEntry.getUnlocalizedName());
+        CraftTweakerAPI.getLogger().logInfo("Removing Lexicon entry: " + lexEntry.getUnlocalizedName());
     }
     
     @Override
     public String describe() {
-        return "Attempting to remove Lexicon Entry " + entry;
+        return "Attempting to remove Lexicon entry " + entry;
     }
     
 }

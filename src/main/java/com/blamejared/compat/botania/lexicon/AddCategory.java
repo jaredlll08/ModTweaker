@@ -6,10 +6,10 @@ import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class AddCategory implements IAction {
     
-    LexiconCategory category;
+    private LexiconCategory category;
     
-    public AddCategory(LexiconCategory category) {
-        this.category = category;
+    public AddCategory(String category) {
+        this.category = new LexiconCategory(category);
     }
     
     @Override

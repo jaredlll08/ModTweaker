@@ -9,10 +9,10 @@ import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class SetCategoryIcon implements IAction {
     
-    LexiconCategory category;
-    ResourceLocation oldIcon;
-    ResourceLocation newIcon;
-    final String name;
+    private LexiconCategory category;
+    private ResourceLocation oldIcon;
+    private ResourceLocation newIcon;
+    private final String name;
     
     public SetCategoryIcon(String name, String icon) {
         this.name = name;

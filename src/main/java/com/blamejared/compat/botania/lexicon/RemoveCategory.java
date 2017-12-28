@@ -9,8 +9,8 @@ import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class RemoveCategory implements IAction {
     
-    final String name;
-    LexiconCategory category;
+    private final String name;
+    private LexiconCategory category;
     
     public RemoveCategory(String name) {
         this.name = name;

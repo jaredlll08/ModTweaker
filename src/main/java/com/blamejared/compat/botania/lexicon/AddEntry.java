@@ -1,25 +1,41 @@
 package com.blamejared.compat.botania.lexicon;
 
-import crafttweaker.IAction;
+import com.blamejared.compat.botania.BotaniaHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
+import crafttweaker.*;
+import crafttweaker.api.item.IItemStack;
 import vazkii.botania.api.BotaniaAPI;
-import vazkii.botania.api.lexicon.LexiconEntry;
+import vazkii.botania.api.lexicon.*;
+
+import static com.blamejared.mtlib.helpers.InputHelper.toStack;
 
 public class AddEntry implements IAction {
     
-    LexiconEntry Entry;
+    private String entry;
+    private String catagory;
+    private IItemStack stack;
     
-    public AddEntry(LexiconEntry Entry) {
-        this.Entry = Entry;
+    public AddEntry(String entry, String catagory, IItemStack stack) {
+        this.entry = entry;
+        this.catagory = catagory;
+        this.stack = stack;
     }
     
     @Override
     public void apply() {
-        BotaniaAPI.addEntry(Entry, Entry.category);
+        LexiconCategory lexiconCategory = BotaniaHelper.findCatagory(catagory);
+        if(lexiconCategory == null) {
+            CraftTweakerAPI.getLogger().logError("Cannot find lexicon category " + catagory);
+            return;
+        }
+        LexiconEntry lexiconEntry = new LexiconEntry(entry, lexiconCategory);
+        lexiconEntry.setIcon(toStack(stack));
+        BotaniaAPI.addEntry(lexiconEntry, lexiconEntry.category);
     }
     
     @Override
     public String describe() {
-        return "Adding Lexicon Entry: " + Entry.getUnlocalizedName();
+        return "Adding Lexicon entry: " + LogHelper.getStackDescription(entry);
     }
     
 }

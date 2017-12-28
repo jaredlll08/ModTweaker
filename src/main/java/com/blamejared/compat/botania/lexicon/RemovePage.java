@@ -9,10 +9,10 @@ import vazkii.botania.api.lexicon.LexiconPage;
 
 public class RemovePage implements IAction {
     
-    int page_number;
-    LexiconEntry lexEntry;
-    LexiconPage page;
-    final String entry;
+    private int page_number;
+    private LexiconEntry lexEntry;
+    private LexiconPage page;
+    private final String entry;
     
     public RemovePage(String entry, int page_number) {
         this.entry = entry;
@@ -38,7 +38,7 @@ public class RemovePage implements IAction {
     
     @Override
     public String describe() {
-        return "Attempting to remove Lexicon Page " + page_number + " from Entry " + entry;
+        return "Attempting to remove Lexicon Page " + page_number + " from entry " + entry;
     }
     
 }

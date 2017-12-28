@@ -39,7 +39,7 @@ public class Brew {
         if(!BotaniaAPI.brewMap.containsKey(brewName)) {
             LogHelper.logError(String.format("Unknown brew name \"%s\" for %s recipe.", brewName, name));
         }
-    
+        
         ModTweaker.LATE_ADDITIONS.add(new Add(new RecipeBrew(BotaniaAPI.brewMap.get(brewName), InputHelper.toObjects(inputItems))));
     }
     
