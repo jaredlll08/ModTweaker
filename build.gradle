@@ -53,6 +53,7 @@ repositories {
     maven {
         url = "https://dl.bintray.com/raoulvdberge/dev/"
     }
+
 }
 
 dependencies {
@@ -85,6 +86,10 @@ dependencies {
 
     deobfCompile("refinedstorage:refinedstorage:1.5.9-1242+") {
         exclude group: 'mezz.jei'
+    }
+
+    deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.1-0.2.1.3") {
+
     }
 }
 
