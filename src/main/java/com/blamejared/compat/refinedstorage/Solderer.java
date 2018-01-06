@@ -2,15 +2,17 @@ package com.blamejared.compat.refinedstorage;
 
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.reference.Reference;
 import com.raoulvdberge.refinedstorage.api.solderer.ISoldererRecipe;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import stanhebben.zenscript.annotations.*;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 @ZenClass("mods.refinedstorage.Solderer")
@@ -18,14 +20,42 @@ import java.util.*;
 @ZenRegister
 public class Solderer {
     
+    
     @ZenMethod
-    public static void addRecipe(IItemStack output, int time, IItemStack[] rows) {
+    public static void addRecipe(String name, IItemStack output, int time, IItemStack[] rows) {
         if(rows.length != 3) {
-            CraftTweakerAPI.logError("Invalid array length! There have to have 3 items in the array! Use null where applicable!");
+            CraftTweakerAPI.logError("Invalid array length! There have to have 3 items in the array! Use null where applicable!", new ArrayIndexOutOfBoundsException());
             return;
         }
         NonNullList<ItemStack> list = NonNullList.from(ItemStack.EMPTY, InputHelper.toStacks(rows));
-        CraftTweakerAPI.apply(new Add(Collections.singletonList(API.instance().getSoldererRegistry().createSimpleRecipe(InputHelper.toStack(output), time, list))));
+        CraftTweakerAPI.apply(new Add(Collections.singletonList(new ISoldererRecipe() {
+            @Override
+            public ResourceLocation getName() {
+                return new ResourceLocation(Reference.MODID, "name");
+            }
+            
+            @Nonnull
+            @Override
+            public NonNullList<ItemStack> getRow(int row) {
+                return NonNullList.withSize(1, list.get(row));
+            }
+            
+            @Nonnull
+            @Override
+            public ItemStack getResult() {
+                return InputHelper.toStack(output);
+            }
+            
+            @Override
+            public int getDuration() {
+                return time;
+            }
+            
+            @Override
+            public boolean isProjectERecipe() {
+                return false;
+            }
+        })));
     }
     
     @ZenMethod
