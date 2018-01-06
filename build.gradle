@@ -45,25 +45,25 @@ repositories {
         url "https://maven.chaosfield.at/"
     }
     maven {
-        url = "http://maven.ic2.player.to/"
+        url "http://maven.ic2.player.to/"
     }
     maven {
         url "http://maven.tterrag.com"
     }
     maven {
-        url = "https://dl.bintray.com/raoulvdberge/dev/"
+        url "https://dl.bintray.com/raoulvdberge/dev/"
     }
 
 }
 
 dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.10.+"
-    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.0.10.+"
-    deobfCompile "CraftTweaker2:ZenScript:4.0.10.+"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.12.+"
+    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.0.12.+"
+    deobfCompile "CraftTweaker2:ZenScript:4.0.12.+"
     deobfCompile "mezz.jei:jei_1.12.2:4.8.0.+"
     deobfCompile "com.blamejared:MTLib:3.0.+"
 
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.3.+:deobf") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.+:deobf") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("betterwithmods:BetterWithMods:1.12-2.0.15-210:dev") {
@@ -81,15 +81,13 @@ dependencies {
     deobfCompile('net.sengir.forestry:forestry_1.12.2:5.+') {
         exclude group: 'mezz.jei'
     }
-
     deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.9"
 
-    deobfCompile("refinedstorage:refinedstorage:1.5.9-1242+") {
+    deobfCompile("refinedstorage:refinedstorage:1.5.30-1460") {
         exclude group: 'mezz.jei'
     }
-
     deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.1-0.2.1.3") {
-
+        exclude group: 'mezz.jei'
     }
 }
 
