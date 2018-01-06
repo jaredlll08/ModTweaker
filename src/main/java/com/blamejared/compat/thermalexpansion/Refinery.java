@@ -42,7 +42,11 @@ public class Refinery {
         
         @Override
         public void apply() {
-            RefineryManager.addRecipe(energy, input, output, InputHelper.toStack(outputItem.getStack()), (int) outputItem.getPercent());
+            if(outputItem == null) {
+                RefineryManager.addRecipe(energy, input, output);
+            } else {
+                RefineryManager.addRecipe(energy, input, output, InputHelper.toStack(outputItem.getStack()), (int) outputItem.getPercent());
+            }
         }
         
         @Override
