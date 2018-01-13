@@ -39,15 +39,15 @@ public class Casting {
     }
     
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast) {
+    public static void addTableRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
         init();
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, true, consumeCast));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, true, consumeCast, time));
     }
     
     @ZenMethod
-    public static void addBasinRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast) {
+    public static void addBasinRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
         init();
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, false, consumeCast));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, false, consumeCast, time));
     }
     
     @ZenMethod
@@ -145,8 +145,9 @@ public class Casting {
         private int amount;
         private boolean table;
         private boolean consumeCast;
+        private int time;
         
-        public Add(ItemStack output, ItemStack cast, FluidStack fluid, int amount, boolean table, boolean consumeCast) {
+        public Add(ItemStack output, ItemStack cast, FluidStack fluid, int amount, boolean table, boolean consumeCast, int time) {
             super("Casting");
             this.output = output;
             this.cast = cast;
@@ -154,6 +155,7 @@ public class Casting {
             this.amount = amount;
             this.table = table;
             this.consumeCast = consumeCast;
+            this.time = (time != 0) ? time : CastingRecipe.calcCooldownTime(fluid.getFluid(), amount);
         }
         
         @Override
@@ -163,9 +165,9 @@ public class Casting {
                 rm = RecipeMatch.ofNBT(cast);
             }
             if(table)
-                TinkerRegistry.registerTableCasting(new CastingRecipeTweaker(output, rm, fluid.getFluid(), amount, consumeCast, false));
+                TinkerRegistry.registerTableCasting(new CastingRecipeTweaker(output, rm, new FluidStack(fluid, amount), time, consumeCast, false));
             else
-                TinkerRegistry.registerBasinCasting(new CastingRecipeTweaker(output, rm, fluid.getFluid(), amount, consumeCast, false));
+                TinkerRegistry.registerBasinCasting(new CastingRecipeTweaker(output, rm, new FluidStack(fluid, amount), time, consumeCast, false));
         }
         
         @Override
