@@ -28,12 +28,16 @@ mods.botania.RuneAltar.removeRecipe(<botania:rune>);
 
 mods.botania.Lexicon.addCategory("mtdev");
 mods.botania.Lexicon.addEntry("deventry", "mtdev", <minecraft:nether_star>);
-mods.botania.Lexicon.setEntryKnowledgeType("deventry", "alfheim");
+mods.botania.Lexicon.setEntryKnowledgeType("deventry", "deventry");
 mods.botania.Lexicon.addTextPage("devpage", "deventry", 0);
 mods.botania.Lexicon.addRunePage("devpage2", "deventry", 1, [<minecraft:apple>], [[<minecraft:nether_star>, <minecraft:beacon>, <minecraft:stone>]], [40]);
 mods.botania.Lexicon.addPetalPage("devpage3", "deventry", 2, [<minecraft:apple>], [[<minecraft:stone>, <minecraft:nether_star>]]);
 
 mods.botania.Lexicon.removeCategory("botania.category.generationFlowers");
 mods.botania.Lexicon.removeEntry("botania.entry.relics");
+
+mods.botania.KnowledgeType.AddKnowledgeType("deventry", "DARK_AQUA", true);
+mods.botania.KnowledgeType.AddKnowledgeType("jared", "GOLD", false);
+recipes.addShapeless(<botania:lexicon>.withTag({"knowledge.jared" : true}), [[<botania:lexicon>, <minecraft:diamond>]]);
 
 //This lexicon stuff is tiring.  So it's unfinished.

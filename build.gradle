@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "4.0.6"
+version = "4.0.7"
 group = "com.blamejared.modtweaker"
 archivesBaseName = "modtweaker"
 
@@ -62,6 +62,7 @@ dependencies {
     deobfCompile "CraftTweaker2:ZenScript:4.0.12.+"
     deobfCompile "mezz.jei:jei_1.12.2:4.8.0.+"
     deobfCompile "com.blamejared:MTLib:3.0.+"
+    deobfCompile "vazkii.botania:Botania:r1.10-353"
 
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.+:deobf") {
         exclude group: 'mezz.jei'
