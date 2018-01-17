@@ -19,7 +19,7 @@ import vazkii.botania.common.item.ItemLexicon;
 @ZenRegister
 public class KnowledgeAddition {
     @ZenMethod
-    public static void addBotaniaKnowledge(IItemStack stack, String knowledge){
+    public void addBotaniaKnowledge(IItemStack stack, String knowledge){
         ILexicon lexicon = (ILexicon) stack;
         ItemStack mcItemStack = CraftTweakerMC.getItemStack(stack);
         if (stack == null || stack.isEmpty()){
