@@ -1,7 +1,7 @@
 package com.blamejared.compat.refinedstorage;
 
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseListAddition;
+import com.blamejared.mtlib.utils.*;
 import com.blamejared.reference.Reference;
 import com.raoulvdberge.refinedstorage.api.solderer.ISoldererRecipe;
 import com.raoulvdberge.refinedstorage.apiimpl.API;
@@ -77,7 +77,7 @@ public class Solderer {
         
     }
     
-    private static class Remove extends BaseListAddition<ISoldererRecipe> {
+    private static class Remove extends BaseListRemoval<ISoldererRecipe> {
         
         private IItemStack output;
         
