@@ -52,10 +52,10 @@ public class PureDaisy {
         }
         
         if(input instanceof ItemStack)
-            input = Block.getBlockFromItem(((ItemStack) input).getItem());
+            input = Block.getBlockFromItem(((ItemStack) input).getItem()).getStateFromMeta(((ItemStack)input).getMetadata());
         ItemStack output = InputHelper.toStack(blockOutput);
         
-        RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getDefaultState(), time);
+        RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getStateFromMeta(output.getMetadata()), time);
         
         ModTweaker.LATE_ADDITIONS.add(new Add(recipe));
     }
