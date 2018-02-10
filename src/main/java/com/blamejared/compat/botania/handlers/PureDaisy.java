@@ -16,8 +16,10 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -46,13 +48,20 @@ public class PureDaisy {
         
         Object input = InputHelper.toObject(blockInput);
         
-        if(input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack) input))) {
-            LogHelper.logError("Input must be a block or an oredict entry.");
-            return;
+        
+        if(!(blockInput instanceof ILiquidStack)) {
+            if(input == null || (input instanceof ItemStack && !InputHelper.isABlock((ItemStack) input))) {
+                LogHelper.logError("Input must be a block or an oredict entry.");
+                return;
+            }
         }
         
         if(input instanceof ItemStack)
             input = Block.getBlockFromItem(((ItemStack) input).getItem()).getStateFromMeta(((ItemStack)input).getMetadata());
+    
+        if(blockInput instanceof ILiquidStack){
+            input = InputHelper.toFluid((ILiquidStack) blockInput).getFluid().getBlock().getDefaultState();
+        }
         ItemStack output = InputHelper.toStack(blockOutput);
         
         RecipePureDaisy recipe = new RecipePureDaisy(input, Block.getBlockFromItem(output.getItem()).getStateFromMeta(output.getMetadata()), time);
