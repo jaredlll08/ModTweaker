@@ -1,6 +1,7 @@
 package com.blamejared.compat.betterwithmods;
 
 import betterwithmods.module.hardcore.needs.HCMovement;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
@@ -25,7 +26,7 @@ public class Movement {
         if(InputHelper.isABlock(stack)) {
             Block block = ((ItemBlock) stack.getItem()).getBlock();
             IBlockState state = block.getStateFromMeta(stack.getMetadata());
-            CraftTweakerAPI.apply(new Set(state, speed));
+            ModTweaker.LATE_ADDITIONS.add(new Set(state, speed));
         }
     }
     

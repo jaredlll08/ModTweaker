@@ -5,6 +5,7 @@ import betterwithmods.common.registry.anvil.AnvilCraftingManager;
 import betterwithmods.common.registry.anvil.ShapedAnvilRecipe;
 import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.gameplay.AnvilRecipes;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseUndoable;
 import crafttweaker.CraftTweakerAPI;
@@ -28,22 +29,22 @@ public class Anvil {
     
     @ZenMethod
     public static void addShaped(IItemStack output, IIngredient[][] inputs) {
-        CraftTweakerAPI.apply(new AddShaped(output, inputs));
+        ModTweaker.LATE_ADDITIONS.add(new AddShaped(output, inputs));
     }
     
     @ZenMethod
     public static void addShapeless(IItemStack output, IIngredient[] inputs) {
-        CraftTweakerAPI.apply(new AddShapeless(output, inputs));
+        ModTweaker.LATE_ADDITIONS.add(new AddShapeless(output, inputs));
     }
     
     @ZenMethod
     public static void removeShaped(IItemStack output, @Optional IIngredient[][] ingredients) {
-        CraftTweakerAPI.apply(new RemoveShaped(output, ingredients));
+        ModTweaker.LATE_REMOVALS.add(new RemoveShaped(output, ingredients));
     }
     
     @ZenMethod
     public static void removeShapeless(IItemStack output, @Optional IIngredient[] ingredients) {
-        CraftTweakerAPI.apply(new RemoveShapeless(output, ingredients));
+        ModTweaker.LATE_REMOVALS.add(new RemoveShapeless(output, ingredients));
     }
     
     public static class AddShaped extends BaseUndoable {

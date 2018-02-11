@@ -3,6 +3,7 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.module.hardcore.world.HCBuoy;
 import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseMapAddition;
 import crafttweaker.CraftTweakerAPI;
@@ -23,7 +24,7 @@ public class Buoyancy {
     public static void set(IItemStack stack, float value) {
         StackMap<Float> map = new StackMap(1.0);
         map.put(new Stack(InputHelper.toStack(stack)), value);
-        CraftTweakerAPI.apply(new Set(map));
+        ModTweaker.LATE_ADDITIONS.add(new Set(map));
     }
     
     public static class Set extends BaseMapAddition<Stack, Float> {

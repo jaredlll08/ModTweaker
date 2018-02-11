@@ -5,18 +5,15 @@ import betterwithmods.common.registry.blockmeta.recipe.TurntableRecipe;
 import betterwithmods.module.compat.jei.category.TurntableRecipeCategory;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.betterwithmods.util.BMAdd;
-import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseListRemoval;
 import com.google.common.collect.Lists;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.List;
+import java.util.*;
 
 
 @ZenClass("mods.betterwithmods.Turntable")
@@ -47,8 +44,30 @@ public class Turntable {
     
     public static class Remove extends BaseListRemoval<TurntableRecipe> {
         
+        private ItemStack input;
+        
         protected Remove(ItemStack input) {
-            super("Remove Turntable Recipe", TurntableManager.INSTANCE.getRecipes(), TurntableManager.INSTANCE.removeTurntableRecipe(input));
+            super("Remove Turntable Recipe", Collections.emptyList());
+            this.input = input;
+        }
+    
+    
+        @Override
+        public void apply() {
+            for(TurntableRecipe recipe : TurntableManager.INSTANCE.getRecipes()) {
+                if(InputHelper.toIItemStack(input).matches(InputHelper.toIItemStack(recipe.getStack()))){
+                    successful.add(recipe);
+                }
+            }
+            System.out.println(">>>" + successful);
+            for(TurntableRecipe recipe : successful) {
+                System.out.println(">>>" + TurntableManager.INSTANCE.getRecipes().remove(recipe));
+            }
+        }
+        
+        @Override
+        public String describe() {
+            return String.format("Removing %d %s Recipe(s) for %s", TurntableManager.INSTANCE.removeTurntableRecipe(input).size(), this.name, this.getRecipeInfo());
         }
         
         @Override
