@@ -23,7 +23,7 @@ public class Knowledge {
         } else if (color == null || color.isEmpty()){
             CraftTweakerAPI.logError("Found null String in " + typeName + " color");
         } else {
-            ModTweaker.LATE_ADDITIONS.add(new Add(unlocalized, color, autoUnlock));
+            CraftTweakerAPI.apply(new Add(unlocalized, color, autoUnlock));
         }
     }
 

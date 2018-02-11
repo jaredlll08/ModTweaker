@@ -36,8 +36,12 @@ mods.botania.Lexicon.addPetalPage("devpage3", "deventry", 2, [<minecraft:apple>]
 mods.botania.Lexicon.removeCategory("botania.category.generationFlowers");
 mods.botania.Lexicon.removeEntry("botania.entry.relics");
 
-mods.botania.KnowledgeType.AddKnowledgeType("deventry", "DARK_AQUA", true);
-mods.botania.KnowledgeType.AddKnowledgeType("jared", "GOLD", false);
+mods.botania.Knowledge.registerKnowledgeType("deventry", "DARK_AQUA", true);
+mods.botania.Knowledge.registerKnowledgeType("jared", "GOLD", false);
 recipes.addShapeless(<botania:lexicon>.withTag({"knowledge.jared" : true}), [[<botania:lexicon>, <minecraft:diamond>]]);
 
-//This lexicon stuff is tiring.  So it's unfinished.
+var lex = <botania:lexicon>;
+lex.addBotaniaKnowledge("jared");
+lex.addBotaniaKnowledge("deventry");
+
+recipes.addShapeless("botaniaKnowledgeAddition", lex, [<botania:lexicon>, <minecraft:diamond>]);
