@@ -1,10 +1,7 @@
 package com.blamejared.compat.tconstruct.materials;
 
 import crafttweaker.annotations.ZenRegister;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenGetter;
-import stanhebben.zenscript.annotations.ZenMethod;
-import stanhebben.zenscript.annotations.ZenSetter;
+import stanhebben.zenscript.annotations.*;
 
 @ZenClass("modtweaker.tconstruct.ITICMaterial")
 @ZenRegister
@@ -63,5 +60,30 @@ public interface ITICMaterial {
     
     @ZenGetter("durabilityExtra")
     int getDurabilityExtra();
+    
+    
+    @ZenSetter("arrowModifier")
+    void setArrowModifier(float modifier);
+    
+    @ZenGetter("arrowModifier")
+    float getArrowModifier();
+    
+    @ZenSetter("arrowBonusAmmo")
+    void setArrowBonusAmmo(int bonusAmmo);
+    
+    @ZenGetter("arrowBonusAmmo")
+    int getArrowBonusAmmo();
+    
+    @ZenSetter("fletchingModifier")
+    void setFletchingModifier(float modifier);
+    
+    @ZenGetter("fletchingModifier")
+    float getFletchingModifier();
+    
+    @ZenSetter("fletchingAccuracy")
+    void setFletchingAccuracy(float accuracy);
+    
+    @ZenGetter("fletchingAccuracy")
+    float getFletchingAccuracy();
     
 }

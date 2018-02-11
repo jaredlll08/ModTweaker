@@ -2,9 +2,7 @@ package com.blamejared.compat.tconstruct.materials;
 
 import com.blamejared.compat.tconstruct.actions.*;
 import crafttweaker.CraftTweakerAPI;
-import slimeknights.tconstruct.library.materials.HandleMaterialStats;
-import slimeknights.tconstruct.library.materials.HeadMaterialStats;
-import slimeknights.tconstruct.library.materials.Material;
+import slimeknights.tconstruct.library.materials.*;
 
 public class TICMaterial implements ITICMaterial {
     
@@ -104,5 +102,46 @@ public class TICMaterial implements ITICMaterial {
     public int getDurabilityExtra() {
         return ((HandleMaterialStats) material.getStats("extra")).durability;
     }
+    
+    @Override
+    public void setArrowModifier(float modifier) {
+        CraftTweakerAPI.apply(new SetModifierAction(this, "shaft", modifier));
+    }
+    
+    @Override
+    public float getArrowModifier() {
+        return ((ArrowShaftMaterialStats) material.getStats("shaft")).modifier;
+    }
+    
+    @Override
+    public void setArrowBonusAmmo(int bonusAmmo) {
+        CraftTweakerAPI.apply(new SetDurabilityAction(this, "shaft", bonusAmmo));
+    }
+    
+    @Override
+    public int getArrowBonusAmmo() {
+        return ((ArrowShaftMaterialStats) material.getStats("shaft")).bonusAmmo;
+    }
+    
+    @Override
+    public void setFletchingModifier(float modifier) {
+        CraftTweakerAPI.apply(new SetModifierAction(this, "fletching", modifier));
+    }
+    
+    @Override
+    public float getFletchingModifier() {
+        return ((FletchingMaterialStats) material.getStats("fletching")).modifier;
+    }
+    
+    @Override
+    public void setFletchingAccuracy(float accuracy) {
+        CraftTweakerAPI.apply(new SetAttackAction(this, "fletching", accuracy));
+    }
+    
+    @Override
+    public float getFletchingAccuracy() {
+        return ((FletchingMaterialStats) material.getStats("fletching")).accuracy;
+    }
+    
     
 }

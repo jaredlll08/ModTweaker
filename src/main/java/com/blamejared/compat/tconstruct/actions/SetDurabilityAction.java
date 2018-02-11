@@ -29,6 +29,10 @@ public class SetDurabilityAction implements IAction {
         } else if(oldStat instanceof ExtraMaterialStats) {
             ExtraMaterialStats newExtra = new ExtraMaterialStats(durability);
             material.addStats(newExtra);
+        }else if(oldStat instanceof ArrowShaftMaterialStats){
+            ArrowShaftMaterialStats old = (ArrowShaftMaterialStats) oldStat;
+            ArrowShaftMaterialStats newStat = new ArrowShaftMaterialStats(old.modifier, durability);
+            material.addStats(newStat);
         }
         
     }

@@ -2,9 +2,7 @@ package com.blamejared.compat.tconstruct.actions;
 
 import com.blamejared.compat.tconstruct.materials.ITICMaterial;
 import crafttweaker.IAction;
-import slimeknights.tconstruct.library.materials.HandleMaterialStats;
-import slimeknights.tconstruct.library.materials.IMaterialStats;
-import slimeknights.tconstruct.library.materials.Material;
+import slimeknights.tconstruct.library.materials.*;
 
 public class SetModifierAction implements IAction {
     
@@ -24,7 +22,16 @@ public class SetModifierAction implements IAction {
             HandleMaterialStats handleStat = (HandleMaterialStats) oldStat;
             HandleMaterialStats newHandle = new HandleMaterialStats(modifier, handleStat.durability);
             material.addStats(newHandle);
+        } else if(oldStat instanceof ArrowShaftMaterialStats) {
+            ArrowShaftMaterialStats shaftStat = (ArrowShaftMaterialStats) oldStat;
+            ArrowShaftMaterialStats newShaft = new ArrowShaftMaterialStats(modifier, shaftStat.bonusAmmo);
+            material.addStats(newShaft);
+        }else if(oldStat instanceof FletchingMaterialStats) {
+            FletchingMaterialStats fletch = (FletchingMaterialStats) oldStat;
+            FletchingMaterialStats newShaft = new FletchingMaterialStats(fletch.accuracy, modifier);
+            material.addStats(newShaft);
         }
+        
         
     }
     

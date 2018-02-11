@@ -2,9 +2,7 @@ package com.blamejared.compat.tconstruct.actions;
 
 import com.blamejared.compat.tconstruct.materials.ITICMaterial;
 import crafttweaker.IAction;
-import slimeknights.tconstruct.library.materials.HeadMaterialStats;
-import slimeknights.tconstruct.library.materials.IMaterialStats;
-import slimeknights.tconstruct.library.materials.Material;
+import slimeknights.tconstruct.library.materials.*;
 
 public class SetAttackAction implements IAction {
     
@@ -24,6 +22,10 @@ public class SetAttackAction implements IAction {
             HeadMaterialStats headStat = (HeadMaterialStats) oldStat;
             HeadMaterialStats newHead = new HeadMaterialStats(headStat.durability, headStat.miningspeed, attack, headStat.harvestLevel);
             material.addStats(newHead);
+        } else if(oldStat instanceof FletchingMaterialStats) {
+            FletchingMaterialStats fletch = (FletchingMaterialStats) oldStat;
+            FletchingMaterialStats newShaft = new FletchingMaterialStats(attack, fletch.modifier);
+            material.addStats(newShaft);
         }
         
     }
