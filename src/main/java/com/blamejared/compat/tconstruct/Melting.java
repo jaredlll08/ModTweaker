@@ -4,6 +4,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.MeltingRecipeTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseUndoable;
+import com.google.common.collect.*;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.entity.IEntityDefinition;
@@ -28,7 +29,7 @@ import java.util.*;
 @ModOnly("tconstruct")
 public class Melting {
     
-    public static final Map<ILiquidStack, IItemStack> REMOVED_RECIPES = new LinkedHashMap<>();
+    public static final Multimap<ILiquidStack, IItemStack> REMOVED_RECIPES = LinkedListMultimap.create();
     public static final List<EntityEntry> REMOVED_ENTITIES = new LinkedList<>();
     public static final Map<EntityEntry, FluidStack> ADDED_ENTITIES = new LinkedHashMap<>();
     private static boolean init = false;
@@ -165,7 +166,7 @@ public class Melting {
         if(event.getRecipe() instanceof MeltingRecipeTweaker) {
             return;
         }
-        for(Map.Entry<ILiquidStack, IItemStack> ent : REMOVED_RECIPES.entrySet()) {
+        for(Map.Entry<ILiquidStack, IItemStack> ent : REMOVED_RECIPES.entries()) {
             if(event.getRecipe().getResult().isFluidEqual(((FluidStack) ent.getKey().getInternal()))) {
                 if(ent.getValue() != null) {
                     if(event.getRecipe().input.matches(NonNullList.withSize(1, (ItemStack) ent.getValue().getInternal())).isPresent()) {
