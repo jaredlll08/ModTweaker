@@ -4,11 +4,11 @@ package com.blamejared.compat.betterwithmods.util;
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
 import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import net.minecraft.item.ItemStack;
 
 
-public class BulkRemove<T extends BulkRecipe> extends BaseUndoable {
+public class BulkRemove<T extends BulkRecipe> extends BaseAction {
     
     private CraftingManagerBulk<T> manager;
     private final ItemStack output;

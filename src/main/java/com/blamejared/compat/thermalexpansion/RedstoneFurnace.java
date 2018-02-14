@@ -3,7 +3,7 @@ package com.blamejared.compat.thermalexpansion;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
@@ -35,7 +35,7 @@ public class RedstoneFurnace {
         ModTweaker.LATE_REMOVALS.add(new RemovePyrolysis(InputHelper.toStack(input)));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private ItemStack output, input;
         private int energy;
@@ -58,7 +58,7 @@ public class RedstoneFurnace {
         }
     }
     
-    private static class AddPyrolysis extends BaseUndoable {
+    private static class AddPyrolysis extends BaseAction {
         
         private ItemStack output, input;
         private int energy;
@@ -83,7 +83,7 @@ public class RedstoneFurnace {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private ItemStack input;
         
@@ -107,7 +107,7 @@ public class RedstoneFurnace {
         }
     }
     
-    private static class RemovePyrolysis extends BaseUndoable {
+    private static class RemovePyrolysis extends BaseAction {
         
         private ItemStack input;
         

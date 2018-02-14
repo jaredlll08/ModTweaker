@@ -3,7 +3,7 @@ package com.blamejared.compat.tconstruct;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.DryingRecipeTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
@@ -46,7 +46,7 @@ public class Drying {
         CraftTweakerAPI.apply(new Remove(output, input));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private ItemStack output, input;
         private int time;
@@ -69,7 +69,7 @@ public class Drying {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private IItemStack output;
         private IItemStack input;

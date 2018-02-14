@@ -3,7 +3,7 @@ package com.blamejared.compat.tconstruct;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.MeltingRecipeTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import com.google.common.collect.*;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
@@ -66,7 +66,7 @@ public class Melting {
         CraftTweakerAPI.apply(new RemoveEntityMelting((EntityEntry) entity.getInternal()));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private FluidStack output;
         private ItemStack input;
@@ -93,7 +93,7 @@ public class Melting {
         }
     }
     
-    private static class AddEntityMelting extends BaseUndoable {
+    private static class AddEntityMelting extends BaseAction {
         
         private EntityEntry entity;
         private FluidStack output;
@@ -116,7 +116,7 @@ public class Melting {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private ILiquidStack output;
         private IItemStack input;
@@ -138,7 +138,7 @@ public class Melting {
         }
     }
     
-    private static class RemoveEntityMelting extends BaseUndoable {
+    private static class RemoveEntityMelting extends BaseAction {
         
         private EntityEntry entity;
         

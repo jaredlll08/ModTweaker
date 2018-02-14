@@ -8,7 +8,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.compat.betterwithmods.util.BMAdd;
 import com.blamejared.compat.betterwithmods.util.BMRemove;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import com.google.common.collect.Lists;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
@@ -60,7 +60,7 @@ public class Kiln {
     }
     
     
-    public static class KilnBlock extends BaseUndoable {
+    public static class KilnBlock extends BaseAction {
         
         private IBlockState state;
         

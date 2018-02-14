@@ -3,7 +3,7 @@ package com.blamejared.compat.thermalexpansion;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
@@ -27,7 +27,7 @@ public class Crucible {
         ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input)));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private FluidStack output;
         private ItemStack input;
@@ -51,7 +51,7 @@ public class Crucible {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private ItemStack input;
         

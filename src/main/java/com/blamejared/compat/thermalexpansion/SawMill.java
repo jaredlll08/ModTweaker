@@ -3,7 +3,7 @@ package com.blamejared.compat.thermalexpansion;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
@@ -25,7 +25,7 @@ public class SawMill {
         ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input)));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private ItemStack output, input, secondaryOutput;
         private int energy, secondaryChance;
@@ -53,7 +53,7 @@ public class SawMill {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private ItemStack input;
         

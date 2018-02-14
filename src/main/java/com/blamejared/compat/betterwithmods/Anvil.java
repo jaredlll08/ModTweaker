@@ -7,7 +7,7 @@ import betterwithmods.common.registry.anvil.ShapelessAnvilRecipe;
 import betterwithmods.module.gameplay.AnvilRecipes;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -47,7 +47,7 @@ public class Anvil {
         ModTweaker.LATE_REMOVALS.add(new RemoveShapeless(output, ingredients));
     }
     
-    public static class AddShaped extends BaseUndoable {
+    public static class AddShaped extends BaseAction {
         
         private final IItemStack output;
         private final IIngredient[][] ingredients;
@@ -69,7 +69,7 @@ public class Anvil {
         }
     }
     
-    public static class AddShapeless extends BaseUndoable {
+    public static class AddShapeless extends BaseAction {
         
         private final IItemStack output;
         private final IIngredient[] ingredients;
@@ -118,7 +118,7 @@ public class Anvil {
         }
     }
     
-    public static class RemoveShaped extends BaseUndoable {
+    public static class RemoveShaped extends BaseAction {
         
         private final IItemStack output;
         private final IIngredient[][] ingredients;
@@ -155,7 +155,7 @@ public class Anvil {
         }
     }
     
-    public static class RemoveShapeless extends BaseUndoable {
+    public static class RemoveShapeless extends BaseAction {
         
         private final IItemStack output;
         private final IIngredient[] ingredients;

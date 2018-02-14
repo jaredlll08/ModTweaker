@@ -3,7 +3,7 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.module.hardcore.needs.HCMovement;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -30,7 +30,7 @@ public class Movement {
         }
     }
     
-    public static class Set extends BaseUndoable {
+    public static class Set extends BaseAction {
         
         private IBlockState state;
         private float speed;

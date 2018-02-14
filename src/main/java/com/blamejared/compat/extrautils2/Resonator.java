@@ -4,7 +4,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StackHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import com.rwtema.extrautils2.tile.TileResonator;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -37,7 +37,7 @@ public class Resonator {
         ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private ItemStack output, input;
         private int energy;
@@ -62,7 +62,7 @@ public class Resonator {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private IItemStack output;
         

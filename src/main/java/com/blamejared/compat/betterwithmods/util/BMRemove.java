@@ -3,13 +3,13 @@ package com.blamejared.compat.betterwithmods.util;
 import betterwithmods.common.registry.blockmeta.managers.BlockMetaManager;
 import betterwithmods.common.registry.blockmeta.recipe.BlockMetaRecipe;
 import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-public class BMRemove extends BaseUndoable {
+public class BMRemove extends BaseAction {
 
     private final BlockMetaManager recipes;
     private final ItemStack input;

@@ -3,7 +3,7 @@ package com.blamejared.compat.thermalexpansion;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.*;
@@ -44,7 +44,7 @@ public class Transposer {
         ModTweaker.LATE_REMOVALS.add(new RemoveFill(InputHelper.toStack(input), InputHelper.toFluid(fluid)));
     }
     
-    private static class AddExtract extends BaseUndoable {
+    private static class AddExtract extends BaseAction {
         
         private FluidStack output;
         private ItemStack input;
@@ -73,7 +73,7 @@ public class Transposer {
         }
     }
     
-    private static class RemoveExtract extends BaseUndoable {
+    private static class RemoveExtract extends BaseAction {
         
         private ItemStack input;
         
@@ -97,7 +97,7 @@ public class Transposer {
         }
     }
     
-    private static class AddFill extends BaseUndoable {
+    private static class AddFill extends BaseAction {
         
         private FluidStack fluid;
         private ItemStack input;
@@ -124,7 +124,7 @@ public class Transposer {
         }
     }
     
-    private static class RemoveFill extends BaseUndoable {
+    private static class RemoveFill extends BaseAction {
         
         private ItemStack input;
         private FluidStack fluid;

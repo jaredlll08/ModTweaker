@@ -3,7 +3,7 @@ package com.blamejared.compat.tcomplement;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.MeltingRecipeTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
@@ -47,7 +47,7 @@ public class Blacklist {
         CraftTweakerAPI.apply(new Blacklist.Remove(input));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private FluidStack output;
         private ItemStack input;
@@ -69,7 +69,7 @@ public class Blacklist {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private IItemStack input;
         

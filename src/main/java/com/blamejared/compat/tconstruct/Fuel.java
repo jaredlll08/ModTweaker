@@ -2,7 +2,7 @@ package com.blamejared.compat.tconstruct;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.annotations.*;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +20,7 @@ public class Fuel {
         ModTweaker.LATE_ADDITIONS.add(new Fuel.Add(InputHelper.toFluid(fluid), duration));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private FluidStack fuel;
         private int duration;

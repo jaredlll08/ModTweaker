@@ -3,7 +3,7 @@ package com.blamejared.compat.tconstruct;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tconstruct.recipes.AlloyRecipeTweaker;
 import com.blamejared.mtlib.helpers.*;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -51,7 +51,7 @@ public class Alloy {
         CraftTweakerAPI.apply(new Alloy.Remove(output, in));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private FluidStack output;
         private FluidStack[] input;
@@ -73,7 +73,7 @@ public class Alloy {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private ILiquidStack output;
         private List<ILiquidStack> inputs;

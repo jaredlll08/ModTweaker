@@ -4,7 +4,7 @@ import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StackHelper;
-import com.blamejared.mtlib.utils.BaseUndoable;
+import com.blamejared.mtlib.utils.BaseAction;
 import com.rwtema.extrautils2.api.machine.IMachineRecipe;
 import com.rwtema.extrautils2.api.machine.MachineSlotFluid;
 import com.rwtema.extrautils2.api.machine.MachineSlotItem;
@@ -38,7 +38,7 @@ public class Crusher {
         ModTweaker.LATE_REMOVALS.add(new Remove(input));
     }
     
-    private static class Add extends BaseUndoable {
+    private static class Add extends BaseAction {
         
         private ItemStack output, input, secondaryOutput;
         private float secondaryChance;
@@ -65,7 +65,7 @@ public class Crusher {
         }
     }
     
-    private static class Remove extends BaseUndoable {
+    private static class Remove extends BaseAction {
         
         private IItemStack input;
         
