@@ -1,5 +1,6 @@
 package com.blamejared.compat.refinedstorage;
 
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
 import com.blamejared.reference.Reference;
@@ -28,7 +29,7 @@ public class Solderer {
             return;
         }
         NonNullList<ItemStack> list = NonNullList.from(ItemStack.EMPTY, InputHelper.toStacks(rows));
-        CraftTweakerAPI.apply(new Add(Collections.singletonList(new ISoldererRecipe() {
+        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new ISoldererRecipe() {
             @Override
             public ResourceLocation getName() {
                 return new ResourceLocation(Reference.MODID, "name");
@@ -60,7 +61,7 @@ public class Solderer {
     
     @ZenMethod
     public static void removeRecipe(IItemStack output) {
-        CraftTweakerAPI.apply(new Remove(output));
+        ModTweaker.LATE_REMOVALS.add(new Remove(output));
     }
     
     private static class Add extends BaseListAddition<ISoldererRecipe> {
