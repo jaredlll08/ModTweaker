@@ -10,6 +10,7 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import com.google.common.collect.Lists;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
 
@@ -31,7 +32,7 @@ public class Turntable {
     public static class Add extends BMAdd {
         
         public Add(ItemStack input, ItemStack output, List<ItemStack> scraps) {
-            super(TurntableRecipeCategory.UID, TurntableManager.INSTANCE, Lists.newArrayList(new TurntableRecipe(input, output, scraps)));
+            super(TurntableRecipeCategory.UID, TurntableManager.INSTANCE, Lists.newArrayList(new TurntableRecipe(Block.getBlockFromItem(input.getItem()), input.getMetadata(), output.isEmpty() ? null : Block.getBlockFromItem(output.getItem()), output.isEmpty() ? 0 : output.getMetadata(), scraps)));
         }
     }
     
@@ -50,12 +51,12 @@ public class Turntable {
             super("Remove Turntable Recipe", Collections.emptyList());
             this.input = input;
         }
-    
-    
+        
+        
         @Override
         public void apply() {
             for(TurntableRecipe recipe : TurntableManager.INSTANCE.getRecipes()) {
-                if(InputHelper.toIItemStack(input).matches(InputHelper.toIItemStack(recipe.getStack()))){
+                if(InputHelper.toIItemStack(input).matches(InputHelper.toIItemStack(recipe.getStack()))) {
                     successful.add(recipe);
                 }
             }
