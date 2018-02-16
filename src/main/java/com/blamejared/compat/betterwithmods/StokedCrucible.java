@@ -23,7 +23,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class StokedCrucible {
     
     @ZenMethod
-    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondaryOutput) {
         StokedCrucibleRecipe r = new StokedCrucibleRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
         ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), r));
     }
@@ -34,7 +34,7 @@ public class StokedCrucible {
     }
     
     @ZenMethod
-    public static void remove(IItemStack output, @Optional IItemStack secondary, @NotNull IIngredient[] inputs) {
+    public static void remove(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondary) {
         ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
 }

@@ -23,7 +23,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class Mill {
     
     @ZenMethod
-    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondaryOutput) {
         MillRecipe r = new MillRecipe(0, InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
         ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Mill Recipe", MillManager.getInstance(), r));
     }
