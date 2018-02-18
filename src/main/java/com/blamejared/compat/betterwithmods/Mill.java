@@ -3,18 +3,12 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.common.registry.bulk.manager.MillManager;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import com.blamejared.ModTweaker;
-import com.blamejared.compat.betterwithmods.util.BulkAdd;
-import com.blamejared.compat.betterwithmods.util.BulkRemove;
+import com.blamejared.compat.betterwithmods.util.*;
 import com.blamejared.mtlib.helpers.InputHelper;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.annotations.*;
+import crafttweaker.api.item.*;
 import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.NotNull;
-import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
 
 @ZenClass("mods.betterwithmods.Mill")
@@ -26,6 +20,12 @@ public class Mill {
     public static void add(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondaryOutput) {
         MillRecipe r = new MillRecipe(0, InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
         ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Mill Recipe", MillManager.getInstance(), r));
+    }
+    
+    @ZenMethod
+    @Deprecated
+    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+        add(output, inputs, secondaryOutput);
     }
     
     @ZenMethod
