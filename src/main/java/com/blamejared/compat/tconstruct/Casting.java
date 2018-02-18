@@ -6,12 +6,14 @@ import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
@@ -20,6 +22,7 @@ import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ZenClass("mods.tconstruct.Casting")
 @ZenRegister
@@ -39,15 +42,15 @@ public class Casting {
     }
     
     @ZenMethod
-    public static void addTableRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
+    public static void addTableRecipe(IItemStack output, IIngredient cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
         init();
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, true, consumeCast, time));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), cast, InputHelper.toFluid(fluid), amount, true, consumeCast, time));
     }
     
     @ZenMethod
-    public static void addBasinRecipe(IItemStack output, IItemStack cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
+    public static void addBasinRecipe(IItemStack output, IIngredient cast, ILiquidStack fluid, int amount, @Optional boolean consumeCast, @Optional int time) {
         init();
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(cast), InputHelper.toFluid(fluid), amount, false, consumeCast, time));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), cast, InputHelper.toFluid(fluid), amount, false, consumeCast, time));
     }
     
     @ZenMethod
@@ -140,14 +143,15 @@ public class Casting {
     
     private static class Add extends BaseAction {
         
-        private ItemStack output, cast;
+        private ItemStack output;
+        IIngredient cast;
         private FluidStack fluid;
         private int amount;
         private boolean table;
         private boolean consumeCast;
         private int time;
         
-        public Add(ItemStack output, ItemStack cast, FluidStack fluid, int amount, boolean table, boolean consumeCast, int time) {
+        public Add(ItemStack output, IIngredient cast, FluidStack fluid, int amount, boolean table, boolean consumeCast, int time) {
             super("Casting");
             this.output = output;
             this.cast = cast;
@@ -161,8 +165,18 @@ public class Casting {
         @Override
         public void apply() {
             RecipeMatch rm = null;
-            if(cast != ItemStack.EMPTY) {
-                rm = RecipeMatch.ofNBT(cast);
+            if(cast != null) {
+                List<ItemStack> validCasts = cast.getItems().stream().map(CraftTweakerMC::getItemStack).collect(Collectors.toList());
+                if(validCasts.isEmpty())
+                    CraftTweakerAPI.logInfo("Could not find matching items for " + cast.toString() + ". Substituting empty cast for recipe with output " + output.getDisplayName());
+                else if(validCasts.size() == 1) //Keep compat to old handler
+                    if(validCasts.get(0).getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                        rm = RecipeMatch.of(validCasts, output.getCount());
+                    } else {
+                        rm = RecipeMatch.ofNBT(validCasts.get(0), output.getCount());
+                    }
+                else
+                    rm = RecipeMatch.of(validCasts, output.getCount());
             }
             if(table)
                 TinkerRegistry.registerTableCasting(new CastingRecipeTweaker(output, rm, new FluidStack(fluid, amount), time, consumeCast, false));
