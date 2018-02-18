@@ -8,8 +8,9 @@ import com.google.common.collect.*;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.entity.IEntityDefinition;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,10 +20,12 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
+import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ZenClass("mods.tconstruct.Melting")
 @ZenRegister
@@ -42,9 +45,9 @@ public class Melting {
     }
     
     @ZenMethod
-    public static void addRecipe(ILiquidStack output, IItemStack input, @Optional int temp) {
+    public static void addRecipe(ILiquidStack output, IIngredient input, @Optional int temp) {
         init();
-        ModTweaker.LATE_ADDITIONS.add(new Melting.Add(InputHelper.toFluid(output), InputHelper.toStack(input), temp));
+        ModTweaker.LATE_ADDITIONS.add(new Melting.Add(InputHelper.toFluid(output), input, temp));
     }
     
     
@@ -68,23 +71,28 @@ public class Melting {
     
     private static class Add extends BaseAction {
         
-        private FluidStack output;
-        private ItemStack input;
-        private int temp;
+        private final FluidStack output;
+        private final IIngredient ingredient;
+        private final int temp;
         
-        public Add(FluidStack output, ItemStack input, int temp) {
+        public Add(FluidStack output, IIngredient ingredient, int temp) {
             super("Melting");
             this.output = output;
-            this.input = input;
             this.temp = temp;
+            this.ingredient = ingredient;
         }
         
         @Override
         public void apply() {
-            if(temp != 0)
-                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(input, output.amount), output, temp));
-            else
-                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(input, output.amount), output));
+            List<ItemStack> validIngredients = ingredient.getItems().stream().map(CraftTweakerMC::getItemStack).collect(Collectors.toList());
+            if(validIngredients.isEmpty())
+                CraftTweakerAPI.logInfo("Could not find matching items for " + ingredient.toString() + ". Ignoring Melting recipe for " + output.getLocalizedName());
+            
+            else if(temp == 0) {
+                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(validIngredients, output.amount), output));
+            } else {
+                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(validIngredients, output.amount), output, temp));
+            }
         }
         
         @Override
