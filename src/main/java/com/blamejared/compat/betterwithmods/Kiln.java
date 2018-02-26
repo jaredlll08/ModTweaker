@@ -5,22 +5,16 @@ import betterwithmods.common.registry.KilnStructureManager;
 import betterwithmods.common.registry.blockmeta.managers.KilnManager;
 import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
 import com.blamejared.ModTweaker;
-import com.blamejared.compat.betterwithmods.util.BMAdd;
-import com.blamejared.compat.betterwithmods.util.BMRemove;
+import com.blamejared.compat.betterwithmods.util.*;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseAction;
 import com.google.common.collect.Lists;
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.NotNull;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import net.minecraft.item.*;
+import stanhebben.zenscript.annotations.*;
 
 import java.util.Arrays;
 
@@ -32,19 +26,14 @@ public class Kiln {
     
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IIngredient input) {
-        for(IItemStack stack : input.getItems())
-            add(output, stack);
-    }
-    
-    
-    @ZenMethod
-    public static void add(IItemStack[] output, @NotNull IItemStack input) {
-        ItemStack stack = InputHelper.toStack(input);
-        if(InputHelper.isABlock(stack)) {
-            Block block = ((ItemBlock) stack.getItem()).getBlock();
-            ItemStack[] outputs = InputHelper.toStacks(output);
-            KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-            ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
+        for(IItemStack stacki : input.getItems()) {
+            ItemStack stack = InputHelper.toStack(stacki);
+            if(InputHelper.isABlock(stack)) {
+                Block block = ((ItemBlock) stack.getItem()).getBlock();
+                ItemStack[] outputs = InputHelper.toStacks(output);
+                KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
+                ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
+            }
         }
     }
     
