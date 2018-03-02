@@ -16,8 +16,8 @@ import stanhebben.zenscript.annotations.*;
 public class AlchemyArray {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack input, IItemStack catalyst, @Optional  String textureLocation) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(input), InputHelper.toStack(catalyst), InputHelper.toStack(output), new ResourceLocation(textureLocation)));
+    public static void addRecipe(IItemStack output, IItemStack input, IItemStack catalyst, @Optional String textureLocation) {
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(input), InputHelper.toStack(catalyst), InputHelper.toStack(output), textureLocation !=null ? new ResourceLocation(textureLocation) : null));
     }
     
     @ZenMethod
