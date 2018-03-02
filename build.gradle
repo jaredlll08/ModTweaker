@@ -66,6 +66,7 @@ dependencies {
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
     deobfCompile "vazkii.botania:Botania:r1.10-353"
 
+
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.+:deobf") {
         exclude group: 'mezz.jei'
     }
@@ -92,6 +93,7 @@ dependencies {
     deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.1-0.2.1.3") {
         exclude group: 'mezz.jei'
     }
+    deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
 }
 
 processResources {
