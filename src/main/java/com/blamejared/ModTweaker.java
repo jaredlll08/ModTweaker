@@ -1,6 +1,7 @@
 package com.blamejared;
 
 import com.blamejared.compat.botania.Botania;
+import com.blamejared.compat.chisel.Chisel;
 import com.blamejared.compat.tconstruct.TConstruct;
 import crafttweaker.*;
 import net.minecraftforge.fml.common.*;
@@ -47,6 +48,9 @@ public class ModTweaker {
         }
         if(Loader.isModLoaded("botania")) {
             Botania.registerCommands();
+        }
+        if(Loader.isModLoaded("chisel")) {
+            Chisel.registerCommands();
         }
     }
 }

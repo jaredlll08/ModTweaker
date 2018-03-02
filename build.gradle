@@ -56,6 +56,9 @@ repositories {
     maven {
         url = "http://maven.thiakil.com"
     }
+    maven {
+        url "http://tehnut.info/maven/"
+    }
 
 }
 
@@ -94,6 +97,8 @@ dependencies {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
+    deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.12.2-2.2.7-90"
+    deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
 }
 
 processResources {
