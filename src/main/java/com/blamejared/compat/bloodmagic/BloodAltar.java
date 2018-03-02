@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import stanhebben.zenscript.annotations.*;
 
-@ZenClass("mods.bloodmagic.BloodAlter")
+@ZenClass("mods.bloodmagic.BloodAltar")
 @ZenRegister
 @ModOnly("bloodmagic")
-public class BloodAlter {
+public class BloodAltar {
     
     @ZenMethod
     public static void addRecipe(IItemStack output, IItemStack input, int minimumTier, int syphon, int consumeRate, int drainRate) {
@@ -33,7 +33,7 @@ public class BloodAlter {
         private int minTier, syphon, consumeRate, drainRate;
         
         public Add(Ingredient input, ItemStack output, int minTier, int syphon, int consumeRate, int drainRate) {
-            super("BloodAlter");
+            super("BloodAltar");
             this.input = input;
             this.output = output;
             this.minTier = minTier;
@@ -49,7 +49,7 @@ public class BloodAlter {
         
         @Override
         public String describe() {
-            return "Adding Blood Alter recipe for: " + output + " from: " + input + " minTier: " + minTier + ", syphon: " + syphon + ", consumeRate: " + consumeRate + ", drainRate: " + drainRate;
+            return "Adding Blood Altar recipe for: " + output + " from: " + input + " minTier: " + minTier + ", syphon: " + syphon + ", consumeRate: " + consumeRate + ", drainRate: " + drainRate;
         }
     }
     
@@ -58,7 +58,7 @@ public class BloodAlter {
         private ItemStack input;
         
         public Remove(ItemStack input) {
-            super("BloodAlter");
+            super("BloodAltar");
             this.input = input;
         }
         
@@ -69,7 +69,7 @@ public class BloodAlter {
         
         @Override
         public String describe() {
-            return "Removing Blood Alter recipe for: " + input;
+            return "Removing Blood Altar recipe for: " + input;
         }
     }
 }
