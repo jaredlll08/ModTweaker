@@ -24,7 +24,7 @@ public class Mill {
     
     @ZenMethod
     @Deprecated
-    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         add(output, inputs, secondaryOutput);
     }
     

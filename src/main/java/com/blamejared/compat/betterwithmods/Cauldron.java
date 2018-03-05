@@ -24,7 +24,7 @@ public class Cauldron {
     
     @ZenMethod
     @Deprecated
-    public static void add(IItemStack output, @Optional IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
+    public static void add(IItemStack output, IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
         add(output, inputs, secondaryOutput);
     }
     
@@ -35,7 +35,7 @@ public class Cauldron {
     
     @ZenMethod
     @Deprecated
-    public static void remove(IItemStack output, @Optional IItemStack secondary, IIngredient[] inputs) {
+    public static void remove(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
         remove(output, inputs, secondary);
     }
     

@@ -13,6 +13,7 @@ import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.compiler.ITypeRegistry;
 
 import java.util.*;
 
