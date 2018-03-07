@@ -29,12 +29,17 @@ public class StokedCrucible {
     }
     
     @ZenMethod
-    public static void remove(IItemStack output, @Optional IItemStack secondary) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Set Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY));
+    public static void remove(IItemStack output) {
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
     }
     
     @ZenMethod
-    public static void remove(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondary) {
+    public static void remove(IItemStack output, IItemStack secondary) {
+        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY));
+    }
+    
+    @ZenMethod
+    public static void remove(IItemStack output, @NotNull IIngredient[] inputs, IItemStack secondary) {
         ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Stoked Crucible Recipe", StokedCrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
     }
     
