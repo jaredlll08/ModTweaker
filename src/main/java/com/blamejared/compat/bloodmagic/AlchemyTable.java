@@ -6,7 +6,7 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
 
@@ -16,12 +16,12 @@ import stanhebben.zenscript.annotations.*;
 public class AlchemyTable {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack[] inputs, int syphon, int ticks, int minTier) {
+    public static void addRecipe(IItemStack output, IIngredient[] inputs, int syphon, int ticks, int minTier) {
         if(inputs.length == 0 || inputs.length > 6) {
             CraftTweakerAPI.logError("Invalid Input Array! Maximum size is 6!");
             return;
         }
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), syphon, ticks, minTier, InputHelper.toStacks(inputs)));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), syphon, ticks, minTier, InputHelper.toObjects(inputs)));
     }
     
     @ZenMethod
@@ -38,9 +38,9 @@ public class AlchemyTable {
         
         private ItemStack output;
         private int syphon, ticks, minTier;
-        private ItemStack[] inputs;
+        private Object[] inputs;
         
-        public Add(ItemStack output, int syphon, int ticks, int minTier, ItemStack[] inputs) {
+        public Add(ItemStack output, int syphon, int ticks, int minTier, Object[] inputs) {
             super("AlchemyTable");
             this.output = output;
             this.syphon = syphon;
@@ -51,7 +51,7 @@ public class AlchemyTable {
         
         @Override
         public void apply() {
-            BloodMagicAPI.INSTANCE.getRecipeRegistrar().addTartaricForge(output, syphon, ticks, minTier, inputs);
+            BloodMagicAPI.INSTANCE.getRecipeRegistrar().addAlchemyTable(output, syphon, ticks, minTier, inputs);
         }
         
         
@@ -63,7 +63,7 @@ public class AlchemyTable {
         
     }
     
-    public static String[] getStringFromStacks(ItemStack[] arr) {
+    public static String[] getStringFromStacks(Object[] arr) {
         String[] retArr = new String[arr.length];
         for(int i = 0; i < arr.length; i++) {
             retArr[i] = arr[i].toString();

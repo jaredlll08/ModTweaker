@@ -6,7 +6,7 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
-import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.*;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.*;
 
@@ -16,12 +16,12 @@ import stanhebben.zenscript.annotations.*;
 public class TartaricForge {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack[] inputs, double minSouls, double soulDrain) {
+    public static void addRecipe(IItemStack output, IIngredient[] inputs, double minSouls, double soulDrain) {
         if(inputs.length == 0 || inputs.length > 4) {
             CraftTweakerAPI.logError("Invalid Input Array! Maximum size is 4!");
             return;
         }
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), minSouls, soulDrain, InputHelper.toStacks(inputs)));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), minSouls, soulDrain, InputHelper.toObjects(inputs)));
     }
     
     @ZenMethod
@@ -34,9 +34,9 @@ public class TartaricForge {
         
         private ItemStack output;
         private double minSouls, soulDrain;
-        private ItemStack[] inputs;
+        private Object[] inputs;
         
-        public Add(ItemStack output, double minSouls, double soulDrain, ItemStack[] inputs) {
+        public Add(ItemStack output, double minSouls, double soulDrain, Object[] inputs) {
             super("TartaricForge");
             this.output = output;
             this.minSouls = minSouls;
@@ -58,7 +58,7 @@ public class TartaricForge {
         
     }
     
-    public static String[] getStringFromStacks(ItemStack[] arr) {
+    public static String[] getStringFromStacks(Object[] arr) {
         String[] retArr = new String[arr.length];
         for(int i = 0; i < arr.length; i++) {
             retArr[i] = arr[i].toString();
