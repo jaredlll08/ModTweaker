@@ -2,6 +2,7 @@ package com.blamejared;
 
 import com.blamejared.compat.botania.Botania;
 import com.blamejared.compat.chisel.Chisel;
+import com.blamejared.compat.inspirations.Inspirations;
 import com.blamejared.compat.tconstruct.TConstruct;
 import crafttweaker.*;
 import net.minecraftforge.fml.common.*;
@@ -51,6 +52,9 @@ public class ModTweaker {
         }
         if(Loader.isModLoaded("chisel")) {
             Chisel.registerCommands();
+        }
+        if(Loader.isModLoaded("inspirations")) {
+            Inspirations.registerCommands();
         }
     }
 }
