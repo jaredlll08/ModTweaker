@@ -1,40 +1,57 @@
 package com.blamejared.compat.betterwithmods;
 
 
-import betterwithmods.common.registry.bulk.manager.CrucibleManager;
-import betterwithmods.common.registry.bulk.recipes.CrucibleRecipe;
-import com.blamejared.ModTweaker;
-import com.blamejared.compat.betterwithmods.util.*;
-import com.blamejared.mtlib.helpers.InputHelper;
-import crafttweaker.annotations.*;
-import crafttweaker.api.item.*;
-import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.*;
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
+import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
+import com.blamejared.compat.betterwithmods.base.bulkrecipes.CookingPotBuilder;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import stanhebben.zenscript.annotations.NotNull;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 @ZenClass("mods.betterwithmods.Crucible")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Crucible {
-    
-    @ZenMethod
-    public static void add(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondaryOutput) {
-        CrucibleRecipe r = new CrucibleRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Crucible Recipe", CrucibleManager.getInstance(), r));
+public class Crucible extends CookingPotBuilder {
+    public static Crucible INSTANCE = new Crucible(BWRegistry.CRUCIBLE, "Crucible");
+
+    private Crucible(CraftingManagerBulk<CookingPotRecipe> registry, String name) {
+        super(registry, name);
     }
-    
+
+    @ZenMethod
+    public static Crucible builder() {
+        return INSTANCE;
+    }
+
+    @ZenMethod
+    public static void addStoked(IIngredient[] inputs, IItemStack[] outputs) {
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(STOKED).build();
+    }
+
+    @ZenMethod
+    public static void addUnstoked(IIngredient[] inputs, IItemStack[] outputs) {
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(UNSTOKED).build();
+    }
+
     @Deprecated
     @ZenMethod
     public static void add(IItemStack output, IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        add(output, inputs, secondaryOutput);
+        addUnstoked(inputs, new IItemStack[]{output, secondaryOutput});
     }
-    
+
+    @Deprecated
     @ZenMethod
-    public static void remove(IItemStack output) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Set Crucible Recipe", CrucibleManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
+    public static void add(IItemStack output, @NotNull IIngredient[] inputs) {
+        addUnstoked(inputs, new IItemStack[]{output});
     }
-    
+
     @ZenMethod
-    public static void remove(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Crucible Recipe", CrucibleManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+    public static void remove(IItemStack[] output) {
+        INSTANCE.removeRecipe(output);
     }
 }

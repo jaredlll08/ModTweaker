@@ -1,63 +1,77 @@
 package com.blamejared.compat.betterwithmods;
 
 import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.blockmeta.managers.KilnManager;
-import betterwithmods.common.registry.blockmeta.recipe.KilnRecipe;
+import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
+import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import com.blamejared.ModTweaker;
-import com.blamejared.compat.betterwithmods.util.*;
+import com.blamejared.compat.betterwithmods.base.blockrecipes.KilnBuilder;
 import com.blamejared.mtlib.helpers.InputHelper;
+import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;
-import com.google.common.collect.Lists;
-import crafttweaker.annotations.*;
-import crafttweaker.api.item.*;
-import net.minecraft.block.Block;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.*;
-import stanhebben.zenscript.annotations.*;
+import stanhebben.zenscript.annotations.NotNull;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
-import java.util.Arrays;
+import javax.annotation.Nonnull;
 
 @ZenClass("mods.betterwithmods.Kiln")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Kiln {
-    
-    
+public class Kiln extends KilnBuilder {
+
+    public static Kiln INSTANCE = new Kiln(BWRegistry.KILN, "Kiln");
+
+    public Kiln(CraftingManagerBlock<KilnRecipe> registry, String name) {
+        super(registry, name);
+    }
+
+    @ZenMethod
+    public static KilnBuilder builder() {
+        return INSTANCE;
+    }
+
+    @ZenMethod
+    public static void add(@Nonnull IIngredient input, IItemStack[] output) {
+        builder().buildRecipe(input, output).build();
+    }
+
     @ZenMethod
     public static void add(IItemStack[] output, @NotNull IIngredient input) {
-        for(IItemStack stacki : input.getItems()) {
-            ItemStack stack = InputHelper.toStack(stacki);
-            if(InputHelper.isABlock(stack)) {
-                Block block = ((ItemBlock) stack.getItem()).getBlock();
-                ItemStack[] outputs = InputHelper.toStacks(output);
-                KilnRecipe r = new KilnRecipe(block, stack.getMetadata(), Arrays.asList(outputs));
-                ModTweaker.LATE_ADDITIONS.add(new BMAdd("Set Kiln Recipe", KilnManager.INSTANCE, Lists.newArrayList(r)));
-            }
-        }
+        add(input, output);
     }
-    
+
+    @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new BMRemove("Set Kiln Recipe", KilnManager.INSTANCE, InputHelper.toStack(input)));
+        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Saw.remove(IItemStack[] outputs)");
     }
-    
-    
+
+    @ZenMethod
+    public static void remove(IItemStack[] outputs) {
+        INSTANCE.removeRecipe(outputs);
+    }
+
     @ZenMethod
     public static void registerBlock(IItemStack block) {
         ModTweaker.LATE_ADDITIONS.add(new KilnBlock(BWMRecipes.getStateFromStack(InputHelper.toStack(block))));
     }
-    
-    
+
     public static class KilnBlock extends BaseAction {
-        
+
         private IBlockState state;
-        
-        protected KilnBlock(IBlockState state) {
+
+        KilnBlock(IBlockState state) {
             super("Set Kiln Structure Block");
             this.state = state;
         }
-        
+
         @Override
         public void apply() {
             KilnStructureManager.registerKilnBlock(state);
