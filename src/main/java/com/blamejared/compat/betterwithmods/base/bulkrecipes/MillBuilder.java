@@ -21,15 +21,21 @@ public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
     }
 
     @ZenMethod
+    public MillBuilder setPriority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    @ZenMethod
     public MillBuilder setGrindType(int grindType) {
         this.grindType = grindType;
         return this;
     }
 
     @ZenMethod
-    @Override
     public MillBuilder buildRecipe(IIngredient[] inputs, IItemStack[] outputs) {
-        return (MillBuilder) super.buildRecipe(inputs, outputs);
+        _buildRecipe(inputs,outputs);
+        return this;
     }
 
 

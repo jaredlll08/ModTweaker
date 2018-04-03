@@ -4,6 +4,7 @@ import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.blamejared.ModTweaker;
+import com.blamejared.compat.betterwithmods.base.RemoveAll;
 import com.blamejared.mtlib.helpers.InputHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
@@ -28,18 +29,21 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
         ModTweaker.LATE_ADDITIONS.add(new BlockRecipeAdd<>(name, registry, recipe));
     }
 
-    @ZenMethod
     public abstract void build();
-
-    @ZenMethod
-    public BlockRecipeBuilder<T> buildRecipe(IIngredient input, IItemStack[] outputs) {
-        this.input = new BlockIngredient(CraftTweakerMC.getIngredient(input));
-        this.outputs = InputHelper.toNonNullList(CraftTweakerMC.getItemStacks(outputs));
-        return this;
-    }
 
     public void removeRecipe(IItemStack[] output) {
         ModTweaker.LATE_REMOVALS.add(new BlockRecipeRemove<>(name, registry, output));
+    }
+
+    public void _buildRecipe(IIngredient input, IItemStack[] outputs) {
+        this.input = new BlockIngredient(CraftTweakerMC.getIngredient(input));
+        this.outputs = InputHelper.toNonNullList(CraftTweakerMC.getItemStacks(outputs));
+
+    }
+
+    @ZenMethod
+    public void removeAll() {
+        ModTweaker.LATE_REMOVALS.add(new RemoveAll<>(name, registry.getRecipes()));
     }
 
     public String getName() {

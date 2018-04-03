@@ -37,9 +37,10 @@ public class TurntableBuilder extends BlockRecipeBuilder<TurntableRecipe> {
         return this;
     }
 
-    @Override
+    @ZenMethod
     public TurntableBuilder buildRecipe(IIngredient input, IItemStack[] outputs) {
-        return (TurntableBuilder) super.buildRecipe(input, outputs);
+        _buildRecipe(input,outputs);
+        return this;
     }
 
     @ZenMethod

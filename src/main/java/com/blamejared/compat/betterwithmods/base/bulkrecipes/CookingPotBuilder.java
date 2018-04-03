@@ -17,7 +17,6 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     }
 
     @ZenMethod
-    @Override
     public void build() {
         addRecipe(new CookingPotRecipe(inputs, outputs, heat).setPriority(priority));
     }
@@ -29,15 +28,15 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     }
 
     @ZenMethod
-    @Override
     public CookingPotBuilder setPriority(int priority) {
-        return (CookingPotBuilder) super.setPriority(priority);
+        this.priority = priority;
+        return this;
     }
 
     @ZenMethod
-    @Override
     public CookingPotBuilder buildRecipe(IIngredient[] inputs, IItemStack[] outputs) {
-        return (CookingPotBuilder) super.buildRecipe(inputs, outputs);
+        _buildRecipe(inputs,outputs);
+        return this;
     }
 
 
