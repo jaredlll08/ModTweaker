@@ -16,7 +16,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 public class Turntable {
 
-    public static TurntableBuilder INSTANCE = new TurntableBuilder(BWRegistry.TURNTABLE, "Turntable");
+    public static TurntableBuilder INSTANCE = new TurntableBuilder(() -> BWRegistry.TURNTABLE, "Turntable");
 
     @ZenMethod
     public static TurntableBuilder builder() {

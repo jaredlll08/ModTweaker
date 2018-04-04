@@ -13,13 +13,15 @@ import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 @ZenClass("mods.betterwithmods.Crucible")
 @ModOnly("betterwithmods")
 @ZenRegister
 public class Crucible extends CookingPotBuilder {
-    public static Crucible INSTANCE = new Crucible(BWRegistry.CRUCIBLE, "Crucible");
+    public static Crucible INSTANCE = new Crucible(() -> BWRegistry.CRUCIBLE, "Crucible");
 
-    private Crucible(CraftingManagerBulk<CookingPotRecipe> registry, String name) {
+    private Crucible(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
         super(registry, name);
     }
 

@@ -2,6 +2,7 @@ package com.blamejared.compat.betterwithmods.base.bulkrecipes;
 
 import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.BulkRecipe;
+import betterwithmods.util.StackIngredient;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.betterwithmods.base.RemoveAll;
 import com.blamejared.mtlib.helpers.InputHelper;
@@ -14,6 +15,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class BulkRecipeBuilder<T extends BulkRecipe> {
@@ -21,12 +23,20 @@ public abstract class BulkRecipeBuilder<T extends BulkRecipe> {
     protected List<Ingredient> inputs;
     protected List<ItemStack> outputs;
     protected int priority;
-    private CraftingManagerBulk<T> registry;
+    private Supplier<CraftingManagerBulk<T>> registry;
     private String name;
 
-    public BulkRecipeBuilder(CraftingManagerBulk<T> registry, String name) {
+    public BulkRecipeBuilder(Supplier<CraftingManagerBulk<T>> registry, String name) {
         this.registry = registry;
         this.name = name;
+    }
+
+    public static Ingredient getIngredient(IIngredient ingredient) {
+        Ingredient i = CraftTweakerMC.getIngredient(ingredient);
+        if (ingredient.getAmount() > 0) {
+            return StackIngredient.fromIngredient(ingredient.getAmount(), i);
+        }
+        return i;
     }
 
     protected void addRecipe(T recipe) {
@@ -36,7 +46,7 @@ public abstract class BulkRecipeBuilder<T extends BulkRecipe> {
     public abstract void build();
 
     public void _buildRecipe(IIngredient[] inputs, IItemStack[] outputs) {
-        this.inputs = Arrays.stream(inputs).map(CraftTweakerMC::getIngredient).collect(Collectors.toList());
+        this.inputs = Arrays.stream(inputs).map(BulkRecipeBuilder::getIngredient).collect(Collectors.toList());
         this.outputs = InputHelper.toNonNullList(CraftTweakerMC.getItemStacks(outputs));
     }
 
@@ -46,7 +56,6 @@ public abstract class BulkRecipeBuilder<T extends BulkRecipe> {
 
     @ZenMethod
     public void removeAll() {
-        ModTweaker.LATE_REMOVALS.add(new RemoveAll<>(name, registry.getRecipes()));
+        ModTweaker.LATE_REMOVALS.add(new RemoveAll<>(name, registry.get().getRecipes()));
     }
-
 }

@@ -6,12 +6,13 @@ import com.blamejared.mtlib.utils.BaseListAddition;
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class BulkRecipeAdd<T extends BulkRecipe> extends BaseListAddition<T> {
     
-    public BulkRecipeAdd(String name, CraftingManagerBulk<T> recipes, T recipe) {
-        super(name, recipes.getRecipes(), Lists.newArrayList(recipe));
+    public BulkRecipeAdd(String name, Supplier<CraftingManagerBulk<T>> recipes, T recipe) {
+        super(name, recipes.get().getRecipes(), Lists.newArrayList(recipe));
     }
     
     @Override

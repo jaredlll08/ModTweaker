@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 @ZenRegister
 public class Saw {
 
-    public static SawBuilder INSTANCE = new SawBuilder(BWRegistry.WOOD_SAW, "Saw");
+    public static SawBuilder INSTANCE = new SawBuilder(() -> BWRegistry.WOOD_SAW, "Saw");
 
     @ZenMethod
     public static SawBuilder builder() {

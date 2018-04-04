@@ -20,17 +20,14 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 @ZenClass("mods.betterwithmods.Kiln")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Kiln extends KilnBuilder {
+public class Kiln  {
 
-    public static Kiln INSTANCE = new Kiln(BWRegistry.KILN, "Kiln");
-
-    public Kiln(CraftingManagerBlock<KilnRecipe> registry, String name) {
-        super(registry, name);
-    }
+    public static KilnBuilder INSTANCE = new KilnBuilder(() -> BWRegistry.KILN, "Kiln");
 
     @ZenMethod
     public static KilnBuilder builder() {

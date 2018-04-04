@@ -11,6 +11,7 @@ import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 
@@ -19,8 +20,8 @@ public class BulkRecipeRemove<T extends BulkRecipe> extends BaseAction {
     private final List<ItemStack> outputs;
     private CraftingManagerBulk<T> manager;
 
-    public BulkRecipeRemove(String name, CraftingManagerBulk<T> manager, IItemStack[] outputs) {
-        this(name, manager, Lists.newArrayList(InputHelper.toStacks(outputs)));
+    public BulkRecipeRemove(String name, Supplier<CraftingManagerBulk<T>> manager, IItemStack[] outputs) {
+        this(name, manager.get(), Lists.newArrayList(InputHelper.toStacks(outputs)));
     }
 
     private BulkRecipeRemove(String name, CraftingManagerBulk<T> manager, List<ItemStack> outputs) {

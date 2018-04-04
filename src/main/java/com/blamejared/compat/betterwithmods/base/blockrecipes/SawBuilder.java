@@ -6,9 +6,11 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 public class SawBuilder extends BlockRecipeBuilder<SawRecipe> {
 
-    public SawBuilder(CraftingManagerBlock<SawRecipe> registry, String name) {
+    public SawBuilder(Supplier<CraftingManagerBlock<SawRecipe>> registry, String name) {
         super(registry, name);
     }
 

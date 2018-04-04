@@ -13,14 +13,16 @@ import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 @ZenClass("mods.betterwithmods.Cauldron")
 @ModOnly("betterwithmods")
 @ZenRegister
 public class Cauldron extends CookingPotBuilder {
 
-    public static Cauldron INSTANCE = new Cauldron(BWRegistry.CAULDRON, "Cauldron");
+    public static Cauldron INSTANCE = new Cauldron(() -> BWRegistry.CAULDRON, "Cauldron");
 
-    private Cauldron(CraftingManagerBulk<CookingPotRecipe> registry, String name) {
+    protected Cauldron(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
         super(registry, name);
     }
 

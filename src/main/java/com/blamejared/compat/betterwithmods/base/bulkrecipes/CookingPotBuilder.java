@@ -6,6 +6,8 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     public static final int UNSTOKED = 1;
     public static final int STOKED = 2;
@@ -13,7 +15,7 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     private int heat = 1;
     private boolean ignoreHeat = false;
 
-    protected CookingPotBuilder(CraftingManagerBulk<CookingPotRecipe> registry, String name) {
+    protected CookingPotBuilder(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
         super(registry, name);
     }
 

@@ -6,11 +6,13 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 public class KilnBuilder extends BlockRecipeBuilder<KilnRecipe> {
     private int heat = 2;
     private boolean ignoreHeat;
 
-    public KilnBuilder(CraftingManagerBlock<KilnRecipe> registry, String name) {
+    public KilnBuilder(Supplier<CraftingManagerBlock<KilnRecipe>> registry, String name) {
         super(registry, name);
     }
 

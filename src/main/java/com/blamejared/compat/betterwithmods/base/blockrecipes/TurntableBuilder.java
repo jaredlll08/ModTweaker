@@ -12,11 +12,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 public class TurntableBuilder extends BlockRecipeBuilder<TurntableRecipe> {
     private int rotations = 8;
     private IBlockState productState = Blocks.AIR.getDefaultState();
 
-    public TurntableBuilder(CraftingManagerBlock<TurntableRecipe> registry, String name) {
+    public TurntableBuilder(Supplier<CraftingManagerBlock<TurntableRecipe>> registry, String name) {
         super(registry, name);
     }
 

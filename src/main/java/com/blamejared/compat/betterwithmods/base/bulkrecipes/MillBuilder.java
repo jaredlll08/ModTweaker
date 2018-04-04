@@ -8,11 +8,13 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import java.util.function.Supplier;
+
 public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
 
     private String sound;
 
-    public MillBuilder(CraftingManagerBulk<MillRecipe> registry, String name) {
+    public MillBuilder(Supplier<CraftingManagerBulk<MillRecipe>> registry, String name) {
         super(registry, name);
     }
 
