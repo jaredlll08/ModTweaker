@@ -5,6 +5,7 @@ import com.blamejared.compat.betterwithmods.base.blockrecipes.TurntableBuilder;
 import com.blamejared.mtlib.helpers.LogHelper;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -23,10 +24,14 @@ public class Turntable {
     }
 
     @ZenMethod
-    public static void add(IItemStack inputBlock, IItemStack outputBlock, IItemStack[] additionalOutput) {
-        builder().buildRecipe(inputBlock, additionalOutput).setProductState(outputBlock);
+    public static void add(IIngredient inputBlock, IItemStack[] additionalOutput) {
+        builder().buildRecipe(inputBlock, additionalOutput);
     }
 
+    @ZenMethod
+    public static void add(IIngredient inputBlock, IItemStack productState, IItemStack[] additionalOutput) {
+        builder().buildRecipe(inputBlock, additionalOutput).setProductState(productState);
+    }
 
     @Deprecated
     @ZenMethod

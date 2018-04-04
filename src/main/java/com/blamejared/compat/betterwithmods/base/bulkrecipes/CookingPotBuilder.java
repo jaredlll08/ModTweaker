@@ -11,6 +11,7 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     public static final int STOKED = 2;
 
     private int heat = 1;
+    private boolean ignoreHeat = false;
 
     protected CookingPotBuilder(CraftingManagerBulk<CookingPotRecipe> registry, String name) {
         super(registry, name);
@@ -18,12 +19,18 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
 
     @ZenMethod
     public void build() {
-        addRecipe(new CookingPotRecipe(inputs, outputs, heat).setPriority(priority));
+        addRecipe(new CookingPotRecipe(inputs, outputs, heat).setPriority(priority).setIgnoreHeat(ignoreHeat));
     }
 
     @ZenMethod
     public CookingPotBuilder setHeat(int heat) {
         this.heat = heat;
+        return this;
+    }
+
+    @ZenMethod
+    public CookingPotBuilder setIgnoreHeat(boolean ignoreHeat) {
+        this.ignoreHeat = ignoreHeat;
         return this;
     }
 
@@ -35,7 +42,7 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
 
     @ZenMethod
     public CookingPotBuilder buildRecipe(IIngredient[] inputs, IItemStack[] outputs) {
-        _buildRecipe(inputs,outputs);
+        _buildRecipe(inputs, outputs);
         return this;
     }
 

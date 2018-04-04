@@ -27,7 +27,6 @@ public class Saw {
         return INSTANCE;
     }
 
-
     @ZenMethod
     public static void add(@Nonnull IIngredient input, IItemStack[] output) {
         builder().buildRecipe(input, output).build();

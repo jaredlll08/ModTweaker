@@ -4,11 +4,13 @@ import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
 import betterwithmods.common.registry.bulk.recipes.MillRecipe;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
 
-    private int grindType;
+    private String sound;
 
     public MillBuilder(CraftingManagerBulk<MillRecipe> registry, String name) {
         super(registry, name);
@@ -17,7 +19,7 @@ public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
     @ZenMethod
     @Override
     public void build() {
-        addRecipe(new MillRecipe(inputs, outputs, grindType).setPriority(priority));
+        addRecipe(new MillRecipe(inputs, outputs).setSound(sound).setPriority(priority));
     }
 
     @ZenMethod
@@ -27,8 +29,8 @@ public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
     }
 
     @ZenMethod
-    public MillBuilder setGrindType(int grindType) {
-        this.grindType = grindType;
+    public MillBuilder setGrindType(String sound) {
+        this.sound = sound;
         return this;
     }
 

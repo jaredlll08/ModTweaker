@@ -8,6 +8,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 public class KilnBuilder extends BlockRecipeBuilder<KilnRecipe> {
     private int heat = 2;
+    private boolean ignoreHeat;
 
     public KilnBuilder(CraftingManagerBlock<KilnRecipe> registry, String name) {
         super(registry, name);
@@ -20,14 +21,20 @@ public class KilnBuilder extends BlockRecipeBuilder<KilnRecipe> {
     }
 
     @ZenMethod
+    public KilnBuilder setIgnoreHeat(boolean ignoreHeat) {
+        this.ignoreHeat = ignoreHeat;
+        return this;
+    }
+
+    @ZenMethod
     public KilnBuilder buildRecipe(IIngredient input, IItemStack[] outputs) {
-        _buildRecipe(input,outputs);
+        _buildRecipe(input, outputs);
         return this;
     }
 
     @ZenMethod
     @Override
     public void build() {
-        addRecipe(new KilnRecipe(input, outputs, heat));
+        addRecipe(new KilnRecipe(input, outputs, heat).setIgnoreHeat(ignoreHeat));
     }
 }

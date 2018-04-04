@@ -23,22 +23,21 @@ public class Mill {
         return INSTANCE;
     }
 
-
     @ZenMethod
-    public static void addRecipe(IIngredient[] inputs, IItemStack[] outputs, int grindType) {
-        INSTANCE.buildRecipe(inputs, outputs).setGrindType(grindType).build();
+    public static void addRecipe(IIngredient[] inputs, IItemStack[] outputs) {
+        INSTANCE.buildRecipe(inputs, outputs).build();
     }
 
     @Deprecated
     @ZenMethod
     public static void add(IItemStack output, IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        addRecipe(inputs, new IItemStack[]{output, secondaryOutput}, 0);
+        addRecipe(inputs, new IItemStack[]{output, secondaryOutput});
     }
 
     @Deprecated
     @ZenMethod
     public static void add(IItemStack output, @NotNull IIngredient[] inputs) {
-        addRecipe(inputs, new IItemStack[]{output}, 0);
+        addRecipe(inputs, new IItemStack[]{output});
     }
 
     @ZenMethod
