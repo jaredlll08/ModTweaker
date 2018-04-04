@@ -9,7 +9,6 @@ import crafttweaker.api.item.*;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.player.IPlayer;
-import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -22,9 +21,9 @@ import java.util.List;
 public class MiniBlocks {
 
     @ZenMethod
-    public static IIngredient getMiniBlock(String type, IIngredient parent, @Optional(value = "1") int amount) {
+    public static IIngredient getMiniBlock(String type, IIngredient parent) {
         MiniBlockIngredient mini = new MiniBlockIngredient(type, BulkRecipeBuilder.getIngredient(parent));
-        return new IngredientMini(mini, Math.min(1,amount));
+        return new IngredientMini(mini, 1);
     }
 
     public static class IngredientMini implements IIngredient {
