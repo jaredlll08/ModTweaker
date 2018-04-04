@@ -33,7 +33,7 @@ public abstract class BulkRecipeBuilder<T extends BulkRecipe> {
 
     public static Ingredient getIngredient(IIngredient ingredient) {
         Ingredient i = CraftTweakerMC.getIngredient(ingredient);
-        if (ingredient.getAmount() > 0) {
+        if (ingredient.getAmount() > 1) {
             return StackIngredient.fromIngredient(ingredient.getAmount(), i);
         }
         return i;

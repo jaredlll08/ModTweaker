@@ -77,3 +77,6 @@ mods.betterwithmods.Kiln.builder()
 .buildRecipe(<minecraft:iron_block>, [<minecraft:iron_ingot>*9])
 .setHeat(2)
 .build();
+
+//Mini Block
+recipes.addShaped("siding_test", <minecraft:planks>,[[mods.betterwithmods.MiniBlocks.getMiniBlock("siding", <minecraft:bookshelf>, 1)]]);
