@@ -1,47 +1,60 @@
 package com.blamejared.compat.betterwithmods;
 
 
-import betterwithmods.common.registry.bulk.manager.CauldronManager;
-import betterwithmods.common.registry.bulk.recipes.CauldronRecipe;
-import com.blamejared.ModTweaker;
-import com.blamejared.compat.betterwithmods.util.*;
-import com.blamejared.mtlib.helpers.InputHelper;
-import crafttweaker.annotations.*;
-import crafttweaker.api.item.*;
-import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.*;
+import betterwithmods.common.BWRegistry;
+import betterwithmods.common.registry.bulk.manager.CraftingManagerBulk;
+import betterwithmods.common.registry.bulk.recipes.CookingPotRecipe;
+import com.blamejared.compat.betterwithmods.base.bulkrecipes.CookingPotBuilder;
+import crafttweaker.annotations.ModOnly;
+import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import stanhebben.zenscript.annotations.NotNull;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
+
+import java.util.function.Supplier;
 
 @ZenClass("mods.betterwithmods.Cauldron")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Cauldron {
-    
-    @ZenMethod
-    public static void add(IItemStack output, @NotNull IIngredient[] inputs, @Optional IItemStack secondaryOutput) {
-        CauldronRecipe r = new CauldronRecipe(InputHelper.toStack(output), InputHelper.toStack(secondaryOutput), InputHelper.toObjects(inputs));
-        ModTweaker.LATE_ADDITIONS.add(new BulkAdd("Set Cauldron Recipe", CauldronManager.getInstance(), r));
+public class Cauldron extends CookingPotBuilder {
+
+    public static Cauldron INSTANCE = new Cauldron(() -> BWRegistry.CAULDRON, "Cauldron");
+
+    protected Cauldron(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
+        super(registry, name);
     }
-    
+
     @ZenMethod
+    public static Cauldron builder() {
+        return INSTANCE;
+    }
+
+    @ZenMethod
+    public static void addStoked(IIngredient[] inputs, IItemStack[] outputs) {
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(STOKED).build();
+    }
+
+    @ZenMethod
+    public static void addUnstoked(IIngredient[] inputs, IItemStack[] outputs) {
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(UNSTOKED).build();
+    }
+
     @Deprecated
+    @ZenMethod
     public static void add(IItemStack output, IItemStack secondaryOutput, @NotNull IIngredient[] inputs) {
-        add(output, inputs, secondaryOutput);
+        addUnstoked(inputs, new IItemStack[]{output, secondaryOutput});
     }
-    
-    @ZenMethod
-    public static void remove(IItemStack output) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Set Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output), ItemStack.EMPTY));
-    }
-    
-    @ZenMethod
+
     @Deprecated
-    public static void remove(IItemStack output, IItemStack secondary, IIngredient[] inputs) {
-        remove(output, inputs, secondary);
-    }
-    
     @ZenMethod
-    public static void remove(IItemStack output, IIngredient[] inputs, @Optional IItemStack secondary) {
-        ModTweaker.LATE_REMOVALS.add(new BulkRemove("Remove Cauldron Recipe", CauldronManager.getInstance(), InputHelper.toStack(output), secondary != null ? InputHelper.toStack(secondary) : ItemStack.EMPTY, InputHelper.toObjects(inputs)));
+    public static void add(IItemStack output, @NotNull IIngredient[] inputs) {
+        addUnstoked(inputs, new IItemStack[]{output});
     }
-    
+
+    @ZenMethod
+    public static void remove(IItemStack[] output) {
+        INSTANCE.removeRecipe(output);
+    }
 }
