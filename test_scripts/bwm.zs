@@ -24,6 +24,8 @@ mods.betterwithmods.Anvil.addShaped(<minecraft:dirt>, [
 
 //Cauldron
 
+mods.betterwithmods.Cauldron.removeAll();
+
 mods.betterwithmods.Cauldron.builder()
 .buildRecipe([<ore:stone>], [<minecraft:dirt>])
 .setHeat(2)
@@ -65,9 +67,8 @@ mods.betterwithmods.Saw.builder()
 .build();
 
 //Turntable
-
+mods.betterwithmods.Turntable.removeAll();
 mods.betterwithmods.Turntable.add(<minecraft:grass>, <minecraft:dirt>, [<minecraft:wheat_seeds>]);
-
 mods.betterwithmods.Turntable.add(<minecraft:gravel>, [<minecraft:flint>]);
 
 

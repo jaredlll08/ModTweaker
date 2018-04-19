@@ -15,7 +15,7 @@ public class CookingPotBuilder extends BulkRecipeBuilder<CookingPotRecipe> {
     private int heat = 1;
     private boolean ignoreHeat = false;
 
-    protected CookingPotBuilder(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
+    public CookingPotBuilder(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
         super(registry, name);
     }
 
