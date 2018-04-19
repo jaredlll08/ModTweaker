@@ -59,18 +59,21 @@ repositories {
     maven {
         url "http://tehnut.info/maven/"
     }
+    maven {
+        url "http://maven.amadornes.com/"
+    }
 
 }
 
 dependencies {
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.5.+"
-    deobfCompile "mezz.jei:jei_1.12.2:4.8.5.+"
+    deobfCompile "mezz.jei:jei_1.12.2:4.8.6.162"
     deobfCompile "com.blamejared:MTLib:3.0.2.4"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
     deobfCompile "vazkii.botania:Botania:r1.10-353"
 
 
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.+:deobf") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.3.12.17:deobf") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.+") {
@@ -99,7 +102,7 @@ dependencies {
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.12.2-2.2.7-90"
     deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
-	deobfCompile("knightminer:Inspirations:1.12.2-0.1.2.5") {
+    deobfCompile("knightminer:Inspirations:1.12.2-0.1.2.5") {
         exclude group: 'mezz.jei'
     }
 }
