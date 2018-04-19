@@ -19,9 +19,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.1.2608"
+    version = "1.12.2-14.23.2.2611"
     runDir = "run"
-    mappings = "snapshot_20171003"
+    mappings = "snapshot_20180407"
     useDepAts = true
 }
 
@@ -73,7 +73,7 @@ dependencies {
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.+:deobf") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.+:dev") {
+    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.+") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.1-r121") {
