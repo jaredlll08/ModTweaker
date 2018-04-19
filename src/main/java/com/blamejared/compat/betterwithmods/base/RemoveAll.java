@@ -12,9 +12,13 @@ public class RemoveAll<T> extends BaseAction {
         this.list = list;
     }
 
-
     @Override
     public void apply() {
         list.clear();
+    }
+
+    @Override
+    protected String getRecipeInfo() {
+        return String.format("Removing all recipes for %s", name);
     }
 }

@@ -49,4 +49,8 @@ public class Saw {
         INSTANCE.removeRecipe(outputs);
     }
 
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
+    }
 }

@@ -48,4 +48,10 @@ public class Mill {
     public static void remove(IItemStack[] output) {
         INSTANCE.removeRecipe(output);
     }
+
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
+    }
+
 }

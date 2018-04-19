@@ -33,11 +33,13 @@ public class BulkRecipeRemove<T extends BulkRecipe> extends BaseAction {
     @Override
     public void apply() {
         if (!manager.remove(outputs)) {
-            LogHelper.logError(String.format("Error removing %s Recipe for %s", name, getRecipeInfo(outputs)));
+            LogHelper.logWarning(String.format("No recipes were removed for output %s", getRecipeInfo(outputs)));
+        } else {
+            LogHelper.logInfo(String.format("Succesfully removed all recipes for %s", getRecipeInfo(outputs)));
         }
     }
 
     private String getRecipeInfo(List<ItemStack> outputs) {
-        return outputs.stream().map(ItemStack::getDisplayName).collect(Collectors.joining(","));
+        return String.format("%s - %s", name, outputs.stream().map(ItemStack::getDisplayName).collect(Collectors.joining(",")));
     }
 }

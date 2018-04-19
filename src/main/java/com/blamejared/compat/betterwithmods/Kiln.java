@@ -47,12 +47,17 @@ public class Kiln  {
     @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Saw.remove(IItemStack[] outputs)");
+        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Kiln.remove(IItemStack[] outputs)");
     }
 
     @ZenMethod
     public static void remove(IItemStack[] outputs) {
         INSTANCE.removeRecipe(outputs);
+    }
+
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
     }
 
     @ZenMethod

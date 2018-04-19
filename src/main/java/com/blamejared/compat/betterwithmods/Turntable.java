@@ -25,18 +25,18 @@ public class Turntable {
 
     @ZenMethod
     public static void add(IIngredient inputBlock, IItemStack[] additionalOutput) {
-        builder().buildRecipe(inputBlock, additionalOutput);
+        builder().buildRecipe(inputBlock, additionalOutput).build();
     }
 
     @ZenMethod
     public static void add(IIngredient inputBlock, IItemStack productState, IItemStack[] additionalOutput) {
-        builder().buildRecipe(inputBlock, additionalOutput).setProductState(productState);
+        builder().buildRecipe(inputBlock, additionalOutput).setProductState(productState).build();
     }
 
     @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Saw.remove(IItemStack[] outputs)");
+        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Turntable.remove(IItemStack[] outputs)");
     }
 
     @ZenMethod
@@ -44,4 +44,8 @@ public class Turntable {
         INSTANCE.removeRecipe(outputs);
     }
 
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
+    }
 }

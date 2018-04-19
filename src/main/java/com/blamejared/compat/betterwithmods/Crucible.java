@@ -18,26 +18,22 @@ import java.util.function.Supplier;
 @ZenClass("mods.betterwithmods.Crucible")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Crucible extends CookingPotBuilder {
-    public static Crucible INSTANCE = new Crucible(() -> BWRegistry.CRUCIBLE, "Crucible");
-
-    private Crucible(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
-        super(registry, name);
-    }
+public class Crucible {
+    public static CookingPotBuilder INSTANCE = new CookingPotBuilder(() -> BWRegistry.CRUCIBLE, "Crucible");
 
     @ZenMethod
-    public static Crucible builder() {
+    public static CookingPotBuilder builder() {
         return INSTANCE;
     }
 
     @ZenMethod
     public static void addStoked(IIngredient[] inputs, IItemStack[] outputs) {
-        INSTANCE.buildRecipe(inputs, outputs).setHeat(STOKED).build();
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(CookingPotBuilder.STOKED).build();
     }
 
     @ZenMethod
     public static void addUnstoked(IIngredient[] inputs, IItemStack[] outputs) {
-        INSTANCE.buildRecipe(inputs, outputs).setHeat(UNSTOKED).build();
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(CookingPotBuilder.UNSTOKED).build();
     }
 
     @Deprecated
@@ -55,5 +51,10 @@ public class Crucible extends CookingPotBuilder {
     @ZenMethod
     public static void remove(IItemStack[] output) {
         INSTANCE.removeRecipe(output);
+    }
+
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
     }
 }

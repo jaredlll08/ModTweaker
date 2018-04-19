@@ -18,27 +18,23 @@ import java.util.function.Supplier;
 @ZenClass("mods.betterwithmods.Cauldron")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Cauldron extends CookingPotBuilder {
+public class Cauldron {
 
-    public static Cauldron INSTANCE = new Cauldron(() -> BWRegistry.CAULDRON, "Cauldron");
-
-    protected Cauldron(Supplier<CraftingManagerBulk<CookingPotRecipe>> registry, String name) {
-        super(registry, name);
-    }
+    public static CookingPotBuilder INSTANCE = new CookingPotBuilder(() -> BWRegistry.CAULDRON, "Cauldron");
 
     @ZenMethod
-    public static Cauldron builder() {
+    public static CookingPotBuilder builder() {
         return INSTANCE;
     }
 
     @ZenMethod
     public static void addStoked(IIngredient[] inputs, IItemStack[] outputs) {
-        INSTANCE.buildRecipe(inputs, outputs).setHeat(STOKED).build();
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(CookingPotBuilder.STOKED).build();
     }
 
     @ZenMethod
     public static void addUnstoked(IIngredient[] inputs, IItemStack[] outputs) {
-        INSTANCE.buildRecipe(inputs, outputs).setHeat(UNSTOKED).build();
+        INSTANCE.buildRecipe(inputs, outputs).setHeat(CookingPotBuilder.UNSTOKED).build();
     }
 
     @Deprecated
@@ -56,5 +52,10 @@ public class Cauldron extends CookingPotBuilder {
     @ZenMethod
     public static void remove(IItemStack[] output) {
         INSTANCE.removeRecipe(output);
+    }
+
+    @ZenMethod
+    public static void removeAll() {
+        builder().removeAll();
     }
 }

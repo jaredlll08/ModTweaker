@@ -25,4 +25,10 @@ public class SawBuilder extends BlockRecipeBuilder<SawRecipe> {
     public void build() {
         addRecipe(new SawRecipe(input,outputs));
     }
+
+    @ZenMethod
+    @Override
+    public void removeAll() {
+        super.removeAll();
+    }
 }
