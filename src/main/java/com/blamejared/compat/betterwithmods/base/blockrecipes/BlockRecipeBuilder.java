@@ -1,6 +1,7 @@
 package com.blamejared.compat.betterwithmods.base.blockrecipes;
 
 import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
+import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.blamejared.ModTweaker;
@@ -45,6 +46,17 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
         this.input = new BlockIngredient(CraftTweakerMC.getIngredient(input));
         this.outputs = InputHelper.toNonNullList(CraftTweakerMC.getItemStacks(outputs));
     }
+
+    @ZenMethod
+    public void setInputBlockDrop(IItemStack input) {
+        this.input = new BlockDropIngredient(CraftTweakerMC.getItemStack(input));
+    }
+
+    @ZenMethod
+    public void setInputBlockDrop(IItemStack[] inputs) {
+        this.input = new BlockDropIngredient(CraftTweakerMC.getItemStacks(inputs));
+    }
+
 
     @ZenMethod
     public void removeAll() {
