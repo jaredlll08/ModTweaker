@@ -30,13 +30,14 @@ public class BlockRecipeRemoveInput<T extends BlockRecipe> extends BaseAction {
     @Override
     public void apply() {
         if (!manager.removeByInput(input)) {
-            LogHelper.logWarning(String.format("No recipes were removed for input %s", getRecipeInfo(input)));
+            LogHelper.logWarning(String.format("No recipes were removed for input %s", getRecipeInfo()));
         } else {
-            LogHelper.logInfo(String.format("Successfully removed all recipes with %s as input", getRecipeInfo(input)));
+            LogHelper.logInfo(String.format("Successfully removed all recipes with %s as input", getRecipeInfo()));
         }
     }
 
-    private String getRecipeInfo(ItemStack input) {
+    @Override
+    protected String getRecipeInfo() {
         return String.format("%s - %s", name, input.getDisplayName());
     }
 }

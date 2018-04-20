@@ -30,13 +30,14 @@ public class BlockRecipeRemove<T extends BlockRecipe> extends BaseAction {
     @Override
     public void apply() {
         if (!manager.remove(outputs)) {
-            LogHelper.logWarning(String.format("No recipes were removed for output %s", getRecipeInfo(outputs)));
+            LogHelper.logWarning(String.format("No recipes were removed for output %s", getRecipeInfo()));
         } else {
-            LogHelper.logInfo(String.format("Successfully removed all recipes for %s", getRecipeInfo(outputs)));
+            LogHelper.logInfo(String.format("Successfully removed all recipes for %s", getRecipeInfo()));
         }
     }
 
-    private String getRecipeInfo(List<ItemStack> outputs) {
+    @Override
+    protected String getRecipeInfo() {
         return String.format("%s - %s", name, outputs.stream().map(ItemStack::getDisplayName).collect(Collectors.joining(",")));
     }
 }
