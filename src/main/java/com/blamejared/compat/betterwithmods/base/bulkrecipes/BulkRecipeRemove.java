@@ -35,7 +35,7 @@ public class BulkRecipeRemove<T extends BulkRecipe> extends BaseAction {
         if (!manager.remove(outputs)) {
             LogHelper.logWarning(String.format("No recipes were removed for output %s", getRecipeInfo(outputs)));
         } else {
-            LogHelper.logInfo(String.format("Succesfully removed all recipes for %s", getRecipeInfo(outputs)));
+            LogHelper.logInfo(String.format("Successfully removed all recipes for %s", getRecipeInfo(outputs)));
         }
     }
 

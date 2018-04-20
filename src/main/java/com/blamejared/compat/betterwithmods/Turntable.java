@@ -1,5 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
+import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
 import com.blamejared.compat.betterwithmods.base.blockrecipes.TurntableBuilder;
 import com.blamejared.mtlib.helpers.LogHelper;
@@ -7,6 +8,7 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -33,15 +35,14 @@ public class Turntable {
         builder().buildRecipe(inputBlock, additionalOutput).setProductState(productState).build();
     }
 
-    @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Turntable.remove(IItemStack[] outputs)");
+        INSTANCE.removeRecipe(input);
     }
 
     @ZenMethod
-    public static void remove(IItemStack[] outputs) {
-        INSTANCE.removeRecipe(outputs);
+    public static void removeByProductState(IItemStack output) {
+        INSTANCE.removeRecipe(BWMRecipes.getStateFromStack(CraftTweakerMC.getItemStack(output)));
     }
 
     @ZenMethod

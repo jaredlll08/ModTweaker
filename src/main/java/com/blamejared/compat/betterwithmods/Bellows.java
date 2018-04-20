@@ -1,5 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
+import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.module.hardcore.world.HCBuoy;
 import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
@@ -14,10 +15,10 @@ import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Map;
 
-@ZenClass("mods.betterwithmods.Buoyancy")
+@ZenClass("mods.betterwithmods.Bellows")
 @ModOnly("betterwithmods")
 @ZenRegister
-public class Buoyancy {
+public class Bellows {
     
     @ZenMethod
     public static void set(IItemStack stack, float value) {
@@ -29,7 +30,7 @@ public class Buoyancy {
     public static class Set extends BaseMapAddition<Stack, Float> {
         
         protected Set(StackMap<Float> map) {
-            super("Set Item Buoyancy", HCBuoy.buoyancy, map);
+            super("Set Bellows Item Weight", BellowsManager.bellowing, map);
         }
         
         @Override

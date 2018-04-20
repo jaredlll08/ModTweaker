@@ -62,6 +62,7 @@ mods.betterwithmods.Mill.builder()
 
 //Saw
 
+mods.betterwithmods.Saw.remove(<minecraft:vine>);
 mods.betterwithmods.Saw.builder()
 .buildRecipe(<minecraft:fence>, [<minecraft:stick>*6])
 .build();
@@ -80,4 +81,16 @@ mods.betterwithmods.Kiln.builder()
 .build();
 
 //Mini Block
-recipes.addShaped("siding_test", <minecraft:planks>,[[mods.betterwithmods.MiniBlocks.getMiniBlock("siding", <minecraft:bookshelf>, 1)]]);
+recipes.addShaped("siding_test", <minecraft:planks>,[[mods.betterwithmods.MiniBlocks.getMiniBlock("siding", <minecraft:bookshelf>)]]);
+
+//Hopper
+mods.betterwithmods.FilteredHopper.addFilter("dumb",<minecraft:planks>);
+mods.betterwithmods.FilteredHopper.addFilteredItem("dumb",<minecraft:dirt>);
+mods.betterwithmods.FilteredHopper.addFilterRecipe("dumb",<minecraft:grass>,[<minecraft:flint>],[<minecraft:diamond>*9]);
+mods.betterwithmods.FilteredHopper.addSoulUrnRecipe(<minecraft:stone>,[<minecraft:flint>],[<minecraft:diamond>*9]);
+mods.betterwithmods.FilteredHopper.clearFilter("betterwithmods:wicker");
+mods.betterwithmods.FilteredHopper.removeRecipe([<minecraft:sand>,<minecraft:sand:1>],[<minecraft:flint>]);
+mods.betterwithmods.FilteredHopper.removeRecipeByInput(<minecraft:sand>);
+
+//Misc
+mods.betterwithmods.Misc.setFurnaceSmeltingTime(<minecraft:potato>,100000);

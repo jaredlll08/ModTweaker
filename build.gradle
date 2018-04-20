@@ -76,7 +76,7 @@ dependencies {
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.3.12.17:deobf") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.+") {
+    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.11-491") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.1-r121") {

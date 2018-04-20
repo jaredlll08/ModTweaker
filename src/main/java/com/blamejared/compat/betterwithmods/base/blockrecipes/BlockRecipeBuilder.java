@@ -20,7 +20,7 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
     protected BlockIngredient input;
     protected List<ItemStack> outputs;
     private Supplier<CraftingManagerBlock<T>> registry;
-    private String name;
+    protected String name;
 
     public BlockRecipeBuilder(Supplier<CraftingManagerBlock<T>> registry, String name) {
         this.registry = registry;
@@ -35,6 +35,10 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
 
     public void removeRecipe(IItemStack[] output) {
         ModTweaker.LATE_REMOVALS.add(new BlockRecipeRemove<>(name, registry.get(), output));
+    }
+
+    public void removeRecipe(IItemStack input) {
+        ModTweaker.LATE_REMOVALS.add(new BlockRecipeRemoveInput<>(name, registry.get(), input));
     }
 
     public void _buildRecipe(IIngredient input, IItemStack[] outputs) {

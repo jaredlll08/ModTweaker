@@ -45,7 +45,12 @@ public class Anvil {
     public static void removeShapeless(IItemStack output, @Optional IIngredient[] ingredients) {
         ModTweaker.LATE_REMOVALS.add(new RemoveShapeless(output, ingredients));
     }
-    
+
+    @ZenMethod
+    public static void removeAll() {
+        ModTweaker.LATE_REMOVALS.add(new RemoveAll());
+    }
+
     public static class AddShaped extends BaseAction {
         
         private final IItemStack output;
@@ -188,6 +193,23 @@ public class Anvil {
         @Override
         protected String getRecipeInfo() {
             return output.getDisplayName();
+        }
+    }
+
+    public static class RemoveAll extends BaseAction {
+
+        protected RemoveAll() {
+            super("Remove All Anvil");
+        }
+
+        @Override
+        public void apply() {
+            AnvilCraftingManager.ANVIL_CRAFTING.clear();
+        }
+
+        @Override
+        protected String getRecipeInfo() {
+            return "all";
         }
     }
 }
