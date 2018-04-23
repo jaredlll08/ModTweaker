@@ -52,7 +52,6 @@ public class TurntableBuilder extends BlockRecipeBuilder<TurntableRecipe> {
         return this;
     }
 
-    @ZenMethod
     @Override
     public void build() {
         addRecipe(new TurntableRecipe(input, outputs, productState, rotations));

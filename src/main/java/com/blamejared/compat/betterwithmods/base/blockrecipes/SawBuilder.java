@@ -20,7 +20,6 @@ public class SawBuilder extends BlockRecipeBuilder<SawRecipe> {
         return this;
     }
 
-    @ZenMethod
     @Override
     public void build() {
         addRecipe(new SawRecipe(input,outputs));

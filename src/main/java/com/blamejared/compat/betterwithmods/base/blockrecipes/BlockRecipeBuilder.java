@@ -32,6 +32,7 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
         ModTweaker.LATE_ADDITIONS.add(new BlockRecipeAdd<>(name, registry.get(), recipe));
     }
 
+    @ZenMethod
     public abstract void build();
 
     public void removeRecipe(IItemStack[] output) {
@@ -48,15 +49,16 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
     }
 
     @ZenMethod
-    public void setInputBlockDrop(IItemStack input) {
+    public BlockRecipeBuilder setInputBlockDrop(IItemStack input) {
         this.input = new BlockDropIngredient(CraftTweakerMC.getItemStack(input));
+        return this;
     }
 
     @ZenMethod
-    public void setInputBlockDrop(IItemStack[] inputs) {
+    public BlockRecipeBuilder setInputBlockDrop(IItemStack[] inputs) {
         this.input = new BlockDropIngredient(CraftTweakerMC.getItemStacks(inputs));
+        return this;
     }
-
 
     @ZenMethod
     public void removeAll() {

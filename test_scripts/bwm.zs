@@ -66,9 +66,13 @@ mods.betterwithmods.Saw.remove(<minecraft:vine>);
 mods.betterwithmods.Saw.builder()
 .buildRecipe(<minecraft:fence>, [<minecraft:stick>*6])
 .build();
+mods.betterwithmods.Saw.builder()
+.buildRecipe(<minecraft:torch>, [<minecraft:stick>])
+.setInputBlockDrop(<minecraft:torch>)
+.build();
 
 //Turntable
-mods.betterwithmods.Turntable.removeAll();
+mods.betterwithmods.Turntable.remove(<betterwithmods:unfired_pottery:3>);
 mods.betterwithmods.Turntable.add(<minecraft:grass>, <minecraft:dirt>, [<minecraft:wheat_seeds>]);
 mods.betterwithmods.Turntable.add(<minecraft:gravel>, [<minecraft:flint>]);
 
@@ -86,8 +90,9 @@ recipes.addShaped("siding_test", <minecraft:planks>,[[mods.betterwithmods.MiniBl
 //Hopper
 mods.betterwithmods.FilteredHopper.addFilter("dumb",<minecraft:planks>);
 mods.betterwithmods.FilteredHopper.addFilteredItem("dumb",<minecraft:dirt>);
+mods.betterwithmods.FilteredHopper.addFilteredItem("dumb",<minecraft:flint>);
 mods.betterwithmods.FilteredHopper.addFilterRecipe("dumb",<minecraft:grass>,[<minecraft:flint>],[<minecraft:diamond>*9]);
-mods.betterwithmods.FilteredHopper.addSoulUrnRecipe(<minecraft:stone>,[<minecraft:flint>],[<minecraft:diamond>*9]);
+mods.betterwithmods.FilteredHopper.addSoulUrnRecipe(<minecraft:stone>,[],[<minecraft:diamond>*9]);
 mods.betterwithmods.FilteredHopper.clearFilter("betterwithmods:wicker");
 mods.betterwithmods.FilteredHopper.removeRecipe([<minecraft:sand>,<minecraft:sand:1>],[<minecraft:flint>]);
 mods.betterwithmods.FilteredHopper.removeRecipeByInput(<minecraft:sand>);
