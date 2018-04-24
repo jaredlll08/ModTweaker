@@ -34,7 +34,6 @@ public class KilnBuilder extends BlockRecipeBuilder<KilnRecipe> {
         return this;
     }
 
-    @ZenMethod
     @Override
     public void build() {
         addRecipe(new KilnRecipe(input, outputs, heat).setIgnoreHeat(ignoreHeat));

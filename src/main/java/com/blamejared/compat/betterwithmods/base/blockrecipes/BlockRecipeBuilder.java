@@ -1,6 +1,7 @@
 package com.blamejared.compat.betterwithmods.base.blockrecipes;
 
 import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
+import betterwithmods.common.registry.block.recipe.BlockDropIngredient;
 import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.blamejared.ModTweaker;
@@ -20,7 +21,7 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
     protected BlockIngredient input;
     protected List<ItemStack> outputs;
     private Supplier<CraftingManagerBlock<T>> registry;
-    private String name;
+    protected String name;
 
     public BlockRecipeBuilder(Supplier<CraftingManagerBlock<T>> registry, String name) {
         this.registry = registry;
@@ -31,15 +32,32 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
         ModTweaker.LATE_ADDITIONS.add(new BlockRecipeAdd<>(name, registry.get(), recipe));
     }
 
+    @ZenMethod
     public abstract void build();
 
     public void removeRecipe(IItemStack[] output) {
         ModTweaker.LATE_REMOVALS.add(new BlockRecipeRemove<>(name, registry.get(), output));
     }
 
+    public void removeRecipe(IItemStack input) {
+        ModTweaker.LATE_REMOVALS.add(new BlockRecipeRemoveInput<>(name, registry.get(), input));
+    }
+
     public void _buildRecipe(IIngredient input, IItemStack[] outputs) {
         this.input = new BlockIngredient(CraftTweakerMC.getIngredient(input));
         this.outputs = InputHelper.toNonNullList(CraftTweakerMC.getItemStacks(outputs));
+    }
+
+    @ZenMethod
+    public BlockRecipeBuilder setInputBlockDrop(IItemStack input) {
+        this.input = new BlockDropIngredient(CraftTweakerMC.getItemStack(input));
+        return this;
+    }
+
+    @ZenMethod
+    public BlockRecipeBuilder setInputBlockDrop(IItemStack[] inputs) {
+        this.input = new BlockDropIngredient(CraftTweakerMC.getItemStacks(inputs));
+        return this;
     }
 
     @ZenMethod

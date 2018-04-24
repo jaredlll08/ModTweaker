@@ -1,15 +1,22 @@
 package com.blamejared.compat.betterwithmods.base.blockrecipes;
 
+import betterwithmods.common.BWMRecipes;
+import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
+import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import betterwithmods.common.registry.block.recipe.TurntableRecipe;
+import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
+import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.function.Supplier;
@@ -45,9 +52,35 @@ public class TurntableBuilder extends BlockRecipeBuilder<TurntableRecipe> {
         return this;
     }
 
-    @ZenMethod
     @Override
     public void build() {
         addRecipe(new TurntableRecipe(input, outputs, productState, rotations));
+    }
+
+    public void removeRecipe(IBlockState productState) {
+        ModTweaker.LATE_REMOVALS.add(new TurntableRemoveProduct(name, productState));
+    }
+
+    public class TurntableRemoveProduct extends BaseAction {
+
+        private final IBlockState productState;
+
+        private TurntableRemoveProduct(String name, IBlockState productState) {
+            super(name);
+            this.productState = productState;
+        }
+
+        @Override
+        public void apply() {
+            if (!BWRegistry.TURNTABLE.remove(productState)) {
+                LogHelper.logWarning(String.format("No recipes were removed for input %s", getRecipeInfo(productState)));
+            } else {
+                LogHelper.logInfo(String.format("Succesfully removed all recipes with %s as input", getRecipeInfo(productState)));
+            }
+        }
+
+        private String getRecipeInfo(IBlockState productState) {
+            return String.format("%s - %s", name, productState.getBlock().toString()+"@"+productState.getBlock().getMetaFromState(productState));
+        }
     }
 }

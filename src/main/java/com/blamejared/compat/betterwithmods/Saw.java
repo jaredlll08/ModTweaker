@@ -38,10 +38,9 @@ public class Saw {
         add(input, output);
     }
 
-    @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Saw.remove(IItemStack[] outputs)");
+        INSTANCE.removeRecipe(input);
     }
 
     @ZenMethod

@@ -44,10 +44,9 @@ public class Kiln  {
         add(input, output);
     }
 
-    @Deprecated
     @ZenMethod
     public static void remove(IItemStack input) {
-        LogHelper.logError("This operation has been removed, use mods.betterwithmods.Kiln.remove(IItemStack[] outputs)");
+        INSTANCE.removeRecipe(input);
     }
 
     @ZenMethod
