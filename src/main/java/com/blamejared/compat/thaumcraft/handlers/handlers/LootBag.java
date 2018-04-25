@@ -1,4 +1,4 @@
-package com.blamejared.compat.thaumcraft.handlers;
+package com.blamejared.compat.thaumcraft.handlers.handlers;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
