@@ -4,6 +4,7 @@ import com.blamejared.compat.botania.Botania;
 import com.blamejared.compat.chisel.Chisel;
 import com.blamejared.compat.inspirations.Inspirations;
 import com.blamejared.compat.tconstruct.TConstruct;
+import com.blamejared.compat.thaumcraft.handlers.ThaumCraft;
 import crafttweaker.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
@@ -21,6 +22,9 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
+        if(Loader.isModLoaded("thaumcraft")){
+            ThaumCraft.preInit();
+        }
     }
     
     @Mod.EventHandler
