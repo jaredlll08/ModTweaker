@@ -17,17 +17,17 @@ public class Compactor {
     
     @ZenMethod
     public static void addMintRecipe(IItemStack output, IItemStack input, int energy) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.MINT));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.COIN));
     }
     
     @ZenMethod
     public static void addPressRecipe(IItemStack output, IItemStack input, int energy) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.PRESS));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.ALL));
     }
     
     @ZenMethod
     public static void addStorageRecipe(IItemStack output, IItemStack input, int energy) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.STORAGE));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toStack(output), InputHelper.toStack(input), energy, CompactorManager.Mode.PLATE));
     }
     @ZenMethod
     public static void addGearRecipe(IItemStack output, IItemStack input, int energy) {
@@ -36,17 +36,17 @@ public class Compactor {
     
     @ZenMethod
     public static void removeMintRecipe(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.MINT));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.COIN));
     }
     
     @ZenMethod
     public static void removePressRecipe(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.PRESS));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.ALL));
     }
     
     @ZenMethod
     public static void removeStorageRecipe(IItemStack input) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.STORAGE));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toStack(input), CompactorManager.Mode.PLATE));
     }
     @ZenMethod
     public static void removeGearRecipe(IItemStack input) {

@@ -94,7 +94,7 @@ public class RedstoneFurnace {
         
         @Override
         public void apply() {
-            if(!FurnaceManager.recipeExists(input)) {
+            if(!FurnaceManager.recipeExists(input, false)) {
                 CraftTweakerAPI.logError("No Furnace recipe exists for: " + input);
                 return;
             }
@@ -118,7 +118,7 @@ public class RedstoneFurnace {
         
         @Override
         public void apply() {
-            if(!FurnaceManager.recipeExistsPyrolysis(input)) {
+            if(!FurnaceManager.recipeExists(input, true)) {
                 CraftTweakerAPI.logError("No Furnace Pyrolysis recipe exists for: " + input);
                 return;
             }
