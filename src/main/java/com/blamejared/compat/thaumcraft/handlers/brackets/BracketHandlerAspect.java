@@ -15,6 +15,7 @@ import java.util.*;
 
 @BracketHandler(priority = 100)
 @ZenRegister
+@ModOnly("thaumcraft")
 public class BracketHandlerAspect implements IBracketHandler {
     
     private static final Map<String, Aspect> aspects = new HashMap<>();
