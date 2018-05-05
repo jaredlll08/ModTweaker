@@ -8,6 +8,7 @@ import com.blamejared.compat.thaumcraft.handlers.ThaumCraft;
 import crafttweaker.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
+import thaumcraft.Thaumcraft;
 
 import java.util.*;
 
@@ -59,6 +60,10 @@ public class ModTweaker {
         }
         if(Loader.isModLoaded("inspirations")) {
             Inspirations.registerCommands();
+        }
+    
+        if(Loader.isModLoaded("thaumcraft")) {
+            ThaumCraft.registerCommands();
         }
     }
 }
