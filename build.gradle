@@ -70,7 +70,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.12.2:4.8.6.162"
     deobfCompile "com.blamejared:MTLib:3.0.2.4"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
-    deobfCompile "vazkii.botania:Botania:r1.10-353"
+    deobfCompile "vazkii.botania:Botania:r1.10-355.4"
 
 
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.4.2.27:universal") {
