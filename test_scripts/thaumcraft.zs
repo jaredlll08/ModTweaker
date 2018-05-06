@@ -10,5 +10,16 @@ mods.thaumcraft.LootBag.removeLoot(<minecraft:gold_nugget>, [1,2]);
 mods.thaumcraft.Warp.setWarp(<minecraft:dirt>, 500);
 
 
-mods.thaumcraft.SmeltingBonus.addSmeltingBonus(<ore:oreIron>, <minecraft:diamond>% 50);
-mods.thaumcraft.SmeltingBonus.removeSmeltingBonus(<ore:oreIron>, <thaumcraft:nugget:10>);
+<aspect:aer>.internal.chatColour ="r";
+<minecraft:stone>.setAspects(<aspect:ignis>*5);
+
+mods.thaumcraft.Infusion.registerRecipe("testName", "", <minecraft:diamond>, 20, [<aspect:aer>, <aspect:ignis>], <minecraft:grass>, [<minecraft:stick>, <minecraft:dirt>]);
+mods.thaumcraft.Infusion.removeRecipe(<thaumcraft:mirror_essentia>);
+
+mods.thaumcraft.ArcaneWorkbench.registerShapedRecipe("test", "", 20, [<aspect:aer>, <aspect:ignis>, <aspect:terra>], <minecraft:diamond>, [[<minecraft:dirt>], [<minecraft:stick>], [<minecraft:grass>]]);
+mods.thaumcraft.ArcaneWorkbench.registerShapelessRecipe("tests", "", 20, [<aspect:aqua>, <aspect:ignis>, <aspect:terra>], <minecraft:diamond>, [<minecraft:sand>, <minecraft:stick>, <minecraft:grass>]);
+
+mods.thaumcraft.ArcaneWorkbench.removeRecipe(<thaumcraft:goggles>);
+
+mods.thaumcraft.Crucible.registerRecipe("crucibleTest", "", <minecraft:diamond>, <minecraft:stick>, [<aspect:aer>]);
+mods.thaumcraft.Crucible.removeRecipe(<minecraft:leather>);
