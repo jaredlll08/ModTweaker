@@ -15,6 +15,11 @@ public class CTAspect {
         this.internal = internal;
     }
     
+    @ZenGetter("name")
+    public String getName(){
+        return internal.getName();
+    }
+    
     @ZenSetter("chatColour")
     public void setChatColour(String chatColour) {
         internal.setChatcolor(chatColour);
