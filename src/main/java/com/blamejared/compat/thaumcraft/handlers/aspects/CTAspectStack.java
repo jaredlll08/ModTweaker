@@ -8,8 +8,8 @@ import stanhebben.zenscript.annotations.*;
 @ZenClass("thaumcraft.aspect.CTAspectStack")
 public class CTAspectStack {
     
-    private CTAspect internal;
-    private int amount;
+    private final CTAspect internal;
+    private final int amount;
     
     public CTAspectStack(CTAspect internal, int amount) {
         this.internal = internal;
