@@ -13,6 +13,8 @@ mods.thaumcraft.Warp.setWarp(<minecraft:dirt>, 500);
 <aspect:aer>.internal.chatColour ="r";
 <minecraft:stone>.setAspects(<aspect:ignis>*5);
 
+<thaumcraft:thaumonomicon>.removeAspects(<aspect:aqua>);
+
 mods.thaumcraft.Infusion.registerRecipe("testName", "", <minecraft:diamond>, 20, [<aspect:aer>, <aspect:ignis>], <minecraft:grass>, [<minecraft:stick>, <minecraft:dirt>]);
 mods.thaumcraft.Infusion.removeRecipe(<thaumcraft:mirror_essentia>);
 
@@ -23,3 +25,5 @@ mods.thaumcraft.ArcaneWorkbench.removeRecipe(<thaumcraft:goggles>);
 
 mods.thaumcraft.Crucible.registerRecipe("crucibleTest", "", <minecraft:diamond>, <minecraft:stick>, [<aspect:aer>]);
 mods.thaumcraft.Crucible.removeRecipe(<minecraft:leather>);
+
+<entity:minecraft:sheep>.setAspects(<aspect:aqua>);
