@@ -1,5 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
+import betterwithmods.common.registry.block.recipe.BlockIngredient;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
@@ -11,6 +12,7 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -48,7 +50,7 @@ public class HeatRegistry {
 
         @Override
         public void apply() {
-            BWMHeatRegistry.addHeatSource(state::equals, heat);
+            BWMHeatRegistry.addHeatSource(new BlockIngredient(new ItemStack(state.getBlock())), heat);
         }
     }
 }
