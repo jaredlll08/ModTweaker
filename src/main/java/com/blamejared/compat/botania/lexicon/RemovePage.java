@@ -33,7 +33,7 @@ public class RemovePage implements IAction {
         
         this.page = lexEntry.pages.get(page_number);
         lexEntry.pages.remove(page);
-        CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Page: " + lexEntry.pages.get(page_number).getUnlocalizedName());
+        CraftTweakerAPI.getLogger().logInfo("Removed Lexicon Page: " + page.getUnlocalizedName());
     }
     
     @Override
