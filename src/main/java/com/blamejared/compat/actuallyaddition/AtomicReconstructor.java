@@ -1,20 +1,15 @@
 package com.blamejared.compat.actuallyaddition;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseListAddition;
-import com.blamejared.mtlib.utils.BaseListRemoval;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
+import com.blamejared.mtlib.helpers.*;
+import com.blamejared.mtlib.utils.*;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.LensConversionRecipe;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ZenClass("mods.actuallyadditions.AtomicReconstructor")
 @ModOnly("actuallyadditions")
@@ -39,7 +34,7 @@ public class AtomicReconstructor {
         
         @Override
         protected String getRecipeInfo(LensConversionRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.outputStack);
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
         
     }
@@ -55,13 +50,13 @@ public class AtomicReconstructor {
         
         @Override
         public void apply() {
-            ActuallyAdditionsAPI.RECONSTRUCTOR_LENS_CONVERSION_RECIPES.stream().filter(recipe -> output.matches(InputHelper.toIItemStack(recipe.outputStack))).forEach(recipes::add);
+            ActuallyAdditionsAPI.RECONSTRUCTOR_LENS_CONVERSION_RECIPES.stream().filter(recipe -> output.matches(InputHelper.toIItemStack(recipe.getOutput()))).forEach(recipes::add);
             super.apply();
         }
         
         @Override
         protected String getRecipeInfo(LensConversionRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.outputStack);
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
         
     }

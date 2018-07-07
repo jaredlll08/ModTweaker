@@ -1,21 +1,16 @@
 package com.blamejared.compat.actuallyaddition;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
-import com.blamejared.mtlib.utils.BaseListAddition;
-import com.blamejared.mtlib.utils.BaseListRemoval;
-import crafttweaker.annotations.ModOnly;
-import crafttweaker.annotations.ZenRegister;
+import com.blamejared.mtlib.helpers.*;
+import com.blamejared.mtlib.utils.*;
+import crafttweaker.annotations.*;
 import crafttweaker.api.item.IItemStack;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.CrusherRecipe;
 import stanhebben.zenscript.annotations.Optional;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.annotations.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ZenClass("mods.actuallyadditions.Crusher")
 @ModOnly("actuallyadditions")
@@ -40,7 +35,7 @@ public class Crusher {
         
         @Override
         public String getRecipeInfo(CrusherRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.inputStack);
+            return LogHelper.getStackDescription(recipe.getInput());
         }
         
     }
@@ -57,7 +52,7 @@ public class Crusher {
         @Override
         public void apply() {
             ActuallyAdditionsAPI.CRUSHER_RECIPES.forEach(recipe -> {
-                if(output.matches(InputHelper.toIItemStack(recipe.outputOneStack))) {
+                if(output.matches(InputHelper.toIItemStack(recipe.getOutputOne()))) {
                     recipes.add(recipe);
                 }
             });
@@ -66,7 +61,7 @@ public class Crusher {
         
         @Override
         public String getRecipeInfo(CrusherRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.outputOneStack);
+            return LogHelper.getStackDescription(recipe.getOutputOne());
         }
         
     }

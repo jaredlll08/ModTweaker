@@ -46,7 +46,7 @@ public class Compost {
         
         @Override
         public String getRecipeInfo(CompostRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
     
@@ -63,7 +63,7 @@ public class Compost {
         public void apply() {
             for(CompostRecipe recipe : ActuallyAdditionsAPI.COMPOST_RECIPES) {
                 System.out.println(output);
-                if(output.matches(InputHelper.toIItemStack(recipe.output))) {
+                if(output.matches(InputHelper.toIItemStack(recipe.getOutput()))) {
                     recipes.add(recipe);
                 }
             }
@@ -72,7 +72,7 @@ public class Compost {
         
         @Override
         public String getRecipeInfo(CompostRecipe recipe) {
-            return LogHelper.getStackDescription(recipe.output);
+            return LogHelper.getStackDescription(recipe.getOutput());
         }
     }
 }
