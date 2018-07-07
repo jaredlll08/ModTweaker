@@ -19,7 +19,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.3.2655"
+    version = "1.12.2-14.23.4.2705"
     runDir = "run"
     mappings = "snapshot_20180407"
     useDepAts = true
@@ -102,7 +102,7 @@ dependencies {
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.12.2-2.2.7-90"
     deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
-    deobfCompile("knightminer:Inspirations:1.12.2-0.1.2.5") {
+    deobfCompile("knightminer:Inspirations:1.12.2-0.2.0.31") {
         exclude group: 'mezz.jei'
     }
 }

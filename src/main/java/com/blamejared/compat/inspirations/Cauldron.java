@@ -33,10 +33,12 @@ import knightminer.inspirations.library.recipe.cauldron.FillCauldronRecipe;
 import knightminer.inspirations.library.recipe.cauldron.ICauldronRecipe;
 import knightminer.inspirations.library.recipe.cauldron.ISimpleCauldronRecipe;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionType;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -178,8 +180,9 @@ public class Cauldron {
 	}
 	@ZenMethod
 	public static void addPotionRecipe(IItemStack output, IIngredient input, String potion, int levels, @Optional Boolean boiling) {
-		if (levels < 0 || levels > 3) {
-			CraftTweakerAPI.logError("Ignoring Cauldron Fluid recipe for " + output.getDisplayName() + ": Invalid levels of " + levels + " given, must be between 0 and 3.");
+		if (levels < 0 || levels > InspirationsRegistry.getCauldronMax()) {
+			CraftTweakerAPI.logError(String.format("Ignoring Cauldron Potion recipe for %s: Invalid levels %d given, must be between 0 and %d",
+					output.getDisplayName(), levels, InspirationsRegistry.getCauldronMax()));
 			return;
 		}
 		ModTweaker.LATE_ADDITIONS.add(new AddPotion(InputHelper.toStack(output), input, potion, levels, boiling));
@@ -269,12 +272,22 @@ public class Cauldron {
 
 	@ZenMethod
 	public static void addDyeRecipe(IItemStack output, IIngredient input, String stringDye) {
+		addDyeRecipe(output, input, stringDye, 1);
+	}
+
+	@ZenMethod
+	public static void addDyeRecipe(IItemStack output, IIngredient input, String stringDye, int levels) {
+		if (levels < 0 || levels > InspirationsRegistry.getCauldronMax()) {
+			CraftTweakerAPI.logError(String.format("Ignoring Cauldron Dyeing recipe for %s: Invalid levels %d given, must be between 0 and %d",
+					output.getDisplayName(), levels, InspirationsRegistry.getCauldronMax()));
+			return;
+		}
 		EnumDyeColor dye = EnumDyeColor.valueOf(stringDye.toUpperCase());
 		if (dye == null) {
 			CraftTweakerAPI.logError("Ignoring Cauldron Dyeing recipe for " + output.getDisplayName() + ": Could not find matching dye color for " + stringDye);
 			return;
 		}
-		ModTweaker.LATE_ADDITIONS.add(new AddDye(InputHelper.toStack(output), input, dye));
+		ModTweaker.LATE_ADDITIONS.add(new AddDye(InputHelper.toStack(output), input, dye, levels));
 	}
 
 	@ZenMethod
@@ -295,12 +308,14 @@ public class Cauldron {
 		private ItemStack output;
 		private IIngredient input;
 		private EnumDyeColor dye;
+		private int levels;
 
-		public AddDye(ItemStack output, IIngredient input, EnumDyeColor dye) {
+		public AddDye(ItemStack output, IIngredient input, EnumDyeColor dye, int levels) {
 			super("Cauldron Dyeing");
 			this.output = output;
 			this.input = input;
 			this.dye = dye;
+			this.levels = levels;
 		}
 
 		@Override
@@ -311,7 +326,7 @@ public class Cauldron {
 				return;
 			}
 
-			addRecipe(new CauldronDyeRecipe(input, dye, output));
+			addRecipe(new CauldronDyeRecipe(input, dye, output, levels));
 		}
 
 		@Override
@@ -354,22 +369,24 @@ public class Cauldron {
 
 	@ZenMethod
 	public static void addFluidRecipe(IItemStack output, IIngredient input, ILiquidStack fluid, int levels, @Optional Boolean boiling) {
-		if (levels < 0 || levels > 3) {
-			CraftTweakerAPI.logError("Ignoring Cauldron Fluid recipe for " + output.getDisplayName() + ": Invalid levels of " + levels + " given, must be between 0 and 3.");
+		if (levels < 0 || levels > InspirationsRegistry.getCauldronMax()) {
+			CraftTweakerAPI.logError(String.format("Ignoring Cauldron Fluid recipe for %s: Invalid levels %d given, must be between 0 and %d",
+					output.getDisplayName(), levels, InspirationsRegistry.getCauldronMax()));
 			return;
 		}
-		ModTweaker.LATE_ADDITIONS .add(new AddFluid(InputHelper.toStack(output), input, InputHelper.toFluid(fluid), levels, boiling));
+		ModTweaker.LATE_ADDITIONS.add(new AddFluid(InputHelper.toStack(output), input, InputHelper.toFluid(fluid), levels, boiling));
 	}
 
 	@ZenMethod
 	public static void addFluidTransform(ILiquidStack output, IIngredient input, ILiquidStack fluid) {
-		addFluidTransform(output, input, fluid, 3, null);
+		addFluidTransform(output, input, fluid, InspirationsRegistry.getCauldronMax(), null);
 	}
 
 	@ZenMethod
 	public static void addFluidTransform(ILiquidStack output, IIngredient input, ILiquidStack fluid, int maxLevel, @Optional Boolean boiling) {
-		if (maxLevel < 1 || maxLevel > 3) {
-			CraftTweakerAPI.logError("Ignoring Cauldron Fluid recipe for " + output.getDisplayName() + ": Invalid max level of " + maxLevel + " given, must be between 1 and 3.");
+		if (maxLevel < 1 || maxLevel > InspirationsRegistry.getCauldronMax()) {
+			CraftTweakerAPI.logError(String.format("Ignoring Cauldron Fluid recipe for %s: Invalid max level %d given, must be between 1 and %d",
+					output.getDisplayName(), maxLevel, InspirationsRegistry.getCauldronMax()));
 			return;
 		}
 		ModTweaker.LATE_ADDITIONS.add(new AddFluidTransform(InputHelper.toFluid(output), input, InputHelper.toFluid(fluid), maxLevel, boiling));
@@ -515,16 +532,17 @@ public class Cauldron {
 
 	@ZenMethod
 	public static void addFillRecipe(IIngredient input, ILiquidStack fluid) {
-		addFillRecipe(input, fluid, 1, null);
+		addFillRecipe(input, fluid, 1, null, null);
 	}
 
 	@ZenMethod
-	public static void addFillRecipe(IIngredient input, ILiquidStack fluid, int amount, @Optional IItemStack container) {
-		if (amount < 1 || amount > 3) {
-			CraftTweakerAPI.logError("Ignoring Cauldron Fluid recipe for " + fluid.getDisplayName() + ": Invalid amount " + amount + " given, must be between 1 and 3.");
+	public static void addFillRecipe(IIngredient input, ILiquidStack fluid, int amount, @Optional IItemStack container, @Optional Boolean boiling) {
+		if (amount < 1 || amount > InspirationsRegistry.getCauldronMax()) {
+			CraftTweakerAPI.logError(String.format("Ignoring Cauldron Fill recipe for %s: Invalid amount %d given, must be between 1 and %d",
+					fluid.getDisplayName(), amount, InspirationsRegistry.getCauldronMax()));
 			return;
 		}
-		ModTweaker.LATE_ADDITIONS.add(new AddFill(input, InputHelper.toFluid(fluid), amount, InputHelper.toStack(container)));
+		ModTweaker.LATE_ADDITIONS.add(new AddFill(input, InputHelper.toFluid(fluid), amount, InputHelper.toStack(container), boiling));
 	}
 
 	@ZenMethod
@@ -538,13 +556,15 @@ public class Cauldron {
 		private FluidStack fluid;
 		private int amount;
 		private ItemStack container;
+		private Boolean boiling;
 
-		public AddFill(IIngredient input, FluidStack fluid, int amount, ItemStack container) {
+		public AddFill(IIngredient input, FluidStack fluid, int amount, ItemStack container, Boolean boiling) {
 			super("Cauldron Fill");
 			this.fluid = fluid;
 			this.input = input;
 			this.amount = amount;
 			this.container = container;
+			this.boiling = boiling;
 		}
 
 		@Override
@@ -555,7 +575,9 @@ public class Cauldron {
 				return;
 			}
 
-			addRecipe(new FillCauldronRecipe(input, fluid.getFluid(), amount, container));
+			// use lava estinguish sound if boiling is required, makes it more melty
+			SoundEvent sound = boiling == Boolean.TRUE ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BOTTLE_EMPTY;
+			addRecipe(new FillCauldronRecipe(input, fluid.getFluid(), amount, container, boiling, sound));
 		}
 
 		@Override
