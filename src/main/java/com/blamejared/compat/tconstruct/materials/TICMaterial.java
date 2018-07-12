@@ -100,7 +100,7 @@ public class TICMaterial implements ITICMaterial {
     
     @Override
     public int getDurabilityExtra() {
-        return ((HandleMaterialStats) material.getStats("extra")).durability;
+        return ((ExtraMaterialStats ) material.getStats("extra")).extraDurability;
     }
     
     @Override
