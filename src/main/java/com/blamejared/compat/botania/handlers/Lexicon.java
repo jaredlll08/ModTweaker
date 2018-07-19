@@ -94,7 +94,7 @@ public class Lexicon {
     
     @ZenMethod
     public static void setEntryKnowledgeType(String entry, String knowledgeType) {
-        ModTweaker.LATE_REMOVALS.add(new SetEntryKnowledgeType(entry, knowledgeType));
+        ModTweaker.LATE_ADDITIONS.add(new SetEntryKnowledgeType(entry, knowledgeType));
     }
     
     @ZenMethod
@@ -109,12 +109,12 @@ public class Lexicon {
     
     @ZenMethod
     public static void setCategoryPriority(String name, int priority) {
-        ModTweaker.LATE_REMOVALS.add(new SetCategoryPriority(name, priority));
+        ModTweaker.LATE_ADDITIONS.add(new SetCategoryPriority(name, priority));
     }
     
     @ZenMethod
     public static void setCategoryIcon(String name, String icon) {
-        ModTweaker.LATE_REMOVALS.add(new SetCategoryIcon(name, icon));
+        ModTweaker.LATE_ADDITIONS.add(new SetCategoryIcon(name, icon));
     }
     
     @ZenMethod
