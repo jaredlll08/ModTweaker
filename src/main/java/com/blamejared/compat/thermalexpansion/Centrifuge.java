@@ -7,6 +7,7 @@ import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.*;
+import crafttweaker.api.entity.IEntityDefinition;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,11 +41,22 @@ public class Centrifuge {
     public static void addRecipeMob(String entityId, WeightedItemStack[] outputs, ILiquidStack fluid, int energy, int xp) {
         IItemStack[] items = new IItemStack[outputs.length];
         Integer[] chances = new Integer[outputs.length];
+
+        if (energy<=0) { 
+            energy=CentrifugeManager.DEFAULT_ENERGY*2;
+        }
+
         for(int i = 0; i < outputs.length; i++) {
             items[i] = outputs[i].getStack();
             chances[i] = (int) outputs[i].getPercent();
         }
+
         ModTweaker.LATE_ADDITIONS.add(new AddMob(InputHelper.toStacks(items), chances, entityId, energy, InputHelper.toFluid(fluid), xp));
+    }
+
+    @ZenMethod
+    public static void addRecipeMob(IEntityDefinition entity, WeightedItemStack[] outputs, ILiquidStack fluid, int energy, int xp) {
+        addRecipeMob(entity.getId(), outputs, fluid, energy, xp);
     }
     
     @ZenMethod
@@ -55,6 +67,11 @@ public class Centrifuge {
     @ZenMethod
     public static void removeRecipeMob(String entityId) {
         ModTweaker.LATE_REMOVALS.add(new RemoveMob(entityId));
+    }
+
+    @ZenMethod
+    public static void removeRecipeMob(IEntityDefinition entity) {
+        ModTweaker.LATE_REMOVALS.add(new RemoveMob(entity.getId()));
     }
     
     private static class Add extends BaseAction {
@@ -89,11 +106,11 @@ public class Centrifuge {
         private ItemStack[] outputs;
         private Integer[] chances;
         private String entityId;
-        private Integer energy;
+        private int energy;
         private FluidStack fluid;
-        private Integer xp;
+        private int xp;
 
-        public AddMob(ItemStack[] outputs, Integer[] chances, String entityId, Integer energy, FluidStack fluid, Integer xp) {
+        public AddMob(ItemStack[] outputs, Integer[] chances, String entityId, int energy, FluidStack fluid, int xp) {
             super("Centrifuge");
             this.outputs = outputs;
             this.chances = chances;
@@ -110,9 +127,10 @@ public class Centrifuge {
                 return;
             }
 
-            if (energy==null) { this.energy=CentrifugeManager.DEFAULT_ENERGY*2; }
-            if (fluid==null) { this.fluid=new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP);
-
+            if (fluid==null) { 
+                this.fluid=new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP);
+            }
+           
             // This is copied from CoFH CentrifugeManager.java:255 onwards
             // It simplifies the need to create recipes for standard and
             // reusable morbs. Modified slightly.
@@ -196,4 +214,3 @@ public class Centrifuge {
         }
     }
 }
-
