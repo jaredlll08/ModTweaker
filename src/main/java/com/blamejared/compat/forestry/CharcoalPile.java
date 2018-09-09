@@ -1,5 +1,7 @@
 package com.blamejared.compat.forestry;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
@@ -16,31 +18,47 @@ import crafttweaker.api.item.IItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-@ZenClass("mods.forestry.Carpenter")
+@ZenClass("mods.forestry.CharcoalWall")
 @ModOnly("forestry")
 @ZenRegister
 public class CharcoalPile {
 
-	public static final String NAME = "Forestry Charcoal Piles";
+	public static final String NAME = "Forestry Charcoal Wall";
 
+	/**
+	 * add a charcoal wall for the given {@link IBlock}
+	 * @param block the block for the wall
+	 * @param amount the amount of charcoal the wall provides
+	 */
 	@ZenMethod
-	public static void addPile(IBlock block, int amount) {
+	public static void addWall(IBlock block, int amount) {
 		ModTweaker.LATE_ADDITIONS.add(new Add(asBlock(block), amount));
 	}
 
+	/**
+	 * add a charcoal wall for the given {@link crafttweaker.api.block.IBlockState}
+	 * @param state the state for the wall (more specific than just a block)
+	 * @param amount the amount of charcoal the wall provides
+	 */
 	@ZenMethod
-	public static void addPileState(crafttweaker.api.block.IBlockState state, int amount) {
+	public static void addWallState(crafttweaker.api.block.IBlockState state, int amount) {
 		ModTweaker.LATE_ADDITIONS.add(new Add(asBlockState(state), amount));
 	}
 
+	/**
+	 * add a charcoal wall for the block corresponding {@link IItemStack}
+	 * will fail if the stack can't be converted to a block
+	 * @param stack the stack form of the wall
+	 * @param amount the amount of charcoal the wall provides
+	 */
 	@ZenMethod
-	public static void addPileStack(IItemStack stack, int amount) {
+	public static void addWallStack(IItemStack stack, int amount) {
 		ModTweaker.LATE_ADDITIONS.add(new Add(asBlock(stack.asBlock()), amount));
 	}
 
 	private static class Add extends BaseCharcoal {
 
-		private int amount;
+		private final int amount;
 
 		protected Add(Block block, int amount) {
 			super(block);
@@ -68,18 +86,31 @@ public class CharcoalPile {
 		}
 	}
 
+	/**
+	 * Removes the first wall that matches the given {@link IBlock}
+	 * @param block the block to match
+	 */
 	@ZenMethod
-	public static void removePile(IBlock block) {
+	public static void removeWall(IBlock block) {
 		ModTweaker.LATE_REMOVALS.add(new Remove(asBlock(block)));
 	}
 
+	/**
+	 * Removes the first wall that matches the given {@link crafttweaker.api.block.IBlockState}
+	 * @param state the state to match
+	 */
 	@ZenMethod
-	public static void removePileState(crafttweaker.api.block.IBlockState state) {
+	public static void removeWallState(crafttweaker.api.block.IBlockState state) {
 		ModTweaker.LATE_REMOVALS.add(new Remove(asBlockState(state)));
 	}
 
+	/**
+	 * Removes the first wall that matches the block given by the {@link IItemStack}
+	 * Will fail if the stack can't be converted to a block
+	 * @param stack the stack to match
+	 */
 	@ZenMethod
-	public static void removePileStack(IItemStack stack) {
+	public static void removeWallStack(IItemStack stack) {
 		ModTweaker.LATE_REMOVALS.add(new Remove(asBlock(stack.asBlock())));
 	}
 
@@ -115,40 +146,46 @@ public class CharcoalPile {
 
 	private static class BaseCharcoal extends BaseAction {
 
-		protected static ICharcoalManager manager = TreeManager.charcoalManager;
-		protected Block block;
-		protected IBlockState state;
+		protected static final ICharcoalManager manager = TreeManager.charcoalManager;
+		protected final Block block;
+		protected final IBlockState state;
 
 		protected BaseCharcoal(Block block) {
 			super(CharcoalPile.NAME);
 			this.block = block;
+			this.state = null;
 		}
 
 		protected BaseCharcoal(IBlockState state) {
 			super(CharcoalPile.NAME);
 			this.state = state;
+			this.block = null;
 		}
 
 		@Override
 		public void apply() {
-
+			CraftTweakerAPI.logError("BaseCharcoal.apply() is not implemented");
 		}
 	}
 
 
 	// helpers, here for now
+	@Nullable
 	private static Block asBlock(IBlock block) {
 		Object internal = block.getDefinition().getInternal();
 		if (!(internal instanceof Block)) {
 			CraftTweakerAPI.logError("Not a valid block: " + block);
+			return null;
 		}
 		return (Block) internal;
 	}
 
+	@Nullable
 	private static IBlockState asBlockState(crafttweaker.api.block.IBlockState blockstate) {
 		Object internal = blockstate.getInternal();
 		if (!(internal instanceof IBlockState)) {
 			CraftTweakerAPI.logError("Not a valid blockstate: " + blockstate);
+			return null;
 		}
 		return (IBlockState) internal;
 	}

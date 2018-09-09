@@ -51,7 +51,7 @@ repositories {
         url "http://maven.tterrag.com"
     }
     maven {
-        url "https://dl.bintray.com/raoulvdberge/dev/"
+        url "https://repo.raoulvdberge.com/"
     }
     maven {
         url = "http://maven.thiakil.com"
@@ -93,7 +93,7 @@ dependencies {
     }
     deobfCompile "team.chisel.ctm:CTM:MC1.12-0.2.3.12"
 
-    deobfCompile("refinedstorage:refinedstorage:1.5.32-1498") {
+    deobfCompile("refinedstorage:refinedstorage:1.6.5-283") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.1-0.2.1.3") {
