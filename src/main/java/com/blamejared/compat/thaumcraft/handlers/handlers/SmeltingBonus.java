@@ -26,7 +26,7 @@ public class SmeltingBonus {
             return;
         }
         
-        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toObject(input), InputHelper.toStack(stack.getStack()), (int) stack.getPercent()));
+        ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toObject(input), InputHelper.toStack(stack.getStack()),  stack.getChance()));
     }
     
     @ZenMethod
@@ -42,9 +42,9 @@ public class SmeltingBonus {
         
         private ItemStack output;
         private Object input;
-        private int chance;
+        private float chance;
         
-        public Add(Object input, ItemStack output, int chance) {
+        public Add(Object input, ItemStack output, float chance) {
             super("SmeltingBonus");
             this.output = output;
             this.input = input;
