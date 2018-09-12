@@ -9,6 +9,7 @@ import forestry.api.arboriculture.ICharcoalManager;
 import forestry.api.arboriculture.TreeManager;
 
 import com.blamejared.ModTweaker;
+import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
@@ -53,7 +54,7 @@ public class CharcoalPile {
 	 */
 	@ZenMethod
 	public static void addWallStack(IItemStack stack, int amount) {
-		ModTweaker.LATE_ADDITIONS.add(new Add(asBlock(stack.asBlock()), amount));
+		ModTweaker.LATE_ADDITIONS.add(new Add(asBlock(stack), amount));
 	}
 
 	private static class Add extends BaseCharcoal {
@@ -111,7 +112,7 @@ public class CharcoalPile {
 	 */
 	@ZenMethod
 	public static void removeWallStack(IItemStack stack) {
-		ModTweaker.LATE_REMOVALS.add(new Remove(asBlock(stack.asBlock())));
+		ModTweaker.LATE_REMOVALS.add(new Remove(asBlock(stack)));
 	}
 
 	private static class Remove extends BaseCharcoal {
@@ -188,5 +189,14 @@ public class CharcoalPile {
 			return null;
 		}
 		return (IBlockState) internal;
+	}
+
+	@Nullable
+	private static Block asBlock(IItemStack stack) {
+		if(!InputHelper.isABlock(stack)) {
+			CraftTweakerAPI.logError("Not a valid block: " + stack.getDisplayName());
+			return null;
+		}
+		return asBlock(stack.asBlock());
 	}
 }
