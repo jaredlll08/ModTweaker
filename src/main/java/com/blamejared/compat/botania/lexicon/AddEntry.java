@@ -28,7 +28,7 @@ public class AddEntry implements IAction {
             CraftTweakerAPI.getLogger().logError("Cannot find lexicon category " + catagory);
             return;
         }
-        LexiconEntry lexiconEntry = new LexiconEntry(entry, lexiconCategory);
+        LexiconEntry lexiconEntry = new UsefulEntry(entry, lexiconCategory);
         lexiconEntry.setIcon(toStack(stack));
         BotaniaAPI.addEntry(lexiconEntry, lexiconEntry.category);
     }
