@@ -28,7 +28,7 @@ public class ArcaneWorkbench {
     
     @ZenMethod
     public static void registerShapedRecipe(String name, String research, int vis, CTAspectStack[] aspectList, IItemStack output, IIngredient[][] input) {
-        ModTweaker.LATE_ADDITIONS.add(new AddShaped(new ResourceLocation(Reference.MODID, name), research, vis, ThaumCraft.getAspects(aspectList), InputHelper.toStack(output), InputHelper.toShapedObjects(input)));
+        ModTweaker.LATE_ADDITIONS.add(new AddShaped(new ResourceLocation("thaumcraft", name), research, vis, ThaumCraft.getAspects(aspectList), InputHelper.toStack(output), InputHelper.toShapedObjects(input)));
     }
     
     @ZenMethod
@@ -37,7 +37,7 @@ public class ArcaneWorkbench {
         for(int i = 0; i < input.length; i++) {
             list.set(i, CraftTweakerMC.getIngredient(input[i]));
         }
-        ModTweaker.LATE_ADDITIONS.add(new AddShapeless(new ResourceLocation(Reference.MODID, name), research, vis, ThaumCraft.getAspects(aspectList), InputHelper.toStack(output), list));
+        ModTweaker.LATE_ADDITIONS.add(new AddShapeless(new ResourceLocation("thaumcraft", name), research, vis, ThaumCraft.getAspects(aspectList), InputHelper.toStack(output), list));
     }
     
     @ZenMethod
