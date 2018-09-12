@@ -19,7 +19,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.4.2705"
+    version = "1.12.2-14.23.4.2749"
     runDir = "run"
     mappings = "snapshot_20180407"
     useDepAts = true
@@ -70,10 +70,10 @@ dependencies {
     deobfCompile "vazkii.botania:Botania:r1.10-355.4"
 
 
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.4.2.27:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.0.29:universal") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.1.16-568") {
+    deobfCompile("betterwithmods:BetterWithMods:1.12-2.3.12-965") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r136") {

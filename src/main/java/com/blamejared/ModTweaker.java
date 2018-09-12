@@ -8,7 +8,6 @@ import com.blamejared.compat.thaumcraft.handlers.ThaumCraft;
 import crafttweaker.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.*;
-import thaumcraft.Thaumcraft;
 
 import java.util.*;
 

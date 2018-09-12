@@ -5,6 +5,7 @@ import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.helpers.StackHelper;
 import com.blamejared.mtlib.utils.BaseAction;
+import com.rwtema.extrautils2.crafting.ResonatorRecipe;
 import com.rwtema.extrautils2.tile.TileResonator;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -13,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import java.util.*;
 
 @ZenClass("mods.extrautils2.Resonator")
 @ModOnly("extrautils2")
@@ -73,7 +76,13 @@ public class Resonator {
         
         @Override
         public void apply() {
-            TileResonator.resonatorRecipes.removeIf(resonatorRecipe -> StackHelper.matches(output, InputHelper.toIItemStack(resonatorRecipe.output)));
+            List<ResonatorRecipe> list = new ArrayList<>();
+            for(ResonatorRecipe recipe : TileResonator.resonatorRecipes) {
+                if(StackHelper.matches(output, InputHelper.toIItemStack(recipe.output))){
+                 list.add(recipe);
+                }
+            }
+            TileResonator.resonatorRecipes.removeAll(list);
         }
         
         @Override
