@@ -20,10 +20,20 @@ public class Refinery {
     public static void addRecipe(ILiquidStack output, WeightedItemStack outputItem, ILiquidStack input, int energy) {
         ModTweaker.LATE_ADDITIONS.add(new Add(InputHelper.toFluid(output), InputHelper.toFluid(input), outputItem, energy));
     }
+
+    @ZenMethod
+    public static void addRecipePotion(ILiquidStack output, ILiquidStack input, int energy) {
+        ModTweaker.LATE_ADDITIONS.add(new AddPotion(InputHelper.toFluid(output), InputHelper.toFluid(input), energy));
+    }
     
     @ZenMethod
     public static void removeRecipe(ILiquidStack input) {
-        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toFluid(input)));
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toFluid(input), false));
+    }
+
+    @ZenMethod
+    public static void removeRecipePotion(ILiquidStack input) {
+        ModTweaker.LATE_REMOVALS.add(new Remove(InputHelper.toFluid(input), true));
     }
     
     private static class Add extends BaseAction {
@@ -54,23 +64,56 @@ public class Refinery {
             return LogHelper.getStackDescription(output);
         }
     }
-    
+
+    private static class AddPotion extends BaseAction {
+
+        private FluidStack output, input;
+        private int energy;
+
+        public AddPotion(FluidStack output, FluidStack input, int energy) {
+            super("Refinery");
+            this.output = output;
+            this.input = input;
+            this.energy = energy;
+        }
+
+        @Override
+        public void apply() {
+            RefineryManager.addRecipePotion(energy, input, output);
+        }
+
+        @Override
+        protected String getRecipeInfo() {
+            return LogHelper.getStackDescription(output);
+        }
+    }
+        
     private static class Remove extends BaseAction {
         
         private FluidStack input;
+        private boolean potion;
         
-        public Remove(FluidStack input) {
+        public Remove(FluidStack input, boolean potion) {
             super("Refinery");
+            this.potion = potion;
             this.input = input;
         }
-        
+
         @Override
         public void apply() {
-            if(!RefineryManager.recipeExists(input)) {
-                CraftTweakerAPI.logError("No Refinery recipe exists for: " + input);
-                return;
+            if (potion) {
+                if(!RefineryManager.recipeExistsPotion(input)) {
+                    CraftTweakerAPI.logError("No Refinery potion recipe exists for: " + input);
+                    return;
+                }
+                RefineryManager.removeRecipePotion(input);
+            } else {
+                if(!RefineryManager.recipeExists(input)) {
+                    CraftTweakerAPI.logError("No Refinery recipe exists for: " + input);
+                    return;
+                }
+                RefineryManager.removeRecipe(input);
             }
-            RefineryManager.removeRecipe(input);
         }
         
         @Override
