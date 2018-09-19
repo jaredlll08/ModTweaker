@@ -66,8 +66,9 @@ public class InductionSmelter {
         
         @Override
         public void apply() {
-            if(!SmelterManager.recipeExists(primaryInput, secondaryInput)) {
+            if(!SmelterManager.recipeExists(primaryInput, secondaryInput) && !SmelterManager.recipeExists(secondaryInput, primaryInput)) {
                 CraftTweakerAPI.logError("No InductionSmelter recipe exists for: " + primaryInput + " and " + secondaryInput);
+                return;
             }
 
             if(SmelterManager.recipeExists(primaryInput, secondaryInput)) {
@@ -80,7 +81,6 @@ public class InductionSmelter {
 
             if(SmelterManager.recipeExists(primaryInput, secondaryInput)) {
                 CraftTweakerAPI.logError("InductionSmelter recipes for: " + primaryInput + " and " + secondaryInput + " still exists after reversing fields.");
-                return;
             }
         }
         
