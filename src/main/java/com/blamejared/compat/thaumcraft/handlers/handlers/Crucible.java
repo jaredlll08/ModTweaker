@@ -25,7 +25,7 @@ public class Crucible {
     
     @ZenMethod
     public static void registerRecipe(String name, String researchKey, IItemStack output, IIngredient input, CTAspectStack[] aspects) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(new ResourceLocation(Reference.MODID, name), researchKey, InputHelper.toStack(output), InputHelper.toObject(input), ThaumCraft.getAspects(aspects)));
+        ModTweaker.LATE_ADDITIONS.add(new Add(new ResourceLocation("thaumcraft", name), researchKey, InputHelper.toStack(output), InputHelper.toObject(input), ThaumCraft.getAspects(aspects)));
     }
     
     @ZenMethod

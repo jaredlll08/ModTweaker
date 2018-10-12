@@ -24,7 +24,7 @@ public class Infusion {
     @ZenMethod
     public static void registerRecipe(String name, String research, IItemStack output, int instability, CTAspectStack[] aspects, IIngredient centralItem, IIngredient[] recipe) {
         InfusionRecipe infRecipe = new InfusionRecipe(research, InputHelper.toStack(output), instability, ThaumCraft.getAspects(aspects), InputHelper.toObject(centralItem), InputHelper.toObjects(recipe));
-        ModTweaker.LATE_ADDITIONS.add(new Add(new ResourceLocation(name), infRecipe));
+        ModTweaker.LATE_ADDITIONS.add(new Add(new ResourceLocation("thaumcraft", name), infRecipe));
     }
     
     @ZenMethod
