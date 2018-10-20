@@ -24,7 +24,7 @@ public class Orbs {
 
     @ZenMethod
     public static IIngredient getOrb (String name) {
-        if (!RegistrarBloodMagic.BLOOD_ORBS.getKeys().contains(transformName(name))) {
+        if (!RegistrarBloodMagic.BLOOD_ORBS.containsKey(transformName(name))) {
             CraftTweakerAPI.logError("Blood Magic orb doesn't exist: "+name);
             return null;
         }
