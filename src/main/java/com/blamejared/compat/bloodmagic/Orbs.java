@@ -24,16 +24,17 @@ public class Orbs {
 
     @ZenMethod
     public static IIngredient getOrb (String name) {
-        return _getOrb(name);
-    }
-
-    public static IIngredient _getOrb (String name) {
-        if (!orbExists(name)) {
+        if (!RegistrarBloodMagic.BLOOD_ORBS.getKeys().contains(transformName(name))) {
             CraftTweakerAPI.logError("Blood Magic orb doesn't exist: "+name);
             return null;
         }
         BloodOrb orb = RegistrarBloodMagic.BLOOD_ORBS.getValue(transformName(name));
         List<ItemStack> orbList = OrbRegistry.getOrbsDownToTier(orb.getTier());
+
+        if (orbList.size() == 0) {
+            CraftTweakerAPI.logError("Blood Magic orb tier returned invalid orbs: "+name);
+            return null;
+        }
 
         IIngredient suitableOrbs = new MCItemStack(orbList.get(0));
 
@@ -43,9 +44,5 @@ public class Orbs {
         }
 
         return suitableOrbs;
-    }
-
-    public static boolean orbExists (String name) {
-        return RegistrarBloodMagic.BLOOD_ORBS.getKeys().contains(transformName(name));
     }
 }
