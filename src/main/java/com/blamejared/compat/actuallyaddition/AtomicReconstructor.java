@@ -4,7 +4,9 @@ import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
 import crafttweaker.annotations.*;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.LensConversionRecipe;
 import stanhebben.zenscript.annotations.*;
@@ -17,8 +19,8 @@ import java.util.*;
 public class AtomicReconstructor {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack input, int energyUsed) {
-        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new LensConversionRecipe(InputHelper.toStack(input), InputHelper.toStack(output), energyUsed, ActuallyAdditionsAPI.lensDefaultConversion))));
+    public static void addRecipe(IItemStack output, IIngredient input, int energyUsed) {
+        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new LensConversionRecipe(CraftTweakerMC.getIngredient(input), InputHelper.toStack(output), energyUsed, ActuallyAdditionsAPI.lensDefaultConversion))));
     }
     
     @ZenMethod

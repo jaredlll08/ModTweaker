@@ -8,7 +8,9 @@ import com.blamejared.mtlib.utils.BaseListRemoval;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.CompostRecipe;
 import net.minecraft.block.Block;
@@ -24,12 +26,12 @@ import java.util.List;
 public class Compost {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack outputDisplay, IItemStack input, IItemStack inputDisplay) {
+    public static void addRecipe(IItemStack output, IItemStack outputDisplay, IIngredient input, IItemStack inputDisplay) {
         if(!InputHelper.isABlock(outputDisplay) || !InputHelper.isABlock(inputDisplay)) {
             CraftTweakerAPI.logError("outputDisplay or InputDisplay is not a block!");
             return;
         }
-        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new CompostRecipe(InputHelper.toStack(input), Block.getBlockFromItem(InputHelper.toStack(inputDisplay).getItem()), InputHelper.toStack(output), Block.getBlockFromItem(InputHelper.toStack(outputDisplay).getItem())))));
+        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new CompostRecipe(CraftTweakerMC.getIngredient(input), Block.getBlockFromItem(InputHelper.toStack(inputDisplay).getItem()).getDefaultState(), InputHelper.toStack(output), Block.getBlockFromItem(InputHelper.toStack(outputDisplay).getItem()).getDefaultState()))));
     }
     
     @ZenMethod
