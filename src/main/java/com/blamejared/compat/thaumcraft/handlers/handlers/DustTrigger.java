@@ -26,27 +26,6 @@ import java.util.Iterator;
 @ModOnly("thaumcraft")
 public class DustTrigger {
     
-    private static final Field simpleTriggerResult;
-    private static final Field oredictTriggerResult;
-    
-    static {
-        
-        Field A = null;
-        Field B = null;
-        try {
-            A = DustTriggerSimple.class.getDeclaredField("result");
-            A.setAccessible(true);
-            
-            B = DustTriggerOre.class.getDeclaredField("result");
-            B.setAccessible(true);
-        } catch(NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        
-        simpleTriggerResult = A;
-        oredictTriggerResult = B;
-    }
-    
     private DustTrigger() {
     }
     
@@ -66,25 +45,25 @@ public class DustTrigger {
     }
     
     static final class ActionAddTrigger implements IAction {
-    
+        
         private final IItemStack output;
         private final IDustTrigger trigger;
-    
+        
         ActionAddTrigger(IBlock in, IItemStack output, String research) {
             this.output = output;
             this.trigger = new DustTriggerSimple(research, CraftTweakerMC.getBlock(in), CraftTweakerMC.getItemStack(output));
         }
-    
+        
         ActionAddTrigger(IOreDictEntry in, IItemStack output, String research) {
             this.output = output;
             this.trigger = new DustTriggerOre(research, in.getName(), CraftTweakerMC.getItemStack(output));
         }
-    
+        
         @Override
         public void apply() {
             IDustTrigger.registerDustTrigger(this.trigger);
         }
-    
+        
         @Override
         public String describe() {
             return "Adding Salis mundus Conversion with output " + output.toCommandString();
@@ -93,14 +72,36 @@ public class DustTrigger {
     
     static final class ActionRemoveTrigger implements IAction {
         
+        private static Field simpleTriggerResult;
+        private static Field oredictTriggerResult;
+        private static boolean didReflection = false;
+        
         private final IIngredient output;
         
         ActionRemoveTrigger(IIngredient output) {
             this.output = output;
         }
         
+        private static void doDirtyReflection() {
+            if(didReflection)
+                return;
+            try {
+                simpleTriggerResult = DustTriggerSimple.class.getDeclaredField("result");
+                simpleTriggerResult.setAccessible(true);
+                
+                oredictTriggerResult = DustTriggerOre.class.getDeclaredField("result");
+                oredictTriggerResult.setAccessible(true);
+                
+                didReflection = true;
+            } catch(NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            
+        }
+        
         @Override
         public void apply() {
+            doDirtyReflection();
             final Iterator<IDustTrigger> iterator = IDustTrigger.triggers.iterator();
             while(iterator.hasNext()) {
                 final IDustTrigger trigger = iterator.next();
