@@ -63,21 +63,21 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.11.494"
-    deobfCompile "mezz.jei:jei_1.12.2:4.8.6.162"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.14.519"
+    deobfCompile "mezz.jei:jei_1.12.2:4.14.4.264"
     deobfCompile "com.blamejared:MTLib:3.0.4.8"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
     deobfCompile "vazkii.botania:Botania:r1.10-357.7"
 
 
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.2.39:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.3.41:universal") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.1.22:universal") {
+    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.2.25:universal") {
         exclude group: 'mezz.jei'
     }
 
-    deobfCompile("cofh:CoFHCore:1.12.2-4.6.1.22:universal") {
+    deobfCompile("cofh:CoFHCore:1.12.2-4.6.2.24:universal") {
         exclude group: 'mezz.jei'
     }
 
@@ -100,23 +100,23 @@ dependencies {
     deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r142") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("slimeknights.mantle:Mantle:1.12-1.3.2.+") {
+    deobfCompile("slimeknights.mantle:Mantle:1.12-1.3.3.+") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("slimeknights:TConstruct:1.12.2-2.10.1.+") {
+    deobfCompile("slimeknights:TConstruct:1.12.2-2.12.0.+") {
         exclude group: 'mezz.jei'
     }
     deobfCompile('net.sengir.forestry:forestry_1.12.2:5.+') {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel.ctm:CTM:MC1.12.2-0.3.2.20"
-    deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.2.3b.8") {
+    deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.3.0.18") {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.12.2-2.3.3-101"
     deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.7-62"
-    deobfCompile("knightminer:Inspirations:1.12.2-0.2.2.57") {
+    deobfCompile("knightminer:Inspirations:1.12.2-0.2.3.63") {
         exclude group: 'mezz.jei'
     }
 }
