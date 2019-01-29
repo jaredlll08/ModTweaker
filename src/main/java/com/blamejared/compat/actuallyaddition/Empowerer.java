@@ -4,7 +4,9 @@ import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.*;
 import com.blamejared.mtlib.utils.*;
 import crafttweaker.annotations.*;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import de.ellpeck.actuallyadditions.api.ActuallyAdditionsAPI;
 import de.ellpeck.actuallyadditions.api.recipe.EmpowererRecipe;
 import stanhebben.zenscript.annotations.Optional;
@@ -18,11 +20,11 @@ import java.util.*;
 public class Empowerer {
     
     @ZenMethod
-    public static void addRecipe(IItemStack output, IItemStack input, IItemStack modifier1, IItemStack modifier2, IItemStack modifier3, IItemStack modifier4, int energyPerStand, int time, @Optional float[] particleColourArray) {
+    public static void addRecipe(IItemStack output, IIngredient input, IIngredient modifier1, IIngredient modifier2, IIngredient modifier3, IIngredient modifier4, int energyPerStand, int time, @Optional float[] particleColourArray) {
         if(particleColourArray == null || particleColourArray.length == 0) {
             particleColourArray = new float[]{0, 0, 0};
         }
-        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new EmpowererRecipe(InputHelper.toStack(input), InputHelper.toStack(output), InputHelper.toStack(modifier1), InputHelper.toStack(modifier2), InputHelper.toStack(modifier3), InputHelper.toStack(modifier4), energyPerStand, time, particleColourArray))));
+        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new EmpowererRecipe(CraftTweakerMC.getIngredient(input), InputHelper.toStack(output), CraftTweakerMC.getIngredient(modifier1), CraftTweakerMC.getIngredient(modifier2), CraftTweakerMC.getIngredient(modifier3), CraftTweakerMC.getIngredient(modifier4), energyPerStand, time, particleColourArray))));
     }
     
     @ZenMethod
