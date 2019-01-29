@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "4.0.15"
+version = "4.0.16"
 group = "com.blamejared.modtweaker"
 archivesBaseName = "modtweaker"
 
