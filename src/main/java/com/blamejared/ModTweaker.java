@@ -22,7 +22,7 @@ public class ModTweaker {
     
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent e) {
-        if(Loader.isModLoaded("thaumcraft")){
+        if(Loader.isModLoaded("thaumcraft")) {
             ThaumCraft.preInit();
         }
     }
@@ -44,6 +44,8 @@ public class ModTweaker {
             e.printStackTrace();
             CraftTweakerAPI.logError("Error while applying actions", e);
         }
+        LATE_REMOVALS.clear();
+        LATE_ADDITIONS.clear();
     }
     
     @Mod.EventHandler
@@ -60,7 +62,7 @@ public class ModTweaker {
         if(Loader.isModLoaded("inspirations")) {
             Inspirations.registerCommands();
         }
-    
+        
         if(Loader.isModLoaded("thaumcraft")) {
             ThaumCraft.registerCommands();
         }
