@@ -28,8 +28,8 @@ public class Factorizer {
     }
     
     @ZenMethod
-    public static void addRecipeBoth(IItemStack in, IItemStack out) {
-        ModTweaker.LATE_ADDITIONS.add(new ActionAddFactorizer(ActionAddFactorizer.Type.Both, in, out));
+    public static void addRecipeBoth(IItemStack combined, IItemStack split) {
+        ModTweaker.LATE_ADDITIONS.add(new ActionAddFactorizer(ActionAddFactorizer.Type.Both, combined, split));
     }
     
     @ZenMethod
@@ -68,7 +68,7 @@ public class Factorizer {
                     break;
                 case Both:
                     FactorizerManager.addRecipe(inputStack, outputStack, true);
-                    FactorizerManager.addRecipe(inputStack, outputStack, false);
+                    FactorizerManager.addRecipe(outputStack, inputStack, false);
                     break;
             }
         }
