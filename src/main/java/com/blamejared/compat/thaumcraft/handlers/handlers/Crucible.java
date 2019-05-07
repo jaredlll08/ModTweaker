@@ -87,7 +87,7 @@ public class Crucible {
                             toRemove.add(entry.getKey());
                         }
                     }
-                    if(!output.isEmpty()) {
+                    if(output != null && !output.isEmpty()) {
                         if(output.matches(InputHelper.toIItemStack(((CrucibleRecipe) entry.getValue()).getRecipeOutput()))) {
                             toRemove.add(entry.getKey());
                         }
