@@ -43,7 +43,7 @@ public class HighOven {
 
 	private static void init() {
 		if (!init) {
-			MinecraftForge.EVENT_BUS.register(new Overrides());
+			MinecraftForge.EVENT_BUS.register(new HighOven());
 			init = true;
 		}
 	}
@@ -251,7 +251,7 @@ public class HighOven {
 			CraftTweakerAPI.logInfo(String.format("Trying against %s,%d,%d", LogHelper.getStackDescription(entry.getKey()), entry.getValue().getKey(), entry.getValue().getValue()));
 			if (event.getRecipe().matches(InputHelper.toStack(entry.getKey()))) {
 				if (event.getRecipe().getTime() == entry.getValue().getKey()
-						&& event.getRecipe().getTime() == entry.getValue().getValue()) {
+						&& event.getRecipe().getRate() == entry.getValue().getValue()) {
 					event.setCanceled(true);
 					CraftTweakerAPI.logInfo("cancelled fuel registration");
 				} else {

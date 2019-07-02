@@ -228,7 +228,7 @@ public class IMixRecipe {
 
 		@Override
 		public String describe() {
-			return String.format("Adding %s recipe(s) for %s", this.name, this.getRecipeInfo());
+			return String.format("Adding %s Recipe(s) for %s", this.name, this.getRecipeInfo());
 		}
 
 		@Override
