@@ -187,7 +187,7 @@ public class MixRecipeHelper {
 	@ZenMethod
 	public void register() {
 		ModTweaker.LATE_ADDITIONS.add(
-				new AddMixRecipe(this.output, this.input, this.temp, this.oxidizers, this.reducers, this.purifiers));
+				new AddMixRecipe(this.output, this.input, this.temp + 300, this.oxidizers, this.reducers, this.purifiers));
 	}
 
 	private static class AddMixRecipe extends BaseAction {
