@@ -110,7 +110,7 @@ dependencies {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel.ctm:CTM:MC1.12.2-0.3.2.20"
-    deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.4.2.38") {
+    deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.4.2.39") {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"

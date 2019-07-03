@@ -209,7 +209,9 @@ public class IMixRecipe {
 						+ entry.getKey().getClass().getSimpleName());
 			}
 		}
-
+		if (!recipe.isValid()) {
+			CraftTweakerAPI.logError(String.format("The mix recipe for %s is invalid, it won't work !", LogHelper.getStackDescription(this.output)));
+		}
 		ModTweaker.LATE_ADDITIONS.add(new AddMixRecipe(recipe));
 	}
 

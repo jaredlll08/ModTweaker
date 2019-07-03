@@ -9,6 +9,7 @@ import java.util.Map;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.tcomplement.Overrides;
 import com.blamejared.compat.tcomplement.highoven.recipes.HeatRecipeTweaker;
+import com.blamejared.compat.tcomplement.highoven.recipes.HighOvenFuelTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.MixRecipeTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
@@ -26,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import slimeknights.mantle.util.RecipeMatch;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -35,7 +37,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ModOnly("tcomplement")
 public class HighOven {
 
-	public static final Map<IItemStack, SimpleImmutableEntry<Integer, Integer>> REMOVED_FUELS = new LinkedHashMap<>();
+	public static final List<IItemStack> REMOVED_FUELS = new LinkedList<>();
 	public static final Map<ILiquidStack, ILiquidStack> REMOVED_HEAT_RECIPES = new LinkedHashMap<>();
 	public static final List<ILiquidStack> REMOVED_MIX_RECIPES = new LinkedList<>();
 
@@ -49,9 +51,9 @@ public class HighOven {
 	}
 
 	@ZenMethod
-	public static void removeFuel(IItemStack stack, int time, int rate) {
+	public static void removeFuel(IItemStack stack) {
 		init();
-		CraftTweakerAPI.apply(new HighOven.RemoveFuel(stack, time, rate));
+		CraftTweakerAPI.apply(new HighOven.RemoveFuel(stack));
 	}
 
 	@ZenMethod
@@ -89,14 +91,14 @@ public class HighOven {
 		@Override
 		public void apply() {
 			if (itemFuel != null)
-				TCompRegistry.registerFuel(itemFuel, time, rate);
+				TCompRegistry.registerFuel(new HighOvenFuelTweaker(RecipeMatch.of(itemFuel), time, rate));
 			if (oreFuel != null)
-				TCompRegistry.registerFuel(oreFuel, time, rate);
+				TCompRegistry.registerFuel(new HighOvenFuelTweaker(RecipeMatch.of(oreFuel), time, rate));
 		}
 
 		@Override
 		public String describe() {
-			return String.format("Adding %s recipe as high oven fuel", this.getRecipeInfo());
+			return String.format("Adding %s as high oven fuel", this.getRecipeInfo());
 		}
 
 		@Override
@@ -110,24 +112,20 @@ public class HighOven {
 
 	private static class RemoveFuel extends BaseAction {
 		private IItemStack fuel;
-		private Integer time;
-		private Integer rate;
 
-		public RemoveFuel(IItemStack fuel, int time, int rate) {
+		public RemoveFuel(IItemStack fuel) {
 			super("HighOven.Fuel");
 			this.fuel = fuel;
-			this.time = time;
-			this.rate = rate;
 		};
 
 		@Override
 		public void apply() {
-			REMOVED_FUELS.put(fuel, new SimpleImmutableEntry<Integer, Integer>(time, rate));
+			REMOVED_FUELS.add(fuel);
 		}
 
 		@Override
 		public String describe() {
-			return String.format("Removing %s as high oven fuel", this.getRecipeInfo());
+			return String.format("Removing %s high oven fuel entry", this.getRecipeInfo());
 		}
 
 		@Override
@@ -242,23 +240,12 @@ public class HighOven {
 
 	@SubscribeEvent
 	public void onTinkerRegister(TCompRegisterEvent.HighOvenFuelRegisterEvent event) {
-		CraftTweakerAPI.logInfo(String.format("Analysing if high oven fuel for %s time=%d, rate=%d whould be cancelled",
-				LogHelper.getListDescription(event.getRecipe().getFuels()),
-				event.getRecipe().getTime(),
-				event.getRecipe().getRate()
-				));
-		for (Map.Entry<IItemStack, SimpleImmutableEntry<Integer, Integer>> entry : REMOVED_FUELS.entrySet()) {
-			CraftTweakerAPI.logInfo(String.format("Trying against %s,%d,%d", LogHelper.getStackDescription(entry.getKey()), entry.getValue().getKey(), entry.getValue().getValue()));
-			if (event.getRecipe().matches(InputHelper.toStack(entry.getKey()))) {
-				if (event.getRecipe().getTime() == entry.getValue().getKey()
-						&& event.getRecipe().getRate() == entry.getValue().getValue()) {
-					event.setCanceled(true);
-					CraftTweakerAPI.logInfo("cancelled fuel registration");
-				} else {
-					CraftTweakerAPI.logInfo("time or rate did not match");
-				}
-			} else {
-				CraftTweakerAPI.logInfo("ItemStack did not match the entry");
+		if (event.getRecipe() instanceof HighOvenFuelTweaker) {
+			return;
+		}
+		for (IItemStack entry : REMOVED_FUELS) {
+			if (event.getRecipe().matches(InputHelper.toStack(entry))) {
+				event.setCanceled(true);
 			}
 		}
 	}
