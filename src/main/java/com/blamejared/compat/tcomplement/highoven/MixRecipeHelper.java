@@ -194,7 +194,6 @@ public class MixRecipeHelper {
 		private ILiquidStack input, output;
 		private int temp;
 		private Map<IIngredient, Integer> oxydizers, reducers, purifiers;
-		private MixRecipeTweaker recipe;
 
 		public AddMixRecipe(ILiquidStack output, ILiquidStack input, int temp, Map<IIngredient, Integer> oxydizers,
 				Map<IIngredient, Integer> reducers, Map<IIngredient, Integer> purifiers) {
@@ -241,7 +240,7 @@ public class MixRecipeHelper {
 
 		@Override
 		protected String getRecipeInfo() {
-			return LogHelper.getStackDescription(recipe.getOutput());
+			return LogHelper.getStackDescription(LogHelper.getStackDescription(output));
 		}
 	}
 }
