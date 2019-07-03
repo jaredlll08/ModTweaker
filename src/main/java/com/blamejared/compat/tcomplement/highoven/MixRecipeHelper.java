@@ -20,6 +20,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import knightminer.tcomplement.library.TCompRegistry;
 import knightminer.tcomplement.library.steelworks.IMixRecipe;
+import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -191,15 +192,15 @@ public class MixRecipeHelper {
 	}
 
 	private static class AddMixRecipe extends BaseAction {
-		private ILiquidStack input, output;
+		private FluidStack input, output;
 		private int temp;
 		private Map<IIngredient, Integer> oxydizers, reducers, purifiers;
 
 		public AddMixRecipe(ILiquidStack output, ILiquidStack input, int temp, Map<IIngredient, Integer> oxydizers,
 				Map<IIngredient, Integer> reducers, Map<IIngredient, Integer> purifiers) {
 			super("HighOven.MixRecipe");
-			this.input = input;
-			this.output = output;
+			this.input = InputHelper.toFluid(input);
+			this.output = InputHelper.toFluid(output);
 			this.temp = temp;
 			this.oxydizers = new LinkedHashMap<>();
 			this.oxydizers.putAll(oxydizers);
@@ -212,7 +213,7 @@ public class MixRecipeHelper {
 		@Override
 		public void apply() {
 			IMixRecipe recipe = TCompRegistry.registerMix(
-					new MixRecipeTweaker(InputHelper.toFluid(this.input), InputHelper.toFluid(this.output), this.temp));
+					new MixRecipeTweaker(this.input, this.output, this.temp));
 			for (Map.Entry<IIngredient, Integer> entry : this.oxydizers.entrySet()) {
 				if (entry.getKey() instanceof IItemStack)
 					recipe.addOxidizer(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
