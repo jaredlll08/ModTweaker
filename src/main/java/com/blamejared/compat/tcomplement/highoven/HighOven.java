@@ -1,13 +1,11 @@
 package com.blamejared.compat.tcomplement.highoven;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.blamejared.ModTweaker;
-import com.blamejared.compat.tcomplement.Overrides;
 import com.blamejared.compat.tcomplement.highoven.recipes.HeatRecipeTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.HighOvenFuelTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.MixRecipeTweaker;
@@ -58,11 +56,13 @@ public class HighOven {
 
 	@ZenMethod
 	public static void addFuel(IItemStack fuel, int burnTime, int tempRate) {
+		init();
 		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddFuel(InputHelper.toStack(fuel), burnTime, tempRate));
 	}
 
 	@ZenMethod
 	public static void addFuel(IOreDictEntry fuel, int burnTime, int tempRate) {
+		init();
 		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddFuel(fuel.getName(), burnTime, tempRate));
 	}
 
@@ -137,16 +137,15 @@ public class HighOven {
 
 	@ZenMethod
 	public static void removeHeatRecipe(ILiquidStack output, @Optional ILiquidStack input) {
+		init();
 		CraftTweakerAPI.apply(new RemoveHeat(input, output));
 	}
 
 	@ZenMethod
 	public static void addHeatRecipe(ILiquidStack output, ILiquidStack input, int temp) {
+		init();
 		ModTweaker.LATE_ADDITIONS
-				.add(new HighOven.AddHeat(new FluidStack(InputHelper.getFluid(output), output.getAmount() / 20),
-						new FluidStack(InputHelper.getFluid(input), input.getAmount() / 20),
-						temp + 300)
-				);
+				.add(new HighOven.AddHeat(InputHelper.toFluid(output), InputHelper.toFluid(input), temp + 300));
 	}
 
 	private static class AddHeat extends BaseAction {
@@ -205,13 +204,14 @@ public class HighOven {
 
 	@ZenMethod
 	public static void removeMixRecipe(ILiquidStack output) {
+		init();
 		CraftTweakerAPI.apply(new RemoveMix(output));
 	}
 
 	@ZenMethod
-	public static IMixRecipe newMixRecipe(ILiquidStack output, ILiquidStack input, int temp) {
+	public static MixRecipeHelper newMixRecipe(ILiquidStack output, ILiquidStack input, int temp) {
 		init();
-		return new IMixRecipe(output, input, temp);
+		return new MixRecipeHelper(output, input, temp);
 	}
 
 	private static class RemoveMix extends BaseAction {

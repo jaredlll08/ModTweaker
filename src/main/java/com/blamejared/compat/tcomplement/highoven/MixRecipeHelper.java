@@ -19,6 +19,7 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import knightminer.tcomplement.library.TCompRegistry;
+import knightminer.tcomplement.library.steelworks.IMixRecipe;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -27,13 +28,13 @@ import stanhebben.zenscript.annotations.ZenSetter;
 @ZenClass("mods.tcomplement.highoven.IMixRecipe")
 @ZenRegister
 @ModOnly("tcomplement")
-public class IMixRecipe {
+public class MixRecipeHelper {
 
 	private ILiquidStack output, input;
 	private int temp;
 	private Map<IIngredient, Integer> oxidizers, reducers, purifiers;
 
-	public IMixRecipe(ILiquidStack output, ILiquidStack input, int temp) {
+	public MixRecipeHelper(ILiquidStack output, ILiquidStack input, int temp) {
 		this.output = output;
 		this.input = input;
 		this.temp = temp;
@@ -115,117 +116,122 @@ public class IMixRecipe {
 	}
 
 	@ZenMethod
-	public IMixRecipe addOxidizer(IIngredient oxidizer, int consumeChance) {
-		if (oxidizer instanceof IItemStack || oxidizer instanceof IOreDictEntry)
-			// TODO: wan about unsupported IIngredient type
+	public MixRecipeHelper addOxidizer(IIngredient oxidizer, int consumeChance) {
+		if (oxidizer instanceof IItemStack || oxidizer instanceof IOreDictEntry) {
 			this.oxidizers.put(oxidizer, consumeChance);
+		} else {
+			CraftTweakerAPI.logWarning("addOxidizer only supports IItemStack or IOreDictEntry, ignored oxidizer "
+					+ LogHelper.getStackDescription(oxidizer) + " of type " + oxidizer.getClass().getSimpleName());
+		}
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe addReducer(IIngredient reducer, int consumeChance) {
-		if (reducer instanceof IItemStack || reducer instanceof IOreDictEntry)
+	public MixRecipeHelper addReducer(IIngredient reducer, int consumeChance) {
+		if (reducer instanceof IItemStack || reducer instanceof IOreDictEntry) {
 			this.reducers.put(reducer, consumeChance);
+		} else {
+			CraftTweakerAPI.logWarning("addReducer only supports IItemStack or IOreDictEntry, ignored reducer "
+					+ LogHelper.getStackDescription(reducer) + " of type " + reducer.getClass().getSimpleName());
+		}
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe addPurifier(IIngredient purifier, int consumeChance) {
-		if (purifier instanceof IItemStack || purifier instanceof IOreDictEntry)
+	public MixRecipeHelper addPurifier(IIngredient purifier, int consumeChance) {
+		if (purifier instanceof IItemStack || purifier instanceof IOreDictEntry) {
 			this.purifiers.put(purifier, consumeChance);
+		} else {
+			CraftTweakerAPI.logWarning("addPurifier only supports IItemStack or IOreDictEntry, ignored purifier "
+					+ LogHelper.getStackDescription(purifier) + " of type " + purifier.getClass().getSimpleName());
+		}
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removeOxidizer(IIngredient oxidizer) {
+	public MixRecipeHelper removeOxidizer(IIngredient oxidizer) {
 		this.oxidizers.remove(oxidizer);
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removeOReducer(IIngredient reducer) {
+	public MixRecipeHelper removeOReducer(IIngredient reducer) {
 		this.oxidizers.remove(reducer);
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removePurifier(IIngredient purifier) {
+	public MixRecipeHelper removePurifier(IIngredient purifier) {
 		this.oxidizers.remove(purifier);
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removeAllOxidizer() {
+	public MixRecipeHelper removeAllOxidizer() {
 		this.oxidizers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removeAllReducer() {
+	public MixRecipeHelper removeAllReducer() {
 		this.reducers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}
 
 	@ZenMethod
-	public IMixRecipe removeAllPurifier() {
+	public MixRecipeHelper removeAllPurifier() {
 		this.purifiers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}
 
 	@ZenMethod
 	public void register() {
-		MixRecipeTweaker recipe = new MixRecipeTweaker(InputHelper.toFluid(this.input),
-				InputHelper.toFluid(this.output), temp);
-		for (Map.Entry<IIngredient, Integer> entry : this.oxidizers.entrySet()) {
-			if (entry.getKey() instanceof IItemStack) {
-				recipe.addOxidizer(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
-			} else if (entry.getKey() instanceof IOreDictEntry) {
-				recipe.addOxidizer(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
-			} else {
-				CraftTweakerAPI.logWarning("addOxidizer only supports IItemStack or IOreDictEntry, ignored oxidizer "
-						+ LogHelper.getStackDescription(entry.getKey()) + " of type "
-						+ entry.getKey().getClass().getSimpleName());
-			}
-		}
-		for (Map.Entry<IIngredient, Integer> entry : this.reducers.entrySet()) {
-			if (entry.getKey() instanceof IItemStack) {
-				recipe.addReducer(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
-			} else if (entry.getKey() instanceof IOreDictEntry) {
-				recipe.addReducer(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
-			} else {
-				CraftTweakerAPI.logWarning("addReducer only supports IItemStack or IOreDictEntry, ignored reducer "
-						+ LogHelper.getStackDescription(entry.getKey()) + " of type "
-						+ entry.getKey().getClass().getSimpleName());
-			}
-		}
-		for (Map.Entry<IIngredient, Integer> entry : this.purifiers.entrySet()) {
-			if (entry.getKey() instanceof IItemStack) {
-				recipe.addPurifier(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
-			} else if (entry.getKey() instanceof IOreDictEntry) {
-				recipe.addPurifier(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
-			} else {
-				CraftTweakerAPI.logWarning("addPurifier only supports IItemStack or IOreDictEntry, ignored purifier "
-						+ LogHelper.getStackDescription(entry.getKey()) + " of type "
-						+ entry.getKey().getClass().getSimpleName());
-			}
-		}
-		if (!recipe.isValid()) {
-			CraftTweakerAPI.logError(String.format("The mix recipe for %s is invalid, it won't work !", LogHelper.getStackDescription(this.output)));
-		}
-		ModTweaker.LATE_ADDITIONS.add(new AddMixRecipe(recipe));
+		ModTweaker.LATE_ADDITIONS.add(
+				new AddMixRecipe(this.output, this.input, this.temp, this.oxidizers, this.reducers, this.purifiers));
 	}
 
 	private static class AddMixRecipe extends BaseAction {
+		private ILiquidStack input, output;
+		private int temp;
+		private Map<IIngredient, Integer> oxydizers, reducers, purifiers;
 		private MixRecipeTweaker recipe;
 
-		public AddMixRecipe(MixRecipeTweaker recipe) {
+		public AddMixRecipe(ILiquidStack output, ILiquidStack input, int temp, Map<IIngredient, Integer> oxydizers,
+				Map<IIngredient, Integer> reducers, Map<IIngredient, Integer> purifiers) {
 			super("HighOven.MixRecipe");
-			this.recipe = recipe;
+			this.input = input;
+			this.output = output;
+			this.temp = temp;
+			this.oxydizers = new LinkedHashMap<>();
+			this.oxydizers.putAll(oxydizers);
+			this.reducers = new LinkedHashMap<>();
+			this.reducers.putAll(reducers);
+			this.purifiers = new LinkedHashMap<>();
+			this.purifiers.putAll(purifiers);
 		}
 
 		@Override
 		public void apply() {
-			TCompRegistry.registerMix(recipe);
+			IMixRecipe recipe = TCompRegistry.registerMix(
+					new MixRecipeTweaker(InputHelper.toFluid(this.input), InputHelper.toFluid(this.output), this.temp));
+			for (Map.Entry<IIngredient, Integer> entry : this.oxydizers.entrySet()) {
+				if (entry.getKey() instanceof IItemStack)
+					recipe.addOxidizer(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
+				if (entry.getKey() instanceof IOreDictEntry)
+					recipe.addOxidizer(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
+			}
+			for (Map.Entry<IIngredient, Integer> entry : this.reducers.entrySet()) {
+				if (entry.getKey() instanceof IItemStack)
+					recipe.addReducer(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
+				if (entry.getKey() instanceof IOreDictEntry)
+					recipe.addReducer(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
+			}
+			for (Map.Entry<IIngredient, Integer> entry : this.purifiers.entrySet()) {
+				if (entry.getKey() instanceof IItemStack)
+					recipe.addPurifier(InputHelper.toStack((IItemStack) entry.getKey()), entry.getValue());
+				if (entry.getKey() instanceof IOreDictEntry)
+					recipe.addPurifier(((IOreDictEntry) entry.getKey()).getName(), entry.getValue());
+			}
 		}
 
 		@Override
@@ -238,5 +244,4 @@ public class IMixRecipe {
 			return LogHelper.getStackDescription(recipe.getOutput());
 		}
 	}
-
 }
