@@ -1,6 +1,5 @@
 package com.blamejared.compat.tcomplement.highoven;
 
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -29,22 +28,23 @@ import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
 import stanhebben.zenscript.annotations.ZenSetter;
 
-@ZenClass("mods.tcomplement.highoven.IMixRecipe")
+@ZenClass("mods.tcomplement.highoven.MixRecipeBuilder")
 @ZenRegister
 @ModOnly("tcomplement")
-public class MixRecipeHelper {
-
+public class MixRecipeBuilder {
 	private ILiquidStack output, input;
 	private int temp;
 	private Map<IIngredient, Integer> oxidizers, reducers, purifiers;
+	// private Map<IIngredient, Integer> oxidizers, reducers, purifiers;
 
-	public MixRecipeHelper(ILiquidStack output, ILiquidStack input, int temp) {
+	public MixRecipeBuilder(ILiquidStack output, ILiquidStack input, int temp) {
 		this.output = output;
 		this.input = input;
 		this.temp = temp;
 		this.oxidizers = new LinkedHashMap<IIngredient, Integer>();
 		this.reducers = new LinkedHashMap<IIngredient, Integer>();
 		this.purifiers = new LinkedHashMap<IIngredient, Integer>();
+
 	}
 
 	@ZenGetter("output")
@@ -108,55 +108,55 @@ public class MixRecipeHelper {
 	}
 
 	@ZenMethod
-	public MixRecipeHelper addOxidizer(IIngredient oxidizer, int consumeChance) {
+	public MixRecipeBuilder addOxidizer(IIngredient oxidizer, int consumeChance) {
 		this.oxidizers.put(oxidizer, consumeChance);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper addReducer(IIngredient reducer, int consumeChance) {
+	public MixRecipeBuilder addReducer(IIngredient reducer, int consumeChance) {
 		this.reducers.put(reducer, consumeChance);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper addPurifier(IIngredient purifier, int consumeChance) {
+	public MixRecipeBuilder addPurifier(IIngredient purifier, int consumeChance) {
 		this.purifiers.put(purifier, consumeChance);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removeOxidizer(IIngredient oxidizer) {
+	public MixRecipeBuilder removeOxidizer(IIngredient oxidizer) {
 		this.oxidizers.remove(oxidizer);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removeOReducer(IIngredient reducer) {
-		this.oxidizers.remove(reducer);
+	public MixRecipeBuilder removeReducer(IIngredient reducer) {
+		this.reducers.remove(reducer);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removePurifier(IIngredient purifier) {
-		this.oxidizers.remove(purifier);
+	public MixRecipeBuilder removePurifier(IIngredient purifier) {
+		this.purifiers.remove(purifier);
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removeAllOxidizer() {
+	public MixRecipeBuilder removeAllOxidizer() {
 		this.oxidizers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removeAllReducer() {
+	public MixRecipeBuilder removeAllReducer() {
 		this.reducers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeHelper removeAllPurifier() {
+	public MixRecipeBuilder removeAllPurifier() {
 		this.purifiers = new LinkedHashMap<IIngredient, Integer>();
 		return this;
 	}

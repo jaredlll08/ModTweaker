@@ -200,9 +200,15 @@ public class HighOven {
 	}
 
 	@ZenMethod
-	public static MixRecipeHelper newMixRecipe(ILiquidStack output, ILiquidStack input, int temp) {
+	public static MixRecipeBuilder newMixRecipe(ILiquidStack output, ILiquidStack input, int temp) {
 		init();
-		return new MixRecipeHelper(output, input, temp);
+		return new MixRecipeBuilder(output, input, temp);
+	}
+	
+	@ZenMethod
+	public static MixRecipeManager manageMixRecipe(ILiquidStack output, ILiquidStack input) {
+		init();
+		return new MixRecipeManager(output, input);
 	}
 
 	private static class RemoveMix extends BaseAction {
