@@ -1,8 +1,10 @@
 package com.blamejared.compat.tcomplement.highoven;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.blamejared.compat.mantle.RecipeMatchIIngredient;
 import com.blamejared.mtlib.helpers.InputHelper;
@@ -19,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.mantle.util.RecipeMatch;
+import stanhebben.zenscript.annotations.NotNull;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -29,49 +32,64 @@ public class MixRecipeManager {
 	private boolean init;
 	private FluidStack input, output;
 	private List<SimpleEntry<RecipeMatch, MixAdditive>> additives;
-	private List<SimpleEntry<RecipeMatch, MixAdditive>> removedAdditives;
+	private Map<MixAdditive, List<RecipeMatch>> removedAdditives;
 
 	public MixRecipeManager(ILiquidStack output, ILiquidStack input) {
 		this.init = false;
 		this.input = InputHelper.toFluid(input);
 		this.output = InputHelper.toFluid(output);
 		this.additives = new LinkedList<>();
-		this.removedAdditives = new LinkedList<>();
+		this.removedAdditives = new HashMap<>(MixAdditive.values().length, 1.0f);
+		for (MixAdditive type : MixAdditive.values()) {
+			this.removedAdditives.put(type, new LinkedList<>());
+		}
 	}
 
 	@ZenMethod
-	public MixRecipeManager addOxidizer(IIngredient oxidizer) {
+	public MixRecipeManager addOxidizer(@NotNull IIngredient oxidizer) {
 		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer), MixAdditive.OXIDIZER));
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeManager addReducer(IIngredient reducer) {
+	public MixRecipeManager addReducer(@NotNull IIngredient reducer) {
 		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(reducer), MixAdditive.REDUCER));
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeManager addPurifier(IIngredient purifier) {
+	public MixRecipeManager addPurifier(@NotNull IIngredient purifier) {
 		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier), MixAdditive.PURIFIER));
 		return this;
 	}
 
 	@ZenMethod
 	public MixRecipeManager removeOxidizer(IIngredient oxidizer) {
-		this.removedAdditives.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer), MixAdditive.OXIDIZER));
+		if (oxidizer != null && removedAdditives.get(MixAdditive.OXIDIZER) != null) {
+			removedAdditives.get(MixAdditive.OXIDIZER).add(new RecipeMatchIIngredient(oxidizer));
+		} else {
+			removedAdditives.put(MixAdditive.OXIDIZER, null);
+		}
 		return this;
 	}
 
 	@ZenMethod
 	public MixRecipeManager removeReducer(IIngredient reducer) {
-		this.removedAdditives.add(new SimpleEntry<>(new RecipeMatchIIngredient(reducer), MixAdditive.REDUCER));
+		if (reducer != null && removedAdditives.get(MixAdditive.REDUCER) != null) {
+			removedAdditives.get(MixAdditive.REDUCER).add(new RecipeMatchIIngredient(reducer));
+		} else {
+			removedAdditives.put(MixAdditive.REDUCER, null);
+		}
 		return this;
 	}
 
 	@ZenMethod
 	public MixRecipeManager removePurifier(IIngredient purifier) {
-		this.removedAdditives.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier), MixAdditive.PURIFIER));
+		if (purifier != null && removedAdditives.get(MixAdditive.PURIFIER) != null) {
+			removedAdditives.get(MixAdditive.PURIFIER).add(new RecipeMatchIIngredient(purifier));
+		} else {
+			removedAdditives.put(MixAdditive.PURIFIER, null);
+		}
 		return this;
 	}
 
@@ -93,12 +111,16 @@ public class MixRecipeManager {
 	@SubscribeEvent
 	public void onTinkerRegister(TCompRegisterEvent.HighOvenMixAdditiveEvent event) {
 		if (event.getRecipe().matches(input, output)) {
-			for (SimpleEntry<RecipeMatch, MixAdditive> entry : removedAdditives) {
-				if (event.getType() == entry.getValue() && entry.getKey()
-						.matches((NonNullList<ItemStack>) event.getAdditive().getInputs()).isPresent()) {
-					event.setCanceled(true);
-					break;
+			List<RecipeMatch> removals = removedAdditives.get(event.getType());
+			if (removals != null) {
+				for (RecipeMatch removal : removals) {
+					if (removal.matches((NonNullList<ItemStack>) event.getAdditive().getInputs()).isPresent()) {
+						event.setCanceled(true);
+						break;
+					}
 				}
+			} else {
+				event.setCanceled(true);
 			}
 		}
 	}
