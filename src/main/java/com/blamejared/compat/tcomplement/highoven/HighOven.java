@@ -1,11 +1,14 @@
 package com.blamejared.compat.tcomplement.highoven;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.blamejared.ModTweaker;
+import com.blamejared.compat.mantle.RecipeMatchIIngredient;
 import com.blamejared.compat.tcomplement.highoven.recipes.HeatRecipeTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.HighOvenFuelTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.MixRecipeTweaker;
@@ -16,16 +19,14 @@ import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.oredict.IOreDictEntry;
 import knightminer.tcomplement.library.TCompRegistry;
 import knightminer.tcomplement.library.events.TCompRegisterEvent;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import slimeknights.mantle.util.RecipeMatch;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -36,8 +37,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class HighOven {
 
 	public static final List<IItemStack> REMOVED_FUELS = new LinkedList<>();
-	public static final Map<ILiquidStack, ILiquidStack> REMOVED_HEAT_RECIPES = new LinkedHashMap<>();
-	public static final List<ILiquidStack> REMOVED_MIX_RECIPES = new LinkedList<>();
+	public static final Map<FluidStack, Set<FluidStack>> REMOVED_HEAT_RECIPES = new LinkedHashMap<>();
+	public static final Map<FluidStack, Set<FluidStack>> REMOVED_MIX_RECIPES = new LinkedHashMap<>();
 
 	private static boolean init = false;
 
@@ -55,45 +56,26 @@ public class HighOven {
 	}
 
 	@ZenMethod
-	public static void addFuel(IItemStack fuel, int burnTime, int tempRate) {
+	public static void addFuel(IIngredient fuel, int burnTime, int tempRate) {
 		init();
-		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddFuel(InputHelper.toStack(fuel), burnTime, tempRate));
-	}
-
-	@ZenMethod
-	public static void addFuel(IOreDictEntry fuel, int burnTime, int tempRate) {
-		init();
-		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddFuel(fuel.getName(), burnTime, tempRate));
+		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddFuel(fuel, burnTime, tempRate));
 	}
 
 	private static class AddFuel extends BaseAction {
-		private ItemStack itemFuel;
-		private String oreFuel;
+		private IIngredient fuel;
 		private int time;
 		private int rate;
 
-		public AddFuel(ItemStack fuel, int time, int rate) {
+		public AddFuel(IIngredient fuel, int time, int rate) {
 			super("HighOven.Fuel");
-			this.itemFuel = fuel;
-			this.oreFuel = null;
-			this.time = time;
-			this.rate = rate;
-		}
-
-		public AddFuel(String fuel, int time, int rate) {
-			super("HighOven.Fuel");
-			this.itemFuel = null;
-			this.oreFuel = fuel;
+			this.fuel = fuel;
 			this.time = time;
 			this.rate = rate;
 		}
 
 		@Override
 		public void apply() {
-			if (itemFuel != null)
-				TCompRegistry.registerFuel(new HighOvenFuelTweaker(RecipeMatch.of(itemFuel), time, rate));
-			if (oreFuel != null)
-				TCompRegistry.registerFuel(new HighOvenFuelTweaker(RecipeMatch.of(oreFuel), time, rate));
+			TCompRegistry.registerFuel(new HighOvenFuelTweaker(new RecipeMatchIIngredient(fuel), time, rate));
 		}
 
 		@Override
@@ -103,10 +85,7 @@ public class HighOven {
 
 		@Override
 		public String getRecipeInfo() {
-			if (itemFuel != null)
-				return itemFuel.getItem().getUnlocalizedName();
-			else
-				return oreFuel;
+			return LogHelper.getStackDescription(fuel);
 		}
 	}
 
@@ -145,7 +124,7 @@ public class HighOven {
 	public static void addHeatRecipe(ILiquidStack output, ILiquidStack input, int temp) {
 		init();
 		ModTweaker.LATE_ADDITIONS
-				.add(new HighOven.AddHeat(InputHelper.toFluid(output), InputHelper.toFluid(input), temp + 300));
+				.add(new HighOven.AddHeat(InputHelper.toFluid(output), InputHelper.toFluid(input), temp));
 	}
 
 	private static class AddHeat extends BaseAction {
@@ -187,7 +166,18 @@ public class HighOven {
 
 		@Override
 		public void apply() {
-			REMOVED_HEAT_RECIPES.put(output, input);
+			FluidStack output = InputHelper.toFluid(this.output);
+			if (this.input == null) {
+				REMOVED_HEAT_RECIPES.put(output, null);
+			} else if (REMOVED_HEAT_RECIPES.containsKey(output)) {
+				Set<FluidStack> inputs = REMOVED_HEAT_RECIPES.get(output);
+				if (inputs != null)
+					inputs.add(InputHelper.toFluid(input));
+			} else {
+				Set<FluidStack> inputs = new HashSet<>();
+				inputs.add(InputHelper.toFluid(input));
+				REMOVED_HEAT_RECIPES.put(output, inputs);
+			}
 		}
 
 		@Override
@@ -197,15 +187,16 @@ public class HighOven {
 
 		@Override
 		public String getRecipeInfo() {
-			return LogHelper.getStackDescription(output);
+			return LogHelper.getStackDescription(output)
+					+ ((input == null) ? "" : (" from " + LogHelper.getStackDescription(input)));
 		}
 
 	}
 
 	@ZenMethod
-	public static void removeMixRecipe(ILiquidStack output) {
+	public static void removeMixRecipe(ILiquidStack output, @Optional ILiquidStack input) {
 		init();
-		CraftTweakerAPI.apply(new RemoveMix(output));
+		CraftTweakerAPI.apply(new RemoveMix(output, input));
 	}
 
 	@ZenMethod
@@ -216,15 +207,28 @@ public class HighOven {
 
 	private static class RemoveMix extends BaseAction {
 		private ILiquidStack output;
+		private ILiquidStack input;
 
-		public RemoveMix(ILiquidStack output) {
+		public RemoveMix(ILiquidStack output, ILiquidStack input) {
 			super("HighOven.MixRecipe");
 			this.output = output;
+			this.input = input;
 		}
 
 		@Override
 		public void apply() {
-			REMOVED_MIX_RECIPES.add(output);
+			FluidStack output = InputHelper.toFluid(this.output);
+			if (this.input == null) {
+				REMOVED_MIX_RECIPES.put(output, null);
+			} else if (REMOVED_MIX_RECIPES.containsKey(output)) {
+				Set<FluidStack> inputs = REMOVED_MIX_RECIPES.get(output);
+				if (inputs != null)
+					inputs.add(InputHelper.toFluid(input));
+			} else {
+				Set<FluidStack> inputs = new HashSet<>();
+				inputs.add(InputHelper.toFluid(input));
+				REMOVED_MIX_RECIPES.put(output, inputs);
+			}
 		}
 
 		@Override
@@ -234,7 +238,8 @@ public class HighOven {
 
 		@Override
 		protected String getRecipeInfo() {
-			return LogHelper.getStackDescription(output);
+			return LogHelper.getStackDescription(output)
+					+ ((input == null) ? "" : (" from " + LogHelper.getStackDescription(input)));
 		}
 	}
 
@@ -255,14 +260,15 @@ public class HighOven {
 		if (event.getRecipe() instanceof HeatRecipeTweaker) {
 			return;
 		} else {
-			for (Map.Entry<ILiquidStack, ILiquidStack> entry : REMOVED_HEAT_RECIPES.entrySet()) {
-				if (event.getRecipe().getOutput().isFluidEqual((FluidStack) entry.getKey().getInternal())) {
-					if (entry.getValue() != null) {
-						if (event.getRecipe().getInput().isFluidEqual((FluidStack) entry.getValue().getInternal())) {
+			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_HEAT_RECIPES.entrySet()) {
+				if (entry.getValue() == null && event.getRecipe().matches(null, entry.getKey())) {
+					event.setCanceled(true);
+				} else {
+					for (FluidStack input : entry.getValue()) {
+						if (event.getRecipe().matches(input, entry.getKey())) {
 							event.setCanceled(true);
+							break;
 						}
-					} else {
-						event.setCanceled(true);
 					}
 				}
 			}
@@ -274,9 +280,16 @@ public class HighOven {
 		if (event.getRecipe() instanceof MixRecipeTweaker) {
 			return;
 		} else {
-			for (ILiquidStack entry : REMOVED_MIX_RECIPES) {
-				if (event.getRecipe().getOutput().isFluidEqual((FluidStack) entry.getInternal())) {
+			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_MIX_RECIPES.entrySet()) {
+				if (entry.getValue() == null && event.getRecipe().matches(null, entry.getKey())) {
 					event.setCanceled(true);
+				} else {
+					for (FluidStack input : entry.getValue()) {
+						if (event.getRecipe().matches(input, entry.getKey())) {
+							event.setCanceled(true);
+							break;
+						}
+					}
 				}
 			}
 		}
