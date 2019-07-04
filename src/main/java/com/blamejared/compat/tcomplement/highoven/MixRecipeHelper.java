@@ -1,6 +1,9 @@
 package com.blamejared.compat.tcomplement.highoven;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -167,7 +170,7 @@ public class MixRecipeHelper {
 	private static class AddMixRecipe extends BaseAction {
 		private FluidStack input, output;
 		private int temp;
-		private Map<RecipeMatch, MixAdditive> additives;
+		private List<SimpleEntry<RecipeMatch, MixAdditive>> additives;
 
 		public AddMixRecipe(ILiquidStack output, ILiquidStack input, int temp, Map<IIngredient, Integer> oxidizers,
 				Map<IIngredient, Integer> reducers, Map<IIngredient, Integer> purifiers) {
@@ -175,19 +178,19 @@ public class MixRecipeHelper {
 			this.input = InputHelper.toFluid(input);
 			this.output = InputHelper.toFluid(output);
 			this.temp = temp;
-			this.additives = new LinkedHashMap<>();
+			this.additives = new LinkedList<>();
 			oxidizers.forEach((IIngredient ingredient, Integer chance) -> this.additives
-					.put(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.OXIDIZER));
+					.add(new SimpleEntry<>(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.OXIDIZER)));
 			reducers.forEach((IIngredient ingredient, Integer chance) -> this.additives
-					.put(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.REDUCER));
+					.add(new SimpleEntry<>(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.REDUCER)));
 			purifiers.forEach((IIngredient ingredient, Integer chance) -> this.additives
-					.put(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.PURIFIER));
+					.add(new SimpleEntry<>(new RecipeMatchIIngredient(ingredient, chance), MixAdditive.PURIFIER)));
 		}
 
 		@Override
 		public void apply() {
 			IMixRecipe recipe = TCompRegistry.registerMix(new MixRecipeTweaker(this.input, this.output, this.temp));
-			for (Map.Entry<RecipeMatch, MixAdditive> entry : this.additives.entrySet()) {
+			for (SimpleEntry<RecipeMatch, MixAdditive> entry : this.additives) {
 				recipe.addAdditive(entry.getValue(), entry.getKey());
 			}
 		}
