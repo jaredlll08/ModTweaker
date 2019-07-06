@@ -46,20 +46,20 @@ public class MixRecipeManager {
 	}
 
 	@ZenMethod
-	public MixRecipeManager addOxidizer(@NotNull IIngredient oxidizer) {
-		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer), MixAdditive.OXIDIZER));
+	public MixRecipeManager addOxidizer(@NotNull IIngredient oxidizer, int consumeChance) {
+		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer, consumeChance), MixAdditive.OXIDIZER));
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeManager addReducer(@NotNull IIngredient reducer) {
-		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(reducer), MixAdditive.REDUCER));
+	public MixRecipeManager addReducer(@NotNull IIngredient reducer, int consumeChance) {
+		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(reducer, consumeChance), MixAdditive.REDUCER));
 		return this;
 	}
 
 	@ZenMethod
-	public MixRecipeManager addPurifier(@NotNull IIngredient purifier) {
-		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier), MixAdditive.PURIFIER));
+	public MixRecipeManager addPurifier(@NotNull IIngredient purifier, int consumeChance) {
+		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier, consumeChance), MixAdditive.PURIFIER));
 		return this;
 	}
 
