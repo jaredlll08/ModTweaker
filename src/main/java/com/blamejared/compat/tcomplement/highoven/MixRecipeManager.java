@@ -92,7 +92,8 @@ public class MixRecipeManager {
 		}
 		return this;
 	}
-
+	
+	@ZenMethod
 	public void register() {
 		if (!this.init) {
 			MinecraftForge.EVENT_BUS.register(this);
@@ -114,7 +115,8 @@ public class MixRecipeManager {
 			List<RecipeMatch> removals = removedAdditives.get(event.getType());
 			if (removals != null) {
 				for (RecipeMatch removal : removals) {
-					if (removal.matches((NonNullList<ItemStack>) event.getAdditive().getInputs()).isPresent()) {
+					//TODO: Fix THIS!
+					if (removal.matches(NonNullList.from(event.getAdditive().getInputs())).isPresent()) {
 						event.setCanceled(true);
 						break;
 					}

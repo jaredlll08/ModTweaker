@@ -267,8 +267,9 @@ public class HighOven {
 			return;
 		} else {
 			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_HEAT_RECIPES.entrySet()) {
-				if (entry.getValue() == null && event.getRecipe().matches(null, entry.getKey())) {
-					event.setCanceled(true);
+				if (entry.getValue() == null) {
+					if (event.getRecipe().matches(null, entry.getKey()))
+						event.setCanceled(true);
 				} else {
 					for (FluidStack input : entry.getValue()) {
 						if (event.getRecipe().matches(input, entry.getKey())) {
@@ -287,8 +288,9 @@ public class HighOven {
 			return;
 		} else {
 			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_MIX_RECIPES.entrySet()) {
-				if (entry.getValue() == null && event.getRecipe().matches(null, entry.getKey())) {
-					event.setCanceled(true);
+				if (entry.getValue() == null) {
+					if (event.getRecipe().matches(null, entry.getKey()))
+						event.setCanceled(true);
 				} else {
 					for (FluidStack input : entry.getValue()) {
 						if (event.getRecipe().matches(input, entry.getKey())) {
