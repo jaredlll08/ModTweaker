@@ -13,10 +13,10 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.mc1120.item.MCItemStack;
 import knightminer.tcomplement.library.events.TCompRegisterEvent;
 import knightminer.tcomplement.library.steelworks.MixAdditive;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -29,13 +29,11 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 @ModOnly("tcomplement")
 public class MixRecipeManager {
-	private boolean init;
 	private FluidStack input, output;
 	private List<SimpleEntry<RecipeMatch, MixAdditive>> additives;
-	private Map<MixAdditive, List<RecipeMatch>> removedAdditives;
+	private Map<MixAdditive, List<IIngredient>> removedAdditives;
 
 	public MixRecipeManager(ILiquidStack output, ILiquidStack input) {
-		this.init = false;
 		this.input = InputHelper.toFluid(input);
 		this.output = InputHelper.toFluid(output);
 		this.additives = new LinkedList<>();
@@ -43,11 +41,13 @@ public class MixRecipeManager {
 		for (MixAdditive type : MixAdditive.values()) {
 			this.removedAdditives.put(type, new LinkedList<>());
 		}
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@ZenMethod
 	public MixRecipeManager addOxidizer(@NotNull IIngredient oxidizer, int consumeChance) {
-		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer, consumeChance), MixAdditive.OXIDIZER));
+		this.additives
+				.add(new SimpleEntry<>(new RecipeMatchIIngredient(oxidizer, consumeChance), MixAdditive.OXIDIZER));
 		return this;
 	}
 
@@ -59,14 +59,15 @@ public class MixRecipeManager {
 
 	@ZenMethod
 	public MixRecipeManager addPurifier(@NotNull IIngredient purifier, int consumeChance) {
-		this.additives.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier, consumeChance), MixAdditive.PURIFIER));
+		this.additives
+				.add(new SimpleEntry<>(new RecipeMatchIIngredient(purifier, consumeChance), MixAdditive.PURIFIER));
 		return this;
 	}
 
 	@ZenMethod
 	public MixRecipeManager removeOxidizer(IIngredient oxidizer) {
 		if (oxidizer != null && removedAdditives.get(MixAdditive.OXIDIZER) != null) {
-			removedAdditives.get(MixAdditive.OXIDIZER).add(new RecipeMatchIIngredient(oxidizer));
+			removedAdditives.get(MixAdditive.OXIDIZER).add(oxidizer);
 		} else {
 			removedAdditives.put(MixAdditive.OXIDIZER, null);
 		}
@@ -76,7 +77,7 @@ public class MixRecipeManager {
 	@ZenMethod
 	public MixRecipeManager removeReducer(IIngredient reducer) {
 		if (reducer != null && removedAdditives.get(MixAdditive.REDUCER) != null) {
-			removedAdditives.get(MixAdditive.REDUCER).add(new RecipeMatchIIngredient(reducer));
+			removedAdditives.get(MixAdditive.REDUCER).add(reducer);
 		} else {
 			removedAdditives.put(MixAdditive.REDUCER, null);
 		}
@@ -86,23 +87,15 @@ public class MixRecipeManager {
 	@ZenMethod
 	public MixRecipeManager removePurifier(IIngredient purifier) {
 		if (purifier != null && removedAdditives.get(MixAdditive.PURIFIER) != null) {
-			removedAdditives.get(MixAdditive.PURIFIER).add(new RecipeMatchIIngredient(purifier));
+			removedAdditives.get(MixAdditive.PURIFIER).add(purifier);
 		} else {
 			removedAdditives.put(MixAdditive.PURIFIER, null);
 		}
 		return this;
 	}
-	
-	@ZenMethod
-	public void register() {
-		if (!this.init) {
-			MinecraftForge.EVENT_BUS.register(this);
-			init = true;
-		}
-	}
 
 	@SubscribeEvent
-	public void onTinkerRegister(TCompRegisterEvent.HighOvenMixRegisterEvent event) {
+	public void onHighOvenMixRegister(TCompRegisterEvent.HighOvenMixRegisterEvent event) {
 		if (event.getRecipe().matches(this.input, this.output)) {
 			this.additives.forEach((SimpleEntry<RecipeMatch, MixAdditive> entry) -> event.getRecipe()
 					.addAdditive(entry.getValue(), entry.getKey()));
@@ -110,15 +103,16 @@ public class MixRecipeManager {
 	}
 
 	@SubscribeEvent
-	public void onTinkerRegister(TCompRegisterEvent.HighOvenMixAdditiveEvent event) {
+	public void onHighOvenAdditiveRegister(TCompRegisterEvent.HighOvenMixAdditiveEvent event) {
 		if (event.getRecipe().matches(input, output)) {
-			List<RecipeMatch> removals = removedAdditives.get(event.getType());
+			List<IIngredient> removals = removedAdditives.get(event.getType());
 			if (removals != null) {
-				for (RecipeMatch removal : removals) {
-					//TODO: Fix THIS!
-					if (removal.matches(NonNullList.from(event.getAdditive().getInputs())).isPresent()) {
-						event.setCanceled(true);
-						break;
+				for (IIngredient removal : removals) {
+					for (ItemStack additive : event.getAdditive().getInputs()) {
+						if (removal.matches(new MCItemStack(additive))) {
+							event.setCanceled(true);
+							return;
+						}
 					}
 				}
 			} else {

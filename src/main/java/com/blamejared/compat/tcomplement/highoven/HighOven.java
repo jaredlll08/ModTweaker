@@ -20,10 +20,11 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
+import crafttweaker.mc1120.item.MCItemStack;
 import knightminer.tcomplement.library.TCompRegistry;
 import knightminer.tcomplement.library.events.TCompRegisterEvent;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +37,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ModOnly("tcomplement")
 public class HighOven {
 
-	public static final List<IItemStack> REMOVED_FUELS = new LinkedList<>();
+	public static final List<IIngredient> REMOVED_FUELS = new LinkedList<>();
 	public static final Map<FluidStack, Set<FluidStack>> REMOVED_HEAT_RECIPES = new LinkedHashMap<>();
 	public static final Map<FluidStack, Set<FluidStack>> REMOVED_MIX_RECIPES = new LinkedHashMap<>();
 
@@ -50,7 +51,7 @@ public class HighOven {
 	}
 
 	@ZenMethod
-	public static void removeFuel(IItemStack stack) {
+	public static void removeFuel(IIngredient stack) {
 		init();
 		CraftTweakerAPI.apply(new HighOven.RemoveFuel(stack));
 	}
@@ -90,9 +91,9 @@ public class HighOven {
 	}
 
 	private static class RemoveFuel extends BaseAction {
-		private IItemStack fuel;
+		private IIngredient fuel;
 
-		public RemoveFuel(IItemStack fuel) {
+		public RemoveFuel(IIngredient fuel) {
 			super("HighOven.Fuel");
 			this.fuel = fuel;
 		};
@@ -204,7 +205,7 @@ public class HighOven {
 		init();
 		return new MixRecipeBuilder(output, input, temp);
 	}
-	
+
 	@ZenMethod
 	public static MixRecipeManager manageMixRecipe(ILiquidStack output, ILiquidStack input) {
 		init();
@@ -250,19 +251,22 @@ public class HighOven {
 	}
 
 	@SubscribeEvent
-	public void onTinkerRegister(TCompRegisterEvent.HighOvenFuelRegisterEvent event) {
+	public void onHighOvenFuelRegister(TCompRegisterEvent.HighOvenFuelRegisterEvent event) {
 		if (event.getRecipe() instanceof HighOvenFuelTweaker) {
 			return;
 		}
-		for (IItemStack entry : REMOVED_FUELS) {
-			if (event.getRecipe().matches(InputHelper.toStack(entry))) {
-				event.setCanceled(true);
+		for (IIngredient entry : REMOVED_FUELS) {
+			for (ItemStack fuel : event.getRecipe().getFuels()) {
+				if (entry.matches(new MCItemStack(fuel))) {
+					event.setCanceled(true);
+					return;
+				}
 			}
 		}
 	}
 
 	@SubscribeEvent
-	public void onTinkerRegister(TCompRegisterEvent.HighOvenHeatRegisterEvent event) {
+	public void onHighOvenHeatRegister(TCompRegisterEvent.HighOvenHeatRegisterEvent event) {
 		if (event.getRecipe() instanceof HeatRecipeTweaker) {
 			return;
 		} else {
@@ -283,7 +287,7 @@ public class HighOven {
 	}
 
 	@SubscribeEvent
-	public void onTinkerRegister(TCompRegisterEvent.HighOvenMixRegisterEvent event) {
+	public void onHighOvenMixRegister(TCompRegisterEvent.HighOvenMixRegisterEvent event) {
 		if (event.getRecipe() instanceof MixRecipeTweaker) {
 			return;
 		} else {

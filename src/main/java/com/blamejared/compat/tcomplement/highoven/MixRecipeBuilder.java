@@ -35,7 +35,6 @@ public class MixRecipeBuilder {
 	private ILiquidStack output, input;
 	private int temp;
 	private Map<IIngredient, Integer> oxidizers, reducers, purifiers;
-	// private Map<IIngredient, Integer> oxidizers, reducers, purifiers;
 
 	public MixRecipeBuilder(ILiquidStack output, ILiquidStack input, int temp) {
 		this.output = output;
