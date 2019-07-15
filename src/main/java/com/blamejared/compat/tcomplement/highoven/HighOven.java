@@ -1,11 +1,7 @@
 package com.blamejared.compat.tcomplement.highoven;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.mantle.RecipeMatchIIngredient;
@@ -31,6 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+import stanhebben.zenscript.util.Pair;
 
 @ZenClass("mods.tcomplement.highoven.HighOven")
 @ZenRegister
@@ -38,8 +35,8 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class HighOven {
 
 	public static final List<IIngredient> REMOVED_FUELS = new LinkedList<>();
-	public static final Map<FluidStack, Set<FluidStack>> REMOVED_HEAT_RECIPES = new LinkedHashMap<>();
-	public static final Map<FluidStack, Set<FluidStack>> REMOVED_MIX_RECIPES = new LinkedHashMap<>();
+	public static final List<Pair<FluidStack, FluidStack>> REMOVED_HEAT_RECIPES = new LinkedList<>();
+	public static final List<Pair<FluidStack, FluidStack>> REMOVED_MIX_RECIPES = new LinkedList<>();
 
 	private static boolean init = false;
 
@@ -167,18 +164,7 @@ public class HighOven {
 
 		@Override
 		public void apply() {
-			FluidStack output = InputHelper.toFluid(this.output);
-			if (this.input == null) {
-				REMOVED_HEAT_RECIPES.put(output, null);
-			} else if (REMOVED_HEAT_RECIPES.containsKey(output)) {
-				Set<FluidStack> inputs = REMOVED_HEAT_RECIPES.get(output);
-				if (inputs != null)
-					inputs.add(InputHelper.toFluid(input));
-			} else {
-				Set<FluidStack> inputs = new HashSet<>();
-				inputs.add(InputHelper.toFluid(input));
-				REMOVED_HEAT_RECIPES.put(output, inputs);
-			}
+			REMOVED_HEAT_RECIPES.add(new Pair<>(InputHelper.toFluid(input), InputHelper.toFluid(output)));
 		}
 
 		@Override
@@ -224,18 +210,7 @@ public class HighOven {
 
 		@Override
 		public void apply() {
-			FluidStack output = InputHelper.toFluid(this.output);
-			if (this.input == null) {
-				REMOVED_MIX_RECIPES.put(output, null);
-			} else if (REMOVED_MIX_RECIPES.containsKey(output)) {
-				Set<FluidStack> inputs = REMOVED_MIX_RECIPES.get(output);
-				if (inputs != null)
-					inputs.add(InputHelper.toFluid(input));
-			} else {
-				Set<FluidStack> inputs = new HashSet<>();
-				inputs.add(InputHelper.toFluid(input));
-				REMOVED_MIX_RECIPES.put(output, inputs);
-			}
+			REMOVED_MIX_RECIPES.add(new Pair<>(InputHelper.toFluid(input), InputHelper.toFluid(output)));
 		}
 
 		@Override
@@ -270,17 +245,10 @@ public class HighOven {
 		if (event.getRecipe() instanceof HeatRecipeTweaker) {
 			return;
 		} else {
-			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_HEAT_RECIPES.entrySet()) {
-				if (entry.getValue() == null) {
-					if (event.getRecipe().matches(null, entry.getKey()))
-						event.setCanceled(true);
-				} else {
-					for (FluidStack input : entry.getValue()) {
-						if (event.getRecipe().matches(input, entry.getKey())) {
-							event.setCanceled(true);
-							break;
-						}
-					}
+			for (Pair<FluidStack, FluidStack> entry : REMOVED_HEAT_RECIPES) {
+				if (event.getRecipe().matches(entry.getKey(), entry.getValue())) {
+					event.setCanceled(true);
+					return;
 				}
 			}
 		}
@@ -291,17 +259,10 @@ public class HighOven {
 		if (event.getRecipe() instanceof MixRecipeTweaker) {
 			return;
 		} else {
-			for (Map.Entry<FluidStack, Set<FluidStack>> entry : REMOVED_MIX_RECIPES.entrySet()) {
-				if (entry.getValue() == null) {
-					if (event.getRecipe().matches(null, entry.getKey()))
-						event.setCanceled(true);
-				} else {
-					for (FluidStack input : entry.getValue()) {
-						if (event.getRecipe().matches(input, entry.getKey())) {
-							event.setCanceled(true);
-							break;
-						}
-					}
+			for (Pair<FluidStack, FluidStack> entry : REMOVED_MIX_RECIPES) {
+				if (event.getRecipe().matches(entry.getKey(), entry.getValue())) {
+					event.setCanceled(true);
+					return;
 				}
 			}
 		}
