@@ -1,7 +1,9 @@
 package com.blamejared.compat.tcomplement.highoven;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.mantle.RecipeMatchIIngredient;
@@ -36,6 +38,7 @@ import stanhebben.zenscript.util.Pair;
 public class HighOven {
 
 	public static final List<IIngredient> REMOVED_FUELS = new LinkedList<>();
+	public static final Map<ILiquidStack, IIngredient> REMOVED_OVERRIDES = new LinkedHashMap<>();
 	public static final List<Pair<FluidStack, FluidStack>> REMOVED_HEAT_RECIPES = new LinkedList<>();
 	public static final List<Pair<FluidStack, FluidStack>> REMOVED_MIX_RECIPES = new LinkedList<>();
 
@@ -123,7 +126,14 @@ public class HighOven {
 	@ZenMethod
 	public static void addMeltingOverride(ILiquidStack output, IIngredient input, @Optional int temp) {
 		init();
-		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddMelting(InputHelper.toFluid(output), input, (temp == 0 ? -1 : temp)));
+		ModTweaker.LATE_ADDITIONS
+				.add(new HighOven.AddMelting(InputHelper.toFluid(output), input, (temp == 0 ? -1 : temp)));
+	}
+
+	@ZenMethod
+	public static void removeMeltingOverride(ILiquidStack output, @Optional IIngredient input) {
+		init();
+		CraftTweakerAPI.apply(new HighOven.RemoveMelting(output, input));
 	}
 
 	private static class AddMelting extends BaseAction {
@@ -144,8 +154,8 @@ public class HighOven {
 				TCompRegistry.registerHighOvenOverride(
 						new MeltingRecipeTweaker(new RecipeMatchIIngredient(input, output.amount), output, temp));
 			} else {
-				TCompRegistry
-						.registerHighOvenOverride(new MeltingRecipeTweaker(new RecipeMatchIIngredient(input, output.amount), output));
+				TCompRegistry.registerHighOvenOverride(
+						new MeltingRecipeTweaker(new RecipeMatchIIngredient(input, output.amount), output));
 			}
 
 		}
@@ -162,6 +172,31 @@ public class HighOven {
 
 	}
 
+	private static class RemoveMelting extends BaseAction {
+		private ILiquidStack output;
+		private IIngredient input;
+
+		public RemoveMelting(ILiquidStack output, IIngredient input) {
+			super("High Oven melting override");
+			this.input = input;
+			this.output = output;
+		}
+
+		@Override
+		public void apply() {
+			REMOVED_OVERRIDES.put(output, input);
+		}
+
+		@Override
+		public String describe() {
+			return String.format("Removing %s Recipe(s) for %s", this.name, this.getRecipeInfo());
+		}
+
+		@Override
+		protected String getRecipeInfo() {
+			return LogHelper.getStackDescription(output);
+		}
+	}
 	/*-------------------------------------------------------------------------*\
 	| High Oven Heat                                                            |
 	\*-------------------------------------------------------------------------*/
