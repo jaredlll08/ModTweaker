@@ -8,6 +8,7 @@ import com.blamejared.compat.mantle.RecipeMatchIIngredient;
 import com.blamejared.compat.tcomplement.highoven.recipes.HeatRecipeTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.HighOvenFuelTweaker;
 import com.blamejared.compat.tcomplement.highoven.recipes.MixRecipeTweaker;
+import com.blamejared.compat.tconstruct.recipes.MeltingRecipeTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;
@@ -47,6 +48,9 @@ public class HighOven {
 		}
 	}
 
+	/*-------------------------------------------------------------------------*\
+	| High Oven Fuels                                                           |
+	\*-------------------------------------------------------------------------*/
 	@ZenMethod
 	public static void removeFuel(IIngredient stack) {
 		init();
@@ -65,7 +69,7 @@ public class HighOven {
 		private int rate;
 
 		public AddFuel(IIngredient fuel, int time, int rate) {
-			super("HighOven.Fuel");
+			super("High Oven fuel");
 			this.fuel = fuel;
 			this.time = time;
 			this.rate = rate;
@@ -78,7 +82,7 @@ public class HighOven {
 
 		@Override
 		public String describe() {
-			return String.format("Adding %s as high oven fuel", this.getRecipeInfo());
+			return String.format("Adding %s as %s", this.getRecipeInfo(), this.name);
 		}
 
 		@Override
@@ -91,7 +95,7 @@ public class HighOven {
 		private IIngredient fuel;
 
 		public RemoveFuel(IIngredient fuel) {
-			super("HighOven.Fuel");
+			super("High Oven fuel");
 			this.fuel = fuel;
 		};
 
@@ -102,7 +106,7 @@ public class HighOven {
 
 		@Override
 		public String describe() {
-			return String.format("Removing %s high oven fuel entry", this.getRecipeInfo());
+			return String.format("Removing %s as %s", this.getRecipeInfo(), this.name);
 		}
 
 		@Override
@@ -111,6 +115,56 @@ public class HighOven {
 		}
 
 	}
+
+	/*-------------------------------------------------------------------------*\
+	| High Oven Melting                                                         |
+	\*-------------------------------------------------------------------------*/
+
+	@ZenMethod
+	public static void addMeltingOverride(ILiquidStack output, IIngredient input, @Optional int temp) {
+		init();
+		ModTweaker.LATE_ADDITIONS.add(new HighOven.AddMelting(InputHelper.toFluid(output), input, (temp == 0 ? -1 : temp)));
+	}
+
+	private static class AddMelting extends BaseAction {
+		private IIngredient input;
+		private FluidStack output;
+		private int temp;
+
+		public AddMelting(FluidStack output, IIngredient input, int temp) {
+			super("High Oven melting override");
+			this.input = input;
+			this.output = output;
+			this.temp = temp;
+		}
+
+		@Override
+		public void apply() {
+			if (temp > 0) {
+				TCompRegistry.registerHighOvenOverride(
+						new MeltingRecipeTweaker(new RecipeMatchIIngredient(input, output.amount), output, temp));
+			} else {
+				TCompRegistry
+						.registerHighOvenOverride(new MeltingRecipeTweaker(new RecipeMatchIIngredient(input, output.amount), output));
+			}
+
+		}
+
+		@Override
+		public String describe() {
+			return String.format("Adding %s for %s", this.name, this.getRecipeInfo());
+		}
+
+		@Override
+		protected String getRecipeInfo() {
+			return LogHelper.getStackDescription(input) + ", now yields " + LogHelper.getStackDescription(output);
+		}
+
+	}
+
+	/*-------------------------------------------------------------------------*\
+	| High Oven Heat                                                            |
+	\*-------------------------------------------------------------------------*/
 
 	@ZenMethod
 	public static void removeHeatRecipe(ILiquidStack output, @Optional ILiquidStack input) {
@@ -130,7 +184,7 @@ public class HighOven {
 		private int temp;
 
 		public AddHeat(FluidStack output, FluidStack input, int temp) {
-			super("HighOven.HeatRecipe");
+			super("High Oven Heat");
 			this.output = output;
 			this.input = input;
 			this.temp = temp;
@@ -143,7 +197,7 @@ public class HighOven {
 
 		@Override
 		public String describe() {
-			return String.format("Adding %s Recipe(s) for %s", this.name, this.getRecipeInfo());
+			return String.format("Adding %s Recipe for %s", this.name, this.getRecipeInfo());
 		}
 
 		@Override
@@ -157,7 +211,7 @@ public class HighOven {
 		private ILiquidStack output;
 
 		public RemoveHeat(ILiquidStack input, ILiquidStack output) {
-			super("HighOven.HeatRecipe");
+			super("High Oven Heat");
 			this.input = input;
 			this.output = output;
 		}
@@ -180,6 +234,9 @@ public class HighOven {
 
 	}
 
+	/*-------------------------------------------------------------------------*\
+	| High Oven Mix                                                             |
+	\*-------------------------------------------------------------------------*/
 	@ZenMethod
 	public static void removeMixRecipe(ILiquidStack output, @Optional ILiquidStack input) {
 		init();
@@ -203,7 +260,7 @@ public class HighOven {
 		private ILiquidStack input;
 
 		public RemoveMix(ILiquidStack output, ILiquidStack input) {
-			super("HighOven.MixRecipe");
+			super("High Oven Mix");
 			this.output = output;
 			this.input = input;
 		}
@@ -224,6 +281,10 @@ public class HighOven {
 					+ ((input == null) ? "" : (" from " + LogHelper.getStackDescription(input)));
 		}
 	}
+
+	/*-------------------------------------------------------------------------*\
+	| Event handlers                                                            |
+	\*-------------------------------------------------------------------------*/
 
 	@SubscribeEvent
 	public void onHighOvenFuelRegister(TCompRegisterEvent.HighOvenFuelRegisterEvent event) {

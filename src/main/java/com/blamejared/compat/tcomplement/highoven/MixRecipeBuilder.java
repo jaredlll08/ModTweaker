@@ -173,7 +173,7 @@ public class MixRecipeBuilder {
 
 		public AddMixRecipe(ILiquidStack output, ILiquidStack input, int temp, Map<IIngredient, Integer> oxidizers,
 				Map<IIngredient, Integer> reducers, Map<IIngredient, Integer> purifiers) {
-			super("HighOven.MixRecipe");
+			super("High Oven Mix");
 			this.input = InputHelper.toFluid(input);
 			this.output = InputHelper.toFluid(output);
 			this.temp = temp;
