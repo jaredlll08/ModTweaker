@@ -1,9 +1,13 @@
+import crafttweaker.oredict.IOreDictEntry;
+
 import mods.tcomplement.highoven.HighOven;
 import mods.tcomplement.highoven.MixRecipeBuilder;
 import mods.tcomplement.highoven.MixRecipeManager;
 
 HighOven.removeFuel(<minecraft:coal:1>);
 HighOven.addFuel(<minecraft:diamond>, 1000, 25);
+
+HighOven.addMeltingOverride(<liquid:steel> * 144, <ore:ingotIron>, 2567);
 
 HighOven.removeHeatRecipe(<liquid:steam>);
 HighOven.addHeatRecipe(<liquid:lava> * 100, <liquid:water> * 1000, 450);
