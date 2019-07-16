@@ -19,11 +19,13 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.mc1120.item.MCItemStack;
 import knightminer.tcomplement.library.TCompRegistry;
 import knightminer.tcomplement.library.events.TCompRegisterEvent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -38,7 +40,7 @@ import stanhebben.zenscript.util.Pair;
 public class HighOven {
 
 	public static final List<IIngredient> REMOVED_FUELS = new LinkedList<>();
-	public static final Map<ILiquidStack, IIngredient> REMOVED_OVERRIDES = new LinkedHashMap<>();
+	public static final Map<ILiquidStack, IItemStack> REMOVED_OVERRIDES = new LinkedHashMap<>();
 	public static final List<Pair<FluidStack, FluidStack>> REMOVED_HEAT_RECIPES = new LinkedList<>();
 	public static final List<Pair<FluidStack, FluidStack>> REMOVED_MIX_RECIPES = new LinkedList<>();
 
@@ -131,7 +133,7 @@ public class HighOven {
 	}
 
 	@ZenMethod
-	public static void removeMeltingOverride(ILiquidStack output, @Optional IIngredient input) {
+	public static void removeMeltingOverride(ILiquidStack output, @Optional IItemStack input) {
 		init();
 		CraftTweakerAPI.apply(new HighOven.RemoveMelting(output, input));
 	}
@@ -174,9 +176,9 @@ public class HighOven {
 
 	private static class RemoveMelting extends BaseAction {
 		private ILiquidStack output;
-		private IIngredient input;
+		private IItemStack input;
 
-		public RemoveMelting(ILiquidStack output, IIngredient input) {
+		public RemoveMelting(ILiquidStack output, IItemStack input) {
 			super("High Oven melting override");
 			this.input = input;
 			this.output = output;
@@ -360,6 +362,24 @@ public class HighOven {
 					event.setCanceled(true);
 					return;
 				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onHighOvenOverrideRegister(TCompRegisterEvent.HighOvenOverrideRegisterEvent event) {
+		if (event.getRecipe() instanceof MeltingRecipeTweaker) {
+			return;
+		}
+		for (Map.Entry<ILiquidStack, IItemStack> entry : REMOVED_OVERRIDES.entrySet()) {
+			if (event.getRecipe().getResult().isFluidEqual(((FluidStack) entry.getKey().getInternal()))) {
+				if (entry.getValue() != null) {
+					if (event.getRecipe().input
+							.matches(NonNullList.withSize(1, (ItemStack) entry.getValue().getInternal())).isPresent()) {
+						event.setCanceled(true);
+					}
+				} else
+					event.setCanceled(true);
 			}
 		}
 	}
