@@ -59,7 +59,10 @@ repositories {
     maven {
         url "http://maven.amadornes.com/"
     }
-
+    maven {
+        name "CurseForge"
+        url "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 dependencies {
@@ -119,6 +122,7 @@ dependencies {
     deobfCompile("knightminer:Inspirations:1.12.2-0.2.3.63") {
         exclude group: 'mezz.jei'
     }
+    deobfCompile "immersive-engineering:ImmersiveEngineering:0.12:89"
 }
 
 processResources {
