@@ -1,7 +1,9 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            url = "http://files.minecraftforge.net/maven"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -19,7 +21,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
     mappings = "snapshot_20180407"
     useDepAts = true
@@ -27,19 +29,19 @@ minecraft {
 
 repositories {
     maven {
-        url "http://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
     maven {
-        url "http://maven.blamejared.com"
+        url "https://maven.blamejared.com"
     }
     maven {
-        url "http://maven.covers1624.net/"
+        url "https://maven.covers1624.net/"
     }
     maven {
-        url "http://chickenbones.net/maven/"
+        url "https://chickenbones.net/maven/"
     }
     maven {
-        url "http://www.ryanliptak.com/maven/"
+        url "https://www.ryanliptak.com/maven/"
     }
     maven {
         url "https://maven.chaosfield.at/"
@@ -48,21 +50,21 @@ repositories {
         url "http://maven.ic2.player.to/"
     }
     maven {
-        url "http://maven.tterrag.com"
+        url "https://maven.tterrag.com"
     }
     maven {
-        url = "http://maven.thiakil.com"
+        url = "https://maven.thiakil.com"
     }
     maven {
-        url "http://tehnut.info/maven/"
+        url "https://tehnut.info/maven/"
     }
     maven {
-        url "http://maven.amadornes.com/"
+        url "https://maven.amadornes.com/"
     }
 }
 
 dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.14.519"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.554"
     deobfCompile "mezz.jei:jei_1.12.2:4.14.4.264"
     deobfCompile "com.blamejared:MTLib:3.0.4.8"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
