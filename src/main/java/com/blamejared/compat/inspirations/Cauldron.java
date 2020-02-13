@@ -4,12 +4,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import knightminer.inspirations.library.recipe.cauldron.CauldronMixRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.blamejared.ModTweaker;
+import com.blamejared.compat.mantle.RecipeMatchIIngredient;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;
@@ -212,11 +213,7 @@ public class Cauldron {
 
 		@Override
 		public void apply() {
-			RecipeMatch input = fromIIngredient(this.input);
-			if (input == null) {
-				CraftTweakerAPI.logInfo("Could not find matching items for " + this.input.toString() + ". Ignoring Cauldron Dyeing recipe for " + output.getDisplayName());
-				return;
-			}
+			RecipeMatch input = new RecipeMatchIIngredient(this.input);
 			PotionType potion = PotionType.getPotionTypeForName(this.potion);
 			if (potion == null || potion == PotionTypes.EMPTY) {
 				CraftTweakerAPI.logError("Could not find potion type for " + this.potion + ". Ignoring Cauldron Brewing recipe for " + this.output);
@@ -320,12 +317,7 @@ public class Cauldron {
 
 		@Override
 		public void apply() {
-			RecipeMatch input = fromIIngredient(this.input);
-			if (input == null) {
-				CraftTweakerAPI.logInfo("Could not find matching items for " + this.input.toString() + ". Ignoring Cauldron Dyeing recipe for " + output.getDisplayName());
-				return;
-			}
-
+			RecipeMatch input = new RecipeMatchIIngredient(this.input);
 			addRecipe(new CauldronDyeRecipe(input, dye, output, levels));
 		}
 
@@ -393,6 +385,11 @@ public class Cauldron {
 	}
 
 	@ZenMethod
+	public static void addFluidMix(IItemStack output, ILiquidStack liquid1, ILiquidStack liquid2) {
+		ModTweaker.LATE_ADDITIONS.add(new AddFluidMix(InputHelper.toStack(output), InputHelper.toFluid(liquid1), InputHelper.toFluid(liquid2)));
+	}
+
+	@ZenMethod
 	public static void removeFluidRecipe(IIngredient output, @Optional IIngredient input, @Optional ILiquidStack fluid) {
 		init();
 		CraftTweakerAPI.apply(new RemoveFluid(output, input, fluid));
@@ -422,12 +419,7 @@ public class Cauldron {
 
 		@Override
 		public void apply() {
-			RecipeMatch input = fromIIngredient(this.input);
-			if (input == null) {
-				CraftTweakerAPI.logInfo("Could not find matching items for " + this.input.toString() + ". Ignoring Cauldron Fluid recipe for " + output.getDisplayName());
-				return;
-			}
-
+			RecipeMatch input = new RecipeMatchIIngredient(this.input);
 			addRecipe(new CauldronFluidRecipe(input, fluid.getFluid(), output, boiling, levels));
 		}
 
@@ -455,13 +447,30 @@ public class Cauldron {
 
 		@Override
 		public void apply() {
-			RecipeMatch input = fromIIngredient(this.input);
-			if (input == null) {
-				CraftTweakerAPI.logInfo("Could not find matching items for " + this.input.toString() + ". Ignoring Cauldron Fluid recipe for " + output.getLocalizedName());
-				return;
-			}
-
+			RecipeMatch input = new RecipeMatchIIngredient(this.input);
 			addRecipe(new CauldronFluidTransformRecipe(input, fluid.getFluid(), output.getFluid(), boiling, maxLevels));
+		}
+
+		@Override
+		protected String getRecipeInfo() {
+			return LogHelper.getStackDescription(output);
+		}
+	}
+
+	private static class AddFluidMix extends BaseAction {
+		private ItemStack output;
+		private FluidStack input1, input2;
+
+		public AddFluidMix(ItemStack output, FluidStack input1, FluidStack input2) {
+			super("Cauldron Mix");
+			this.output = output;
+			this.input1 = input1;
+			this.input2 = input2;
+		}
+
+		@Override
+		public void apply() {
+			addRecipe(new CauldronMixRecipe(input1.getFluid(), input2.getFluid(), output));
 		}
 
 		@Override
@@ -569,12 +578,7 @@ public class Cauldron {
 
 		@Override
 		public void apply() {
-			RecipeMatch input = fromIIngredient(this.input);
-			if (input == null) {
-				CraftTweakerAPI.logInfo("Could not find matching items for " + this.input.toString() + ". Ignoring Cauldron Fill recipe for " + fluid.getLocalizedName());
-				return;
-			}
-
+			RecipeMatch input = new RecipeMatchIIngredient(this.input);
 			// use lava estinguish sound if boiling is required, makes it more melty
 			SoundEvent sound = boiling == Boolean.TRUE ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BOTTLE_EMPTY;
 			addRecipe(new FillCauldronRecipe(input, fluid.getFluid(), amount, container, boiling, sound));
@@ -679,15 +683,6 @@ public class Cauldron {
 	private static void addRecipe(ICauldronRecipe recipe) {
 		ADDED_RECIPES.add(recipe);
 		InspirationsRegistry.addCauldronRecipe(recipe);
-	}
-
-	private static RecipeMatch fromIIngredient(IIngredient ingredient) {
-		List<ItemStack> ingredients = ingredient.getItems().stream().map(CraftTweakerMC::getItemStack).collect(Collectors.toList());
-		if (ingredients.isEmpty()) {
-			return null;
-		}
-		int amount = ingredient.getAmount();
-		return RecipeMatch.of(ingredients, amount, amount);
 	}
 
 	private static boolean checkRecipeMatches(ISimpleCauldronRecipe recipe, IIngredient input, IIngredient output, Object inputState, Object outputState) {

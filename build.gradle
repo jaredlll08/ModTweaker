@@ -59,7 +59,6 @@ repositories {
     maven {
         url "http://maven.amadornes.com/"
     }
-
 }
 
 dependencies {
@@ -116,9 +115,10 @@ dependencies {
     deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
     deobfCompile "com.wayoftime.bloodmagic:BloodMagic:1.12.2-2.3.3-101"
     deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.7-62"
-    deobfCompile("knightminer:Inspirations:1.12.2-0.2.3.63") {
+    deobfCompile("knightminer:Inspirations:1.12.2-0.2.4.70") {
         exclude group: 'mezz.jei'
     }
+    deobfCompile "blusunrize:ImmersiveEngineering:0.12-89-518"
 }
 
 processResources {
