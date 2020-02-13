@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.oredict.OreDictionary;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
@@ -85,13 +86,21 @@ public class Melting {
         @Override
         public void apply() {
             List<ItemStack> validIngredients = ingredient.getItems().stream().map(CraftTweakerMC::getItemStack).collect(Collectors.toList());
-            if(validIngredients.isEmpty())
+            if (validIngredients.isEmpty()) {
                 CraftTweakerAPI.logInfo("Could not find matching items for " + ingredient.toString() + ". Ignoring Melting recipe for " + output.getLocalizedName());
-            
-            else if(temp == 0) {
-                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(validIngredients, output.amount), output));
+                return;
+            }
+            RecipeMatch rm;
+            if (validIngredients.size() == 1 && validIngredients.get(0).getMetadata() != OreDictionary.WILDCARD_VALUE) {
+                rm = RecipeMatch.ofNBT(validIngredients.get(0), output.amount);
             } else {
-                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(RecipeMatch.of(validIngredients, output.amount), output, temp));
+                rm = RecipeMatch.of(validIngredients, output.amount);
+            }
+            
+            if (temp == 0) {
+                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(rm, output));
+            } else {
+                TinkerRegistry.registerMelting(new MeltingRecipeTweaker(rm, output, temp));
             }
         }
         
