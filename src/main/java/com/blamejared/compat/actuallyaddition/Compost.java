@@ -31,7 +31,7 @@ public class Compost {
             CraftTweakerAPI.logError("outputDisplay or InputDisplay is not a block!");
             return;
         }
-        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new CompostRecipe(CraftTweakerMC.getIngredient(input), Block.getBlockFromItem(InputHelper.toStack(inputDisplay).getItem()).getDefaultState(), InputHelper.toStack(output), Block.getBlockFromItem(InputHelper.toStack(outputDisplay).getItem()).getDefaultState()))));
+        ModTweaker.LATE_ADDITIONS.add(new Add(Collections.singletonList(new CompostRecipe(CraftTweakerMC.getIngredient(input), Block.getBlockFromItem(InputHelper.toStack(inputDisplay).getItem()).getStateFromMeta(inputDisplay.getMetadata()), InputHelper.toStack(output), Block.getBlockFromItem(InputHelper.toStack(outputDisplay).getItem()).getStateFromMeta(outputDisplay.getMetadata())))));
     }
     
     @ZenMethod
