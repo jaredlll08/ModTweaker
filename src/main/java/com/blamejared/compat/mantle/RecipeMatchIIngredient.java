@@ -54,4 +54,6 @@ public class RecipeMatchIIngredient extends RecipeMatch {
 		}
 		return Optional.empty();
 	}
+
 }
+
