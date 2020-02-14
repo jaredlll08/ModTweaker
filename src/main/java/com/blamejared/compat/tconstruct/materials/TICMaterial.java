@@ -100,7 +100,7 @@ public class TICMaterial implements ITICMaterial {
     
     @Override
     public int getDurabilityExtra() {
-        return ((ExtraMaterialStats ) material.getStats("extra")).extraDurability;
+        return ((ExtraMaterialStats) material.getStats("extra")).extraDurability;
     }
     
     @Override
@@ -141,6 +141,48 @@ public class TICMaterial implements ITICMaterial {
     @Override
     public float getFletchingAccuracy() {
         return ((FletchingMaterialStats) material.getStats("fletching")).accuracy;
+    }
+    
+    @Override
+    public float getBowDrawSpeed() {
+        return ((BowMaterialStats) material.getStats("bow")).drawspeed;
+    }
+    
+    @Override
+    public void setBowDrawSpeed(float drawSpeed) {
+        CraftTweakerAPI.apply(new SetDrawSpeedAction(this, "bow", drawSpeed));
+    }
+    
+    @Override
+    public float getBowRange() {
+        return ((BowMaterialStats) material.getStats("bow")).range;
+    }
+    
+    @Override
+    public void setBowRange(float range) {
+        CraftTweakerAPI.apply(new SetBowRangeAction(this, "bow", range));
+    }
+    
+    @Override
+    public float getBonusDamage() {
+        return ((BowMaterialStats) material.getStats("bow")).bonusDamage;
+    }
+    
+    @Override
+    public void setBonusDamage(float bonusDamage) {
+        CraftTweakerAPI.apply(new SetBowBonusDamageAction(this, "bow", bonusDamage));
+    }
+    
+    @Override
+    public float getBowStringModifier() {
+        return ((BowStringMaterialStats) material.getStats("bowstring")).modifier;
+        
+    }
+    
+    @Override
+    public void setBowStringModifier(float modifier) {
+        CraftTweakerAPI.apply(new SetModifierAction(this, "bowstring", modifier));
+        
     }
     
     

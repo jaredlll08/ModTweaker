@@ -26,10 +26,13 @@ public class SetModifierAction implements IAction {
             ArrowShaftMaterialStats shaftStat = (ArrowShaftMaterialStats) oldStat;
             ArrowShaftMaterialStats newShaft = new ArrowShaftMaterialStats(modifier, shaftStat.bonusAmmo);
             material.addStats(newShaft);
-        }else if(oldStat instanceof FletchingMaterialStats) {
+        } else if(oldStat instanceof FletchingMaterialStats) {
             FletchingMaterialStats fletch = (FletchingMaterialStats) oldStat;
             FletchingMaterialStats newShaft = new FletchingMaterialStats(fletch.accuracy, modifier);
             material.addStats(newShaft);
+        }else if(oldStat instanceof BowStringMaterialStats) {
+            BowStringMaterialStats newBowString = new BowStringMaterialStats( modifier);
+            material.addStats(newBowString);
         }
         
         

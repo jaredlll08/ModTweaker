@@ -86,4 +86,30 @@ public interface ITICMaterial {
     @ZenGetter("fletchingAccuracy")
     float getFletchingAccuracy();
     
+    @ZenGetter("bowDrawSpeed")
+    float getBowDrawSpeed();
+    
+    @ZenSetter("bowDrawSpeed")
+    void setBowDrawSpeed(float drawSpeed);
+    
+    @ZenGetter("bowRange")
+    float getBowRange();
+    
+    @ZenSetter("bowRange")
+    void setBowRange(float range);
+    
+    @ZenGetter("bonusDamage")
+    float getBonusDamage();
+    
+    @ZenSetter("bonusDamage")
+    void setBonusDamage(float bonusDamage);
+    
+    @ZenGetter("bowStringModifier")
+    float getBowStringModifier();
+    
+    @ZenSetter("bowStringModifier")
+    void setBowStringModifier(float modifier);
+    
+    
+    
 }
