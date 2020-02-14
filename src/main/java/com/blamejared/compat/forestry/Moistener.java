@@ -106,7 +106,7 @@ public class Moistener {
     @ZenMethod
     public static void addFuel(IItemStack item, IItemStack product, int moistenerValue, int stage) {
         if(stage >= 0) {
-            ModTweaker.LATE_ADDITIONS.add(new AddFuel(new MoistenerFuel(toStack(item), toStack(product), moistenerValue, stage)));
+            ModTweaker.LATE_ADDITIONS.add(new AddFuel(new MoistenerFuel(toStack(item), toStack(product), stage, moistenerValue)));
         } else {
             LogHelper.logWarning(String.format("No %s Recipe add for %s. Stage parameter must positive!", Moistener.name, item.toString()));
         }
