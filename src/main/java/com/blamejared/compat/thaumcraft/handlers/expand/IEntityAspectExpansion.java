@@ -29,7 +29,7 @@ public class IEntityAspectExpansion {
             
             @Override
             public String describe() {
-                return "Setting aspects on item: " + definition.getId() + " to: " + getAspects();
+                return "Setting aspects on entity: " + definition.getId() + " to: " + getAspects();
             }
             
             private String getAspects() {
@@ -59,7 +59,7 @@ public class IEntityAspectExpansion {
             
             @Override
             public String describe() {
-                return "Removing aspects on item: " + definition.getId() + "," + getAspects();
+                return "Removing aspects on entity: " + definition.getId() + "," + getAspects();
             }
             
             private String getAspects() {
