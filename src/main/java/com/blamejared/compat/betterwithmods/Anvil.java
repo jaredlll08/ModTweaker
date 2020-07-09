@@ -101,9 +101,9 @@ public class Anvil {
         else {
             ArrayList<Object> prep = new ArrayList<>();
             char chr = 'a';
-            for(int y = 0; y < 4; y++) {
+            for(int x = 0; x < 4; x++) {
                 StringBuilder matrix = new StringBuilder();
-                for(int x = 0; x < 4; x++) {
+                for(int y = 0; y < 4; y++) {
                     if(x < ingredients.length && ingredients[x] != null && y < ingredients[x].length) {
                         if(ingredients[x][y] != null) {
                             prep.add(chr);
@@ -116,7 +116,7 @@ public class Anvil {
                     }
                 }
                 if(matrix.length() > 0)
-                    prep.add(y, matrix.toString());
+                    prep.add(x, matrix.toString());
             }
             return prep.toArray();
         }
