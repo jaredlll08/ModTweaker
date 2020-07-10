@@ -48,6 +48,15 @@ public class Hopper {
                 Lists.newArrayList(CraftTweakerMC.getItemStacks(outputs)),
                 Lists.newArrayList(CraftTweakerMC.getItemStacks(secondary))));
     }
+    
+    @ZenMethod
+    public static void addSoulUseRecipe(String name, IIngredient input, int soulAmount, IItemStack[] outputs, IItemStack[] secondary) {
+        ModTweaker.LATE_ADDITIONS.add(new AddSoulUseRecipe(name,
+                CraftTweakerMC.getIngredient(input),
+                soulAmount,
+                Lists.newArrayList(CraftTweakerMC.getItemStacks(outputs)),
+                Lists.newArrayList(CraftTweakerMC.getItemStacks(secondary))));
+    }
 
     @ZenMethod
     public static void addSoulUrnRecipe(IIngredient input, IItemStack[] outputs, IItemStack[] secondary) {
@@ -182,6 +191,38 @@ public class Hopper {
         @Override
         public void apply() {
             HopperInteractions.addHopperRecipe(new HopperInteractions.HopperRecipe(filterName,input,outputs,secondary));
+        }
+    }
+    
+    public static class AddSoulUseRecipe extends BaseAction {
+        String filterName;
+        Ingredient input;
+        int soulAmount;
+        List<ItemStack> outputs;
+        List<ItemStack> secondary;
+
+        public AddSoulUseRecipe(String filterName, Ingredient input, int soulAmount, List<ItemStack> outputs, List<ItemStack> secondary) {
+            super("Filtered Hopper");
+            this.filterName = filterName;
+            this.input = input;
+            this.soulAmount = soulAmount;
+            this.outputs = outputs;
+            this.secondary = secondary;
+        }
+
+        @Override
+        protected String getRecipeInfo() {
+            return String.format("%s -> %s,%s in %s with %s souls",
+                    Arrays.toString(input.getMatchingStacks()),
+                    outputs.stream().map(ItemStack::getDisplayName).collect(Collectors.joining(",")),
+                    secondary.stream().map(ItemStack::getDisplayName).collect(Collectors.joining(",")),
+                    filterName,
+                    String.valueOf(soulAmount));
+        }
+
+        @Override
+        public void apply() {
+            HopperInteractions.addHopperRecipe(new HopperInteractions.SoulUseRecipe(filterName,input,soulAmount,outputs,secondary));
         }
     }
 
