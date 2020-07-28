@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
 
     private String sound;
+    private int ticks;
 
     public MillBuilder(Supplier<CraftingManagerBulk<MillRecipe>> registry, String name) {
         super(registry, name);
@@ -19,7 +20,7 @@ public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
     @ZenMethod
     @Override
     public void build() {
-        addRecipe(new MillRecipe(inputs, outputs).setSound(sound).setPriority(priority));
+        addRecipe(new MillRecipe(inputs, outputs).setSound(sound).setPriority(priority).setTicks(ticks));
     }
 
     @ZenMethod
@@ -31,6 +32,12 @@ public class MillBuilder extends BulkRecipeBuilder<MillRecipe> {
     @ZenMethod
     public MillBuilder setGrindType(String sound) {
         this.sound = sound;
+        return this;
+    }
+    
+    @ZenMethod
+    public MillBuilder setTicks(int ticks) {
+        this.ticks = ticks;
         return this;
     }
 
