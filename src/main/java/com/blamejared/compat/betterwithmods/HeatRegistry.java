@@ -1,6 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
-import betterwithmods.common.registry.block.recipe.BlockIngredient;
+import betterwithmods.common.registry.block.recipe.StateIngredient;
 import betterwithmods.common.registry.heat.BWMHeatRegistry;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
@@ -10,6 +10,9 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors; 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -23,7 +26,12 @@ public class HeatRegistry {
 
     @ZenMethod
     public static void addHeatSource(crafttweaker.api.block.IBlockState state, int heat) {
-        CraftTweakerAPI.apply(new AddHeatSource(CraftTweakerMC.getBlockState(state), heat));
+        CraftTweakerAPI.apply(new AddHeatSource(Arrays.asList(CraftTweakerMC.getBlockState(state)), heat));
+    }
+    
+    @ZenMethod
+    public static void addHeatSource(List<crafttweaker.api.block.IBlockState> states, IItemStack displayStack, int heat) {
+        CraftTweakerAPI.apply(new AddHeatSource(states.stream().map(CraftTweakerMC::getBlockState).collect(Collectors.toList()), heat));
     }
 
     @SuppressWarnings("deprecation")
@@ -32,7 +40,7 @@ public class HeatRegistry {
         if (InputHelper.isABlock(stack)) {
             Block block = CraftTweakerMC.getBlock(stack);
             IBlockState state = block.getStateFromMeta(stack.getMetadata());
-            CraftTweakerAPI.apply(new AddHeatSource(state, heat));
+            CraftTweakerAPI.apply(new AddHeatSource(Arrays.asList(state), heat));
         } else {
             LogHelper.logError(String.format("%s input must create a valid BlockState", stack.getDisplayName()), new IllegalArgumentException(String.format("%s input must create a valid BlockState", stack.getDisplayName())));
         }
@@ -40,18 +48,24 @@ public class HeatRegistry {
 
     public static class AddHeatSource extends BaseAction {
 
-        private IBlockState state;
+        private List<IBlockState> states;
+        private ItemStack displayStack;
         private int heat;
 
-        AddHeatSource(IBlockState state, int heat) {
+        AddHeatSource(List<IBlockState> states, ItemStack displayStack, int heat) {
             super("Add Heat");
-            this.state = state;
+            this.states = states;
+            this.displayStack = displayStack;
             this.heat = heat;
+        }
+        
+        AddHeatSource(List<IBlockState> states, int heat) {
+            this(states, new ItemStack(states.get(0).getBlock()), heat);
         }
 
         @Override
         public void apply() {
-            BWMHeatRegistry.addHeatSource(new BlockIngredient(new ItemStack(state.getBlock())), heat);
+            BWMHeatRegistry.addHeatSource(new StateIngredient(states, Arrays.asList(displayStack)), heat);
         }
     }
 }
