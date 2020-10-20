@@ -1,23 +1,23 @@
-ModTweaker2
+ModTweaker :-
 ==========
-ModTweaker is an addon for MineTweaker 3. Minetweaker lets you adjust recipes, remove them entirely, or add new recipes. While it has decent mod support, there are many mods that use custom crafting handlers that are not supported natively. ModTweaker plans to provide additional support for as many of these mods over time as possible.
+ModTweaker2 is an add-on for MineTweaker 3. Minetweaker lets you adjust recipes, remove them entirely, or add new recipes. While it has decent mod support, there are many mods that use custom crafting handlers that are not supported natively. ModTweaker plans to provide additional support for as many of these mods over time as possible.
 
 
-Stable Releases on Curse
+Stable Releases on Curse :-
 ----------
 https://minecraft.curseforge.com/projects/modtweaker
 
-Development build on jenkins
+Development build on jenkins :-
 ----------
 http://ci.blamejared.com/job/Modtweaker/
 
 
-Guidelines for Bugreporting
+Guidelines for Bugreporting :-
 ----------
 https://github.com/jaredlll08/ModTweaker2/wiki/Bug-Reporting-Guidelines
 
 
-Supported Mods
+Supported Mods :-
 ----------
 - Actually Additions
 - Applied Energistics 2
