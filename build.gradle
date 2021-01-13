@@ -47,6 +47,9 @@ repositories {
         url "https://maven.ellpeck.de/"
     }
     maven {
+        url "http://maven2.ic2.player.to/"
+    }
+    maven {
         url "https://maven.tterrag.com"
     }
     maven {
@@ -104,7 +107,7 @@ dependencies {
     deobfCompile("slimeknights:TConstruct:1.12.2-2.12.0.+") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile('curse.maven:forestry-59751:2918418') {
+    deobfCompile('net.sengir.forestry:forestry_1.12.2:5.+') {
         exclude group: 'mezz.jei'
     }
     deobfCompile "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
