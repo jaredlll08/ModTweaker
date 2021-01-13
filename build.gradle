@@ -44,7 +44,7 @@ repositories {
         url "https://www.ryanliptak.com/maven/"
     }
     maven {
-        url "https://maven.chaosfield.at/"
+        url "https://maven.ellpeck.de/"
     }
     maven {
         url "https://maven.tterrag.com"
@@ -61,41 +61,41 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.554"
-    deobfCompile "mezz.jei:jei_1.12.2:4.14.4.264"
-    deobfCompile "com.blamejared:MTLib:3.0.4.8"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.613"
+    deobfCompile "mezz.jei:jei_1.12.2:4.16.1.302"
+    deobfCompile "com.blamejared:MTLib:3.0.5.15"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
-    deobfCompile "vazkii.botania:Botania:r1.10-357.7"
+    deobfCompile "vazkii.botania:Botania:r1.10-363.148"
 
 
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.3.41:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.4.43:universal") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.2.25:universal") {
-        exclude group: 'mezz.jei'
-    }
-
-    deobfCompile("cofh:CoFHCore:1.12.2-4.6.2.24:universal") {
+    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.3.27:universal") {
         exclude group: 'mezz.jei'
     }
 
-    deobfCompile("cofh:RedstoneFlux:1.12-2.1.0.6:universal") {
+    deobfCompile("cofh:CoFHCore:1.12.2-4.6.3.27:universal") {
         exclude group: 'mezz.jei'
     }
 
-    deobfCompile("cofh:CoFHWorld:1.12.2-1.3.0.6:universal") {
+    deobfCompile("cofh:RedstoneFlux:1.12-2.1.0.7:universal") {
+        exclude group: 'mezz.jei'
+    }
+
+    deobfCompile("cofh:CoFHWorld:1.12.2-1.3.1.7:universal") {
         exclude group: 'mezz.jei'
     }
 
 
-    deobfCompile("codechicken:CodeChickenLib:1.12.2-3.2.2.353:universal") {
+    deobfCompile("codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal") {
         exclude group: 'mezz.jei'
     }
 
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.3.15-995") {
+    deobfCompile("betterwithmods:BetterWithMods:1.12-2.3.23-4") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r142") {
+    deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r152.16") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("slimeknights.mantle:Mantle:1.12-1.3.3.+") {
@@ -107,17 +107,17 @@ dependencies {
     deobfCompile('curse.maven:forestry-59751:2918418') {
         exclude group: 'mezz.jei'
     }
-    deobfCompile "team.chisel.ctm:CTM:MC1.12.2-0.3.2.20"
+    deobfCompile "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
     deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.4.2.39") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile "team.chisel:Chisel:MC1.12.2-0.2.0.31"
+    deobfCompile "team.chisel:Chisel:MC1.12.2-1.0.2.45"
     deobfCompile "curse.maven:bloodmagic-224791:2610083"
     deobfCompile "curse.maven:guideapi-228832:2645993"
-    deobfCompile("knightminer:Inspirations:1.12.2-0.2.4.70") {
+    deobfCompile("knightminer:Inspirations:1.12.2-0.2.9.9") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile "blusunrize:ImmersiveEngineering:0.12-89-518"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.12-92-559"
 }
 
 processResources {
