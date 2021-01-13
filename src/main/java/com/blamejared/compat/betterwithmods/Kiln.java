@@ -3,12 +3,9 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.KilnStructureManager;
-import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
-import betterwithmods.common.registry.block.recipe.KilnRecipe;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.betterwithmods.base.blockrecipes.KilnBuilder;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
@@ -20,7 +17,6 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
 @ZenClass("mods.betterwithmods.Kiln")
 @ModOnly("betterwithmods")

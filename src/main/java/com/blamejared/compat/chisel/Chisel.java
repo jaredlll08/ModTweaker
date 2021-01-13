@@ -4,9 +4,6 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.mc1120.commands.*;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextFormatting;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.materials.*;
 import team.chisel.api.carving.CarvingUtils;
 
 import static crafttweaker.mc1120.commands.SpecialMessagesChat.*;

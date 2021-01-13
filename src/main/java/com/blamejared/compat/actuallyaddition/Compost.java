@@ -25,6 +25,7 @@ import java.util.List;
 @ZenRegister
 public class Compost {
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void addRecipe(IItemStack output, IItemStack outputDisplay, IIngredient input, IItemStack inputDisplay) {
         if(!InputHelper.isABlock(outputDisplay) || !InputHelper.isABlock(inputDisplay)) {

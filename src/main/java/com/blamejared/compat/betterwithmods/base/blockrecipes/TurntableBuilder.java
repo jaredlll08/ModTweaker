@@ -1,9 +1,7 @@
 package com.blamejared.compat.betterwithmods.base.blockrecipes;
 
-import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.block.managers.CraftingManagerBlock;
-import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import betterwithmods.common.registry.block.recipe.TurntableRecipe;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.InputHelper;
@@ -13,10 +11,8 @@ import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.function.Supplier;
@@ -35,6 +31,7 @@ public class TurntableBuilder extends BlockRecipeBuilder<TurntableRecipe> {
         return this;
     }
 
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public TurntableBuilder setProductState(IItemStack productState) {
         if (InputHelper.isABlock(productState)) {

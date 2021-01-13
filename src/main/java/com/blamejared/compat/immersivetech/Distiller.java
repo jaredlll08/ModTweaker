@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import stanhebben.zenscript.definitions.zenclasses.ParsedZenClassMethod;
 
 @ZenClass("mods.immersivetech.Distiller")
 @ZenRegister

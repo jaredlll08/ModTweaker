@@ -2,14 +2,8 @@ package com.blamejared.compat.botania.lexicon.pages;
 
 import com.blamejared.compat.botania.BotaniaHelper;
 import crafttweaker.*;
-import crafttweaker.api.item.*;
 import vazkii.botania.api.lexicon.*;
-import vazkii.botania.api.recipe.RecipeManaInfusion;
 import vazkii.botania.common.lexicon.page.*;
-
-import java.util.*;
-
-import static com.blamejared.mtlib.helpers.InputHelper.*;
 
 public class AddPageText implements IAction {
     

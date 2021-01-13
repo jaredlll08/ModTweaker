@@ -3,7 +3,6 @@ package com.blamejared.compat.betterwithmods;
 import betterwithmods.common.BWMRecipes;
 import betterwithmods.common.BWRegistry;
 import com.blamejared.compat.betterwithmods.base.blockrecipes.TurntableBuilder;
-import com.blamejared.mtlib.helpers.LogHelper;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;

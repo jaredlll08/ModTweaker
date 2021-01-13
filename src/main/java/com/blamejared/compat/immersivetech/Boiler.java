@@ -7,7 +7,6 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.liquid.ILiquidStack;
 import ferro2000.immersivetech.api.craftings.BoilerRecipes;
-import ferro2000.immersivetech.api.craftings.SolarTowerRecipes;
 import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

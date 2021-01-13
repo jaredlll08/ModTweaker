@@ -2,16 +2,10 @@ package com.blamejared.compat.botania.lexicon.pages;
 
 import com.blamejared.compat.botania.BotaniaHelper;
 import crafttweaker.*;
-import crafttweaker.api.item.*;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
 import vazkii.botania.api.lexicon.*;
-import vazkii.botania.api.recipe.RecipeElvenTrade;
 import vazkii.botania.common.lexicon.page.*;
-
-import java.util.*;
-
-import static com.blamejared.mtlib.helpers.InputHelper.*;
 
 public class AddPageEntity implements IAction {
     

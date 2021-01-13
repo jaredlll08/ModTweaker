@@ -4,7 +4,6 @@ import com.blamejared.compat.botania.BotaniaHelper;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
-import crafttweaker.mc1120.brackets.BracketHandlerItem;
 import vazkii.botania.api.lexicon.LexiconCategory;
 
 public class SetCategoryPriority implements IAction {
@@ -28,12 +27,12 @@ public class SetCategoryPriority implements IAction {
         }
         oldPriority = category.getSortingPriority();
         category.setPriority(newPriority);
-        CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category priority: " + category.getUnlocalizedName());
+        CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category priority from " + oldPriority + " to: " + category.getUnlocalizedName());
     }
     
     @Override
     public String describe() {
-        return "Attempting to set the priority for Lexicon Category " + name + " to " + newPriority;
+        return "Attempting to set the priority for Lexicon Category " + name + " from " + oldPriority + "to " + newPriority;
     }
     
 }

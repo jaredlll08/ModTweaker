@@ -10,7 +10,6 @@ import vazkii.botania.api.lexicon.LexiconCategory;
 public class SetCategoryIcon implements IAction {
     
     private LexiconCategory category;
-    private ResourceLocation oldIcon;
     private ResourceLocation newIcon;
     private final String name;
     
@@ -26,7 +25,6 @@ public class SetCategoryIcon implements IAction {
             CraftTweakerAPI.getLogger().logError("Cannot find lexicon category " + name);
             return;
         }
-        oldIcon = category.getIcon();
         category.setIcon(newIcon);
         CraftTweakerAPI.getLogger().logInfo("Setting Lexicon Category icon: " + category.getUnlocalizedName());
     }

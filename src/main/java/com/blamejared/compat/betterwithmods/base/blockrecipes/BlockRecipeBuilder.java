@@ -7,7 +7,6 @@ import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.blamejared.ModTweaker;
 import com.blamejared.compat.betterwithmods.base.RemoveAll;
 import com.blamejared.mtlib.helpers.InputHelper;
-import com.blamejared.mtlib.helpers.LogHelper;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -49,13 +48,13 @@ public abstract class BlockRecipeBuilder<T extends BlockRecipe> {
     }
 
     @ZenMethod
-    public BlockRecipeBuilder setInputBlockDrop(IItemStack input) {
+    public BlockRecipeBuilder<? extends BlockRecipe> setInputBlockDrop(IItemStack input) {
         this.input = new BlockDropIngredient(CraftTweakerMC.getItemStack(input));
         return this;
     }
 
     @ZenMethod
-    public BlockRecipeBuilder setInputBlockDrop(IItemStack[] inputs) {
+    public BlockRecipeBuilder<? extends BlockRecipe> setInputBlockDrop(IItemStack[] inputs) {
         this.input = new BlockDropIngredient(CraftTweakerMC.getItemStacks(inputs));
         return this;
     }

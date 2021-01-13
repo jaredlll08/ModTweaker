@@ -3,7 +3,6 @@ package com.blamejared.compat.botania.lexicon.pages;
 import com.blamejared.compat.botania.BotaniaHelper;
 import crafttweaker.*;
 import crafttweaker.api.item.*;
-import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.*;
 import vazkii.botania.api.recipe.*;
 import vazkii.botania.common.lexicon.page.*;

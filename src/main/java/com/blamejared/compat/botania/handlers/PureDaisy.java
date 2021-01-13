@@ -19,8 +19,6 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import vazkii.botania.api.BotaniaAPI;
@@ -39,6 +37,7 @@ public class PureDaisy {
         addRecipe(blockInput, blockOutput, 150);
     }
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void addRecipe(IIngredient blockInput, IItemStack blockOutput, int time) {
         if(blockInput == null || blockOutput == null) {

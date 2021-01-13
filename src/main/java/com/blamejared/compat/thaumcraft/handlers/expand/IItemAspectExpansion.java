@@ -10,13 +10,12 @@ import stanhebben.zenscript.annotations.*;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.AspectList;
 
-import java.util.*;
-
 @ZenExpansion("crafttweaker.item.IItemStack")
 @ModOnly("thaumcraft")
 @ZenRegister
 public class IItemAspectExpansion {
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void setAspects(IItemStack stack, CTAspectStack... aspects) {
         ModTweaker.LATE_ADDITIONS.add(new BaseAction("Aspects") {
@@ -46,7 +45,7 @@ public class IItemAspectExpansion {
         
     }
     
-    
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void removeAspects(IItemStack stack, CTAspectStack... aspects) {
         ModTweaker.LATE_REMOVALS.add(new BaseAction("Aspects") {

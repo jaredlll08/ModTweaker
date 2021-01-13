@@ -2,8 +2,6 @@ package com.blamejared.compat.botania.lexicon.pages;
 
 import com.blamejared.compat.botania.BotaniaHelper;
 import crafttweaker.*;
-import net.minecraft.entity.EntityList;
-import net.minecraft.util.ResourceLocation;
 import vazkii.botania.api.lexicon.*;
 import vazkii.botania.common.lexicon.page.*;
 

@@ -17,8 +17,6 @@ import forestry.factory.recipes.FabricatorRecipe;
 import forestry.factory.recipes.FabricatorSmeltingRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

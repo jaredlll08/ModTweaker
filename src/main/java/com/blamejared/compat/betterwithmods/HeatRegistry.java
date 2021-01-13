@@ -26,6 +26,7 @@ public class HeatRegistry {
         CraftTweakerAPI.apply(new AddHeatSource(CraftTweakerMC.getBlockState(state), heat));
     }
 
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void addHeatSource(IItemStack stack, int heat) {
         if (InputHelper.isABlock(stack)) {
