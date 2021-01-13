@@ -63,8 +63,8 @@ public class Anvil {
 
     public static class AddShaped extends BaseAction {
         
-        private final IItemStack output;
-        private final IIngredient[][] ingredients;
+        protected final IItemStack output;
+        protected final IIngredient[][] ingredients;
         
         public AddShaped(IItemStack output, IIngredient[][] ingredients) {
             super("Add Anvil Shaped Recipe");
@@ -173,8 +173,8 @@ public class Anvil {
     
     public static class RemoveShaped extends BaseAction {
         
-        private final IItemStack output;
-        private final IIngredient[][] ingredients;
+        protected final IItemStack output;
+        protected final IIngredient[][] ingredients;
         
         protected RemoveShaped(IItemStack output, IIngredient[][] ingredients) {
             super("Remove Shaped Anvil");
