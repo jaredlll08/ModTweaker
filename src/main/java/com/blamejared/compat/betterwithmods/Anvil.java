@@ -148,7 +148,7 @@ public class Anvil {
         if(ingredients == null)
             return null;
         else {
-            ArrayList prep = new ArrayList();
+            ArrayList<Object> prep = new ArrayList<>();
             char chr = 'a';
             for(int x = 0; x < 4; x++) {
                 StringBuilder matrix = new StringBuilder();
