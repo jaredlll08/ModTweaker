@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class LocalizationHelper {
     
-    
+    @SuppressWarnings("unchecked")
     public static void setLocale(String unlocalized, String localized) {
         try {
             Field locale = I18n.class.getDeclaredField("i18nLocale");

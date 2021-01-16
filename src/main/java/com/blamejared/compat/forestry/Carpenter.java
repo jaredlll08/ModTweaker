@@ -46,6 +46,7 @@ public class Carpenter {
         ModTweaker.LATE_ADDITIONS.add(new Add(new CarpenterRecipe(packagingTime, toFluid(fluidInput), toStack(box), new ShapedRecipeCustom(toStack(output), toShapedObjects(ingredients)))));
     }
     
+    @SuppressWarnings("unused")
     private static IItemStack[][] transform(IItemStack[] arr, int N) {
         int M = (arr.length + N - 1) / N;
         IItemStack[][] mat = new IItemStack[M][];

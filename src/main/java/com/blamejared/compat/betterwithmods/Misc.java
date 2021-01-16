@@ -1,17 +1,12 @@
 package com.blamejared.compat.betterwithmods;
 
-import betterwithmods.common.registry.BellowsManager;
 import betterwithmods.module.hardcore.crafting.HCFurnace;
-import betterwithmods.util.item.Stack;
-import betterwithmods.util.item.StackMap;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.utils.BaseMapAddition;
-import com.google.common.collect.Maps;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.mc1120.CraftTweaker;
 import net.minecraft.item.crafting.Ingredient;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

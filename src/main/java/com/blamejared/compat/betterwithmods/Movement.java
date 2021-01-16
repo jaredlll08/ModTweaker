@@ -19,6 +19,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 public class Movement {
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void set(IItemStack input, float speed) {
         ItemStack stack = InputHelper.toStack(input);

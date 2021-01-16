@@ -4,7 +4,6 @@ import betterwithmods.api.tile.IHopperFilter;
 import betterwithmods.common.BWRegistry;
 import betterwithmods.common.registry.HopperFilter;
 import betterwithmods.common.registry.HopperInteractions;
-import betterwithmods.module.gameplay.HopperRecipes;
 import com.blamejared.ModTweaker;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;

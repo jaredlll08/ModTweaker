@@ -26,8 +26,6 @@ public class BracketHandlerAspect implements IBracketHandler {
         method = CraftTweakerAPI.getJavaMethod(BracketHandlerAspect.class, "getAspect", String.class);
     }
     
-    
-    @SuppressWarnings("unchecked")
     public static void rebuildRegistry() {
         aspects.clear();
         Aspect.aspects.forEach(aspects::put);

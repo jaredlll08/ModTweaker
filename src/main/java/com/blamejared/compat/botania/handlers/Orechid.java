@@ -1,7 +1,6 @@
 package com.blamejared.compat.botania.handlers;
 
 import com.blamejared.ModTweaker;
-import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;

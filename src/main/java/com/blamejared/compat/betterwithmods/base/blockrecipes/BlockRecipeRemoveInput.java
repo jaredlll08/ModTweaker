@@ -5,12 +5,8 @@ import betterwithmods.common.registry.block.recipe.BlockRecipe;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.helpers.LogHelper;
 import com.blamejared.mtlib.utils.BaseAction;
-import com.google.common.collect.Lists;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BlockRecipeRemoveInput<T extends BlockRecipe> extends BaseAction {
 

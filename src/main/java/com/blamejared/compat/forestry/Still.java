@@ -6,7 +6,6 @@ import com.blamejared.mtlib.utils.BaseAddForestry;
 import com.blamejared.mtlib.utils.BaseRemoveForestry;
 import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
-import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.liquid.ILiquidStack;
 import forestry.api.recipes.IStillRecipe;
 import forestry.api.recipes.RecipeManagers;

@@ -6,16 +6,12 @@ import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.api.item.IItemStack;
 import net.minecraft.item.ItemStack;
-import vazkii.botania.api.lexicon.LexiconEntry;
 import vazkii.botania.api.lexicon.LexiconRecipeMappings;
-import vazkii.botania.api.lexicon.LexiconRecipeMappings.EntryData;
 
 public class RemoveRecipeMapping implements IAction {
     
     private ItemStack stack;
     private IItemStack iStack;
-    private LexiconEntry entry;
-    private int page;
     
     public RemoveRecipeMapping(IItemStack stack) {
         this.iStack = stack;
@@ -27,9 +23,6 @@ public class RemoveRecipeMapping implements IAction {
             CraftTweakerAPI.getLogger().logError("There isn't a recipe mapping for " + iStack);
             return;
         }
-        EntryData data = LexiconRecipeMappings.getDataForStack(stack);
-        this.entry = data.entry;
-        this.page = data.page;
         LexiconRecipeMappings.remove(stack);
         CraftTweakerAPI.getLogger().logInfo("Removing Lexicon Recipe Lookup: " + stack.getUnlocalizedName());
     }

@@ -5,7 +5,6 @@ import com.blamejared.compat.thaumcraft.handlers.ThaumCraft;
 import com.blamejared.compat.thaumcraft.handlers.aspects.CTAspectStack;
 import com.blamejared.mtlib.helpers.InputHelper;
 import com.blamejared.mtlib.utils.BaseAction;
-import com.blamejared.reference.Reference;
 import crafttweaker.annotations.*;
 import crafttweaker.api.item.*;
 import net.minecraft.item.ItemStack;

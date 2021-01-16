@@ -2,16 +2,11 @@ package com.blamejared.compat.botania.lexicon.pages;
 
 import com.blamejared.compat.botania.BotaniaHelper;
 import crafttweaker.*;
-import crafttweaker.api.item.IIngredient;
 import net.minecraft.util.ResourceLocation;
-import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.*;
-import vazkii.botania.api.recipe.RecipeBrew;
 import vazkii.botania.common.lexicon.page.*;
 
 import java.util.*;
-
-import static com.blamejared.mtlib.helpers.InputHelper.toObjects;
 
 public class AddPageCrafting implements IAction {
     

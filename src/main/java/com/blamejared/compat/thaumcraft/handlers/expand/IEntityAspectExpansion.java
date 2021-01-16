@@ -15,6 +15,7 @@ import thaumcraft.api.internal.CommonInternals;
 @ZenRegister
 public class IEntityAspectExpansion {
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void setAspects(IEntityDefinition definition, CTAspectStack... aspects) {
         ModTweaker.LATE_ADDITIONS.add(new BaseAction("Aspects") {
@@ -43,6 +44,7 @@ public class IEntityAspectExpansion {
         });
     }
     
+    @SuppressWarnings("deprecation")
     @ZenMethod
     public static void removeAspects(IEntityDefinition definition, CTAspectStack... aspects) {
         ModTweaker.LATE_REMOVALS.add(new BaseAction("Aspects") {

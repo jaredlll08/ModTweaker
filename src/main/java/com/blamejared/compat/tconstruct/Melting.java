@@ -21,7 +21,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.events.TinkerRegisterEvent;
-import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.*;
 

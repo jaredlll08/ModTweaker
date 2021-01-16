@@ -1,7 +1,6 @@
 package com.blamejared.compat.betterwithmods;
 
 import betterwithmods.common.registry.BellowsManager;
-import betterwithmods.module.hardcore.world.HCBuoy;
 import betterwithmods.util.item.Stack;
 import betterwithmods.util.item.StackMap;
 import com.blamejared.ModTweaker;
