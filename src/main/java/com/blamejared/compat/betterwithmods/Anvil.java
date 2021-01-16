@@ -32,6 +32,11 @@ public class Anvil {
     }
     
     @ZenMethod
+    public static void addShapedFixed(IItemStack output, IIngredient[][] inputs) {
+        ModTweaker.LATE_ADDITIONS.add(new AddShapedFixed(output, inputs));
+    }
+    
+    @ZenMethod
     public static void addShapeless(IItemStack output, IIngredient[] inputs) {
         ModTweaker.LATE_ADDITIONS.add(new AddShapeless(output, inputs));
     }
@@ -39,6 +44,11 @@ public class Anvil {
     @ZenMethod
     public static void removeShaped(IItemStack output, @Optional IIngredient[][] ingredients) {
         ModTweaker.LATE_REMOVALS.add(new RemoveShaped(output, ingredients));
+    }
+    
+    @ZenMethod
+    public static void removeShapedFixed(IItemStack output, @Optional IIngredient[][] ingredients) {
+        ModTweaker.LATE_REMOVALS.add(new RemoveShapedFixed(output, ingredients));
     }
     
     @ZenMethod
@@ -53,8 +63,8 @@ public class Anvil {
 
     public static class AddShaped extends BaseAction {
         
-        private final IItemStack output;
-        private final IIngredient[][] ingredients;
+        protected final IItemStack output;
+        protected final IIngredient[][] ingredients;
         
         public AddShaped(IItemStack output, IIngredient[][] ingredients) {
             super("Add Anvil Shaped Recipe");
@@ -70,6 +80,18 @@ public class Anvil {
         @Override
         protected String getRecipeInfo() {
             return output.getDisplayName();
+        }
+    }
+    
+    public static class AddShapedFixed extends AddShaped {
+        
+        public AddShapedFixed(IItemStack output, IIngredient[][] ingredients) {
+            super(output, ingredients);
+        }
+        
+        @Override
+        public void apply() {
+            AnvilRecipes.addSteelShapedRecipe(new ResourceLocation("crafttweaker", this.name), InputHelper.toStack(output), toShapedAnvilObjectsFixed(ingredients));
         }
     }
     
@@ -122,10 +144,37 @@ public class Anvil {
         }
     }
     
+    public static Object[] toShapedAnvilObjectsFixed(IIngredient[][] ingredients) {
+        if(ingredients == null)
+            return null;
+        else {
+            ArrayList<Object> prep = new ArrayList<>();
+            char chr = 'a';
+            for(int x = 0; x < 4; x++) {
+                StringBuilder matrix = new StringBuilder();
+                for(int y = 0; y < 4; y++) {
+                    if(x < ingredients.length && ingredients[x] != null && y < ingredients[x].length) {
+                        if(ingredients[x][y] != null) {
+                            prep.add(chr);
+                            prep.add(InputHelper.toObject(ingredients[x][y]));
+                            matrix.append(chr);
+                            chr++;
+                        } else {
+                            matrix.append(' ');
+                        }
+                    }
+                }
+                if(matrix.length() > 0)
+                    prep.add(x, matrix.toString());
+            }
+            return prep.toArray();
+        }
+    }
+    
     public static class RemoveShaped extends BaseAction {
         
-        private final IItemStack output;
-        private final IIngredient[][] ingredients;
+        protected final IItemStack output;
+        protected final IIngredient[][] ingredients;
         
         protected RemoveShaped(IItemStack output, IIngredient[][] ingredients) {
             super("Remove Shaped Anvil");
@@ -156,6 +205,32 @@ public class Anvil {
         @Override
         protected String getRecipeInfo() {
             return output.getDisplayName();
+        }
+    }
+    
+    public static class RemoveShapedFixed extends RemoveShaped {
+        
+        protected RemoveShapedFixed(IItemStack output, IIngredient[][] ingredients) {
+            super(output, ingredients);
+        }
+        
+        @Override
+        public void apply() {
+            if(ingredients != null) {
+                IRecipe removal = new ShapedAnvilRecipe(new ResourceLocation("crafttweaker", this.name), InputHelper.toStack(output), toShapedAnvilObjectsFixed(ingredients));
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
+                    IRecipe recipe = iterator.next();
+                    if(recipe.getRecipeOutput().isItemEqual(removal.getRecipeOutput()) && removal.getIngredients().equals(recipe.getIngredients()))
+                        iterator.remove();
+                }
+            } else {
+                for(Iterator<IRecipe> iterator = AnvilCraftingManager.ANVIL_CRAFTING.iterator(); iterator.hasNext(); ) {
+                    IRecipe recipe = iterator.next();
+                    if(recipe.getRecipeOutput().isItemEqual(InputHelper.toStack(output))) {
+                        iterator.remove();
+                    }
+                }
+            }
         }
     }
     
