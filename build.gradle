@@ -1,12 +1,13 @@
 buildscript {
     repositories {
-        jcenter()
-        maven {
-            url = "http://files.minecraftforge.net/maven"
-        }
+        mavenCentral()
+        maven { url = "https://jitpack.io" }
+        maven { url = "https://maven.minecraftforge.net" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath('com.github.DStrand1:ForgeGradle:FG_2.3-SNAPSHOT') {
+            changing = true
+        }
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -47,7 +48,7 @@ repositories {
         url "https://maven.ellpeck.de/"
     }
     maven {
-        url "http://maven2.ic2.player.to/"
+        url "https://maven2.ic2.player.to/"
     }
     maven {
         url "https://maven.tterrag.com"
@@ -95,7 +96,7 @@ dependencies {
         exclude group: 'mezz.jei'
     }
 
-    deobfCompile("betterwithmods:BetterWithMods:1.12-2.3.23-4") {
+    deobfCompile("betterwithmods:BetterWithMods:1.12-2.3.24-1065") {
         exclude group: 'mezz.jei'
     }
     deobfCompile("de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2-r152.16") {
