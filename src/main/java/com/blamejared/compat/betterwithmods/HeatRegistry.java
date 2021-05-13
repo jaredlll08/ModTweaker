@@ -31,7 +31,7 @@ public class HeatRegistry {
     
     @ZenMethod
     public static void addHeatSource(List<crafttweaker.api.block.IBlockState> states, IItemStack displayStack, int heat) {
-        CraftTweakerAPI.apply(new AddHeatSource(states.stream().map(CraftTweakerMC::getBlockState).collect(Collectors.toList()), heat));
+        CraftTweakerAPI.apply(new AddHeatSource(states.stream().map(CraftTweakerMC::getBlockState).collect(Collectors.toList()), CraftTweakerMC.getItemStack(displayStack), heat));
     }
 
     @SuppressWarnings("deprecation")
@@ -40,7 +40,7 @@ public class HeatRegistry {
         if (InputHelper.isABlock(stack)) {
             Block block = CraftTweakerMC.getBlock(stack);
             IBlockState state = block.getStateFromMeta(stack.getMetadata());
-            CraftTweakerAPI.apply(new AddHeatSource(Arrays.asList(state), heat));
+            CraftTweakerAPI.apply(new AddHeatSource(Arrays.asList(state), CraftTweakerMC.getItemStack(stack), heat));
         } else {
             LogHelper.logError(String.format("%s input must create a valid BlockState", stack.getDisplayName()), new IllegalArgumentException(String.format("%s input must create a valid BlockState", stack.getDisplayName())));
         }
