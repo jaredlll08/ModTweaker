@@ -23,7 +23,7 @@ if (project.hasProperty('secretFile')) {
 
 version = "4.0.20"
 if (System.getenv('BUILD_NUMBER') != null) {
-    project.craftTweakerVersion += "." + System.getenv('BUILD_NUMBER')
+    version += "." + System.getenv('BUILD_NUMBER')
 }
 group = "com.blamejared.modtweaker"
 archivesBaseName = "modtweaker"
