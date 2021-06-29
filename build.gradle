@@ -12,7 +12,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "4.0.18"
+version = "4.0.19"
 group = "com.blamejared.modtweaker"
 archivesBaseName = "modtweaker"
 
@@ -117,7 +117,7 @@ dependencies {
     }
     deobfCompile "team.chisel:Chisel:MC1.12.2-1.0.2.45"
     deobfCompile "curse.maven:bloodmagic-224791:2610083"
-    deobfCompile "curse.maven:guideapi-228832:2645993"
+    deobfCompile "curse.maven:guideapi-228832:2645992"
     deobfCompile("knightminer:Inspirations:1.12.2-0.2.9.9") {
         exclude group: 'mezz.jei'
     }
