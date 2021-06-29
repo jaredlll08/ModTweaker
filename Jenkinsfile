@@ -27,7 +27,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
                     echo 'Building'
-                    sh './gradlew build publish'
+                    sh './gradlew build'
                 }
             }
         }
@@ -41,9 +41,6 @@ pipeline {
         stage('Publish') {
             steps {
                 withCredentials([file(credentialsId: 'mod_build_secrets', variable: 'ORG_GRADLE_PROJECT_secretFile')]) {
-                    echo 'Deploying to Maven'
-                    sh './gradlew publish'
-
                     echo 'Deploying to CurseForge'
                     sh './gradlew curseforge'
                 }
