@@ -5,9 +5,10 @@ buildscript {
         maven { url = "https://maven.minecraftforge.net" }
     }
     dependencies {
-        classpath('com.github.DStrand1:ForgeGradle:FG_2.3-SNAPSHOT') {
-            changing = true
-        }
+        // classpath('com.github.DStrand1:ForgeGradle:FG_2.3-SNAPSHOT') {
+        //     changing = true
+        // }
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 plugins {

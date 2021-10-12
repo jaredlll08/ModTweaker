@@ -31,6 +31,12 @@ public class TICMaterial implements ITICMaterial {
     public ITICMaterialDefinition getDefinition() {
         return new TICMaterialDefinition(material);
     }
+
+
+    @Override
+    public boolean hasStats(String stat) {
+        return material.hasStats(stat);
+    }
     
     @Override
     public void setDurabilityHead(int durability) {
@@ -176,14 +182,10 @@ public class TICMaterial implements ITICMaterial {
     @Override
     public float getBowStringModifier() {
         return ((BowStringMaterialStats) material.getStats("bowstring")).modifier;
-        
     }
     
     @Override
     public void setBowStringModifier(float modifier) {
         CraftTweakerAPI.apply(new SetModifierAction(this, "bowstring", modifier));
-        
     }
-    
-    
 }

@@ -17,6 +17,44 @@ public interface ITICMaterial {
     
     @ZenGetter("definition")
     ITICMaterialDefinition getDefinition();
+
+    @ZenMethod
+    boolean hasStats(String stat);
+
+    @ZenMethod
+    default boolean hasHeadStats() {
+        return hasStats("head");
+    }
+
+    @ZenMethod
+    default boolean hasHandleStats() {
+        return hasStats("handle");
+    }
+
+    @ZenMethod
+    default boolean hasExtraStats() {
+        return hasStats("extra");
+    }
+
+    @ZenMethod
+    default boolean hasArrowStats() {
+        return hasStats("shaft");
+    }
+
+    @ZenMethod
+    default boolean hasFletchingStats() {
+        return hasStats("fletching");
+    }
+
+    @ZenMethod
+    default boolean hasBowStats() {
+        return hasStats("bow");
+    }
+
+    @ZenMethod
+    default boolean hasBowStringStats() {
+        return hasStats("bowstring");
+    }
     
     @ZenSetter("durabilityHead")
     void setDurabilityHead(int durability);
