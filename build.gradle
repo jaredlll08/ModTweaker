@@ -78,9 +78,9 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.613"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.662"
     deobfCompile "mezz.jei:jei_1.12.2:4.16.1.302"
-    deobfCompile "com.blamejared:MTLib:3.0.5.15"
+    deobfCompile "curse.maven:mtlib-253211:3308160" // MTLib 3.0.7
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
     deobfCompile "vazkii.botania:Botania:r1.10-363.148"
 
