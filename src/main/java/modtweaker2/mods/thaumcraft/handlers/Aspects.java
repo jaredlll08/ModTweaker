@@ -37,7 +37,6 @@ public class Aspects {
 		private final String aspects;
 		private final boolean replace;
 		private AspectList oldList;
-		private AspectList newList;
 
 		public Add(ItemStack stack, String aspects, boolean replace) {
 			super("Aspects");
@@ -48,19 +47,28 @@ public class Aspects {
 
 		@Override
 		public void apply() {
-			oldList = ThaumcraftApiHelper.getObjectAspects(stack);
-			if (!replace)
-				newList = ThaumcraftHelper.parseAspects(oldList, aspects);
-			else
+			AspectList newList;
+			if (replace) {
 				newList = ThaumcraftHelper.parseAspects(aspects);
-			
+			} else {
+				oldList = ThaumcraftApiHelper.getObjectAspects(stack);
+				newList = ThaumcraftHelper.parseAspects(oldList, aspects);
+			}
+
 			ThaumcraftApi.objectTags.put(Arrays.asList(stack.getItem(), stack.getItemDamage()), newList);
 			
 			success = true;
 		}
 
 		@Override
+		public boolean canUndo() {
+			return !replace;
+		}
+
+		@Override
 		public void undo() {
+			if (replace)
+				return;
 			if (oldList == null) {
 				ThaumcraftApi.objectTags.remove(Arrays.asList(stack.getItem(), stack.getItemDamage()));
 			} else
