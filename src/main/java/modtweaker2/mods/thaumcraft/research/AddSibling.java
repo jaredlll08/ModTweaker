@@ -3,6 +3,9 @@ package modtweaker2.mods.thaumcraft.research;
 import minetweaker.IUndoableAction;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
+
+import static modtweaker2.mods.thaumcraft.ThaumcraftHelper.getResearchSafe;
 
 public class AddSibling implements IUndoableAction {
     String key;
@@ -40,7 +43,12 @@ public class AddSibling implements IUndoableAction {
 
     @Override
     public void undo() {
-        ResearchCategories.researchCategories.get(tab).research.get(key).setSiblings(oldSiblings);
+        final ResearchItem research = getResearchSafe(tab, key);
+        if(research == null) {
+            return;
+        }
+
+        research.setSiblings(oldSiblings);
     }
 
     @Override

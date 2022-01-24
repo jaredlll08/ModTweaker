@@ -9,6 +9,7 @@ public class AddResearch implements IUndoableAction {
 	String key;
 	String tab;
 	ResearchItem research;
+	ResearchItem oldResearch;
 	ItemStack[] itemTriggers;
 	String[] entityTriggers;
 
@@ -22,6 +23,7 @@ public class AddResearch implements IUndoableAction {
 
 	@Override
 	public void apply() {
+		oldResearch = ResearchCategories.getResearch(research.key);
 		if (itemTriggers != null) {
 			research = research.setItemTriggers(itemTriggers);
 		}
@@ -43,7 +45,10 @@ public class AddResearch implements IUndoableAction {
 
 	@Override
 	public void undo() {
-		ResearchCategories.researchCategories.get(tab).research.remove(key);
+		if (oldResearch == null)
+			ResearchCategories.researchCategories.get(tab).research.remove(key);
+		else
+			ResearchCategories.researchCategories.get(tab).research.put(key, oldResearch);
 	}
 
 	@Override

@@ -1,9 +1,5 @@
 package modtweaker2.mods.thaumcraft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import modtweaker2.helpers.LogHelper;
 import modtweaker2.helpers.ReflectionHelper;
 import modtweaker2.mods.thaumcraft.aspect.AspectStack;
@@ -13,6 +9,14 @@ import thaumcraft.api.ThaumcraftApi.EntityTags;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchItem;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static modtweaker2.ModTweaker2.logger;
 
 public class ThaumcraftHelper {
     public static HashMap<Object, Integer> warpList;
@@ -131,5 +135,19 @@ public class ThaumcraftHelper {
 
             return (AspectStack) internal;
         }
+    }
+    
+    public static ResearchItem getResearchSafe(String tab, String key) {
+        final ResearchCategoryList cat = ResearchCategories.researchCategories.get(tab);
+        if(cat == null) {
+            logger.error("SCRIPT ERROR: Error, research tab {} doesn't exist", tab);
+            return null;
+        }
+        final ResearchItem research = cat.research.get(key);
+        if(research == null) {
+            logger.error("SCRIPT ERROR: Research {} doesn't exist.", key);
+            return null;
+        }
+        return research;
     }
 }

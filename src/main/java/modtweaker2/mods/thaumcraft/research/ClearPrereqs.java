@@ -3,6 +3,9 @@ package modtweaker2.mods.thaumcraft.research;
 import minetweaker.IUndoableAction;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
+
+import static modtweaker2.mods.thaumcraft.ThaumcraftHelper.getResearchSafe;
 
 public class ClearPrereqs implements IUndoableAction {
     String key;
@@ -35,8 +38,13 @@ public class ClearPrereqs implements IUndoableAction {
 
     @Override
     public void undo() {
-        if (prereqs != null) ResearchCategories.researchCategories.get(tab).research.get(key).setParents(prereqs);
-        if (secretPrereqs != null) ResearchCategories.researchCategories.get(tab).research.get(key).setParentsHidden(secretPrereqs);
+        final ResearchItem research = getResearchSafe(tab, key);
+        if(research == null) {
+            return;
+        }
+
+        if (prereqs != null) research.setParents(prereqs);
+        if (secretPrereqs != null) research.setParentsHidden(secretPrereqs);
     }
 
     @Override

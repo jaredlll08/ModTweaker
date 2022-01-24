@@ -1,12 +1,14 @@
 package modtweaker2.mods.thaumcraft.research;
 
-import java.lang.reflect.Field;
-
 import minetweaker.IUndoableAction;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import modtweaker2.mods.thaumcraft.handlers.Research.SetType;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
+
+import java.lang.reflect.Field;
+
+import static modtweaker2.mods.thaumcraft.ThaumcraftHelper.getResearchSafe;
 
 public class SetResearch implements IUndoableAction {
     String key;
@@ -68,7 +70,11 @@ public class SetResearch implements IUndoableAction {
 
     @Override
     public void undo() {
-        ResearchItem research = ResearchCategories.researchCategories.get(tab).research.get(key);
+        final ResearchItem research = getResearchSafe(tab, key);
+        if(research == null) {
+            return;
+        }
+
         if (!flag) {
             if (type == SetType.AUTO) research.setAutoUnlock();
             else if (type == SetType.ROUND) research.setRound();

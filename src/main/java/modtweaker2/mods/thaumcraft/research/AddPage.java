@@ -13,8 +13,10 @@ import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.InfusionEnchantmentRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.api.research.ResearchPage.PageType;
+import static modtweaker2.mods.thaumcraft.ThaumcraftHelper.getResearchSafe;
 
 public class AddPage implements IUndoableAction {
     String key;
@@ -110,7 +112,12 @@ public class AddPage implements IUndoableAction {
 
     @Override
     public void undo() {
-        ResearchCategories.researchCategories.get(tab).research.get(key).setPages(oldPages);
+        final ResearchItem research = getResearchSafe(tab, key);
+        if(research == null) {
+            return;
+        }
+
+        research.setPages(oldPages);
     }
 
     @Override

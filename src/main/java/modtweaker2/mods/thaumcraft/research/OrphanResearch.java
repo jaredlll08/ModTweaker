@@ -1,67 +1,59 @@
 package modtweaker2.mods.thaumcraft.research;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import minetweaker.IUndoableAction;
+import modtweaker2.helpers.LogHelper;
+import org.apache.commons.lang3.ArrayUtils;
 import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchCategoryList;
+import thaumcraft.api.research.ResearchItem;
 
 public class OrphanResearch implements IUndoableAction {
     String key;
-    HashMap<String, String> children = new HashMap();
-    HashMap<String, String> secretChildren = new HashMap();
-    HashMap<String, String> siblings = new HashMap();
+    private final Set<String> children = new HashSet<>();
+    private final Set<String> secretChildren = new HashSet<>();
+    private final Set<String> siblings = new HashSet<>();
 
     public OrphanResearch(String victim) {
         key = victim;
     }
 
+    private void remove(String cur, String[] refs, Set<String> set, Consumer<String[]> consumer) {
+        if (refs == null) return;
+        for (int i = 0; i < refs.length; i++) {
+            if (refs[i] != null && refs[i].equals(key)) {
+                set.add(cur);
+                consumer.accept(ArrayUtils.remove(refs, i));
+                return;
+            }
+        }
+    }
+
+    private void add(Set<String> set, Function<ResearchItem, String[]> function, BiConsumer<ResearchItem, String[]> consumer) {
+        for (String research : set) {
+            ResearchItem researchItem = ResearchCategories.getResearch(research);
+            if (researchItem == null)
+                LogHelper.logWarning("Missing research: " + research);
+            else
+                consumer.accept(researchItem, ArrayUtils.add(function.apply(researchItem), key));
+        }
+    }
+
     @Override
     public void apply() {
-        for (String tab : ResearchCategories.researchCategories.keySet()) {
-            for (String research : ResearchCategories.researchCategories.get(tab).research.keySet()) {
-                String[] prereqs = ResearchCategories.researchCategories.get(tab).research.get(research).parents;
-                if (prereqs != null) {
-                    for (int x = 0; x < prereqs.length; x++) {
-                        if (prereqs[x] != null && prereqs[x].equals(key)) {
-                            children.put(research, tab);
-                            ArrayList<String> newReqs = new ArrayList();
-                            for (int y = 0; y < prereqs.length; y++) {
-                                if (y != x) newReqs.add(prereqs[y]);
-                            }
-                            ResearchCategories.researchCategories.get(tab).research.get(research).setParents(newReqs.toArray(new String[prereqs.length - 1]));
-                            break;
-                        }
-                    }
-                }
-                prereqs = ResearchCategories.researchCategories.get(tab).research.get(research).parentsHidden;
-                if (prereqs != null) {
-                    for (int x = 0; x < prereqs.length; x++) {
-                        if (prereqs[x] != null && prereqs[x].equals(key)) {
-                            secretChildren.put(research, tab);
-                            ArrayList<String> newReqs = new ArrayList();
-                            for (int y = 0; y < prereqs.length; y++) {
-                                if (y != x) newReqs.add(prereqs[y]);
-                            }
-                            ResearchCategories.researchCategories.get(tab).research.get(research).setParentsHidden(newReqs.toArray(new String[prereqs.length - 1]));
-                            break;
-                        }
-                    }
-                }
-                prereqs = ResearchCategories.researchCategories.get(tab).research.get(research).siblings;
-                if (prereqs != null) {
-                    for (int x = 0; x < prereqs.length; x++) {
-                        if (prereqs[x] != null && prereqs[x].equals(key)) {
-                            siblings.put(research, tab);
-                            ArrayList<String> newReqs = new ArrayList();
-                            for (int y = 0; y < prereqs.length; y++) {
-                                if (y != x) newReqs.add(prereqs[y]);
-                            }
-                            ResearchCategories.researchCategories.get(tab).research.get(research).setSiblings(newReqs.toArray(new String[prereqs.length - 1]));
-                            break;
-                        }
-                    }
-                }
+        for (ResearchCategoryList category : ResearchCategories.researchCategories.values()) {
+            for (Entry<String, ResearchItem> entry : category.research.entrySet()) {
+                String research = entry.getKey();
+                ResearchItem researchItem = entry.getValue();
+                remove(research, researchItem.parents, children, researchItem::setParents);
+                remove(research, researchItem.parentsHidden, secretChildren, researchItem::setParentsHidden);
+                remove(research, researchItem.siblings, siblings, researchItem::setSiblings);
             }
         }
     }
@@ -78,39 +70,9 @@ public class OrphanResearch implements IUndoableAction {
 
     @Override
     public void undo() {
-        if (children.size() > 0) {
-            for (String research : children.keySet()) {
-                String[] oldPrereqs = ResearchCategories.researchCategories.get(children.get(research)).research.get(research).parents;
-                String[] newReqs = new String[oldPrereqs.length + 1];
-                for (int x = 0; x < oldPrereqs.length; x++) {
-                    newReqs[x] = oldPrereqs[x];
-                }
-                newReqs[oldPrereqs.length] = key;
-                ResearchCategories.researchCategories.get(children.get(research)).research.get(research).setParents(newReqs);
-            }
-        }
-        if (secretChildren.size() > 0) {
-            for (String research : secretChildren.keySet()) {
-                String[] oldPrereqs = ResearchCategories.researchCategories.get(secretChildren.get(research)).research.get(research).parentsHidden;
-                String[] newReqs = new String[oldPrereqs.length + 1];
-                for (int x = 0; x < oldPrereqs.length; x++) {
-                    newReqs[x] = oldPrereqs[x];
-                }
-                newReqs[oldPrereqs.length] = key;
-                ResearchCategories.researchCategories.get(secretChildren.get(research)).research.get(research).setParentsHidden(newReqs);
-            }
-        }
-        if (siblings.size() > 0) {
-            for (String research : siblings.keySet()) {
-                String[] oldPrereqs = ResearchCategories.researchCategories.get(siblings.get(research)).research.get(research).siblings;
-                String[] newReqs = new String[oldPrereqs.length + 1];
-                for (int x = 0; x < oldPrereqs.length; x++) {
-                    newReqs[x] = oldPrereqs[x];
-                }
-                newReqs[oldPrereqs.length] = key;
-                ResearchCategories.researchCategories.get(siblings.get(research)).research.get(research).setSiblings(newReqs);
-            }
-        }
+        add(children, r -> r.parents, ResearchItem::setParents);
+        add(secretChildren, r -> r.parentsHidden, ResearchItem::setParentsHidden);
+        add(siblings, r -> r.siblings, ResearchItem::setSiblings);
     }
 
     @Override

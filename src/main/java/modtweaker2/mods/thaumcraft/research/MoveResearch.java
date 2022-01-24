@@ -28,28 +28,31 @@ public class MoveResearch implements IUndoableAction {
     @Override
     public void apply() {
         if (oldTab != null) {
-            ResearchItem research = ResearchCategories.researchCategories.get(oldTab).research.get(key);
+            ResearchItem research = ResearchCategories.getResearch(key);
             oldX = research.displayColumn;
             oldY = research.displayRow;
             try {
-                Class res = Class.forName("thaumcraft.api.research.ResearchItem");
-                Field ex = res.getField("displayColumn");
-                ex.setAccessible(true);
-                ex.setInt(research, x);
-                Field wy = res.getField("displayRow");
-                wy.setAccessible(true);
-                wy.setInt(research, y);
-                Field cat = res.getField("category");
-                cat.setAccessible(true);
-                cat.set(research, newTab);
-                ResearchCategories.researchCategories.get(oldTab).research.remove(key);
-                research.registerResearchItem();
+                moveResearchItem(research, x, y, newTab, oldTab);
                 moved = true;
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void moveResearchItem(ResearchItem research, int x, int y, String newTab, String tab) throws ReflectiveOperationException {
+        Class<?> res = Class.forName("thaumcraft.api.research.ResearchItem");
+        Field ex = res.getField("displayColumn");
+        ex.setAccessible(true);
+        ex.setInt(research, x);
+        Field wy = res.getField("displayRow");
+        wy.setAccessible(true);
+        wy.setInt(research, y);
+        Field cat = res.getField("category");
+        cat.setAccessible(true);
+        cat.set(research, newTab);
+        ResearchCategories.researchCategories.get(tab).research.remove(key);
+        research.registerResearchItem();
     }
 
     @Override
@@ -64,24 +67,13 @@ public class MoveResearch implements IUndoableAction {
 
     @Override
     public void undo() {
-        ResearchItem research = ResearchCategories.researchCategories.get(oldTab).research.get(key);
+        ResearchItem research = ResearchCategories.getResearch(key);
         try {
-            Class res = Class.forName("thaumcraft.api.research.ResearchItem");
-            Field ex = res.getField("displayColumn");
-            ex.setAccessible(true);
-            ex.setInt(research, oldX);
-            Field wy = res.getField("displayRow");
-            wy.setAccessible(true);
-            wy.setInt(research, oldY);
-            Field cat = res.getField("category");
-            cat.setAccessible(true);
-            cat.set(research, oldTab);
-            ResearchCategories.researchCategories.get(newTab).research.remove(key);
-            research.registerResearchItem();
-
+            moveResearchItem(research, oldX, oldY, oldTab, newTab);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        moved = false;
     }
 
     @Override

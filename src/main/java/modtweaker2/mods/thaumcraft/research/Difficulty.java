@@ -1,11 +1,13 @@
 package modtweaker2.mods.thaumcraft.research;
 
-import java.lang.reflect.Field;
-
 import minetweaker.IUndoableAction;
 import modtweaker2.mods.thaumcraft.ThaumcraftHelper;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
+
+import java.lang.reflect.Field;
+
+import static modtweaker2.mods.thaumcraft.ThaumcraftHelper.getResearchSafe;
 
 public class Difficulty implements IUndoableAction {
     String key;
@@ -13,6 +15,20 @@ public class Difficulty implements IUndoableAction {
     int difficulty;
     int oldDif;
     boolean applied = false;
+    final static Field complexity;
+    
+    static {
+        Field complexity1;
+        try {
+            complexity1 = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("complexity");
+        } catch (NoSuchFieldException | ClassNotFoundException e) {
+            complexity1 = null;
+            e.printStackTrace();
+        }
+        complexity = complexity1;
+    }
+    
+
 
     public Difficulty(String res, int dif) {
         key = res;
@@ -47,8 +63,10 @@ public class Difficulty implements IUndoableAction {
     @Override
     public void undo() {
         try {
-            ResearchItem research = ResearchCategories.researchCategories.get(tab).research.get(key);
-            Field complexity = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("complexity");
+            final ResearchItem research = getResearchSafe(tab, key);
+            if(research == null || complexity == null) {
+                return;
+            }
             complexity.setAccessible(true);
             complexity.set(research, oldDif);
         } catch (Exception e) {
