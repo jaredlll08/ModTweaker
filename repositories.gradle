@@ -1,0 +1,44 @@
+repositories {
+    maven {
+        name "GTNH Maven"
+        url "http://jenkins.usrv.eu:8081/nexus/content/repositories/public/"
+    }
+    maven {
+        name "Thaumcraft"
+        url "https://maven.mcmoddev.com/"
+    }
+    maven {
+        name "ExNihilo"
+        url "https://maven.tterrag.com/"
+    }
+    maven {
+        name "PneumaticCraft"
+        url "https://maven.k-4u.nl/"
+        metadataSources {
+            artifact()
+        }
+    }
+    maven {
+        name "IC2"
+        url "https://maven.ic2.player.to/"
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
+    ivy {
+        name "MineTweaker3"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module](-[classifier])-[revision].[ext]"
+        metadataSources {
+            artifact()
+        }
+    }
+    maven {
+        name "CurseMaven"
+        url "https://www.cursemaven.com/"
+    }
+    maven {
+        name "Jitpack"
+        url "https://jitpack.io/"
+    }
+}

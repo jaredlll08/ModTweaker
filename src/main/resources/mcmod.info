@@ -1,10 +1,10 @@
 [
 {
-  "modid": "modtweaker2",
-  "name": "Mod Tweaker 2",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "ModTweaker is an addon for MineTweaker 3.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Jaredlll08"],

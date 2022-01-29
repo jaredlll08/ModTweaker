@@ -1,0 +1,25 @@
+dependencies {
+    compile("com.powerofbytes.minetweaker3:MineTweaker3:1.7.10-3.0.10B:Dev-Full")
+    compile("com.github.GTNewHorizons:ZenScript:unspecified")
+
+    compileOnly("com.azanor:Thaumcraft:1.7.10-4.2.3.5:deobf") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-72-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Botania:1.9.1-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Chisel:2.10.7-GTNH:api") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.4.5:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Mantle:0.3.4:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Railcraft:9.13.5:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.0.10-GTNH:api") { transitive = false }
+    compileOnly("curse.maven:botanical-addons-237152:2281663") { transitive = false }
+    compileOnly("curse.maven:extra-utilities-225561:2264384") { transitive = false }
+    compileOnly("curse.maven:thermal-expansion-69163:2388759") { transitive = false }
+    compileOnly("exnihilo:Ex-Nihilo:1.38-53:deobf") { transitive = false }
+    compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:api") { transitive = false }
+    compileOnly("pneumaticCraft:PneumaticCraft-1.7.10:1.7.0-74:userdev") { transitive = false }
+    compileOnly(deobf("https://media.forgecdn.net/files/2261/766/AuraCascade-557.jar"))
+    compileOnly(deobf("https://media.forgecdn.net/files/2322/815/Metallurgy-1.7.10-4.0.9.148.jar"))
+    compileOnly(deobf("https://media.forgecdn.net/files/2323/944/Mariculture-Deluxe-1.7.10-1.3.0-6.jar"))
+    compileOnly(deobf("https://s3.amazonaws.com/aidancbrady/mekanism/265/Mekanism-1.7.10-8.1.9.265.jar"))
+    compileOnly(sourceSets.compileHelper.output)
+    compileHelper(sourceSets.compileStubs.output)
+}

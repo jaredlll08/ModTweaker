@@ -1,0 +1,1 @@
+This directory contains all classes required to allow ExtendedWorkbench support. ExtendedWorkbench can be found on the [MinecraftForum](https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1282775).

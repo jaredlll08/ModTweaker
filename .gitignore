@@ -1,56 +1,32 @@
+.gradle
+.settings
+/.idea/
+/run/
+/build/
+/eclipse/
+.classpath
+.project
 /bin/
-# Forge
-/LICENSE-fml.txt
-/MinecraftForge-Credits.txt
-/MinecraftForge-License.txt
-/README.txt
-/CREDITS-fml.txt
-/forge-1.7.2*
-/logs/*
-/config/*
-/configs/*
-/asm/*
-/saves/*
-/usernamecache.json
-/options.txt
-/minetweaker.log
-/BotaniaVars.dat
-/.analytics/*
+/config/
 /crash-reports/
-/scripts/*
-
-/bin/*
-
-# Modproject
-/src/api/resources/*
-/mods/*
-
-# Gradle
-/.gradle
-/build
-
-# Eclipse
-/.classpath
-/.project
-/.settings
-/bin
-/eclipse/*
-/.metadata
-
-# IntelliJ IDEA
-/*.iml
-/*.ipr
-/*.iws
-/.idea
-/out
-
-# Debugging
-/run
-
-# OS X
-.DS_Store
-
-# other
-/.nb-gradle/private/
-/common
-
+/logs/
+options.txt
+/saves/
+usernamecache.json
+banned-ips.json
+banned-players.json
+eula.txt
+ops.json
+server.properties
+servers.dat
+usercache.json
+whitelist.json
+/out/
+*.iml
+*.ipr
+*.iws
+src/main/resources/mixins.*.json
+*.bat
+*.DS_Store
+!gradlew.bat
+/deobf/

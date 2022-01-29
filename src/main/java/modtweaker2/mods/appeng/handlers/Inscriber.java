@@ -5,6 +5,7 @@ import static modtweaker2.helpers.InputHelper.toStack;
 import static modtweaker2.helpers.InputHelper.toStacks;
 import static modtweaker2.helpers.StackHelper.matches;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import minetweaker.MineTweakerAPI;
@@ -83,7 +84,7 @@ public class Inscriber {
 
 	public static class Add extends BaseListAddition<IInscriberRecipe> {
 		public Add(IInscriberRecipe recipe) {
-			super(Inscriber.name, AEApi.instance().registries().inscriber().getRecipes());
+			super(Inscriber.name, new ArrayList<>(AEApi.instance().registries().inscriber().getRecipes()));
 			recipes.add(recipe);
 		}
 
@@ -158,7 +159,7 @@ public class Inscriber {
 
 	public static class Remove extends BaseListRemoval<IInscriberRecipe> {
 		public Remove(LinkedList<IInscriberRecipe> recipes) {
-			super(Inscriber.name, AEApi.instance().registries().inscriber().getRecipes(), recipes);
+			super(Inscriber.name, new ArrayList<>(AEApi.instance().registries().inscriber().getRecipes()), recipes);
 		}
 		
 	    @Override
