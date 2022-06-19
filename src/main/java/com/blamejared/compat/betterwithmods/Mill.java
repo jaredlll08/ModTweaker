@@ -20,7 +20,7 @@ public class Mill {
 
     @ZenMethod
     public static MillBuilder builder() {
-        return INSTANCE;
+        return new MillBuilder(() -> BWRegistry.MILLSTONE, "Mill");
     }
 
     @ZenMethod
