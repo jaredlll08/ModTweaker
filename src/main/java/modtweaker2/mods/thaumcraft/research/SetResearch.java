@@ -35,6 +35,7 @@ public class SetResearch implements IUndoableAction {
             else if (type == SetType.STUB) research.setStub();
             else if (type == SetType.VIRTUAL) research.setVirtual();
             else if (type == SetType.CONCEAL) research.setConcealed();
+            else if (type == SetType.HIDDEN) research.setHidden();
             applied = true;
         } else {
             try {
@@ -46,6 +47,7 @@ public class SetResearch implements IUndoableAction {
                 else if (type == SetType.STUB) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isStub");
                 else if (type == SetType.VIRTUAL) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isVirtual");
                 else if (type == SetType.CONCEAL) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isConcealed");
+                else if (type == SetType.HIDDEN) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isHidden");
 
                 if (target != null) {
                     target.setAccessible(true);
@@ -83,6 +85,7 @@ public class SetResearch implements IUndoableAction {
             else if (type == SetType.STUB) research.setStub();
             else if (type == SetType.VIRTUAL) research.setVirtual();
             else if (type == SetType.CONCEAL) research.setConcealed();
+            else if (type == SetType.HIDDEN) research.setHidden();
         } else {
             try {
                 Field target = null;
@@ -93,6 +96,7 @@ public class SetResearch implements IUndoableAction {
                 else if (type == SetType.STUB) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isStub");
                 else if (type == SetType.VIRTUAL) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isVirtual");
                 else if (type == SetType.CONCEAL) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isConcealed");
+                else if (type == SetType.HIDDEN) target = Class.forName("thaumcraft.api.research.ResearchItem").getDeclaredField("isHidden");
 
                 if (target != null) {
                     target.setAccessible(true);

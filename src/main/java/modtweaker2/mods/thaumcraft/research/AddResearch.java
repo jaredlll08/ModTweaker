@@ -2,6 +2,8 @@ package modtweaker2.mods.thaumcraft.research;
 
 import net.minecraft.item.ItemStack;
 import minetweaker.IUndoableAction;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 
@@ -12,13 +14,15 @@ public class AddResearch implements IUndoableAction {
 	ResearchItem oldResearch;
 	ItemStack[] itemTriggers;
 	String[] entityTriggers;
+	AspectList aspectTriggers;
 
-	public AddResearch(ResearchItem res, ItemStack[] triggers, String[] entTriggers) {
+	public AddResearch(ResearchItem res, ItemStack[] itemTriggers, String[] entityTriggers, AspectList aspectTriggers) {
 		research = res;
 		tab = research.category;
 		key = research.key;
-		itemTriggers = triggers;
-		entityTriggers = entTriggers;
+		this.itemTriggers = itemTriggers;
+		this.entityTriggers = entityTriggers;
+		this.aspectTriggers = aspectTriggers;
 	}
 
 	@Override
@@ -29,6 +33,9 @@ public class AddResearch implements IUndoableAction {
 		}
 		if (entityTriggers != null) {
 			research = research.setEntityTriggers(entityTriggers);
+		}
+		if (aspectTriggers != null) {
+			research = research.setAspectTriggers(aspectTriggers.getAspects());
 		}
 		research.registerResearchItem();
 	}
