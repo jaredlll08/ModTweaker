@@ -128,7 +128,7 @@ dependencies {
     deobfCompile("knightminer.tcomplement:TinkersComplement:1.12.2-0.4.2.39") {
         exclude group: 'mezz.jei'
     }
-    deobfCompile "team.chisel:Chisel:MC1.12.2-1.0.2.45"
+    deobfCompile "curse.maven:chisel-235279:2915375" // Chisel-MC1.12.2-1.0.2.45
     deobfCompile "curse.maven:bloodmagic-224791:2610083"
     deobfCompile "curse.maven:guideapi-228832:2645992"
     deobfCompile("knightminer:Inspirations:1.12.2-0.2.9.9") {
